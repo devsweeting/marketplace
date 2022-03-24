@@ -1,34 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Development SOP
 
-## Getting Started
+This document outlines the "standard operating procedures" for this repository concerning the development process. For more general information see the [README](README.md) doc.
 
-First, run the development server:
+## Development process.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- Create a local feature branch `git checkout -b <mybranch>`
+- Edit your local copy
+- Write tests
+- Run `yarn test` to ensure your code passes all tests before pushing changes.
+- Stage changes to commit `git add <filename>`
+- Commit changes locally `git commit -m "fixes #12"` Please use short descriptive commit messages. Included referneces to tickets you are working on.
+- Push your changes to a remote branch `git push`
+- Create a pull request on github, ensure you choose `develop` as your base and not `main`
+  - Ensure all tests have passed and branch is has no conflicts.
+  - Select someone to review your code. All code must have **at lease one approval** from another team member before merging.
+- Wait for a code review. If the reviewer requests changes make sure that they are addressed before merging.
+- Once the code has been approved and has passed all checks you may merge your branch.
+- Delete old feature branch on Github
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The .env file store the default values for environment variables.
+These values can be easily overridden by creating .env.local file.
+The application recognises NODE_ENV variable and load .env files depends on this value.
+For example if we run `yarn test`, the NODE_ENV value is `test`.
+The application will load `.env.test` file.
+These test values can be overridden in `.env.test.local` file.
+The hierarchy of loading .env files looks as below:
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- `.env.${process.env.NODE_ENV}.local`
+- `.env.${process.env.NODE_ENV}`
+- `.env.local`
+- `.env`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Migrations
 
-## Learn More
+Code that makes changes to entity files will need to enclude migration scripts before merging and those scripts will have to be tested in staging before being promoted to the main branch.
 
-To learn more about Next.js, take a look at the following resources:
+## Linting
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project uses _prettier_ and _eslint_. Code that doesn't pass linting is not acceptable for merging. In some cases the linting rules are prohibitive or just plain dumb. In those cases disabling linting for a particular line or block of code is acceptable, but use sparingly.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Data Models
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+We are using TypeORM with NestJs, but prefer the **Active Record** pattern over Data Mapper.
