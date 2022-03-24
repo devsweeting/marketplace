@@ -1,29 +1,13 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import styles from '../../styles/Home.module.css'
+import Container from "@mui/material/Container";
 
-const Home: NextPage = () => {
+const Homepage = () => {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Jump homepage</title>
-         <meta name="description" content="Jump web app" />
-        <link rel="icon" href="/images/favicon.ico" />
-      </Head>
+    <Container maxWidth="xl">
+    <h1>Jump Home page</h1>
+    </Container>
+  );
+};
 
-      <main className={styles.main}>
-         <h1 className={styles.title}>
-         Jump homepage
-        </h1>
-      </main>
+export default Homepage;
 
-      <footer className={styles.footer}>
-        <p>
-          Footer
-        </p>
-      </footer>
-    </div>
-  )
-}
 
-export default Home
