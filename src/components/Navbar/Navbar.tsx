@@ -1,7 +1,6 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
-import Link from 'next/link';
 import { NavLink } from './components/NavLink';
 
 // interface NavLinksProps {

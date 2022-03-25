@@ -16,7 +16,7 @@ export const NavLink: React.FC<NavLinksProps> = ({ href, children }) => {
 
   return (
     <Link href={href}>
-      <a className={classNames(classes.navLink, href === router.pathname && classes.navLinkActive)}>
+      <a className={classNames(href === router.pathname && classes.navLinkActive, classes.navLink)}>
         {children}
       </a>
     </Link>
