@@ -1,17 +1,24 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+declare module '@mui/material/styles/createPalette' {
+  interface Palette {
+    customGray: Palette['primary'];
+  }
+  interface PaletteOptions {
+    customGray: PaletteOptions['primary'];
+  }
+}
 
-// Create a theme instance.
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#000',
+      light: 'rgba(0, 0, 0, 0.87)',
     },
     secondary: {
-      main: '#19857b',
+      main: '#fff',
     },
-    error: {
-      main: red.A400,
+    customGray: {
+      main: '#ededed',
     },
   },
 });
