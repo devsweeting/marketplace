@@ -2,9 +2,11 @@ import { createTheme } from '@mui/material/styles';
 declare module '@mui/material/styles/createPalette' {
   interface Palette {
     customGray: Palette['primary'];
+    customBlue: Palette['primary'];
   }
   interface PaletteOptions {
     customGray: PaletteOptions['primary'];
+    customBlue: PaletteOptions['primary'];
   }
 }
 
@@ -16,6 +18,9 @@ const theme = createTheme({
     },
     secondary: {
       main: '#fff',
+    },
+    customBlue: {
+      main: '#3070CE',
     },
     customGray: {
       main: '#ededed',

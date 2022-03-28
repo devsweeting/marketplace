@@ -1,11 +1,12 @@
 import React from 'react';
 // import { useRouter } from 'next/router';
 import { Grid, Typography } from '@mui/material';
-import { Button } from '../../components/Button';
+import { ProductCard } from '../../components/ProductCard';
 import { Hero } from '../../components/Hero';
 import { Accordion } from '../../components/Accordion';
+
 import image from '../../../public/images/detail_page.png';
-import { blockchaninDataInfo } from '../../__mocks__/mockBlockChainInfo';
+import { blockchaninDataInfo, mockProductData } from '../../__mocks__/mockApiData';
 import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
 
@@ -46,16 +47,13 @@ const DetailPage = () => {
           </Grid>
         </Grid>
 
-        <Grid container item md={6} xs={12}>
-          <Grid item>
-            <Typography variant="h2">product cart</Typography>
+        <Grid container item md={6} xs={12} direction="column">
+          <Grid item md={12}>
+            <ProductCard cardData={mockProductData} />
           </Grid>
-          <Grid item>
-            <Button variant="contained">Buy now</Button>
-          </Grid>
-          <Grid item>
-            <Typography variant="h2">chart</Typography>
-          </Grid>
+        </Grid>
+        <Grid item md={6}>
+          sdsg
         </Grid>
       </Grid>
     </>

@@ -6,3 +6,18 @@ export const blockchaninDataInfo = [
   { name: 'Supply', value: '1' },
   { name: 'Blockchain', value: 'Polygon' },
 ];
+
+export const mockProductData = {
+  title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
+  watchNumber: 2,
+  price: {
+    icon: 'etherum',
+    cryptoValue: '2.1',
+    dolarValue: '6234.33',
+  },
+  brand: {
+    logo: 'brand_a',
+    verified: true,
+    name: 'Comix',
+  },
+};
