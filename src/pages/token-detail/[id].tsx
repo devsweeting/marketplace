@@ -9,6 +9,7 @@ import image from '../../../public/images/detail_page.png';
 import { blockchaninDataInfo, mockProductData } from '../../__mocks__/mockApiData';
 import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
+import { LineChart } from '../../components/LineChart/';
 
 const DetailPage = () => {
   // const router = useRouter();
@@ -59,8 +60,8 @@ const DetailPage = () => {
           <Grid item md={12}>
             <ProductCard cardData={mockProductData} />
           </Grid>
-          <Grid item md={6}>
-            sdsg
+          <Grid item md={12}>
+            <LineChart />
           </Grid>
         </Grid>
       </Grid>
