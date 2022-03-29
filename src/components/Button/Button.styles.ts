@@ -14,10 +14,20 @@ export const useButtonStyles = makeStyles(
       },
     },
     contained: {
+      fontFamily: 'League Gothic',
       backgroundColor: theme.palette.primary.main,
       borderColor: theme.palette.primary.main,
       color: theme.palette.secondary.main,
+      boxShadow:
+        '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12)',
+      borderRadius: 4,
       transition: 'backgroundColor 0.3s ease, color 0.3s ease',
+      padding: '6px 25px',
+      height: 55,
+      fontStyle: 'normal',
+      fontWeight: 400,
+      fontSize: 32,
+      lineHeight: 39,
       '&:hover': {
         backgroundColor: darken(theme.palette.primary.main, 0.2),
         borderColor: darken(theme.palette.primary.main, 0.2),

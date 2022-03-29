@@ -7,33 +7,33 @@ import { Button } from '../../components/Button';
 import { useProductStyles } from './ProductCard.styles';
 import Image from 'next/image';
 
-type Price = {
-  icon: string;
-  cryptoValue: string;
-  dolarValue: string;
-};
-
-type Brand = {
-  logo: string;
-  verified: boolean;
-  name: string;
-};
-
 export interface ProductDataProps {
   title: string;
   watchNumber: number;
-  price: Price;
-  brand: Brand;
+  price: {
+    icon: string;
+    cryptoValue: string;
+    dolarValue: string;
+  };
+  brand: {
+    logo?: string;
+    verified: boolean;
+    name: string;
+  };
 }
 
 export const ProductCard: React.FC<ProductDataProps> = ({ cardData }) => {
-  const { title, watchNumber } = cardData;
+  const {
+    title,
+    watchNumber,
+    price: { icon, cryptoValue, dolarValue },
+    brand: { logo, verified, name },
+  } = cardData;
   const classes = useProductStyles();
   return (
     <Card>
       <CardContent>
         <Typography className={classes.porductTitle} component="h2">
-          {/* Overstreet Comic Book 50th Anniversary 10 GEM MINT */}
           {title}
         </Typography>
         <Typography className={classes.productWatchList} component="p" mt={1}>
@@ -52,33 +52,39 @@ export const ProductCard: React.FC<ProductDataProps> = ({ cardData }) => {
               <Typography className={classes.price}>Current Price</Typography>
               <Typography variant="body2" className={classes.priceCryptoValue} my={1}>
                 <Image
-                  src="/images/nftDetail/cryptoCurencies/etherum.png"
-                  alt="crypto icon"
+                  src={`/images/nftDetail/cryptoCurencies/${icon}.png`}
+                  alt={`${icon} icon`}
                   width={32}
                   height={32}
                 />{' '}
-                2.1 <span className={classes.priceDollarValue}>($6234.33)</span>
+                {cryptoValue} <span className={classes.priceDollarValue}>(${dolarValue})</span>
               </Typography>
               <CardActions className={classes.cardActions}>
-                <Button variant="contained">Buy now</Button>
+                <Box my={2}>
+                  <Button variant="contained">Buy now</Button>
+                </Box>
               </CardActions>
             </Box>
           </Grid>
           <Grid item md={6} xs={6} className={classes.brandContainer}>
-            <Image
-              src="/images/nftDetail/brands/brand_a.png"
-              alt="crypto brand"
-              width={120}
-              height={120}
-            />
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {logo && (
               <Image
-                src="/images/nftDetail/icons/verified.png"
-                alt="verified icon"
-                width={34}
-                height={34}
+                src={`/images/nftDetail/brands/${logo}.png`}
+                alt={`brand ${logo}`}
+                width={120}
+                height={120}
               />
-              <Typography className={classes.brandName}>Comix</Typography>
+            )}
+            <Box className={classes.brandVerification}>
+              {verified && (
+                <Image
+                  src="/images/nftDetail/icons/verified.png"
+                  alt="verified icon"
+                  width={34}
+                  height={34}
+                />
+              )}
+              <Typography className={classes.brandName}>{name}</Typography>
             </Box>
           </Grid>
         </Grid>

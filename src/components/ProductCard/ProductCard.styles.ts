@@ -23,6 +23,7 @@ export const useProductStyles = makeStyles(
       fontWeight: 500,
       fontSize: '14px',
       lineHeight: '16.59px',
+      marginBottom: theme.spacing(1.6),
     },
     priceCryptoValue: {
       fontWeight: 600,
@@ -41,6 +42,10 @@ export const useProductStyles = makeStyles(
     },
     brandContainer: {
       textAlign: 'right',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
     },
     brandName: {
       color: theme.palette.customBlue.main,
@@ -48,6 +53,14 @@ export const useProductStyles = makeStyles(
       fontSize: '14px',
       lineHeight: '22px',
       letter: 0.1,
+    },
+    brandVerification: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      width: '120px',
+      paddingTop: theme.spacing(1.5),
     },
   }),
   { name: 'productCard' },
