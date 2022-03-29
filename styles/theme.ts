@@ -24,6 +24,7 @@ const theme = createTheme({
     },
     customGray: {
       main: '#ededed',
+      light: '#e5e5e5',
     },
   },
 });

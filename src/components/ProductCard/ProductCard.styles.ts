@@ -3,6 +3,9 @@ import theme from '../../../styles/theme';
 
 export const useProductStyles = makeStyles(
   () => ({
+    productContainer: {
+      boxShadow: 'none',
+    },
     porductTitle: {
       fontWeight: 700,
       fontSize: '24px',

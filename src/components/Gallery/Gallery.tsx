@@ -18,11 +18,11 @@ export const Gallery = ({ images }: { images: string[] }) => {
   };
   return (
     <>
-      <Grid container md={12} spacing={2}>
+      <Grid container md={12}>
         <Grid
           container
           item
-          rowSpacing={1}
+          // rowSpacing={1}
           md={4}
           direction="column"
           justifyContent="center"

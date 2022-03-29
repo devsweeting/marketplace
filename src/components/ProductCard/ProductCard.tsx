@@ -31,7 +31,7 @@ export const ProductCard: React.FC<ProductDataProps> = ({ cardData }) => {
   } = cardData;
   const classes = useProductStyles();
   return (
-    <Card>
+    <Card className={classes.productContainer}>
       <CardContent>
         <Typography className={classes.porductTitle} component="h2">
           {title}

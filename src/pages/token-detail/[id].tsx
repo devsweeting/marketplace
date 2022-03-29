@@ -4,7 +4,6 @@ import { Grid, Typography, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { Hero } from '../../components/Hero';
 import { Accordion } from '../../components/Accordion';
-
 import image from '../../../public/images/detail_page.png';
 import {
   blockchaninDataInfo,
