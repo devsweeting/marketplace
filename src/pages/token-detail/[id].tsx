@@ -20,8 +20,16 @@ const DetailPage = () => {
         <Hero imgSrc={image} imgFit={'cover'} imgHeight={163} imgAlt="alt text" />
       </Grid>
 
-      <Grid container px={2}>
-        <Grid container item md={6} xs={12}>
+      <Grid container px={2} spacing={4}>
+        <Grid
+          container
+          item
+          md={6}
+          xs={12}
+          rowSpacing={4}
+          mt={-20}
+          sx={{ border: '1px solid red' }}
+        >
           <Grid item>
             <Typography variant="h2">carousel/slider</Typography>
           </Grid>
@@ -47,13 +55,13 @@ const DetailPage = () => {
           </Grid>
         </Grid>
 
-        <Grid container item md={6} xs={12} direction="column">
+        <Grid container item md={6} xs={12} rowSpacing={4} sx={{ border: '1px solid blue' }}>
           <Grid item md={12}>
             <ProductCard cardData={mockProductData} />
           </Grid>
-        </Grid>
-        <Grid item md={6}>
-          sdsg
+          <Grid item md={6}>
+            sdsg
+          </Grid>
         </Grid>
       </Grid>
     </>
