@@ -1,3 +1,5 @@
+import { ProductDataProps } from '../components/ProductCard/ProductCard';
+
 export const blockchaninDataInfo = [
   { name: 'Contract ID', value: '0x509a050f573be0d5e01a73c3726e17161729558b' },
   { name: 'Token ID', value: '19292' },
@@ -7,7 +9,7 @@ export const blockchaninDataInfo = [
   { name: 'Blockchain', value: 'Polygon' },
 ];
 
-export const mockProductData = {
+export const mockProductData: ProductDataProps = {
   title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
   watchNumber: 2,
   price: {
@@ -21,3 +23,9 @@ export const mockProductData = {
     name: 'Comix',
   },
 };
+
+export const mockProducImages = [
+  '/images/nftDetail/gallery/product1b.png',
+  '/images/nftDetail/gallery/product1a.png',
+  '/images/nftDetail/gallery/product1b.png',
+];
