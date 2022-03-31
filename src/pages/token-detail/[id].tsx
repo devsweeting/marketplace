@@ -9,6 +9,7 @@ import {
   blockchaninDataInfo,
   mockProductData,
   mockProducImages,
+  mockChartData,
 } from '../../__mocks__/mockApiData';
 import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
@@ -25,16 +26,16 @@ const DetailPage = () => {
         <Hero imgSrc={image} imgFit={'cover'} imgHeight={163} imgAlt="alt text" />
       </Grid>
 
-      <Box sx={{ border: '1px solid gray', maxWidth: 1440, margin: '0 auto', marginTop: '0' }}>
-        <Grid container px={2} spacing={4}>
+      <Box sx={{ maxWidth: 1440, margin: '0 auto', marginTop: '0' }}>
+        <Grid container px={2} columnSpacing={4}>
           <Grid
             container
             item
             md={6}
             xs={12}
             rowSpacing={4}
-            mt={-16}
-            sx={{ border: '1px solid red' }}
+            mt={-17}
+            // sx={{ border: '1px solid red' }}
           >
             <Grid item md={12}>
               <Gallery images={mockProducImages} />
@@ -62,13 +63,22 @@ const DetailPage = () => {
             </Grid>
           </Grid>
 
-          <Grid container item md={6} xs={12} rowSpacing={4} sx={{ border: '1px solid blue' }}>
+          <Grid
+            container
+            item
+            md={6}
+            xs={12}
+            rowSpacing={0}
+            // sx={{ border: '1px solid blue' }}
+          >
             <Grid item md={12}>
               <ProductCard cardData={mockProductData} />
             </Grid>
-            <Grid item md={12}>
-              <LineChart />
-            </Grid>
+            {mockChartData && (
+              <Grid item md={12}>
+                <LineChart data={mockChartData} />
+              </Grid>
+            )}
           </Grid>
         </Grid>
       </Box>

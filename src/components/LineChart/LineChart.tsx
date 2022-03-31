@@ -1,22 +1,67 @@
 import React from 'react';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import { LineChart as Chart, Line, XAxis, ResponsiveContainer } from 'recharts';
-const data = [
-  { name: 'Dec 19', uv: 400, pv: 2400, amt: 2400 },
-  { name: 'JAN 02', uv: 500, pv: 2400, amt: 2400 },
-  { name: 'JAN 15', uv: 600, pv: 2400, amt: 2400 },
-  { name: 'JAN 13', uv: 400, pv: 2400, amt: 2400 },
-  { name: 'FEB 27', uv: 200, pv: 2400, amt: 2400 },
-  { name: 'MAR 13', uv: 300, pv: 2400, amt: 2400 },
-];
+import { useLineChartStyles } from './LineChart.styles';
 
-export const LineChart = () => {
+export const LineChart = ({ data }: any) => {
+  const classes = useLineChartStyles();
   return (
-    <ResponsiveContainer width="100%" height={361}>
-      <Chart style={{ border: '1px solid red' }} data={data}>
-        <Line type="monotone" dataKey="uv" stroke="#ededed" strokeWidth={20} style={{}} />
-        <Line type="monotone" dataKey="uv" stroke="blue" strokeWidth={1} style={{}} />
-        <XAxis dataKey="name" axisLine={false} tickLine={false} />
-      </Chart>
-    </ResponsiveContainer>
+    <Paper className={classes.chartContainer}>
+      <Grid container direction="row" justifyContent="space-between" alignItems="center">
+        <Grid container xs={6}>
+          <Grid item>
+            <Typography component="h5" className={classes.soldPriceLabel}>
+              LAST SOLD PRICE
+            </Typography>
+            <Typography component="p" className={classes.soldPriceValue}>
+              $93.98
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          columnSpacing={2}
+          xs={6}
+        >
+          <Grid item>
+            <Typography component="span" className={classes.dateRangeButton}>
+              1W
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography component="span" className={classes.dateRangeButton}>
+              1M
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography component="span" className={classes.dateRangeButton}>
+              3M
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography component="span" className={classes.dateRangeButton}>
+              1Y
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography component="span" className={classes.dateRangeButton}>
+              YTD
+            </Typography>
+          </Grid>
+        </Grid>
+      </Grid>
+      <ResponsiveContainer width="100%" height={360}>
+        <Chart data={data} margin={{ top: 30 }}>
+          <Line type="monotone" dataKey="uv" stroke="#efefef" strokeWidth={30} dot={false} />
+          <Line type="monotone" dataKey="uv" stroke="#000" strokeWidth={1} dot={false} />
+          <XAxis dataKey="name" axisLine={false} tickLine={false} />
+        </Chart>
+      </ResponsiveContainer>
+    </Paper>
   );
 };
