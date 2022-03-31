@@ -11,6 +11,8 @@ export const useNavLinkStyles = makeStyles(
       fontSize: '18px',
       lineHeight: '21px',
       color: theme.palette.primary.light,
+      marginRight: '9px',
+      marginLeft: 0,
       '&:hover': {
         color: lighten(theme.palette.primary.light, 0.3),
       },

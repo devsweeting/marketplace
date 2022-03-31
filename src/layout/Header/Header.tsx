@@ -3,6 +3,8 @@ import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Image from 'next/image';
 import { Navbar } from '../../components/Navbar';
+import { SearchBox } from '../../components/SearchBox';
+import { useHeaderStyles } from './Header.styles';
 
 export const mockNavLinks = [
   { title: 'Explore', path: '/' },
@@ -10,11 +12,12 @@ export const mockNavLinks = [
 ];
 
 export const Header = () => {
+  const classes = useHeaderStyles();
   return (
     <>
-      <AppBar position="fixed">
-        <Toolbar sx={{ backgroundColor: '#ededed', height: '148px' }}>
-          <Container maxWidth="lg" sx={{ display: `flex`, justifyContent: `space-between` }}>
+      <AppBar position="fixed" sx={{ boxShadow: 'none' }}>
+        <Toolbar sx={{ backgroundColor: '#fff', height: '148px' }}>
+          <Container className={classes.headerContainer}>
             <Image
               src={'/images/logo.png'}
               alt={'logo'}
@@ -22,8 +25,8 @@ export const Header = () => {
               height="43px"
               layout="fixed"
             />
+            <SearchBox resourceName={'example'} placeholder={'Search...'} />
             <Navbar navLinks={mockNavLinks} />
-            header
           </Container>
         </Toolbar>
       </AppBar>
