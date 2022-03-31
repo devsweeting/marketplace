@@ -13,8 +13,9 @@ export const LineChart = () => {
   return (
     <ResponsiveContainer width="100%" height={361}>
       <Chart style={{ border: '1px solid red' }} data={data}>
-        <Line type="monotone" dataKey="uv" stroke="red" style={{}} />
-        <XAxis dataKey="name" axisLine={false} />
+        <Line type="monotone" dataKey="uv" stroke="#ededed" strokeWidth={20} style={{}} />
+        <Line type="monotone" dataKey="uv" stroke="blue" strokeWidth={1} style={{}} />
+        <XAxis dataKey="name" axisLine={false} tickLine={false} />
       </Chart>
     </ResponsiveContainer>
   );

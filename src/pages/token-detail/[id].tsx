@@ -1,6 +1,6 @@
 import React from 'react';
 // import { useRouter } from 'next/router';
-import { Grid, Typography, Box } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { Hero } from '../../components/Hero';
 import { Accordion } from '../../components/Accordion';

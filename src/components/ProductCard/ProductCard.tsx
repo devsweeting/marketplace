@@ -22,7 +22,7 @@ export interface ProductDataProps {
   };
 }
 
-export const ProductCard: React.FC<ProductDataProps> = ({ cardData }) => {
+export const ProductCard: React.FC<{cardData:ProductDataProps}> = ({ cardData }) => {
   const {
     title,
     watchNumber,

@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+
 declare module '@mui/material/styles/createPalette' {
   interface Palette {
     customGray: Palette['primary'];

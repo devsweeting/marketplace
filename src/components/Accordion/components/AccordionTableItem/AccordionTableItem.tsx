@@ -13,14 +13,22 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Typography } from '@mui/material';
 import { useTableStyles } from './AccordionTableItem.styles';
 
-// type BlockChaninInfo = {
-//   name: string;
-//   value: string;
-// };
+type BlockChaninInfo = {
+  name: string;
+  value: string;
+};
 
-// type BlockChainInfoProps = BlockChaninInfo[];
+type BlockChainInfoProps = BlockChaninInfo[];
 
-export const AccordionTableItem: React.FC<any> = ({ title, tableData, isExpanded }) => {
+export const AccordionTableItem: React.FC<any> = ({
+  title,
+  tableData,
+  isExpanded,
+}: {
+  title: string;
+  tableData: BlockChainInfoProps;
+  isExpanded: boolean;
+}) => {
   const classes = useTableStyles();
 
   return (
