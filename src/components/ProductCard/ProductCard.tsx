@@ -22,7 +22,7 @@ export interface ProductDataProps {
   };
 }
 
-export const ProductCard: React.FC<{cardData:ProductDataProps}> = ({ cardData }) => {
+export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData }) => {
   const {
     title,
     watchNumber,
@@ -32,13 +32,29 @@ export const ProductCard: React.FC<{cardData:ProductDataProps}> = ({ cardData })
   const classes = useProductStyles();
   return (
     <Card className={classes.productContainer}>
-      <CardContent>
+      <CardContent sx={{ padding: '16px 0' }}>
         <Typography className={classes.porductTitle} component="h2">
           {title}
         </Typography>
-        <Typography className={classes.productWatchList} component="p" mt={1}>
-          Add to watchlist <span className={classes.watchNumber}>({watchNumber} watching)</span>
-        </Typography>
+        <Box
+          mt={2}
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-end',
+          }}
+        >
+          <Image
+            src={`/images/nftDetail/icons/StarBorderRounded.png`}
+            alt={'star'}
+            width={24}
+            height={24}
+          />
+          <Typography className={classes.productWatchList} component="p" mb={0.5}>
+            Add to watchlist <span className={classes.watchNumber}>({watchNumber} watching)</span>
+          </Typography>
+        </Box>
         <Grid
           container
           md={12}

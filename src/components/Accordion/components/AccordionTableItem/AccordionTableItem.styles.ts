@@ -18,6 +18,7 @@ export const useTableStyles = makeStyles(
     noBorder: {
       border: 0,
     },
+    blueText: {},
   },
   { name: 'accordionTableItem' },
 );

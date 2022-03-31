@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { Navbar } from '../../components/Navbar';
 
 export const mockNavLinks = [
-  { title: 'explore', path: '/' },
-  { title: 'sellers', path: '/abc' },
+  { title: 'Explore', path: '/' },
+  { title: 'Sellers', path: '/abc' },
 ];
 
 export const Header = () => {

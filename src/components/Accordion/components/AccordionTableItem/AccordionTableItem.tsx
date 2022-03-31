@@ -20,7 +20,7 @@ type BlockChaninInfo = {
 
 type BlockChainInfoProps = BlockChaninInfo[];
 
-export const AccordionTableItem: React.FC<any> = ({
+export const AccordionTableItem = ({
   title,
   tableData,
   isExpanded,
@@ -30,6 +30,7 @@ export const AccordionTableItem: React.FC<any> = ({
   isExpanded: boolean;
 }) => {
   const classes = useTableStyles();
+  // index styln na podstawie indexu
 
   return (
     <MaterialAccordion disableGutters defaultExpanded={isExpanded}>
@@ -40,7 +41,7 @@ export const AccordionTableItem: React.FC<any> = ({
         <TableContainer component={Paper} className={classes.tableContainer}>
           <MaterialTable aria-label="accordion table">
             <TableBody>
-              {tableData.map((row: any) => (
+              {tableData.map((row) => (
                 <TableRow key={row.name}>
                   <TableCell component="th" scope="row" className={classes.noBorder}>
                     {row.name}

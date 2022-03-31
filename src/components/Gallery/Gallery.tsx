@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
-import Image from 'next/image';
 import { useGalleryStyles } from './Gallery.styles';
 
 export const Gallery = ({ images }: { images: string[] }) => {
@@ -35,8 +34,8 @@ export const Gallery = ({ images }: { images: string[] }) => {
                   className={classes.thumbnail}
                   src={image}
                   alt="product thumbnail"
-                  width={213}
-                  height={325}
+                  width={80}
+                  height={114}
                   onClick={handleImage}
                 />
               </Grid>
@@ -45,7 +44,13 @@ export const Gallery = ({ images }: { images: string[] }) => {
         </Grid>
         <Grid container item md={8} xs={12} className={classes.imageContainer}>
           <Grid item md={12}>
-            <Image src={mainImage} alt="Picture of the product" width={233} height={345} />
+            <img
+              className={classes.image}
+              src={mainImage}
+              alt="Picture of the product"
+              width={233}
+              height={345}
+            />
           </Grid>
         </Grid>
       </Grid>

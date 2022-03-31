@@ -22,10 +22,12 @@ const theme = createTheme({
     },
     customBlue: {
       main: '#3070CE',
+      dark: '#3072ce',
     },
     customGray: {
       main: '#ededed',
       light: '#e5e5e5',
+      dark: '#8f9094',
     },
   },
 });

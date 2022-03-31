@@ -5,6 +5,7 @@ import theme from '../../../../../styles/theme';
 export const useNavLinkStyles = makeStyles(
   () => ({
     navLink: {
+      fontFamily: 'Rubik',
       textDecoration: 'none',
       fontWeight: 500,
       fontSize: '18px',
