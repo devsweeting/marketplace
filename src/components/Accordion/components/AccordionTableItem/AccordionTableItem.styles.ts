@@ -1,4 +1,5 @@
 import { makeStyles } from '@mui/styles';
+import theme from '../../../../../styles/theme';
 
 export const useTableStyles = makeStyles(
   {
@@ -18,7 +19,9 @@ export const useTableStyles = makeStyles(
     noBorder: {
       border: 0,
     },
-    blueText: {},
+    blueText: {
+      color: theme.palette.customBlue.main,
+    },
   },
   { name: 'accordionTableItem' },
 );

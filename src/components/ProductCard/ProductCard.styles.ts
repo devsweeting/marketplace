@@ -5,6 +5,9 @@ export const useProductStyles = makeStyles(
   () => ({
     productContainer: {
       boxShadow: 'none',
+      background: 'none',
+      paddingTop: theme.spacing(13),
+      paddingBottom: theme.spacing(0.7),
     },
     porductTitle: {
       fontWeight: 700,

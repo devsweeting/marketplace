@@ -1,10 +1,11 @@
 import { makeStyles } from '@mui/styles';
 import theme from '../../../styles/theme';
 
-export const useLineChartStyles = makeStyles(
+export const usePriceChartStyles = makeStyles(
   () => ({
     chartContainer: {
       padding: `${theme.spacing(2)} ${theme.spacing(5)}`,
+      maxHeight: 400,
     },
     soldPriceLabel: {
       color: theme.palette.customGray.dark,
@@ -24,6 +25,11 @@ export const useLineChartStyles = makeStyles(
     dateRangeButton: {
       color: theme.palette.customGray.dark,
     },
+    active: {
+      textDecoration: 'underline',
+      fontWeight: 600,
+      color: theme.palette.primary.main,
+    },
   }),
-  { name: 'lineChart' },
+  { name: 'priceChart' },
 );

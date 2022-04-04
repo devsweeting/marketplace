@@ -3,7 +3,6 @@ import { Table as MaterialTable } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-// import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Accordion as MaterialAccordion } from '@mui/material';
@@ -12,13 +11,9 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Typography } from '@mui/material';
 import { useTableStyles } from './AccordionTableItem.styles';
+import classNames from 'classnames';
 
-type BlockChaninInfo = {
-  name: string;
-  value: string;
-};
-
-type BlockChainInfoProps = BlockChaninInfo[];
+type BlockChainInfoProps = Record<string, string>;
 
 export const AccordionTableItem = ({
   title,
@@ -30,7 +25,7 @@ export const AccordionTableItem = ({
   isExpanded: boolean;
 }) => {
   const classes = useTableStyles();
-  // index styln na podstawie indexu
+  const { contact_id, token_id, token_type, supply, blockchain } = tableData;
 
   return (
     <MaterialAccordion disableGutters defaultExpanded={isExpanded}>
@@ -41,16 +36,59 @@ export const AccordionTableItem = ({
         <TableContainer component={Paper} className={classes.tableContainer}>
           <MaterialTable aria-label="accordion table">
             <TableBody>
-              {tableData.map((row) => (
-                <TableRow key={row.name}>
+              {contact_id && (
+                <TableRow>
                   <TableCell component="th" scope="row" className={classes.noBorder}>
-                    {row.name}
+                    Contact ID
                   </TableCell>
-                  <TableCell align="right" className={classes.noBorder}>
-                    {row.value}
+                  <TableCell
+                    align="right"
+                    className={classNames(classes.noBorder, classes.blueText)}
+                  >
+                    {contact_id}
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
+              {token_id && (
+                <TableRow>
+                  <TableCell component="th" scope="row" className={classes.noBorder}>
+                    Token ID
+                  </TableCell>
+                  <TableCell align="right" className={classes.noBorder}>
+                    {token_id}
+                  </TableCell>
+                </TableRow>
+              )}
+              {token_type && (
+                <TableRow>
+                  <TableCell component="th" scope="row" className={classes.noBorder}>
+                    Token Type
+                  </TableCell>
+                  <TableCell align="right" className={classes.noBorder}>
+                    {token_type}
+                  </TableCell>
+                </TableRow>
+              )}
+              {supply && (
+                <TableRow>
+                  <TableCell component="th" scope="row" className={classes.noBorder}>
+                    Supply
+                  </TableCell>
+                  <TableCell align="right" className={classes.noBorder}>
+                    {supply}
+                  </TableCell>
+                </TableRow>
+              )}
+              {blockchain && (
+                <TableRow>
+                  <TableCell component="th" scope="row" className={classes.noBorder}>
+                    Blokchain
+                  </TableCell>
+                  <TableCell align="right" className={classes.noBorder}>
+                    {blockchain}
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </MaterialTable>
         </TableContainer>

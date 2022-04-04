@@ -1,5 +1,6 @@
 import { lighten } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import makeStyles from '@mui/styles/makeStyles';
+// import { makeStyles } from '@mui/styles';
 import theme from '../../../../../styles/theme';
 
 export const useNavLinkStyles = makeStyles(

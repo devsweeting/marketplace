@@ -57,8 +57,8 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
         </Box>
         <Grid
           container
-          md={12}
-          xs={12}
+          // md={12}
+          // xs={12}
           direction="row"
           justifyContent="flex-start"
           alignItems="flex-end"

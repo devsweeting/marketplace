@@ -4,7 +4,6 @@ export const blockchaninDataInfo = [
   { name: 'Contract ID', value: '0x509a050f573be0d5e01a73c3726e17161729558b' },
   { name: 'Token ID', value: '19292' },
   { name: 'Token Type', value: 'ERC-1151' },
-  { name: 'Token Type', value: 'ERC-1151' },
   { name: 'Supply', value: '1' },
   { name: 'Blockchain', value: 'Polygon' },
 ];
@@ -30,11 +29,60 @@ export const mockProducImages = [
   '/images/nftDetail/gallery/product1b.png',
 ];
 
+// export  const mockChartData = [
+//   { name: 'Dec 19', uv: 0, pv: 2400, amt: 2400 },
+//   { name: 'JAN 02', uv: 500, pv: 323, amt: 2400 },
+//   { name: 'JAN 15', uv: 600, pv: 543, amt: 2400 },
+//   { name: 'JAN 13', uv: 400, pv: 343, amt: 2400 },
+//   { name: 'FEB 27', uv: 200, pv: 190, amt: 2400 },
+//   { name: 'MAR 13', uv: 300, pv: 200, amt: 2400 },
+// ];
+
 export const mockChartData = [
-  { name: 'Dec 19', uv: 400, pv: 2400, amt: 2400 },
-  { name: 'JAN 02', uv: 500, pv: 2400, amt: 2400 },
-  { name: 'JAN 15', uv: 600, pv: 2400, amt: 2400 },
-  { name: 'JAN 13', uv: 400, pv: 2400, amt: 2400 },
-  { name: 'FEB 27', uv: 200, pv: 2400, amt: 2400 },
-  { name: 'MAR 13', uv: 300, pv: 2400, amt: 2400 },
+  {
+    name: 'DEC 19',
+    uv: 2000,
+    pv: 2300,
+    amt: 2800,
+  },
+  {
+    name: 'JAN 02',
+    uv: 1000,
+    pv: 1500,
+    amt: 2100,
+    cnt: 800,
+  },
+  {
+    name: 'JAN 16',
+    uv: 1100,
+    pv: 1600,
+    amt: 2290,
+  },
+  {
+    name: 'JAN 30',
+    uv: 1200,
+    pv: 1700,
+    amt: 2000,
+    cnt: 1080,
+  },
+  {
+    name: 'FEB 13',
+    uv: 1200,
+    pv: 1600,
+    amt: 2181,
+    cnt: 900,
+  },
+  {
+    name: 'FEB 27',
+    uv: 1800,
+    pv: 2400,
+    amt: 3300,
+    cnt: 1100,
+  },
+  {
+    name: 'MAR 13',
+    uv: 1300,
+    pv: 1900,
+    amt: 2900,
+  },
 ];

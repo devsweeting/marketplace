@@ -17,15 +17,15 @@ export const Gallery = ({ images }: { images: string[] }) => {
   };
   return (
     <>
-      <Grid container md={12}>
+      <Grid container>
         <Grid
           container
           item
           // rowSpacing={1}
-          md={4}
+          md={3}
           direction="column"
           justifyContent="center"
-          alignItems="flex-end"
+          alignItems="flex-stat"
         >
           {images.map((image, index) => {
             return (
@@ -42,7 +42,7 @@ export const Gallery = ({ images }: { images: string[] }) => {
             );
           })}
         </Grid>
-        <Grid container item md={8} xs={12} className={classes.imageContainer}>
+        <Grid container item md={9} xs={12} className={classes.imageContainer}>
           <Grid item md={12}>
             <img
               className={classes.image}

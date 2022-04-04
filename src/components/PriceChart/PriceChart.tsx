@@ -1,12 +1,13 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { LineChart as Chart, Line, XAxis, ResponsiveContainer } from 'recharts';
-import { useLineChartStyles } from './LineChart.styles';
+import { Grid, Typography, Paper } from '@mui/material';
+import classNames from 'classnames';
 
-export const LineChart = ({ data }: any) => {
-  const classes = useLineChartStyles();
+import { Area, XAxis, ResponsiveContainer, Line, ComposedChart, Scatter } from 'recharts';
+
+import { usePriceChartStyles } from './PriceChart.styles';
+
+export const PriceChart = ({ data }: { data: any }) => {
+  const classes = usePriceChartStyles();
   return (
     <Paper className={classes.chartContainer}>
       <Grid container direction="row" justifyContent="space-between" alignItems="center">
@@ -39,7 +40,10 @@ export const LineChart = ({ data }: any) => {
             </Typography>
           </Grid>
           <Grid item>
-            <Typography component="span" className={classes.dateRangeButton}>
+            <Typography
+              component="span"
+              className={classNames(classes.dateRangeButton, classes.active)}
+            >
               3M
             </Typography>
           </Grid>
@@ -55,13 +59,32 @@ export const LineChart = ({ data }: any) => {
           </Grid>
         </Grid>
       </Grid>
-      <ResponsiveContainer width="100%" height={360}>
-        <Chart data={data} margin={{ top: 30 }}>
-          <Line type="monotone" dataKey="uv" stroke="#efefef" strokeWidth={30} dot={false} />
-          <Line type="monotone" dataKey="uv" stroke="#000" strokeWidth={1} dot={false} />
-          <XAxis dataKey="name" axisLine={false} tickLine={false} />
-        </Chart>
-      </ResponsiveContainer>
+      <Grid container sx={{ width: '100%', height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <ComposedChart
+            width={500}
+            height={400}
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <XAxis
+              dataKey="name"
+              axisLine={false}
+              tickLine={false}
+              padding={{ left: 30, right: 10 }}
+            />
+            <Area type="monotone" dataKey="pv" stroke="#FFF" fill="#fff" stackId="1" />
+            <Area type="monotone" dataKey="uv" stroke="#FFF" fill="#E5E5E5" stackId="1" />
+            <Line type="monotone" dataKey="amt" stroke="#000" strokeWidth={1} dot={false} />
+            <Scatter dataKey="cnt" fill="#3070CE" />
+          </ComposedChart>
+        </ResponsiveContainer>
+      </Grid>
     </Paper>
   );
 };
