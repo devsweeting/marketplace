@@ -1,8 +1,7 @@
 import { makeStyles } from '@mui/styles';
-import theme from '../../../styles/theme';
 
 export const useGalleryStyles = makeStyles(
-  () => ({
+  (theme) => ({
     galleryContainer: {
       [theme.breakpoints.down('md')]: {
         display: 'flex',

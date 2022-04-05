@@ -1,8 +1,7 @@
 import { makeStyles } from '@mui/styles';
-import theme from '../../../styles/theme';
 
 export const useProductStyles = makeStyles(
-  () => ({
+  (theme) => ({
     productContainer: {
       boxShadow: 'none',
       background: 'none',

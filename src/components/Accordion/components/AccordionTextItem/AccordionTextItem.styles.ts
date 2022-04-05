@@ -7,7 +7,6 @@ export const useAccordionStyles = makeStyles(
       fontSize: '16px',
       lineHeight: '24px',
       letter: '0.15px',
-      // color: theme.palette.primary.main,
     },
   }),
   { name: 'AccordionTextItem' },

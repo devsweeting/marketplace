@@ -1,9 +1,8 @@
 import { darken, lighten } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import theme from '../../../styles/theme';
 
 export const useButtonStyles = makeStyles(
-  () => ({
+  (theme) => ({
     outlined: {
       backgroundColor: 'transparent',
       boxSizing: 'border-box',
@@ -29,8 +28,8 @@ export const useButtonStyles = makeStyles(
       fontSize: 32,
       lineHeight: 39,
       '&:hover': {
-        backgroundColor: darken(theme.palette.primary.main, 0.2),
-        borderColor: darken(theme.palette.primary.main, 0.2),
+        backgroundColor: lighten(theme.palette.primary.main, 0.2),
+        borderColor: lighten(theme.palette.primary.main, 0.2),
       },
     },
     grayed: {

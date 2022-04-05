@@ -1,8 +1,7 @@
 import { makeStyles } from '@mui/styles';
-import theme from '../../../styles/theme';
 
 export const usePriceChartStyles = makeStyles(
-  () => ({
+  (theme) => ({
     chartContainer: {
       padding: `${theme.spacing(2)} ${theme.spacing(4)}`,
       maxHeight: 400,

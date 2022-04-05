@@ -1,8 +1,7 @@
 import { makeStyles } from '@mui/styles';
-import theme from '../../../../../styles/theme';
 
 export const useTableStyles = makeStyles(
-  () => ({
+  (theme) => ({
     accordionDetails: {
       padding: 0,
     },

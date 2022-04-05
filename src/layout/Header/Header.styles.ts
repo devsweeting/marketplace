@@ -1,8 +1,7 @@
 import { makeStyles } from '@mui/styles';
-import theme from '../../../styles/theme';
 
 export const useHeaderStyles = makeStyles(
-  () => ({
+  (theme) => ({
     headerContainer: {
       maxWidth: `calc(1440px - ${theme.spacing(1)})`,
       display: 'flex',

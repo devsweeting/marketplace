@@ -1,8 +1,7 @@
 import makeStyles from '@mui/styles/makeStyles';
-import theme from '../../../styles/theme';
 
 export const useSearchBoxStyles = makeStyles(
-  () => ({
+  (theme) => ({
     searchBox: {
       width: '40vw',
       maxWidth: '545px',
