@@ -3,9 +3,9 @@ import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Theme } from '@mui/material';
 // import { ThemeProvider, Theme } from '@mui/material/styles';
+import theme from '../../styles/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import theme from '../../styles/theme';
 import createEmotionCache from '../../styles/createEmotionCache';
 import { Header } from '../layout/Header';
 

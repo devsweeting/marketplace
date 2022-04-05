@@ -17,7 +17,7 @@ export const Gallery = ({ images }: { images: string[] }) => {
   };
   return (
     <>
-      <Grid container xs={12} className={classes.galleryContainer}>
+      <Grid container className={classes.galleryContainer}>
         <Grid container item md={3} xs={12} className={classes.thumbnailContainer}>
           {images.map((image, index) => {
             return (

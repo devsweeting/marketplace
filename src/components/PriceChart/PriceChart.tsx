@@ -10,8 +10,12 @@ export const PriceChart = ({ data }: { data: any }) => {
   const classes = usePriceChartStyles();
   return (
     <Paper className={classes.chartContainer}>
-      <Grid className={classes.labelsContainer} xs={12} container>
-        <Grid container xs={6}>
+      <Grid
+        className={classes.labelsContainer}
+        //  xs={12}
+        container
+      >
+        <Grid container item xs={6}>
           <Grid item>
             <Typography component="h5" className={classes.soldPriceLabel}>
               LAST SOLD PRICE
@@ -27,7 +31,7 @@ export const PriceChart = ({ data }: { data: any }) => {
           justifyContent="flex-end"
           alignItems="center"
           columnSpacing={2}
-          xs={6}
+          // xs={6}
         >
           <Grid item>
             <Typography component="span" className={classes.dateRangeButton}>

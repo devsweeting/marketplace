@@ -8,7 +8,7 @@ import { useHeaderStyles } from './Header.styles';
 
 export const mockNavLinks = [
   { title: 'Explore', path: '/' },
-  { title: 'Sellers', path: '/abc' },
+  { title: 'Sellers', path: '/token-detail/920d16d7-208f-4955-98c2-f41bee527f08' },
 ];
 
 export const Header = () => {

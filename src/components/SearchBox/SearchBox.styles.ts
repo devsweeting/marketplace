@@ -12,6 +12,9 @@ export const useSearchBoxStyles = makeStyles(
       marginLeft: theme.spacing(4.5),
       marginRight: theme.spacing(9),
     },
+    noBorder: {
+      border: 'none',
+    },
   }),
   { name: 'searchBox' },
 );

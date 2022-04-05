@@ -11,11 +11,13 @@ import { AccordionTextItem } from '../../components/Accordion/components/Accordi
 import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
 
+// link to example NFT detail page:
+// http://localhost:3000/token-detail/920d16d7-208f-4955-98c2-f41bee527f08
+
 const DetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  // id = token_id = 920d16d7-208f-4955-98c2-f41bee527f08
-  // http://localhost:3001/token/meta/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08.json
+  // id => token_id = 920d16d7-208f-4955-98c2-f41bee527f08
 
   const [nftData, setData] = useState<any>(null);
   const [traits, setTraits] = useState<any>(null);
@@ -30,17 +32,12 @@ const DetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    //tu zmienic warunek - uproscic
-    if (nftData == null) {
-      console.log('there is no data yet');
-    } else {
+    if (nftData) {
       const apiTraits: Record<string, string> = {};
       nftData?.traits?.map((item: Record<string, string>) => {
         apiTraits[item.trait_type] = item.value;
       });
-
       setTraits(apiTraits);
-      console.log('traaaits-->', apiTraits);
     }
   }, [nftData]);
 

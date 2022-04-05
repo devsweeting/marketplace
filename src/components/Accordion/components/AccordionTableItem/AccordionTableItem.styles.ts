@@ -2,7 +2,7 @@ import { makeStyles } from '@mui/styles';
 import theme from '../../../../../styles/theme';
 
 export const useTableStyles = makeStyles(
-  {
+  () => ({
     accordionDetails: {
       padding: 0,
     },
@@ -22,6 +22,6 @@ export const useTableStyles = makeStyles(
     blueText: {
       color: theme.palette.customBlue.main,
     },
-  },
+  }),
   { name: 'accordionTableItem' },
 );
