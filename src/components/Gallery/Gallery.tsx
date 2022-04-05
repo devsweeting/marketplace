@@ -5,7 +5,7 @@ import { useGalleryStyles } from './Gallery.styles';
 export const Gallery = ({ images }: { images: string[] }) => {
   const classes = useGalleryStyles();
 
-  const appUrl = 'http://localhost:3000';
+  const appUrl = process.env.NEXT_PUBLIC_FRONTEND_URL as string;
 
   const [mainImage, setMainImage] = useState(images[0]);
 

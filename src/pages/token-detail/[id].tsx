@@ -19,15 +19,18 @@ const DetailPage = () => {
   const { id } = router.query;
   // id => token_id = 920d16d7-208f-4955-98c2-f41bee527f08
 
+  const contract_address = '0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185';
+
   const [nftData, setData] = useState<any>(null);
   const [traits, setTraits] = useState<any>(null);
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:3001/token/meta/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/${id}.json`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${id}.json`)
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => setData(data))
+      .catch((error) => console.log(error.message));
     setLoading(false);
   }, [id]);
 
