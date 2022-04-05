@@ -10,7 +10,7 @@ export const PriceChart = ({ data }: { data: any }) => {
   const classes = usePriceChartStyles();
   return (
     <Paper className={classes.chartContainer}>
-      <Grid container direction="row" justifyContent="space-between" alignItems="center">
+      <Grid className={classes.labelsContainer} xs={12} container>
         <Grid container xs={6}>
           <Grid item>
             <Typography component="h5" className={classes.soldPriceLabel}>
@@ -67,7 +67,7 @@ export const PriceChart = ({ data }: { data: any }) => {
             data={data}
             margin={{
               top: 10,
-              right: 30,
+              right: 0,
               left: 0,
               bottom: 0,
             }}
@@ -76,7 +76,8 @@ export const PriceChart = ({ data }: { data: any }) => {
               dataKey="name"
               axisLine={false}
               tickLine={false}
-              padding={{ left: 30, right: 10 }}
+              tick={{ fontSize: 14 }}
+              padding={{ left: 30, right: 30 }}
             />
             <Area type="monotone" dataKey="pv" stroke="#FFF" fill="#fff" stackId="1" />
             <Area type="monotone" dataKey="uv" stroke="#FFF" fill="#E5E5E5" stackId="1" />

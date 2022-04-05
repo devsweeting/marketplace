@@ -23,7 +23,6 @@ const theme = createTheme({
     },
     customBlue: {
       main: '#3070CE',
-      dark: '#3072ce',
     },
     customGray: {
       main: '#ededed',

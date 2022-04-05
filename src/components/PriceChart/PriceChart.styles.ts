@@ -4,8 +4,15 @@ import theme from '../../../styles/theme';
 export const usePriceChartStyles = makeStyles(
   () => ({
     chartContainer: {
-      padding: `${theme.spacing(2)} ${theme.spacing(5)}`,
+      padding: `${theme.spacing(2)} ${theme.spacing(4)}`,
       maxHeight: 400,
+    },
+    labelsContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: `0 ${theme.spacing(2)}`,
     },
     soldPriceLabel: {
       color: theme.palette.customGray.dark,
@@ -15,7 +22,7 @@ export const usePriceChartStyles = makeStyles(
       lineHeight: '17px',
     },
     soldPriceValue: {
-      color: theme.palette.customBlue.dark,
+      color: theme.palette.customBlue.main,
       fontFamily: 'Roboto',
       fontWeight: 600,
       fontSize: '24px',

@@ -30,6 +30,7 @@ const DetailPage = () => {
   }, [id]);
 
   useEffect(() => {
+    //tu zmienic warunek - uproscic
     if (nftData == null) {
       console.log('there is no data yet');
     } else {
@@ -52,7 +53,7 @@ const DetailPage = () => {
       {isLoading && <p>Loading...</p>}
 
       {nftData && (
-        <Box sx={{ maxWidth: 1440, margin: '0 auto', marginTop: '0' }}>
+        <Box sx={{ maxWidth: 1440, margin: '0 auto', marginTop: '0', padding: '0 8px' }}>
           <Grid
             mt={-13}
             container
@@ -62,10 +63,10 @@ const DetailPage = () => {
             alignItems="flex-start"
           >
             <Grid container item md={6} xs={12} rowSpacing={2}>
-              <Grid item md={12}>
+              <Grid item xs={12}>
                 <Gallery images={mockProducImages} />
               </Grid>
-              <Grid item md={12}>
+              <Grid item xs={12}>
                 <Accordion>
                   <>
                     <AccordionTextItem title={'Description'} isExpanded={true}>
@@ -84,11 +85,11 @@ const DetailPage = () => {
             </Grid>
 
             <Grid container item md={6} xs={12} rowSpacing={2}>
-              <Grid item md={12}>
+              <Grid item xs={12}>
                 <ProductCard cardData={mockProductData} />
               </Grid>
               {mockChartData && (
-                <Grid item md={12}>
+                <Grid item xs={12}>
                   <PriceChart data={mockChartData} />
                 </Grid>
               )}

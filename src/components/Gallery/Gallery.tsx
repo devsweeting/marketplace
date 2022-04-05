@@ -17,19 +17,11 @@ export const Gallery = ({ images }: { images: string[] }) => {
   };
   return (
     <>
-      <Grid container>
-        <Grid
-          container
-          item
-          // rowSpacing={1}
-          md={3}
-          direction="column"
-          justifyContent="center"
-          alignItems="flex-stat"
-        >
+      <Grid container xs={12} className={classes.galleryContainer}>
+        <Grid container item md={3} xs={12} className={classes.thumbnailContainer}>
           {images.map((image, index) => {
             return (
-              <Grid className={classes.thumbnailContainer} key={`${index}${image}`}>
+              <Grid className={classes.thumbnailItem} key={`${index}${image}`}>
                 <img
                   className={classes.thumbnail}
                   src={image}
@@ -42,8 +34,8 @@ export const Gallery = ({ images }: { images: string[] }) => {
             );
           })}
         </Grid>
-        <Grid container item md={9} xs={12} className={classes.imageContainer}>
-          <Grid item md={12}>
+        <Grid container item md={9} xs={12}>
+          <Grid item md={12} className={classes.imageContainer}>
             <img
               className={classes.image}
               src={mainImage}
