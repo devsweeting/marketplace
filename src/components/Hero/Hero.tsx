@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import Image from 'next/image';
 import theme from '../../../styles/theme';
 
-interface HeroProps {
+export interface HeroProps {
   imgSrc?: StaticImageData;
   imgFit: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
   imgHeight?: number;

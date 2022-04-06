@@ -1,12 +1,13 @@
 import { ProductDataProps } from '../components/ProductCard/ProductCard';
 
-export const blockchaninDataInfo = [
-  { name: 'Contract ID', value: '0x509a050f573be0d5e01a73c3726e17161729558b' },
-  { name: 'Token ID', value: '19292' },
-  { name: 'Token Type', value: 'ERC-1151' },
-  { name: 'Supply', value: '1' },
-  { name: 'Blockchain', value: 'Polygon' },
-];
+export const mockTraits = {
+  blockchain: 'Polygon',
+  categories: 'cards',
+  contact_id: '0x509a050f573be0d5e01a73c3726e17161729558b',
+  supply: '555',
+  token_id: '19292',
+  token_type: 'ERC-1151',
+};
 
 export const mockProductData: ProductDataProps = {
   title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',

@@ -6,7 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAccordionStyles } from './AccordionTextItem.styles';
 
-interface AccordionTextItemProps {
+export interface AccordionTextItemProps {
   title: string;
   children: string;
   isExpanded?: boolean;

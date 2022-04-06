@@ -13,7 +13,7 @@ import { Typography } from '@mui/material';
 import { useTableStyles } from './AccordionTableItem.styles';
 import classNames from 'classnames';
 
-type BlockChainInfoProps = Record<string, string>;
+export type BlockChainInfoProps = Record<string, string>;
 
 export const AccordionTableItem = ({
   title,
@@ -82,7 +82,7 @@ export const AccordionTableItem = ({
               {blockchain && (
                 <TableRow>
                   <TableCell component="th" scope="row" className={classes.noBorder}>
-                    Blokchain
+                    Blockchain
                   </TableCell>
                   <TableCell align="right" className={classes.noBorder}>
                     {blockchain}

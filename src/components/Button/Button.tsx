@@ -11,6 +11,7 @@ export const Button: React.FC<MaterialButtonProps> = ({
   children,
   className,
   variant = 'contained',
+  ...props
 }) => {
   const classes = useButtonStyles();
   return (
