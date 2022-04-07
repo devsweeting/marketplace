@@ -9,13 +9,18 @@ import { AccordionTableItem } from '../../components/Accordion/components/Accord
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
 import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
+import { useRouter } from 'next/router';
 
 // link to example NFT detail page:
-// http://localhost:3000/token-detail/920d16d7-208f-4955-98c2-f41bee527f08
+// http://localhost:3000/token-detail/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08
 
 type Trait = Record<string, string>;
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
+  const router = useRouter();
+  const { param } = router.query;
+  console.log(param);
+
   const [traits, setTraits] = useState<Trait | null>(null);
 
   useEffect(() => {
@@ -84,12 +89,15 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 export default DetailPage;
 
 export async function getServerSideProps(context: any) {
-  // id => token_id = 920d16d7-208f-4955-98c2-f41bee527f08
-  const { id } = context.query;
-  const contract_address = '0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185';
+  // contract_address = '0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185';
+  // token_id = 920d16d7-208f-4955-98c2-f41bee527f08
+  const { param } = context.query;
+
+  const contract_address = param[0];
+  const token_id = param[1];
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${id}.json`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${token_id}.json`,
   );
   const data = await response.json();
 
