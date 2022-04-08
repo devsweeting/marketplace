@@ -1,33 +1,20 @@
 import React from 'react';
-import { useSearchBoxStyles } from './SearchBox.styles';
-import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import InputBase from '@mui/material/InputBase';
+import { useSearchBoxStyles } from './SearchBox.styles';
 
-export const SearchBox = ({
-  resourceName,
-  placeholder,
-}: {
-  resourceName: string;
-  placeholder: string;
-}) => {
+export const SearchBox = () => {
   const classes = useSearchBoxStyles();
-
-  const action = () => console.log(resourceName);
-
   return (
-    <TextField
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
-        className: classes.searchBox,
-      }}
-      onChange={action}
-      placeholder={placeholder}
-      variant="outlined"
-      aria-labelledby="Search input"
-    />
+    <div className={classes.searchBoxContainer}>
+      <div className={classes.searchIconWrapper}>
+        <SearchIcon />
+      </div>
+      <InputBase
+        placeholder="Search…"
+        inputProps={{ 'aria-label': 'search' }}
+        className={classes.inputBase}
+      />
+    </div>
   );
 };

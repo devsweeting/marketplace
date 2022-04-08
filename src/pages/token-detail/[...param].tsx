@@ -3,7 +3,7 @@ import { Grid, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { Hero } from '../../components/Hero';
 import { Accordion } from '../../components/Accordion';
-import image from '../../../public/images/detail_page.png';
+// import image from '../../../public/images/detail_page.png';
 import { mockProductData, mockProducImages, mockChartData } from '../../__mocks__/mockApiData';
 import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
@@ -34,7 +34,12 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
   return (
     <>
       <Grid container mt={18.5}>
-        <Hero imgSrc={image} imgFit={'cover'} imgHeight={163} imgAlt="alt text" />
+        <Hero
+          imgSrc={'/images/detail_page.png'}
+          imgFit={'cover'}
+          imgHeight={163}
+          imgAlt="alt text"
+        />
       </Grid>
 
       {nftData && (

@@ -8,7 +8,7 @@ type NavLink = {
   path: string;
 };
 
-type NavLinksProps = NavLink[];
+export type NavLinksProps = NavLink[];
 
 export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
   return (

@@ -6,6 +6,9 @@ import { AccordionTextItemProps } from '../../../../components/Accordion/compone
 import { ThemeProvider } from '@mui/material';
 import theme from '../../../../../styles/theme';
 
+const mockTitle = 'mockedTitle';
+const mockIsExpanded = true;
+const mockChildren = 'mocked children props';
 const MockAccordionTextItem: React.FC<AccordionTextItemProps> = ({
   title,
   isExpanded,
@@ -21,10 +24,6 @@ const MockAccordionTextItem: React.FC<AccordionTextItemProps> = ({
 };
 
 describe('AccordionTextItem', () => {
-  const mockTitle = 'mockedTitle';
-  const mockIsExpanded = true;
-  const mockChildren = 'mocked children props';
-
   it('should render OPEN AccordionTextItem and the rest of the props', () => {
     render(
       <MockAccordionTextItem

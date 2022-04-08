@@ -5,11 +5,7 @@ import Image from 'next/image';
 import { Navbar } from '../../components/Navbar';
 import { SearchBox } from '../../components/SearchBox';
 import { useHeaderStyles } from './Header.styles';
-
-export const mockNavLinks = [
-  { title: 'Explore', path: '/' },
-  { title: 'Sellers', path: '/token-detail/920d16d7-208f-4955-98c2-f41bee527f08' },
-];
+import { mockNavLinks } from '../../__mocks__/mockApiData';
 
 export const Header = () => {
   const classes = useHeaderStyles();
@@ -25,7 +21,7 @@ export const Header = () => {
               height="43px"
               layout="fixed"
             />
-            <SearchBox resourceName={'example'} placeholder={'Search...'} />
+            <SearchBox />
             <Navbar navLinks={mockNavLinks} />
           </Container>
         </Toolbar>

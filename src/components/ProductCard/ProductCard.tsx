@@ -52,7 +52,10 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
             height={24}
           />
           <Typography className={classes.productWatchList} component="p" mb={0.5}>
-            Add to watchlist <span className={classes.watchNumber}>({watchNumber} watching)</span>
+            Add to watchlist{' '}
+            <span data-testid="watchNumberId" className={classes.watchNumber}>
+              ({watchNumber} watching)
+            </span>
           </Typography>
         </Box>
         <Grid
@@ -73,7 +76,10 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
                   width={32}
                   height={32}
                 />{' '}
-                {cryptoValue} <span className={classes.priceDollarValue}>(${dolarValue})</span>
+                {cryptoValue}{' '}
+                <span data-testid="dollarValueId" className={classes.priceDollarValue}>
+                  (${dolarValue})
+                </span>
               </Typography>
               <CardActions className={classes.cardActions}>
                 <Box my={2}>

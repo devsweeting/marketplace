@@ -3,7 +3,7 @@ import Image from 'next/image';
 import theme from '../../../styles/theme';
 
 export interface HeroProps {
-  imgSrc?: StaticImageData;
+  imgSrc?: string;
   imgFit: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
   imgHeight?: number;
   imgAlt: string;

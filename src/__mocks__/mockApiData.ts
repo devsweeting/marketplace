@@ -30,6 +30,14 @@ export const mockProducImages = [
   '/images/nftDetail/gallery/product1b.png',
 ];
 
+export const mockNavLinks = [
+  { title: 'Explore', path: '/' },
+  {
+    title: 'Sellers',
+    path: '/token-detail/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08',
+  },
+];
+
 // export  const mockChartData = [
 //   { name: 'Dec 19', uv: 0, pv: 2400, amt: 2400 },
 //   { name: 'JAN 02', uv: 500, pv: 323, amt: 2400 },
@@ -87,3 +95,49 @@ export const mockChartData = [
     amt: 2900,
   },
 ];
+
+export const mockedApiData: any = {
+  image: null,
+  name: 'adipisci labore dicta quas',
+  description:
+    'The Overstreet Comic Book Price Guide: 2020-2021 Special 50th Anniversary Edition by Robert M. Overstreet is the Bible of serious comic book collectors, dealers and historians, and marks its Golden Anniversary with this edition, #50, and is complete with new prices, new feature articles, new additions to the Overstreet Hall of Fame, new market reports and more. Find out why the Guide has been trusted for five decades! Spawn/Spider-Man crossover cover by acclaimed artist Todd McFarlane, recently recognized by the Guinness Book of World Records!',
+  external_link: 'https://www.google.pl/',
+  traits: [
+    {
+      trait_type: 'token_id',
+      display_type: 'text',
+      value: '19292',
+      max_value: null,
+    },
+    {
+      trait_type: 'categories',
+      display_type: 'text',
+      value: 'cards',
+      max_value: null,
+    },
+    {
+      trait_type: 'contact_id',
+      display_type: null,
+      value: '0x509a050f573be0d5e01a73c3726e17161729558b',
+      max_value: null,
+    },
+    {
+      trait_type: 'token_type',
+      display_type: 'text',
+      value: 'ERC-1151',
+      max_value: null,
+    },
+    {
+      trait_type: 'supply',
+      display_type: 'text',
+      value: '1',
+      max_value: null,
+    },
+    {
+      trait_type: 'blockchain',
+      display_type: null,
+      value: 'Polygon',
+      max_value: null,
+    },
+  ],
+};

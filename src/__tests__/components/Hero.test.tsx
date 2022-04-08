@@ -17,7 +17,7 @@ const MockHero: React.FC<HeroProps> = ({ imgSrc, imgFit, imgHeight, imgAlt }) =>
 describe('Hero', () => {
   const mockImageAlt = 'alt text';
   const mockImageFit = 'cover';
-  const mockImageSrc = { src: '/public/images/detail_page.png', height: 10, width: 10 };
+  const mockImageSrc = '/public/images/detail_page.png';
 
   it('should render with provided image and props', () => {
     render(

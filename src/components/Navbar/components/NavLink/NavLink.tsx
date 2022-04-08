@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useNavLinkStyles } from './NavLink.styles';
 import classNames from 'classnames';
 
-interface NavLinksProps {
+export interface NavLinksProps {
   className?: any;
   href: any;
   children: any;
