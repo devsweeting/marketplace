@@ -1,30 +1,52 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 import { categoryViewData } from '../../__mocks__/mockCategoryViewApiData';
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
+import { BorderBox } from '../../components/BorderBox/BorderBox';
+import { Filter } from '../../components/Filter';
+import { ListItem } from '../../components/ListItem';
 
-const CategoryPage = ({ categoryViewData }: { categoryViewData: any }) => {
+const CategoryPage = () => {
   //   const router = useRouter();
   //   const { param } = router.query;
 
   return (
     <Box sx={{ maxWidth: 1440, margin: '0 auto', marginTop: '0', padding: '0 8px' }}>
       <Grid
-        mt={16}
+        mt={15}
         container
         columnSpacing={4}
         direction="row"
         justifyContent="center"
         alignItems="flex-start"
       >
-        <Grid container item md={6} xs={12} rowSpacing={2}>
+        <Grid container item md={3} xs={12} rowSpacing={2}>
           <Grid item xs={12}>
-            <p>lewa kolumna</p>
+            <BorderBox bottom={3} right={3}>
+              <Filter />
+            </BorderBox>
           </Grid>
         </Grid>
 
-        <Grid container item md={6} xs={12} rowSpacing={2}>
-          <Grid item xs={12}>
-            <h2>prawa kolumna</h2>
+        <Grid container item md={9} xs={12} rowSpacing={2}>
+          <Grid
+            container
+            item
+            xs={12}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography variant="h2" component="h2">
+                Explore
+              </Typography>
+              <Typography variant="body1" component="p">
+                500 assets
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid>
+            <ListItem listItemData={categoryViewData} />
           </Grid>
         </Grid>
       </Grid>

@@ -12,7 +12,7 @@ export const Header = () => {
   return (
     <>
       <AppBar position="fixed" sx={{ boxShadow: 'none' }}>
-        <Toolbar sx={{ backgroundColor: '#fff', height: '148px' }}>
+        <Toolbar sx={{ backgroundColor: '#fff', height: '120px' }}>
           <Container className={classes.headerContainer}>
             <Image
               src={'/images/logo.png'}

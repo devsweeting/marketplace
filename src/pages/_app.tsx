@@ -2,12 +2,13 @@ import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Theme } from '@mui/material';
-// import { ThemeProvider, Theme } from '@mui/material/styles';
-import theme from '../../styles/theme';
+// import theme from '../../styles/theme';
+import themeJump from '../../styles/themeJump';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../../styles/createEmotionCache';
 import { Header } from '../layout/Header';
+// import { BorderBox } from '../components/BorderBox/BorderBox';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -28,10 +29,12 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={themeJump}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
+        {/* <BorderBox bottom={3} right={3}> */}
         <Header />
+        {/* </BorderBox> */}
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
