@@ -56,6 +56,10 @@ export const useGalleryStyles = makeStyles(
       paddingBottom: theme.spacing(1),
       cursor: 'pointer',
     },
+    carousel: {
+      height: '100%',
+      minHeight: 40,
+    },
   }),
   { name: 'gallery' },
 );

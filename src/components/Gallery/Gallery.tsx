@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Grid from '@mui/material/Grid';
+import { Grid } from '@mui/material';
 import { useGalleryStyles } from './Gallery.styles';
 
 export const Gallery = ({ images }: { images: string[] }) => {
@@ -15,6 +15,7 @@ export const Gallery = ({ images }: { images: string[] }) => {
     const ImagePostion = images.indexOf(imageSrcPath);
     setMainImage(images[ImagePostion]);
   };
+
   return (
     <>
       <Grid container className={classes.galleryContainer}>
