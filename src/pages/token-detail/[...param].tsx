@@ -102,7 +102,8 @@ export async function getServerSideProps(context: any) {
   const token_id = param[1];
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${token_id}.json`,
+    // `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${token_id}.json`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/${contract_address}/${token_id}`,
   );
   const data = await response.json();
 
