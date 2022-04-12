@@ -7,27 +7,19 @@ export const useSearchBoxStyles = makeStyles(
       border: 'none',
     },
     searchBoxContainer: {
-      width: '40vw',
-      maxWidth: '545px',
-      marginLeft: theme.spacing(4.5),
-      marginRight: theme.spacing(9),
-
+      width: '100%',
+      height: '48px',
+      margin: `0 ${theme.spacing(9)}`,
       position: 'relative',
-      border: `2px solid ${theme.palette.primary.main}`,
       color: theme.palette.primary.main,
       borderRadius: theme.shape.borderRadius,
       backgroundColor: alpha(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: alpha(theme.palette.common.black, 0.05),
-      },
-      // marginRight: theme.spacing(2),
-      // marginLeft: 0,
-      // width: '100%',
-      // [theme.breakpoints.up('sm')]: {
-      //   marginLeft: theme.spacing(3),
-      //   width: 'auto',
-      // },
     },
+    // placeholderField: {
+    //   '& input:placeholder': {
+    //     color: 'green',
+    //   },
+    // },
     searchIconWrapper: {
       padding: theme.spacing(0, 2),
       height: '100%',

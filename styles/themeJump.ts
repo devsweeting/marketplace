@@ -16,7 +16,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#000',
-      light: 'rgba(0, 0, 0, 0.87)',
+      light: 'rgba(0, 0, 0, 0.23)',
     },
     secondary: {
       main: '#fff',
@@ -49,6 +49,13 @@ const theme = createTheme({
       fontSize: '20px',
       lineHeight: '160%',
       letterSpacing: '0.15px',
+    },
+    h5: {
+      fontFamily: 'League Gothic',
+      fontWeight: 400,
+      fontSize: '24px',
+      lineHeight: '29px',
+      letterSpacing: '0.05em',
     },
     body1: {
       fontFamily: 'Rubik',

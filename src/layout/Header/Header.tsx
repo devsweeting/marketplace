@@ -1,6 +1,7 @@
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import Image from 'next/image';
 import { Navbar } from '../../components/Navbar';
 import { SearchBox } from '../../components/SearchBox';
@@ -15,12 +16,13 @@ export const Header = () => {
         <Toolbar sx={{ backgroundColor: '#fff', height: '120px' }}>
           <Container className={classes.headerContainer}>
             <Image
-              src={'/images/logo.png'}
+              src={'/images/main-logo.svg'}
               alt={'logo'}
               width="147px"
               height="43px"
               layout="fixed"
             />
+
             <SearchBox />
             <Navbar navLinks={mockNavLinks} />
           </Container>

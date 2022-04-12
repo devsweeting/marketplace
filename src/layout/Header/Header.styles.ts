@@ -6,7 +6,7 @@ export const useHeaderStyles = makeStyles(
       maxWidth: `calc(1440px - ${theme.spacing(1)})`,
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-between',
       alignItems: 'center',
       margin: '0 auto',
       width: '100%',
