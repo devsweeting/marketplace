@@ -4,6 +4,7 @@ import { Grid, Box, Typography } from '@mui/material';
 import { BorderBox } from '../../components/BorderBox/BorderBox';
 import { Filter } from '../../components/Filter';
 import { ListItem } from '../../components/ListItem';
+import { DropDownList } from '../../components/DropDownList';
 
 const CategoryPage = () => {
   //   const router = useRouter();
@@ -34,16 +35,17 @@ const CategoryPage = () => {
             xs={12}
             direction="row"
             justifyContent="space-between"
-            alignItems="center"
+            alignItems="flex-start"
           >
-            <Box>
-              <Typography variant="h2" component="h2">
+            <Box mt={6}>
+              <Typography variant="h2" component="h2" mb={1}>
                 Explore
               </Typography>
               <Typography variant="body1" component="p">
                 500 assets
               </Typography>
             </Box>
+            <DropDownList />
           </Grid>
           <Grid>
             <ListItem listItemData={categoryViewData} />

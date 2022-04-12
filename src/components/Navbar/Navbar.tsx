@@ -12,12 +12,7 @@ export type NavLinksProps = NavLink[];
 
 export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
   return (
-    <Toolbar
-      component="nav"
-      sx={{
-        display: { xs: `none`, md: `flex` },
-      }}
-    >
+    <Toolbar component="nav" sx={{ display: { xs: `none`, md: `flex` } }}>
       <Stack direction="row" spacing={4}>
         {navLinks.map(({ title, path }: { title: string; path: string }, i: any) => (
           <NavLink key={`${title}${i}`} href={path}>
