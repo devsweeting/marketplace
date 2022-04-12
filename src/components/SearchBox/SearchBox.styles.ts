@@ -9,7 +9,6 @@ export const useSearchBoxStyles = makeStyles(
     searchBoxContainer: {
       width: '100%',
       height: '48px',
-      margin: `0 ${theme.spacing(9)}`,
       position: 'relative',
       color: theme.palette.primary.main,
       borderRadius: theme.shape.borderRadius,
@@ -21,7 +20,7 @@ export const useSearchBoxStyles = makeStyles(
     //   },
     // },
     searchIconWrapper: {
-      padding: theme.spacing(0, 2),
+      padding: theme.spacing(0, 0),
       height: '100%',
       position: 'absolute',
       pointerEvents: 'none',

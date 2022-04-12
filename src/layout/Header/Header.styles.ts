@@ -12,6 +12,10 @@ export const useHeaderStyles = makeStyles(
       width: '100%',
       padding: `0 ${theme.spacing(1)}`,
     },
+    searchBoxContainer: {
+      width: '100%',
+      margin: `0 ${theme.spacing(9)}`,
+    },
   }),
   { name: 'header' },
 );

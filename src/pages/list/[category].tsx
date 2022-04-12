@@ -5,6 +5,7 @@ import { BorderBox } from '../../components/BorderBox/BorderBox';
 import { Filter } from '../../components/Filter';
 import { ListItem } from '../../components/ListItem';
 import { DropDownList } from '../../components/DropDownList';
+import { FilterMenu } from '../../components/FilterMenu';
 
 const CategoryPage = () => {
   //   const router = useRouter();
@@ -25,6 +26,7 @@ const CategoryPage = () => {
             <BorderBox bottom={3} right={3}>
               <Filter />
             </BorderBox>
+            <FilterMenu categoryTitle={'categoryTitle'} />
           </Grid>
         </Grid>
 

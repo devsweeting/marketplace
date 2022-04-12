@@ -5,7 +5,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 
-export const SearchBox = () => {
+export const SearchBox = ({ placeholder = 'SEARCH' }: { placeholder?: string }) => {
   const [value, setValue] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ export const SearchBox = () => {
         id="searchbox"
         value={value}
         onChange={handleChange}
-        placeholder="search"
+        placeholder={placeholder}
         endAdornment={
           <InputAdornment position="end">
             <SearchIcon aria-label="search icon" />

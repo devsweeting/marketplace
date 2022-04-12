@@ -1,6 +1,7 @@
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import Image from 'next/image';
 import { Navbar } from '../../components/Navbar';
 import { SearchBox } from '../../components/SearchBox';
@@ -21,8 +22,10 @@ export const Header = () => {
               height="43px"
               layout="fixed"
             />
+            <Box className={classes.searchBoxContainer}>
+              <SearchBox />
+            </Box>
 
-            <SearchBox />
             <Navbar navLinks={mockNavLinks} />
           </Container>
         </Toolbar>
