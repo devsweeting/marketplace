@@ -4,7 +4,7 @@ export const categoryViewData = {
     {
       category: 'Overstreet comic book collection',
       title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT ',
-      imageLink: '/images/nftDetail/gallery/product1a.png',
+      imageLink: '/images/list/list-item.svg',
       price: {
         icon: 'etherum',
         cryptoValue: '2.1',
@@ -14,7 +14,7 @@ export const categoryViewData = {
     {
       category: 'Overstreet comic book collection',
       title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT ',
-      imageLink: '/images/nftDetail/gallery/product1a.png',
+      imageLink: '/images/list/list-item.svg',
       price: {
         icon: 'etherum',
         cryptoValue: '2.1',
@@ -24,7 +24,7 @@ export const categoryViewData = {
     {
       category: 'Overstreet comic book collection',
       title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT ',
-      imageLink: '/images/nftDetail/gallery/product1a.png',
+      imageLink: '/images/list/list-item.svg',
       price: {
         icon: 'etherum',
         cryptoValue: '2.1',
@@ -34,7 +34,7 @@ export const categoryViewData = {
     {
       category: 'Overstreet comic book collection',
       title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT ',
-      imageLink: '/images/nftDetail/gallery/product1a.png',
+      imageLink: '/images/list/list-item.svg',
       price: {
         icon: 'etherum',
         cryptoValue: '2.1',

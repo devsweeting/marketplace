@@ -33,32 +33,36 @@ export const ListItem: React.FC<{ listItemData: ListItem }> = ({ listItemData })
     >
       {assets.map((item, index) => (
         <Box className={classes.container} key={`${item.title}${index}`}>
-          <Image
-            className={classes.mainImage}
-            src={item.imageLink}
-            alt={item.title}
-            width={175}
-            height={259}
-          />
-          <Typography variant="body2" component="p" mb={0.5}>
+          <Box className={classes.imageContainer}>
+            <Image
+              className={classes.mainImage}
+              src={item.imageLink}
+              alt={item.title}
+              width={280}
+              height={280}
+            />
+          </Box>
+          <Typography variant="body2" component="p" mt={3}>
             {item.category}
           </Typography>
-          <Typography variant="h4" component="p">
+          <Typography variant="h4" component="p" mb={1} mt={1}>
             {item.title}
           </Typography>
           <Divider />
-          <Typography variant="h4" component="p" className={classes.priceCryptoValue} my={1}>
+          <Box className={classes.priceContainer}>
             <Image
               src={`/images/nftDetail/cryptoCurencies/${item.price.icon}.png`}
               alt={`${item.price.icon} icon`}
-              width={32}
+              width={20}
               height={32}
-            />{' '}
-            {item.price.cryptoValue}{' '}
-            <span data-testid="dollarValueId" className={classes.priceDollarValue}>
+            />
+            <Typography variant="h4" component="span" className={classes.priceCryptoValue} my={1}>
+              {item.price.cryptoValue}
+            </Typography>
+            <Typography variant="h4" component="span" className={classes.priceDollarValue}>
               (${item.price.dolarValue})
-            </span>
-          </Typography>
+            </Typography>
+          </Box>
         </Box>
       ))}
     </Grid>

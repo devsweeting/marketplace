@@ -6,9 +6,20 @@ export const useListItemStyles = makeStyles(
       boxShadow: 'none',
       background: 'none',
       width: 270,
-      paddingTop: theme.spacing(13),
-      paddingBottom: theme.spacing(0.7),
-      margin: theme.spacing(2),
+      margin: `${theme.spacing(8)} ${theme.spacing(4)} ${theme.spacing(4)} 0`,
+    },
+    imageContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    priceContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      paddingTop: theme.spacing(1),
     },
     mainImage: {
       borderRadius: theme.spacing(1),
@@ -16,13 +27,14 @@ export const useListItemStyles = makeStyles(
     priceCryptoValue: {
       fontSize: '24px',
       lineHeight: '133,4%',
+      margin: `0 ${theme.spacing(1)}`,
     },
-
     priceDollarValue: {
       fontFamily: 'Rubik',
       fontWeight: 400,
       fontSize: '12px',
       lineHeight: '14px',
+      letterSpacing: '1px',
     },
   }),
   { name: 'listItem' },
