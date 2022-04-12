@@ -6,24 +6,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 
 export const SearchBox = () => {
-  const [value, setValue] = React.useState('');
+  const [value, setValue] = useState('');
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
   const classes = useSearchBoxStyles();
   return (
-    // <div className={classes.searchBoxContainer}>
-    //   <InputBase
-    //     placeholder="Search…"
-    //     inputProps={{ 'aria-label': 'search' }}
-    //     className={classes.inputBase}
-    //   />
-    //   <div className={classes.searchIconWrapper}>
-    //     <SearchIcon />
-    //   </div>
-    // </div>
     <FormControl variant="outlined" className={classes.searchBoxContainer}>
       <OutlinedInput
         // inputProps={{
