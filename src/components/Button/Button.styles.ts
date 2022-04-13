@@ -4,10 +4,15 @@ import { makeStyles } from '@mui/styles';
 export const useButtonStyles = makeStyles(
   (theme) => ({
     outlined: {
+      fontFamily: 'League Gothic',
+      fontSize: 24,
+      lieHeight: 29,
+      fontWeight: 400,
       backgroundColor: 'transparent',
       boxSizing: 'border-box',
       color: theme.palette.primary.main,
-      border: `1px solid ${theme.palette.primary.main}`,
+      padding: `${theme.spacing(0)}  ${theme.spacing(2)}`,
+      border: `2px solid ${lighten(theme.palette.primary.main, 0.5)}`,
       '&:hover': {
         backgroundColor: theme.palette.secondary.main,
       },

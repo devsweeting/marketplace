@@ -11,10 +11,19 @@ export const Button: React.FC<MaterialButtonProps> = ({
   children,
   className,
   variant = 'contained',
+  startIcon = null,
+  endIcon = null,
   ...props
 }) => {
   const classes = useButtonStyles();
   return (
-    <MaterialButton className={classNames(classes[variant], className)}>{children}</MaterialButton>
+    <MaterialButton
+      className={classNames(classes[variant], className)}
+      startIcon={startIcon}
+      endIcon={endIcon}
+      {...props}
+    >
+      {children}
+    </MaterialButton>
   );
 };

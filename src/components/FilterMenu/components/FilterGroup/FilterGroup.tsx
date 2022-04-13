@@ -1,49 +1,35 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
-export const FilterGroup = () => {
-  const [checked, setChecked] = React.useState([true, false]);
-
-  const handleChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, event.target.checked]);
-  };
-
-  const handleChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, checked[1]]);
-  };
-
-  const handleChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked([checked[0], event.target.checked]);
-  };
-
-  const children = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-      <FormControlLabel
-        label="Child 1"
-        control={<Checkbox checked={checked[0]} onChange={handleChange2} />}
-      />
-      <FormControlLabel
-        label="Child 2"
-        control={<Checkbox checked={checked[1]} onChange={handleChange3} />}
-      />
-    </Box>
-  );
+export const FilterGroup: React.FC<any> = ({ category, handleFiltersChange, checkedFilters }) => {
+  const { categoryName, filters } = category;
 
   return (
-    <div>
-      <FormControlLabel
-        label="Parent"
-        control={
-          <Checkbox
-            checked={checked[0] && checked[1]}
-            indeterminate={checked[0] !== checked[1]}
-            onChange={handleChange1}
-          />
-        }
-      />
-      {children}
-    </div>
+    <Box>
+      {filters.map((filter: any, index: any) => {
+        return (
+          <Box key={`${filter}${index}`} sx={{ display: 'flex' }}>
+            <FormControl component="fieldset" variant="standard">
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checkedFilters.includes(`${filter}_${categoryName}`)}
+                      onChange={handleFiltersChange}
+                      name={`${filter}_${categoryName}`}
+                    />
+                  }
+                  label={filter}
+                />
+              </FormGroup>
+            </FormControl>
+          </Box>
+        );
+      })}
+    </Box>
   );
 };

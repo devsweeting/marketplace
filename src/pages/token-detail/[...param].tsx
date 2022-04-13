@@ -9,7 +9,7 @@ import { AccordionTableItem } from '../../components/Accordion/components/Accord
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
 import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 // link to example NFT detail page:
 // http://localhost:3000/token-detail/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08
@@ -17,9 +17,9 @@ import { useRouter } from 'next/router';
 type Trait = Record<string, string>;
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
-  const router = useRouter();
-  const { param } = router.query;
-  console.log(param);
+  // const router = useRouter();
+  // const { param } = router.query;
+  // console.log(param);
 
   const [traits, setTraits] = useState<Trait | null>(null);
 

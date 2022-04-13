@@ -1,15 +1,30 @@
-// import React, { useState, useEffect } from 'react';
-import { categoryViewData } from '../../__mocks__/mockCategoryViewApiData';
+import React, { useState } from 'react';
+import { listViewData, mockCategoryFilters } from '../../__mocks__/mockCategoryViewApiData';
 import { Grid, Box, Typography } from '@mui/material';
 import { BorderBox } from '../../components/BorderBox/BorderBox';
-import { Filter } from '../../components/Filter';
+import { ClearAllFilter } from '../../components/FilterMenu/components/ClearAllFilter';
 import { ListItem } from '../../components/ListItem';
 import { DropDownList } from '../../components/DropDownList';
 import { FilterMenu } from '../../components/FilterMenu';
 
 const CategoryPage = () => {
-  //   const router = useRouter();
-  //   const { param } = router.query;
+  const [checkedFilters, setcheckedFilters] = useState<any>([]);
+
+  const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name: filterName } = event.target;
+
+    if (checkedFilters.includes(filterName)) {
+      const newcheckedFilters = checkedFilters.filter((el: string) => el !== filterName);
+      setcheckedFilters(newcheckedFilters);
+      return;
+    }
+    setcheckedFilters([...checkedFilters, filterName]);
+  };
+
+  const clearAllSelectedFilters = () => {
+    const clearedFilters: string[] = [];
+    setcheckedFilters(clearedFilters);
+  };
 
   return (
     <Box sx={{ maxWidth: 1440, margin: '0 auto', marginTop: '0', padding: '0 8px' }}>
@@ -23,10 +38,14 @@ const CategoryPage = () => {
       >
         <Grid container item md={3} xs={12} rowSpacing={2}>
           <Grid item xs={12}>
-            <BorderBox bottom={3} right={3}>
-              <Filter />
+            <BorderBox bottom={4} right={4}>
+              <ClearAllFilter handleClick={clearAllSelectedFilters} />
             </BorderBox>
-            <FilterMenu categoryTitle={'categoryTitle'} />
+            <FilterMenu
+              categoriesList={mockCategoryFilters}
+              handleFiltersChange={handleFiltersChange}
+              checkedFilters={checkedFilters}
+            />
           </Grid>
         </Grid>
 
@@ -44,13 +63,15 @@ const CategoryPage = () => {
                 Explore
               </Typography>
               <Typography variant="body1" component="p">
-                500 assets
+                {listViewData.asset_number === 1
+                  ? `${listViewData.asset_number} asset`
+                  : `${listViewData.asset_number} assets`}
               </Typography>
             </Box>
             <DropDownList />
           </Grid>
           <Grid>
-            <ListItem listItemData={categoryViewData} />
+            <ListItem listItemData={listViewData} />
           </Grid>
         </Grid>
       </Grid>

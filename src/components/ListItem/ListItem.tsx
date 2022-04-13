@@ -5,7 +5,7 @@ import { useListItemStyles } from './ListItem.styles';
 import Image from 'next/image';
 
 export type SingleListItem = {
-  category: string;
+  type: string;
   title: string;
   imageLink: string;
   price: {
@@ -20,6 +20,10 @@ export interface ListItem {
 
 export const ListItem: React.FC<{ listItemData: ListItem }> = ({ listItemData }) => {
   const { assets } = listItemData;
+
+  // assets.sort((a, b) => a.price.cryptoValue.localeCompare(b.price.cryptoValue));
+  // dynamic sort
+
   const classes = useListItemStyles();
   return (
     <Grid
@@ -27,7 +31,7 @@ export const ListItem: React.FC<{ listItemData: ListItem }> = ({ listItemData })
       item
       xs={12}
       direction="row"
-      justifyContent="flex-start"
+      justifyContent="space-between"
       alignItems="center"
       wrap="wrap"
     >
@@ -43,9 +47,9 @@ export const ListItem: React.FC<{ listItemData: ListItem }> = ({ listItemData })
             />
           </Box>
           <Typography variant="body2" component="p" mt={3}>
-            {item.category}
+            {item.type}
           </Typography>
-          <Typography variant="h4" component="p" mb={1} mt={1}>
+          <Typography variant="h4" component="p" mb={1} mt={1} sx={{ minHeight: 65 }}>
             {item.title}
           </Typography>
           <Divider />
