@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles';
 export const useButtonStyles = makeStyles(
   (theme) => ({
     outlined: {
+      height: 41,
       fontFamily: 'League Gothic',
       fontSize: 24,
       lieHeight: 29,

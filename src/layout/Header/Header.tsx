@@ -12,7 +12,7 @@ export const Header = () => {
   const classes = useHeaderStyles();
   return (
     <>
-      <AppBar position="fixed" sx={{ boxShadow: 'none' }}>
+      <AppBar position="fixed">
         <Toolbar sx={{ backgroundColor: '#fff', height: '120px' }}>
           <Container className={classes.headerContainer}>
             <Image

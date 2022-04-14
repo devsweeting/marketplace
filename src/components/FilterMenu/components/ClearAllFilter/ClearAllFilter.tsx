@@ -16,9 +16,10 @@ export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
   const classes = useClearAllFilter();
   return (
     <Box className={classes.container}>
-      <Typography variant="h3" component="p">
+      <Typography variant="h3" component="h3">
         Filter
       </Typography>
+
       {isFilterButtonVisible ? (
         <Button variant={'outlined'} endIcon={<CloseIcon />} onClick={handleClick}>
           CLEAR ALL
