@@ -18,9 +18,9 @@ export const FilterGroup: React.FC<any> = ({ category, handleFiltersChange, chec
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={checkedFilters.includes(`${filter}_${categoryName}`)}
+                      checked={checkedFilters.includes(`${categoryName}_${filter}`)}
                       onChange={handleFiltersChange}
-                      name={`${filter}_${categoryName}`}
+                      name={`${categoryName}_${filter}`}
                     />
                   }
                   label={filter}

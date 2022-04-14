@@ -1,95 +1,31 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { useDropdownStyle } from './DropDown.styles';
+import { SortBy } from '../../domain/Category';
 
-const StyledMenu = styled((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'right',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  '& .MuiPaper-root': {
-    borderRadius: theme.shape.borderRadius,
-    marginTop: theme.spacing(0),
-    width: 280,
-    color: theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
-    boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-      },
-      '&:active': {
-        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
-      },
-    },
-  },
-}));
+export const DropDownList = ({ handleSelect }: { handleSelect: any }) => {
+  // const [sortOption, setSortOption] = React.useState('');
+  // czy w kontrolowanym potrzebuje wtedy ten stan trzymać,czy moge tego nie używać wykomentowane value?
 
-export const DropDownList = () => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const classes = useDropdownStyle();
 
   return (
-    <div>
-      <Button
-        id="demo-customized-button"
-        variant="contained"
-        // disableElevation
-        onClick={handleClick}
-        endIcon={<ArrowDropDownIcon />}
-        sx={{
-          width: 280,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          fontSize: 20,
-          marginTop: '24px',
-        }}
+    <FormControl fullWidth className={classes.container}>
+      <InputLabel id="select-label">SORT BY</InputLabel>
+      <Select
+        labelId="select-label"
+        id="select"
+        // value={sortOption}
+        label=""
+        onChange={handleSelect}
       >
-        SORT BY
-      </Button>
-      <StyledMenu
-        id="demo-customized-menu"
-        MenuListProps={{
-          'aria-labelledby': 'demo-customized-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose} disableRipple>
-          Recently Added
-        </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
-          Price: High to Low
-        </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
-          Price: Low to high
-        </MenuItem>
-      </StyledMenu>
-    </div>
+        <MenuItem value={SortBy.LatestDate}>Recently Added</MenuItem>
+        <MenuItem value={SortBy.HighestPrice}>Price: High to low</MenuItem>
+        <MenuItem value={SortBy.LowestPrice}>Price: Low to high</MenuItem>
+      </Select>
+    </FormControl>
   );
 };

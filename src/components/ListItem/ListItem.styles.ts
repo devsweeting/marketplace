@@ -13,6 +13,10 @@ export const useListItemStyles = makeStyles(
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
+      backgroundImage: `url('/images/list/partnerImage.svg')`,
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
     },
     priceContainer: {
       display: 'flex',

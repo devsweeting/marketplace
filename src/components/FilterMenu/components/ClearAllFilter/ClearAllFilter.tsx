@@ -6,18 +6,24 @@ import { Button } from '../../../Button';
 
 interface ClearAllFiltersProps {
   handleClick: () => void;
+  isFilterButtonVisible: boolean;
 }
 
-export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({ handleClick }) => {
+export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
+  handleClick,
+  isFilterButtonVisible,
+}) => {
   const classes = useClearAllFilter();
   return (
     <Box className={classes.container}>
       <Typography variant="h3" component="p">
         Filter
       </Typography>
-      <Button variant={'outlined'} endIcon={<CloseIcon />} onClick={handleClick}>
-        CLEAR ALL
-      </Button>
+      {isFilterButtonVisible ? (
+        <Button variant={'outlined'} endIcon={<CloseIcon />} onClick={handleClick}>
+          CLEAR ALL
+        </Button>
+      ) : null}
     </Box>
   );
 };

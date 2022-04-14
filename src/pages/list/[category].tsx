@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { listViewData, mockCategoryFilters } from '../../__mocks__/mockCategoryViewApiData';
 import { Grid, Box, Typography } from '@mui/material';
 import { BorderBox } from '../../components/BorderBox/BorderBox';
@@ -6,9 +6,35 @@ import { ClearAllFilter } from '../../components/FilterMenu/components/ClearAllF
 import { ListItem } from '../../components/ListItem';
 import { DropDownList } from '../../components/DropDownList';
 import { FilterMenu } from '../../components/FilterMenu';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { SortBy } from '../../domain/Category';
 
 const CategoryPage = () => {
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
+  const [items, setItems] = useState(listViewData.assets);
+  const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+
+  // useEffect(() => {
+  //   console.log(checkedFilters);
+  // }, [checkedFilters]);
+
+  useEffect(() => {
+    let sorted: any;
+    if (sortType === SortBy.LowestPrice) {
+      sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
+    }
+    if (sortType === SortBy.HighestPrice) {
+      sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
+    }
+    if (sortType === SortBy.LatestDate) {
+      sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
+    }
+    setItems(sorted);
+  }, [sortType]);
+
+  const handleSortType = (e: SelectChangeEvent) => {
+    setSortType(e.target.value);
+  };
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name: filterName } = event.target;
@@ -39,7 +65,10 @@ const CategoryPage = () => {
         <Grid container item md={3} xs={12} rowSpacing={2}>
           <Grid item xs={12}>
             <BorderBox bottom={4} right={4}>
-              <ClearAllFilter handleClick={clearAllSelectedFilters} />
+              <ClearAllFilter
+                handleClick={clearAllSelectedFilters}
+                isFilterButtonVisible={checkedFilters.length}
+              />
             </BorderBox>
             <FilterMenu
               categoriesList={mockCategoryFilters}
@@ -68,10 +97,10 @@ const CategoryPage = () => {
                   : `${listViewData.asset_number} assets`}
               </Typography>
             </Box>
-            <DropDownList />
+            <DropDownList handleSelect={handleSortType} />
           </Grid>
           <Grid>
-            <ListItem listItemData={listViewData} />
+            <ListItem listItemData={items} />
           </Grid>
         </Grid>
       </Grid>

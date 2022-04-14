@@ -14,12 +14,10 @@ export type SingleListItem = {
     dolarValue: string;
   };
 };
-export interface ListItem {
-  assets: SingleListItem[];
-}
+export type ListItems = SingleListItem[];
 
-export const ListItem: React.FC<{ listItemData: ListItem }> = ({ listItemData }) => {
-  const { assets } = listItemData;
+export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }) => {
+  // const { assets } = listItemData;
 
   // assets.sort((a, b) => a.price.cryptoValue.localeCompare(b.price.cryptoValue));
   // dynamic sort
@@ -35,7 +33,7 @@ export const ListItem: React.FC<{ listItemData: ListItem }> = ({ listItemData })
       alignItems="center"
       wrap="wrap"
     >
-      {assets.map((item, index) => (
+      {listItemData.map((item, index) => (
         <Box className={classes.container} key={`${item.title}${index}`}>
           <Box className={classes.imageContainer}>
             <Image
