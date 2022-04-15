@@ -8,6 +8,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../../styles/createEmotionCache';
 import { Header } from '../layout/Header';
+import { Footer } from '../layout/Footer';
 // import { BorderBox } from '../components/BorderBox/BorderBox';
 
 declare module '@mui/styles/defaultTheme' {
@@ -36,6 +37,7 @@ export default function MyApp(props: MyAppProps) {
         <Header />
         {/* </BorderBox> */}
         <Component {...pageProps} />
+        <Footer />
       </ThemeProvider>
     </CacheProvider>
   );

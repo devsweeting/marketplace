@@ -3,6 +3,32 @@ import { alpha } from '@mui/material/styles';
 
 export const useSearchBoxStyles = makeStyles(
   (theme) => ({
+    searchInput: {
+      // color: 'red',
+      // '& .MuiOutlinedInput-root': {
+      //   ...theme.typography.body1,
+      //   backgroundColor: 'red',
+      //   borderRadius: 32,
+      //   fontWeight: theme.typography.fontWeightMedium,
+      //   color: theme.palette.primary.main,
+      //   padding: `0 ${theme.spacing(2)}px`,
+      //   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      //     borderColor: theme.palette.primary.main,
+      //   },
+      // },
+      // '& .MuiOutlinedInput-input': {
+      //   padding: `10px ${theme.spacing(1)}px`,
+      // },
+      // '& .MuiOutlinedInput-notchedOutline': {
+      //   borderColor: 'red',
+      // },
+      // '&:hover .MuiOutlinedInput-root:not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
+      //   border: 'none',
+      // },
+      // '&:hover .MuiOutlinedInput-root:not(.Mui-focused)': {
+      //   backgroundColor: 'red',
+      // },
+    },
     noBorder: {
       border: 'none',
     },
@@ -14,11 +40,6 @@ export const useSearchBoxStyles = makeStyles(
       borderRadius: theme.shape.borderRadius,
       backgroundColor: alpha(theme.palette.common.white, 0.15),
     },
-    // placeholderField: {
-    //   '& input:placeholder': {
-    //     color: 'green',
-    //   },
-    // },
     searchIconWrapper: {
       padding: theme.spacing(0, 0),
       height: '100%',

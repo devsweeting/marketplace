@@ -20,8 +20,15 @@ export const useDropdownStyle = makeStyles((theme) => ({
       fontWeight: 400,
       fontSize: 24,
       lineHeight: '40px',
-      marginTop: '-10px',
+      marginTop: '0',
     },
+    '& .MuiFormLabel-outlined': {
+      marginTop: '20px',
+    },
+    '& .Mui-focused': {
+      fontSize: '14px',
+    },
+
     // '& .MuiSelect-select': {
     //   border: '1px solid green',
     //   paddingTop: '0 !important',

@@ -8,11 +8,16 @@ import { DropDownList } from '../../components/DropDownList';
 import { FilterMenu } from '../../components/FilterMenu';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { SortBy } from '../../domain/Category';
+import { Button } from '../../components/Button';
 
 const CategoryPage = () => {
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
   const [items, setItems] = useState(listViewData.assets);
   const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+
+  const handleSortType = (e: SelectChangeEvent) => {
+    setSortType(e.target.value);
+  };
 
   // useEffect(() => {
   //   console.log(checkedFilters);
@@ -30,11 +35,7 @@ const CategoryPage = () => {
       sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
     }
     setItems(sorted);
-  }, [sortType]);
-
-  const handleSortType = (e: SelectChangeEvent) => {
-    setSortType(e.target.value);
-  };
+  }, [sortType, items]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name: filterName } = event.target;
@@ -101,6 +102,12 @@ const CategoryPage = () => {
           </Grid>
           <Grid>
             <ListItem listItemData={items} />
+          </Grid>
+          <Grid xs={12} sx={{ textAlign: 'center' }}>
+            <Button>LOAD MORE</Button>
+            <Typography variant="body2" component="p">
+              Number of assets viewed: 24 of 140
+            </Typography>
           </Grid>
         </Grid>
       </Grid>

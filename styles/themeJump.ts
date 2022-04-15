@@ -72,7 +72,32 @@ const theme = createTheme({
       textDecoration: 'underline ',
     },
   },
-  components: {},
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          color: 'rgba(0, 0, 0, 0.6)',
+          fontfamily: 'League Gothic !important',
+          fontSize: '18px',
+          fontWeight: 400,
+          lineHeight: '22px',
+          letterspacing: 0,
+          marginTop: 5,
+          '& .MuiSelect-select': {
+            color: '#fff',
+          },
+        },
+      },
+    },
+
+    // MuiTextField: {
+    //   styleOverrides: {
+    //     root: {
+    //       color: 'blue',
+    //     },
+    //   },
+    // },
+  },
 });
 
 export default theme;

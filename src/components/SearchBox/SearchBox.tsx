@@ -19,6 +19,7 @@ export const SearchBox = ({ placeholder = 'SEARCH' }: { placeholder?: string }) 
         // inputProps={{
         //   className: classes.placeholderField,
         // }}
+        className={classes.searchInput}
         id="searchbox"
         value={value}
         onChange={handleChange}

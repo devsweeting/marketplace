@@ -12,7 +12,7 @@ export const Header = () => {
   const classes = useHeaderStyles();
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar position="fixed" className={classes.headerWrapper}>
         <Toolbar sx={{ backgroundColor: '#fff', height: '120px' }}>
           <Container className={classes.headerContainer}>
             <Image

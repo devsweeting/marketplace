@@ -8,7 +8,6 @@ import { SortBy } from '../../domain/Category';
 
 export const DropDownList = ({ handleSelect }: { handleSelect: any }) => {
   // const [sortOption, setSortOption] = React.useState('');
-  // czy w kontrolowanym potrzebuje wtedy ten stan trzymać,czy moge tego nie używać wykomentowane value?
 
   const classes = useDropdownStyle();
 
