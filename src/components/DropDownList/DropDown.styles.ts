@@ -4,7 +4,7 @@ export const useDropdownStyle = makeStyles((theme) => ({
   container: {
     width: 280,
     marginTop: theme.spacing(3),
-    background: theme.palette.primary.main,
+    background: theme.palette.accent.main,
     borderRadius: theme.shape.borderRadius,
     '& .MuiSvgIcon-root': {
       color: theme.palette.secondary.main,

@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,20 +8,40 @@ import { Navbar } from '../../components/Navbar';
 import { SearchBox } from '../../components/SearchBox';
 import { useHeaderStyles } from './Header.styles';
 import { mockNavLinks } from '../../__mocks__/mockApiData';
+import { SkinContext } from '../../../styles/skin-context';
+import { skins } from '../../../styles/skin-context';
 
 export const Header = () => {
   const classes = useHeaderStyles();
+  const { skin, setSkin } = useContext(SkinContext);
+
+  const handleClick = () => {
+    if (skin === skins.pwcc) {
+      setSkin(skins.jump);
+    } else {
+      setSkin(skins.pwcc);
+    }
+  };
   return (
     <>
       <AppBar position="fixed" className={classes.headerWrapper}>
-        <Toolbar sx={{ backgroundColor: '#fff', height: '120px' }}>
-          <Container className={classes.headerContainer}>
+        <Toolbar
+          sx={{
+            backgroundColor: skin.headerBackground,
+            height: '120px',
+          }}
+        >
+          <Container
+            className={classes.headerContainer}
+            sx={{ color: '#000', borderImageSource: `url(${skin.borderBoxBackground})` }}
+          >
             <Image
-              src={'/images/main-logo.svg'}
+              src={skin.logo}
               alt={'logo'}
               width="147px"
               height="43px"
               layout="fixed"
+              onClick={handleClick}
             />
             <Box className={classes.searchBoxContainer}>
               <SearchBox />

@@ -23,7 +23,7 @@ const theme = createTheme({
       light: 'rgba(0, 0, 0, 0.23)',
     },
     secondary: {
-      main: '#000',
+      main: '#fff',
     },
     customBlue: {
       main: '#3070CE',
@@ -34,7 +34,7 @@ const theme = createTheme({
       dark: '#8f9094',
     },
     accent: {
-      main: '#000',
+      main: 'rgba(255, 221, 0, 1)',
     },
     textColor: {
       main: '#000',
@@ -44,26 +44,26 @@ const theme = createTheme({
   },
   typography: {
     h2: {
-      fontFamily: 'League Gothic',
+      fontFamily: 'Montserrat',
       fontWeight: 400,
       fontSize: '60px',
       letter: '-0.5px',
     },
     h3: {
-      fontFamily: 'League Gothic',
+      fontFamily: 'Montserrat',
       fontWeight: 400,
       fontSize: '34px',
       letter: '0.25px',
     },
     h4: {
-      fontFamily: 'League Gothic',
+      fontFamily: 'Montserrat',
       fontWeight: 400,
       fontSize: '20px',
       lineHeight: '160%',
       letterSpacing: '0.15px',
     },
     h5: {
-      fontFamily: 'League Gothic',
+      fontFamily: 'Montserrat',
       fontWeight: 400,
       fontSize: '24px',
       lineHeight: '29px',

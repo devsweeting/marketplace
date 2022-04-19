@@ -16,8 +16,7 @@ export const useHeaderStyles = makeStyles(
       borderBottom: '4px solid',
       boxSizing: 'border-box',
       borderImageSlice: 1,
-      borderCollor: '#fff',
-      borderImageSource: `url('/images/detail_page.png')`,
+      color: theme.palette.primary.main,
       '& .MuiToolbar-root': {
         '@media (min-width: 600px)': {
           paddingRight: 0,

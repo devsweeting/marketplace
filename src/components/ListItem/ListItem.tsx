@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { SkinContext } from '../../../styles/skin-context';
 import { Grid, Typography, Box, Divider } from '@mui/material';
-
 import { useListItemStyles } from './ListItem.styles';
 import Image from 'next/image';
 
@@ -19,8 +19,7 @@ export type ListItems = SingleListItem[];
 export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }) => {
   // const { assets } = listItemData;
 
-  // assets.sort((a, b) => a.price.cryptoValue.localeCompare(b.price.cryptoValue));
-  // dynamic sort
+  const { skin } = useContext(SkinContext);
 
   const classes = useListItemStyles();
   return (
@@ -35,7 +34,12 @@ export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }
     >
       {listItemData.map((item, index) => (
         <Box className={classes.container} key={`${item.title}${index}`}>
-          <Box className={classes.imageContainer}>
+          <Box
+            className={classes.imageContainer}
+            sx={{
+              backgroundImage: `url(${skin.listItem.backgroundImage})`,
+            }}
+          >
             <Image
               className={classes.mainImage}
               src={item.imageLink}

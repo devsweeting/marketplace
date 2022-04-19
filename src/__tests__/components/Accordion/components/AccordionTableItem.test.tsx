@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { AccordionTableItem } from '../../../../components/Accordion/components/AccordionTableItem';
 import { BlockChainInfoProps } from '../../../../components/Accordion/components/AccordionTableItem/AccordionTableItem';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../../../styles/theme';
+import theme from '../../../../../styles/themeJump';
 import { mockTraits } from '../../../../__mocks__/mockApiData';
 
 interface AccordionTableItemProps {

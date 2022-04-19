@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { SkinContext } from '../../../styles/skin-context';
 import { listViewData, mockCategoryFilters } from '../../__mocks__/mockCategoryViewApiData';
 import { Grid, Box, Typography } from '@mui/material';
 import { BorderBox } from '../../components/BorderBox/BorderBox';
@@ -11,6 +12,7 @@ import { SortBy } from '../../domain/Category';
 import { Button } from '../../components/Button';
 
 const CategoryPage = () => {
+  const { skin } = useContext(SkinContext);
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
   const [items, setItems] = useState(listViewData.assets);
   const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
@@ -59,11 +61,18 @@ const CategoryPage = () => {
         mt={15}
         container
         columnSpacing={4}
-        direction="row"
-        justifyContent="center"
-        alignItems="flex-start"
+        // direction="row"
+        // justifyContent="center"
+        // alignItems="flex-start"
       >
-        <Grid container item md={3} xs={12} rowSpacing={2}>
+        <Grid
+          container
+          item
+          md={3}
+          xs={12}
+          rowSpacing={2}
+          sx={{ backgroundColor: skin.listItem.filterBackgroundColor }}
+        >
           <Grid item xs={12}>
             <BorderBox bottom={4} right={4}>
               <ClearAllFilter

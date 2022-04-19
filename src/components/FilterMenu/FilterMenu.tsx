@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { SkinContext } from '../../../styles/skin-context';
 import Box from '@mui/material/Box';
 import { SearchBox } from '../../components/SearchBox';
 import Typography from '@mui/material/Typography';
@@ -14,13 +15,17 @@ export const FilterMenu: React.FC<any> = ({
   handleFiltersChange,
   checkedFilters,
 }) => {
+  const { skin } = useContext(SkinContext);
   return (
     <>
       {categoriesList.map((category: any, index: any) => {
         return (
           <BorderBox bottom={4} right={4} key={`${category}${index}`}>
             <>
-              <Accordion disableGutters={true} sx={{ boxShadow: 'none' }}>
+              <Accordion
+                disableGutters={true}
+                sx={{ boxShadow: 'none', background: skin.listItem.filterBackgroundColor }}
+              >
                 <AccordionSummary
                   sx={{ paddingLeft: 0 }}
                   expandIcon={<ExpandMoreIcon />}

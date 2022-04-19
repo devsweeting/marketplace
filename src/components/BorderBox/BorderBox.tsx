@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box } from '@mui/material';
+import { SkinContext } from '../../../styles/skin-context';
 
 interface BorderBoxProps {
   children: JSX.Element;
@@ -16,6 +17,7 @@ export const BorderBox: React.FC<BorderBoxProps> = ({
   bottom = 0,
   right = 0,
 }) => {
+  const { skin } = useContext(SkinContext);
   return (
     <Box
       sx={{
@@ -25,8 +27,9 @@ export const BorderBox: React.FC<BorderBoxProps> = ({
         borderRight: right,
         boxSizing: 'border-box',
         borderImageSlice: 1,
-        borderCollor: '#fff',
-        borderImageSource: `url('/images/detail_page.png')`,
+        borderColor: '#fff',
+        borderBackground: '#fff',
+        borderImageSource: `url(${skin.borderBoxBackground})`,
       }}
     >
       {children}

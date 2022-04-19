@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import Image from 'next/image';
-import theme from '../../../styles/theme';
+import theme from '../../../styles/themePWCC';
 
 export interface HeroProps {
   imgSrc?: string;
