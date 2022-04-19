@@ -5,6 +5,16 @@ export const useFooterStyles = makeStyles(
     container: {
       borderTop: `2px solid ${theme.palette.primary.main}`,
       textAlign: 'center',
+      maxWidth: `calc(1440px - ${theme.spacing(1)})`,
+      width: '100%',
+    },
+    text: {
+      fontFamily: 'Rubik',
+      fontWeight: 300,
+      fontSize: '14px',
+      lineHeight: '17px',
+      opacity: '0.3',
+      margin: '24px 0px',
     },
   }),
   { name: 'footer' },

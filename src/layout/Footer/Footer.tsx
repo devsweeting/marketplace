@@ -5,9 +5,9 @@ import { Typography } from '@mui/material';
 export const Footer = () => {
   const classes = useFooterStyles();
   return (
-    <Grid container xs={12} className={classes.container}>
-      <Grid item>
-        <Typography variant="body2" component="p">
+    <Grid container xs={12} flexDirection={'row'} justifyContent={'center'}>
+      <Grid item className={classes.container}>
+        <Typography variant="body1" component="p" className={classes.text}>
           © 2022 Third Venture, Inc. - All rights reserved.
         </Typography>
       </Grid>

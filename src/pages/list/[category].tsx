@@ -104,9 +104,16 @@ const CategoryPage = () => {
             <ListItem listItemData={items} />
           </Grid>
           <Grid xs={12} sx={{ textAlign: 'center' }}>
-            <Button>LOAD MORE</Button>
-            <Typography variant="body2" component="p">
-              Number of assets viewed: 24 of 140
+            <Button sx={{ width: '280px' }}>LOAD MORE</Button>
+            <Typography
+              variant="body2"
+              component="p"
+              sx={{ margin: '24px 0 54px', textDecoration: 'none', color: 'rgba(0,0,0,0.6)' }}
+            >
+              Number of assets viewed:{' '}
+              <Box component="span" sx={{ color: '#000', display: 'inline' }}>
+                24 of 140
+              </Box>
             </Typography>
           </Grid>
         </Grid>

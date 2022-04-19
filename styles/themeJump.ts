@@ -69,7 +69,7 @@ const theme = createTheme({
       fontSize: '12px',
       lineHeight: '175%',
       letterSpacing: '0.15px',
-      textDecoration: 'underline ',
+      textDecoration: 'underline',
     },
   },
   components: {
