@@ -39,7 +39,7 @@ export const FilterMenu: React.FC<any> = ({
                 <AccordionDetails sx={{ padding: 0 }}>
                   <Box>
                     <Box mb={2} mr={2.5}>
-                      <SearchBox placeholder={'SEARCH CATEGORY'} />
+                      <SearchBox placeholder={'Search CATEGORY'} />
                     </Box>
                     <FilterGroup
                       category={category}

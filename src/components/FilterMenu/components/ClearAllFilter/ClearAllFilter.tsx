@@ -18,12 +18,12 @@ export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
   const classes = useClearAllFilter();
   return (
     <Box className={classes.container} sx={{ background: skin.listItem.filterBackgroundColor }}>
-      <Typography variant="h3" component="h3">
+      <Typography variant="h3" component="h3" sx={{ fontSize: '34px' }}>
         Filter
       </Typography>
 
       {isFilterButtonVisible ? (
-        <Button variant={'outlined'} endIcon={<CloseIcon />} onClick={handleClick}>
+        <Button variant="outlined" endIcon={<CloseIcon />} onClick={handleClick}>
           CLEAR ALL
         </Button>
       ) : null}

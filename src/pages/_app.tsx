@@ -2,8 +2,8 @@ import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider, Theme } from '@mui/material';
-import theme from '../../styles/themeJump';
-// import theme from '../../styles/themePWCC';
+import themeJump from '../../styles/themeJump';
+import themePWCC from '../../styles/themePWCC';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import createEmotionCache from '../../styles/createEmotionCache';
@@ -25,13 +25,16 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const [skin, setSkin] = React.useState(skins.jump);
+
+  const choosenTheme = skin === skins.jump ? themeJump : themePWCC;
+
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={choosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
           <CssBaseline />
           <Header />

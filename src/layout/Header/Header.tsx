@@ -27,7 +27,7 @@ export const Header = () => {
       <AppBar position="fixed" className={classes.headerWrapper}>
         <Toolbar
           sx={{
-            backgroundColor: skin.headerBackground,
+            backgroundColor: skin.header.headerBackground,
             height: '120px',
           }}
         >
@@ -44,7 +44,11 @@ export const Header = () => {
               onClick={handleClick}
             />
             <Box className={classes.searchBoxContainer}>
-              <SearchBox />
+              <SearchBox
+                iconColor={skin.header.searchIconColor}
+                borderRadius={true}
+                reverseTextColor={true}
+              />
             </Box>
 
             <Navbar navLinks={mockNavLinks} />

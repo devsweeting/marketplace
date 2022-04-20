@@ -52,15 +52,17 @@ const theme = createTheme({
     h3: {
       fontFamily: 'League Gothic',
       fontWeight: 400,
-      fontSize: '34px',
-      letter: '0.25px',
+      fontSize: '24px',
     },
+    // navlinks
     h4: {
       fontFamily: 'League Gothic',
       fontWeight: 400,
-      fontSize: '20px',
-      lineHeight: '160%',
-      letterSpacing: '0.15px',
+      fontSize: '24px',
+      lineHeight: '19px',
+      letter: '5%',
+      color: '#000',
+      textTransform: 'uppercase',
     },
     h5: {
       fontFamily: 'League Gothic',
@@ -97,6 +99,57 @@ const theme = createTheme({
           marginTop: 5,
           '& .MuiSelect-select': {
             color: '#fff',
+          },
+        },
+      },
+    },
+
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          borderRadius: '4px !important',
+          height: '56px',
+          fontFamily: 'League Gothic !important',
+          color: '#000 !important',
+          fontSize: '18px !important',
+          fontWeight: '400 !important',
+          lineHeight: '22 !important',
+          letterSpacing: '0.15px !important',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        outlined: {
+          height: 41,
+          fontFamily: 'League Gothic',
+          fontSize: 24,
+          lieHeight: 29,
+          fontWeight: 400,
+          backgroundColor: 'transparent',
+          boxSizing: 'border-box',
+          color: '#000',
+          padding: '0 8px',
+          border: '2px solid rgba(0,0,0,0.5) !important',
+        },
+        contained: {
+          fontFamily: 'League Gothic',
+          backgroundColor: '#000',
+          borderColor: '#000',
+          color: '#fff',
+          boxShadow:
+            '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12)',
+          borderRadius: 4,
+          transition: 'backgroundColor 0.3s ease, color 0.3s ease',
+          padding: '6px 25px',
+          height: 55,
+          fontStyle: 'normal',
+          fontWeight: 400,
+          fontSize: 32,
+          lineHeight: 39,
+          '&:hover': {
+            backgroundColor: 'rgba(0,0,0,0.8)',
+            borderColor: 'rgba(0,0,0,0.8)',
           },
         },
       },

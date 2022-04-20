@@ -28,17 +28,18 @@ export const useListItemStyles = makeStyles(
     mainImage: {
       borderRadius: theme.spacing(1),
     },
-    priceCryptoValue: {
-      fontSize: '24px',
-      lineHeight: '133,4%',
-      margin: `0 ${theme.spacing(1)}`,
-    },
+    // priceCryptoValue: {
+    //   fontSize: '24px',
+    //   lineHeight: '133,4%',
+    //   margin: `0 ${theme.spacing(1)}`,
+    // },
     priceDollarValue: {
       fontFamily: 'Rubik',
       fontWeight: 400,
       fontSize: '12px',
       lineHeight: '14px',
       letterSpacing: '1px',
+      color: 'rgba(0, 0, 0, 0.87)',
     },
   }),
   { name: 'listItem' },

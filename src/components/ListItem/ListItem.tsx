@@ -17,8 +17,6 @@ export type SingleListItem = {
 export type ListItems = SingleListItem[];
 
 export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }) => {
-  // const { assets } = listItemData;
-
   const { skin } = useContext(SkinContext);
 
   const classes = useListItemStyles();
@@ -51,7 +49,7 @@ export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }
           <Typography variant="body2" component="p" mt={3}>
             {item.type}
           </Typography>
-          <Typography variant="h4" component="p" mb={1} mt={1} sx={{ minHeight: 65 }}>
+          <Typography variant="h3" component="p" mb={1} mt={1} sx={{ minHeight: 65 }}>
             {item.title}
           </Typography>
           <Divider />
@@ -62,10 +60,29 @@ export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }
               width={20}
               height={32}
             />
-            <Typography variant="h4" component="span" className={classes.priceCryptoValue} my={1}>
+            <Typography
+              variant="h3"
+              component="span"
+              sx={{
+                fontSize: skin.listItem.cryptoValue.fontSize,
+                lineHeight: skin.listItem.cryptoValue.lineHeight,
+              }}
+              my={1}
+              mx={1}
+            >
               {item.price.cryptoValue}
             </Typography>
-            <Typography variant="h4" component="span" className={classes.priceDollarValue}>
+            <Typography
+              variant="h3"
+              component="span"
+              sx={{
+                fontFamily: skin.listItem.dollarValue.fontFamily,
+                fontSize: skin.listItem.dollarValue.fontSize,
+                lineHeight: skin.listItem.dollarValue.lineHeight,
+                letterSpacing: skin.listItem.dollarValue.letterSpacing,
+                color: skin.listItem.dollarValue.color,
+              }}
+            >
               (${item.price.dolarValue})
             </Typography>
           </Box>

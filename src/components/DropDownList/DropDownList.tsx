@@ -13,14 +13,16 @@ export const DropDownList = ({ handleSelect }: { handleSelect: any }) => {
 
   return (
     <FormControl fullWidth className={classes.container}>
-      <InputLabel id="select-label">SORT BY</InputLabel>
+      {/* <InputLabel id="select-label">SORT BY</InputLabel> */}
       <Select
+        variant="filled"
         labelId="select-label"
+        displayEmpty
         id="select"
-        // value={sortOption}
-        label=""
+        label="dsg"
         onChange={handleSelect}
       >
+        <MenuItem value="">SORT BY</MenuItem>
         <MenuItem value={SortBy.LatestDate}>Recently Added</MenuItem>
         <MenuItem value={SortBy.HighestPrice}>Price: High to low</MenuItem>
         <MenuItem value={SortBy.LowestPrice}>Price: Low to high</MenuItem>

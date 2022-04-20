@@ -10,6 +10,7 @@ import { FilterMenu } from '../../components/FilterMenu';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { SortBy } from '../../domain/Category';
 import { Button } from '../../components/Button';
+import { MenuList } from '../../components/MenuList/';
 
 const CategoryPage = () => {
   const { skin } = useContext(SkinContext);
@@ -80,6 +81,7 @@ const CategoryPage = () => {
                 isFilterButtonVisible={checkedFilters.length}
               />
             </BorderBox>
+
             <FilterMenu
               categoriesList={mockCategoryFilters}
               handleFiltersChange={handleFiltersChange}
@@ -107,7 +109,9 @@ const CategoryPage = () => {
                   : `${listViewData.asset_number} assets`}
               </Typography>
             </Box>
-            <DropDownList handleSelect={handleSortType} />
+
+            {/* <DropDownList handleSelect={handleSortType} /> */}
+            <MenuList />
           </Grid>
           <Grid>
             <ListItem listItemData={items} />
