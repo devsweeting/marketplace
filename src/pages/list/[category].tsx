@@ -1,30 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { SkinContext } from '../../../styles/skin-context';
 import { listViewData, mockCategoryFilters } from '../../__mocks__/mockCategoryViewApiData';
-import { Grid, Box, Typography } from '@mui/material';
-import { BorderBox } from '../../components/BorderBox/BorderBox';
+import { Grid, Box, Typography, Divider } from '@mui/material';
 import { ClearAllFilter } from '../../components/FilterMenu/components/ClearAllFilter';
 import { ListItem } from '../../components/ListItem';
-import { DropDownList } from '../../components/DropDownList';
 import { FilterMenu } from '../../components/FilterMenu';
-import { SelectChangeEvent } from '@mui/material/Select';
 import { SortBy } from '../../domain/Category';
 import { Button } from '../../components/Button';
 import { MenuList } from '../../components/MenuList/';
+import { useCategoryPageStyles } from '../../../styles/CategoryPage.styles';
 
 const CategoryPage = () => {
+  const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
   const [items, setItems] = useState(listViewData.assets);
   const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
 
-  const handleSortType = (e: SelectChangeEvent) => {
-    setSortType(e.target.value);
+  const handleSortType = (e: React.MouseEvent<HTMLElement>) => {
+    const { id } = e.target as HTMLElement;
+    setSortType(id);
   };
-
-  // useEffect(() => {
-  //   console.log(checkedFilters);
-  // }, [checkedFilters]);
 
   useEffect(() => {
     let sorted: any;
@@ -57,31 +53,24 @@ const CategoryPage = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 1440, margin: '0 auto', marginTop: '0', padding: '0 8px' }}>
-      <Grid
-        mt={15}
-        container
-        columnSpacing={4}
-        // direction="row"
-        // justifyContent="center"
-        // alignItems="flex-start"
-      >
+    <Box className={classes.wrapper}>
+      <Grid mt={15} container columnSpacing={4}>
         <Grid
+          className={classes.hideOnMobile}
           container
           item
           md={3}
           xs={12}
           rowSpacing={2}
-          sx={{ backgroundColor: skin.listItem.filterBackgroundColor }}
+          sx={{
+            backgroundColor: skin.listItem.filterBackgroundColor,
+          }}
         >
           <Grid item xs={12}>
-            <BorderBox bottom={4} right={4}>
-              <ClearAllFilter
-                handleClick={clearAllSelectedFilters}
-                isFilterButtonVisible={checkedFilters.length}
-              />
-            </BorderBox>
-
+            <ClearAllFilter
+              handleClick={clearAllSelectedFilters}
+              isFilterButtonVisible={checkedFilters.length}
+            />
             <FilterMenu
               categoriesList={mockCategoryFilters}
               handleFiltersChange={handleFiltersChange}
@@ -89,7 +78,6 @@ const CategoryPage = () => {
             />
           </Grid>
         </Grid>
-
         <Grid container item md={9} xs={12} rowSpacing={2}>
           <Grid
             container
@@ -99,7 +87,7 @@ const CategoryPage = () => {
             justifyContent="space-between"
             alignItems="flex-start"
           >
-            <Box mt={6}>
+            <Box mt={6} className={classes.centerOnMobile}>
               <Typography variant="h2" component="h2" mb={1}>
                 Explore
               </Typography>
@@ -109,9 +97,9 @@ const CategoryPage = () => {
                   : `${listViewData.asset_number} assets`}
               </Typography>
             </Box>
-
-            {/* <DropDownList handleSelect={handleSortType} /> */}
-            <MenuList />
+            <Box className={classes.hideOnMobile}>
+              <MenuList handleSelect={handleSortType} />
+            </Box>
           </Grid>
           <Grid>
             <ListItem listItemData={items} />
@@ -128,6 +116,7 @@ const CategoryPage = () => {
                 24 of 140
               </Box>
             </Typography>
+            <Divider sx={{ borderBottomWidth: 'medium', borderColor: '#000' }} />
           </Grid>
         </Grid>
       </Grid>

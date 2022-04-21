@@ -1,6 +1,9 @@
 import React from 'react';
 export const skins = {
   jump: {
+    sidebar: {
+      borderRight: 4,
+    },
     header: {
       searchTextColor: '#000 !important',
       searchIconColor: '#000',
@@ -27,9 +30,22 @@ export const skins = {
         color: 'rgba(0, 0, 0, 0.87)',
       },
     },
+    sortButton: {
+      fontWeight: 400,
+      fontSize: '24px',
+      lineHeight: '29.21px',
+      width: 280,
+      height: 41,
+      padding: '6px 16px',
+      justifyContent: 'space-between',
+    },
   },
   pwcc: {
+    sidebar: {
+      borderRight: 0,
+    },
     header: {
+      accentColor: '#FFDD00',
       searchTextColor: '#fff !important',
       searchIconColor: '#fff',
       searchInconBorderRadius: '50px !important',
@@ -55,6 +71,16 @@ export const skins = {
         letterSpacing: '0.15px',
         color: '#00',
       },
+    },
+    sortButton: {
+      fontWeight: 700,
+      fontSize: '18px',
+      lineHeight: '22px',
+      borderRadius: '4px',
+      width: 280,
+      height: 34,
+      padding: '6px 16px',
+      justifyContent: 'space-between',
     },
   },
 };

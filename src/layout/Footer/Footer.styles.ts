@@ -3,7 +3,6 @@ import { makeStyles } from '@mui/styles';
 export const useFooterStyles = makeStyles(
   (theme) => ({
     container: {
-      borderTop: `2px solid ${theme.palette.primary.main}`,
       textAlign: 'center',
       maxWidth: `calc(1440px - ${theme.spacing(1)})`,
       width: '100%',

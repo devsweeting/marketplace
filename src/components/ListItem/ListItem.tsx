@@ -21,15 +21,7 @@ export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }
 
   const classes = useListItemStyles();
   return (
-    <Grid
-      container
-      item
-      xs={12}
-      direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      wrap="wrap"
-    >
+    <Grid container item xs={12} className={classes.wrapper}>
       {listItemData.map((item, index) => (
         <Box className={classes.container} key={`${item.title}${index}`}>
           <Box
@@ -46,16 +38,16 @@ export const ListItem: React.FC<{ listItemData: ListItems }> = ({ listItemData }
               height={280}
             />
           </Box>
-          <Typography variant="body2" component="p" mt={3}>
+          <Typography variant="body2" component="p" mt={3} className={classes.itemType}>
             {item.type}
           </Typography>
-          <Typography variant="h3" component="p" mb={1} mt={1} sx={{ minHeight: 65 }}>
+          <Typography variant="h3" component="p" mb={1} mt={1} className={classes.itemTitle}>
             {item.title}
           </Typography>
           <Divider />
           <Box className={classes.priceContainer}>
             <Image
-              src={`/images/nftDetail/cryptoCurencies/${item.price.icon}.png`}
+              src={`/images/nftDetail/cryptoCurencies/${item.price.icon}.svg`}
               alt={`${item.price.icon} icon`}
               width={20}
               height={32}

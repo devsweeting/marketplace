@@ -2,8 +2,8 @@ import { makeStyles } from '@mui/styles';
 
 export const useHeaderStyles = makeStyles(
   (theme) => ({
-    headerWrapper: {},
-    headerContainer: {
+    wrapper: {},
+    container: {
       maxWidth: `calc(1440px - ${theme.spacing(1)})`,
       height: '100%',
       display: 'flex',
@@ -26,6 +26,9 @@ export const useHeaderStyles = makeStyles(
     searchBoxContainer: {
       width: '100%',
       margin: `0 ${theme.spacing(9)}`,
+      '@media (max-width: 900px)': {
+        display: 'none',
+      },
     },
   }),
   { name: 'header' },

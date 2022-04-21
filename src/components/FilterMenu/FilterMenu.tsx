@@ -20,7 +20,7 @@ export const FilterMenu: React.FC<any> = ({
     <>
       {categoriesList.map((category: any, index: any) => {
         return (
-          <BorderBox bottom={4} right={4} key={`${category}${index}`}>
+          <BorderBox bottom={4} right={skin.sidebar.borderRight} key={`${category}${index}`}>
             <>
               <Accordion
                 disableGutters={true}

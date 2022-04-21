@@ -65,6 +65,11 @@ const theme = createTheme({
       letterSpacing: '0.05em',
       color: '#fff',
       textTransform: 'uppercase',
+      '@media (max-width:900px)': {
+        fontSize: '18px',
+        fontWeight: 400,
+        fontFamily: 'League Gothic',
+      },
     },
     h5: {
       fontFamily: 'Montserrat',
@@ -160,14 +165,6 @@ const theme = createTheme({
         },
       },
     },
-
-    // MuiTextField: {
-    //   styleOverrides: {
-    //     root: {
-    //       color: 'blue',
-    //     },
-    //   },
-    // },
   },
 });
 

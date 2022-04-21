@@ -24,7 +24,7 @@ export const Header = () => {
   };
   return (
     <>
-      <AppBar position="fixed" className={classes.headerWrapper}>
+      <AppBar position="fixed" className={classes.wrapper}>
         <Toolbar
           sx={{
             backgroundColor: skin.header.headerBackground,
@@ -32,7 +32,7 @@ export const Header = () => {
           }}
         >
           <Container
-            className={classes.headerContainer}
+            className={classes.container}
             sx={{ color: '#000', borderImageSource: `url(${skin.borderBoxBackground})` }}
           >
             <Image
