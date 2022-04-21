@@ -1,17 +1,33 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import type {} from '@mui/lab/themeAugmentation';
 
-// Create a theme instance.
+declare module '@mui/material/styles/createPalette' {
+  interface Palette {
+    customGray: Palette['primary'];
+    customBlue: Palette['primary'];
+  }
+  interface PaletteOptions {
+    customGray: PaletteOptions['primary'];
+    customBlue: PaletteOptions['primary'];
+  }
+}
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#556cd6',
+      main: '#000',
+      light: 'rgba(0, 0, 0, 0.87)',
     },
     secondary: {
-      main: '#19857b',
+      main: '#fff',
     },
-    error: {
-      main: red.A400,
+    customBlue: {
+      main: '#3070CE',
+    },
+    customGray: {
+      main: '#ededed',
+      light: '#e5e5e5',
+      dark: '#8f9094',
     },
   },
 });
