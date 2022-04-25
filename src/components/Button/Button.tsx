@@ -9,7 +9,6 @@ export interface ButtonProps extends Omit<MaterialButtonProps, 'variant'> {
 
 export const Button: React.FC<MaterialButtonProps> = ({
   children,
-  // className,
   variant = 'contained',
   startIcon = null,
   endIcon = null,
@@ -17,13 +16,7 @@ export const Button: React.FC<MaterialButtonProps> = ({
 }) => {
   // const classes = useButtonStyles();
   return (
-    <MaterialButton
-      // className={classNames(classes[variant], className)}
-      variant={variant}
-      startIcon={startIcon}
-      endIcon={endIcon}
-      {...props}
-    >
+    <MaterialButton variant={variant} startIcon={startIcon} endIcon={endIcon} {...props}>
       {children}
     </MaterialButton>
   );

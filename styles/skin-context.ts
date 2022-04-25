@@ -1,5 +1,5 @@
 import React from 'react';
-// const theme = useTheme(); dobać kolory
+
 export const skins = {
   jump: {
     logo: {
