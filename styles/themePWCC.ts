@@ -6,12 +6,14 @@ declare module '@mui/material/styles/createPalette' {
     customGray: Palette['primary'];
     customBlue: Palette['primary'];
     accent: Palette['primary'];
+    accentSecondary: PaletteOptions['primary'];
     textColor: Palette['primary'];
   }
   interface PaletteOptions {
     customGray: PaletteOptions['primary'];
     customBlue: PaletteOptions['primary'];
     accent: PaletteOptions['primary'];
+    accentSecondary: PaletteOptions['primary'];
     textColor: PaletteOptions['primary'];
   }
 }
@@ -34,7 +36,10 @@ const theme = createTheme({
       dark: '#8f9094',
     },
     accent: {
-      main: 'rgba(255, 221, 0, 1)',
+      main: '#ffdd00',
+    },
+    accentSecondary: {
+      main: '#2c2c2c',
     },
     textColor: {
       main: '#000',
@@ -166,6 +171,7 @@ const theme = createTheme({
           padding: '0 13px',
           border: '2px solid #FFDD00',
         },
+
         contained: {
           borderRadius: '34px',
           fontFamily: 'Montserrat',

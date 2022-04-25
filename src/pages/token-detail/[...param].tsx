@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import Sticky from 'react-stickynode';
 import { Grid, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
-import { Hero } from '../../components/Hero';
+import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
 import { Accordion } from '../../components/Accordion';
 // import image from '../../../public/images/detail_page.png';
 import { mockProductData, mockProducImages, mockChartData } from '../../__mocks__/mockApiData';
@@ -9,6 +10,7 @@ import { AccordionTableItem } from '../../components/Accordion/components/Accord
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
 import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
+import { useTheme } from '@mui/styles';
 // import { useRouter } from 'next/router';
 
 // link to example NFT detail page:
@@ -19,7 +21,10 @@ type Trait = Record<string, string>;
 const DetailPage = ({ nftData }: { nftData: any }) => {
   // const router = useRouter();
   // const { param } = router.query;
-  // console.log(param);
+  console.log(nftData);
+  const theme = useTheme();
+
+  const classes = useDetailPageStyles();
 
   const [traits, setTraits] = useState<Trait | null>(null);
 
@@ -33,26 +38,32 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
   return (
     <>
-      <Grid container mt={18.5}>
-        <Hero
-          imgSrc={'/images/detail_page.png'}
-          imgFit={'cover'}
-          imgHeight={163}
-          imgAlt="alt text"
-        />
-      </Grid>
-
       {nftData && (
-        <Box sx={{ maxWidth: 1440, margin: '0 auto', marginTop: '0', padding: '0 8px' }}>
+        <Box
+          sx={{
+            maxWidth: 1440,
+            margin: '0 auto',
+            marginTop: '0',
+            padding: '0 8px',
+            backgroundColor: theme.palette.accentSecondary.main,
+          }}
+        >
           <Grid
-            mt={-13}
+            mt={15}
             container
             columnSpacing={4}
             direction="row"
             justifyContent="center"
             alignItems="flex-start"
           >
-            <Grid container item md={6} xs={12} rowSpacing={2}>
+            <Grid
+              container
+              item
+              md={6}
+              xs={12}
+              rowSpacing={2}
+              sx={{ backgroundColor: theme.palette.secondary.main }}
+            >
               <Grid item xs={12}>
                 <Gallery images={mockProducImages} />
               </Grid>
@@ -71,18 +82,20 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                     )}
                   </>
                 </Accordion>
+                {mockChartData && (
+                  <Grid item xs={12}>
+                    <PriceChart data={mockChartData} />
+                  </Grid>
+                )}
               </Grid>
             </Grid>
 
             <Grid container item md={6} xs={12} rowSpacing={2}>
               <Grid item xs={12}>
-                <ProductCard cardData={mockProductData} />
+                <Sticky enabled={true} top={192} bottomBoundary={'#footer'}>
+                  <ProductCard cardData={mockProductData} />
+                </Sticky>
               </Grid>
-              {mockChartData && (
-                <Grid item xs={12}>
-                  <PriceChart data={mockChartData} />
-                </Grid>
-              )}
             </Grid>
           </Grid>
         </Box>
