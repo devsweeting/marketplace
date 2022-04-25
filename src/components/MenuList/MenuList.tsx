@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { Button } from '../../components/Button';
@@ -6,7 +6,6 @@ import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { SortBy } from '../../domain/Category';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { SkinContext } from '../../../styles/skin-context';
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -29,33 +28,30 @@ const StyledMenu = styled((props: MenuProps) => (
   },
 }));
 
-export const MenuList = ({ handleSelect }: { handleSelect: any }) => {
-  const { skin } = useContext(SkinContext);
+export interface MenuListProps {
+  handleSelect: () => void;
+  buttonType: 'text' | 'outlined' | 'contained' | undefined;
+  buttonSize: 'small' | 'medium' | 'large' | undefined;
+}
 
+export const MenuList: React.FC<MenuListProps> = ({ handleSelect, buttonType, buttonSize }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const setSortValue = (e: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(null);
-    handleSelect(e);
+    const { id } = e.target as HTMLElement;
+    id && handleSelect(id);
   };
 
   return (
-    <Box mt={3}>
+    <Box>
       <Button
-        sx={{
-          fontWeight: skin.sortButton.fontWeight,
-          fontSize: skin.sortButton.fontSize,
-          lineHeight: skin.sortButton.lineHeight,
-          borderRadius: skin.sortButton.borderRadius,
-          width: skin.sortButton.width,
-          height: skin.sortButton.height,
-          justifyContent: skin.sortButton.justifyContent,
-          padding: skin.sortButton.padding,
-        }}
-        variant="contained"
+        variant={buttonType}
+        size={buttonSize}
         disableElevation
         onClick={handleClick}
         endIcon={<ArrowDropDownIcon />}

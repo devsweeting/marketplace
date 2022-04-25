@@ -9,6 +9,9 @@ import { SortBy } from '../../domain/Category';
 import { Button } from '../../components/Button';
 import { MenuList } from '../../components/MenuList/';
 import { useCategoryPageStyles } from '../../../styles/CategoryPage.styles';
+import { useTheme } from '@mui/styles';
+import { useMediaQuery } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const CategoryPage = () => {
   const classes = useCategoryPageStyles();
@@ -16,11 +19,21 @@ const CategoryPage = () => {
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
   const [items, setItems] = useState(listViewData.assets);
   const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+  const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
+  const theme = useTheme();
+  const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const handleSortType = (e: React.MouseEvent<HTMLElement>) => {
-    const { id } = e.target as HTMLElement;
+  const handleSortType = (id: string) => {
     setSortType(id);
   };
+
+  const toggleVisibility = (isVisible: boolean) => {
+    setSidebarVisible(isVisible);
+  };
+
+  useEffect(() => {
+    matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
+  }, [matchesDesktop]);
 
   useEffect(() => {
     let sorted: any;
@@ -55,29 +68,32 @@ const CategoryPage = () => {
   return (
     <Box className={classes.wrapper}>
       <Grid mt={15} container columnSpacing={4}>
-        <Grid
-          className={classes.hideOnMobile}
-          container
-          item
-          md={3}
-          xs={12}
-          rowSpacing={2}
-          sx={{
-            backgroundColor: skin.listItem.filterBackgroundColor,
-          }}
-        >
-          <Grid item xs={12}>
-            <ClearAllFilter
-              handleClick={clearAllSelectedFilters}
-              isFilterButtonVisible={checkedFilters.length}
-            />
-            <FilterMenu
-              categoriesList={mockCategoryFilters}
-              handleFiltersChange={handleFiltersChange}
-              checkedFilters={checkedFilters}
-            />
+        {isSidebarVisible && (
+          <Grid
+            className={classes.sideBar}
+            container
+            item
+            md={3}
+            xs={12}
+            rowSpacing={2}
+            sx={{
+              backgroundColor: skin.listItem.filterBackgroundColor,
+            }}
+          >
+            <Grid item xs={12}>
+              <ClearAllFilter
+                clearSelectedFilters={clearAllSelectedFilters}
+                toggleVisibility={toggleVisibility}
+                isFilterButtonVisible={checkedFilters.length}
+              />
+              <FilterMenu
+                categoriesList={mockCategoryFilters}
+                handleFiltersChange={handleFiltersChange}
+                checkedFilters={checkedFilters}
+              />
+            </Grid>
           </Grid>
-        </Grid>
+        )}
         <Grid container item md={9} xs={12} rowSpacing={2}>
           <Grid
             container
@@ -91,21 +107,54 @@ const CategoryPage = () => {
               <Typography variant="h2" component="h2" mb={1}>
                 Explore
               </Typography>
+              {!matchesDesktop && (
+                <Box
+                  className={classes.hideOnDesktop}
+                  my={2}
+                  sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}
+                >
+                  <Button
+                    onClick={() => toggleVisibility(true)}
+                    endIcon={<SettingsIcon />}
+                    variant="contained"
+                    size="small"
+                  >
+                    Filter
+                  </Button>
+
+                  <MenuList
+                    handleSelect={handleSortType}
+                    buttonType="outlined"
+                    buttonSize="medium"
+                  />
+                </Box>
+              )}
               <Typography variant="body1" component="p">
                 {listViewData.asset_number === 1
                   ? `${listViewData.asset_number} asset`
                   : `${listViewData.asset_number} assets`}
               </Typography>
             </Box>
-            <Box className={classes.hideOnMobile}>
-              <MenuList handleSelect={handleSortType} />
-            </Box>
+            {matchesDesktop && (
+              <Box
+                mt={3}
+                // className={classes.hideOnMobile}
+              >
+                <MenuList
+                  handleSelect={handleSortType}
+                  buttonType="contained"
+                  buttonSize="medium"
+                />
+              </Box>
+            )}
           </Grid>
           <Grid>
             <ListItem listItemData={items} />
           </Grid>
           <Grid xs={12} sx={{ textAlign: 'center' }}>
-            <Button sx={{ width: '280px' }}>LOAD MORE</Button>
+            <Button sx={{ marginTop: { xs: '36px', md: '95px' } }} size="large">
+              LOAD MORE
+            </Button>
             <Typography
               variant="body2"
               component="p"

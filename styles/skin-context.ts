@@ -1,6 +1,12 @@
 import React from 'react';
+// const theme = useTheme(); dobać kolory
 export const skins = {
   jump: {
+    logo: {
+      image: '/images/logoJump.svg',
+      width: 112,
+      height: 52,
+    },
     sidebar: {
       borderRight: 4,
     },
@@ -14,7 +20,7 @@ export const skins = {
         fontWeight: '400',
       },
     },
-    logo: '/images/logoJump.svg',
+
     borderBoxBackground: '/images/detail_page.png',
     listItem: {
       backgroundImage: '/images/list/partnerBackgroundItem.svg',
@@ -30,17 +36,13 @@ export const skins = {
         color: 'rgba(0, 0, 0, 0.87)',
       },
     },
-    sortButton: {
-      fontWeight: 400,
-      fontSize: '24px',
-      lineHeight: '29.21px',
-      width: 280,
-      height: 41,
-      padding: '6px 16px',
-      justifyContent: 'space-between',
-    },
   },
   pwcc: {
+    logo: {
+      image: '/images/logoPWCC.svg',
+      width: 134,
+      height: 33,
+    },
     sidebar: {
       borderRight: 0,
     },
@@ -55,7 +57,6 @@ export const skins = {
         fontWeight: '700',
       },
     },
-    logo: '/images/logoPWCC.svg',
     borderBoxBackground: '',
     listItem: {
       backgroundImage: '',
@@ -71,16 +72,6 @@ export const skins = {
         letterSpacing: '0.15px',
         color: '#00',
       },
-    },
-    sortButton: {
-      fontWeight: 700,
-      fontSize: '18px',
-      lineHeight: '22px',
-      borderRadius: '4px',
-      width: 280,
-      height: 34,
-      padding: '6px 16px',
-      justifyContent: 'space-between',
     },
   },
 };

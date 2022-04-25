@@ -90,6 +90,13 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          zIndex: 100,
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -135,6 +142,15 @@ const theme = createTheme({
           padding: '0 8px',
           border: '2px solid rgba(0,0,0,0.5) !important',
         },
+        outlinedSizeMedium: {
+          width: 139.5,
+          height: 41,
+          fontWeight: 400,
+          fontSize: 24,
+          lieHeight: 29,
+          justifyContent: 'space-between',
+          padding: '0 16px',
+        },
         contained: {
           fontFamily: 'League Gothic',
           backgroundColor: '#000',
@@ -154,6 +170,30 @@ const theme = createTheme({
             backgroundColor: 'rgba(0,0,0,0.8)',
             borderColor: 'rgba(0,0,0,0.8)',
           },
+        },
+        containedSizeLarge: {
+          width: 280,
+        },
+        containedSizeMedium: {
+          fontWeight: 400,
+          fontSize: '24px',
+          lineHeight: '29.21px',
+          width: 280,
+          height: 41,
+          padding: '6px 16px',
+          display: 'flex',
+          justifyContent: 'space-between',
+        },
+        containedSizeSmall: {
+          width: 139.5,
+          height: 41,
+          fontWeight: 400,
+          fontSize: '24px',
+          lineHeight: '29.21px',
+          letterSpacing: '0.15px',
+          padding: '0 16px',
+          display: 'flex',
+          justifyContent: 'space-between',
         },
       },
     },

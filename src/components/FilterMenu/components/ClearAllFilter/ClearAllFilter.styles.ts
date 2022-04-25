@@ -11,6 +11,20 @@ export const useClearAllFilter = makeStyles(
       justifyContent: 'space-between',
       alignItems: 'center',
     },
+    closeButton: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
+    arrowIcon: {
+      cursor: 'pointer',
+      paddingRight: theme.spacing(1),
+      fontSize: '46px',
+      ['@media (min-width:900px)']: {
+        display: 'none',
+      },
+    },
   }),
   { name: 'clearAllFilter' },
 );

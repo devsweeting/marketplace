@@ -95,6 +95,13 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          zIndex: 100,
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
@@ -141,7 +148,23 @@ const theme = createTheme({
           boxSizing: 'border-box',
           color: '#000',
           padding: '0 13px',
-          border: '2px solid rgba(0,0,0,0.5) !important',
+        },
+        outlinedSizeSmall: {
+          border: '2px solid rgba(0,0,0,0.5)',
+        },
+        outlinedSizeMedium: {
+          width: 139.5,
+          height: 45,
+          borderRadius: '34px',
+          fontFamily: 'Montserrat',
+          fontSize: 14,
+          lieHeight: 17,
+          fontWeight: 700,
+          backgroundColor: 'transparent',
+          boxSizing: 'border-box',
+          color: '#000',
+          padding: '0 13px',
+          border: '2px solid #FFDD00',
         },
         contained: {
           borderRadius: '34px',
@@ -162,6 +185,30 @@ const theme = createTheme({
             backgroundColor: 'rgba(255, 221, 0, 0.8)',
             borderColor: 'rgba(255, 221, 0, 0.8)',
           },
+        },
+        containedSizeLarge: {
+          width: 280,
+        },
+        containedSizeMedium: {
+          fontWeight: 700,
+          fontSize: '18px',
+          lineHeight: '22px',
+          borderRadius: '4px',
+          width: 280,
+          height: 34,
+          padding: '6px 16px',
+          justifyContent: 'space-between',
+        },
+        containedSizeSmall: {
+          width: 139.5,
+          height: 45,
+          fontWeight: 700,
+          fontSize: 14,
+          lineHeight: '150%',
+          letterSpacing: '0.15px',
+          borderRadius: '44px',
+          display: 'flex',
+          justifyContent: 'space-between',
         },
       },
     },

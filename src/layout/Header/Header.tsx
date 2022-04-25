@@ -36,10 +36,10 @@ export const Header = () => {
             sx={{ color: '#000', borderImageSource: `url(${skin.borderBoxBackground})` }}
           >
             <Image
-              src={skin.logo}
+              src={skin.logo.image}
               alt={'logo'}
-              width="147px"
-              height="43px"
+              width={skin.logo.width}
+              height={skin.logo.height}
               layout="fixed"
               onClick={handleClick}
             />
