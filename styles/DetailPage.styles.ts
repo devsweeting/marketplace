@@ -7,6 +7,12 @@ export const useDetailPageStyles = makeStyles(({ theme }) => ({
   //   // backgroundColor: theme.palette.accentSecondary.main,
   // },
   stickyItem: {},
+  leftColumn: {
+    backgroundPosition: 'top right',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '30%',
+    backgroundImage: 'url(/images/list/gallery-background.svg)',
+  },
 
   // wrapper: {
   //   maxWidth: 1440,

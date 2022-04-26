@@ -9,7 +9,6 @@ export const useGalleryStyles = makeStyles(
       },
     },
     imageContainer: {
-      backgroundColor: theme.palette.primary.main,
       borderRadius: theme.spacing(2),
       height: 400,
       width: '100%',
@@ -18,7 +17,7 @@ export const useGalleryStyles = makeStyles(
       boxSizing: 'content-box',
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     image: {
       height: '100%',
@@ -27,8 +26,8 @@ export const useGalleryStyles = makeStyles(
     thumbnailContainer: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'flex-start',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
       [theme.breakpoints.down('md')]: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -37,11 +36,11 @@ export const useGalleryStyles = makeStyles(
       },
     },
     thumbnailItem: {
-      backgroundColor: theme.palette.primary.main,
       textAlign: 'center',
-      borderRadius: theme.spacing(2),
-      maxHeight: 139,
-      maxWidth: 139,
+      border: `1px solid ${theme.palette.primary.main}`,
+      borderRadius: theme.spacing(1),
+      maxHeight: 67,
+      maxWidth: 85,
       height: '100%',
       width: '100%',
       marginBottom: theme.spacing(1),

@@ -24,6 +24,7 @@ export const skins = {
     borderBoxBackground: '/images/detail_page.png',
     listItem: {
       backgroundImage: '/images/list/partnerBackgroundItem.svg',
+      backgroundDecoration: '/images/list/gallery-background.svg',
       filterBackgroundColor: '#fff',
       cryptoValue: {
         fontSize: '24px',
@@ -60,6 +61,7 @@ export const skins = {
     borderBoxBackground: '',
     listItem: {
       backgroundImage: '',
+      backgroundDecoration: '',
       filterBackgroundColor: 'rgba(255, 221, 0, 1)',
       cryptoValue: {
         fontSize: '18px',

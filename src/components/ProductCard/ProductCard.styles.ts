@@ -56,7 +56,7 @@ export const useProductStyles = makeStyles(
       )}`,
     },
     priceContainer: {
-      padding: theme.spacing(3),
+      padding: theme.spacing(2),
       background: theme.palette.secondary.main,
       borderRadius: theme.spacing(1),
     },

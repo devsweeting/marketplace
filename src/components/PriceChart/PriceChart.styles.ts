@@ -5,6 +5,10 @@ export const usePriceChartStyles = makeStyles(
     chartContainer: {
       padding: `${theme.spacing(2)} ${theme.spacing(4)}`,
       maxHeight: 400,
+      boxShadow: 'none',
+      borderRadius: 0,
+      borderLeft: '1px solid #efefef',
+      borderBottom: '1px solid #efefef',
     },
     labelsContainer: {
       display: 'flex',

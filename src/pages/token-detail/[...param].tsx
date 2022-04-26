@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Sticky from 'react-stickynode';
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
 import { Accordion } from '../../components/Accordion';
@@ -8,9 +8,19 @@ import { Accordion } from '../../components/Accordion';
 import { mockProductData, mockProducImages, mockChartData } from '../../__mocks__/mockApiData';
 import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
+import { SimpleTable } from '../../components/SimpleTable';
+import { Properties } from '../../components/Properties';
+import { DescriptionText } from '../../components/DescriptionText/DescriptionText';
 import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
 import { useTheme } from '@mui/styles';
+import { SkinContext } from '../../../styles/skin-context';
+import EnhancedTable from '../../components/EnhancedTable/EnhancedTable';
+import { Button } from '../../components/Button';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Card } from '../../components/ListItem/components/Card';
+import { mockCard } from '../../__mocks__/mockCategoryViewApiData';
+
 // import { useRouter } from 'next/router';
 
 // link to example NFT detail page:
@@ -21,8 +31,10 @@ type Trait = Record<string, string>;
 const DetailPage = ({ nftData }: { nftData: any }) => {
   // const router = useRouter();
   // const { param } = router.query;
-  console.log(nftData);
+  console.log('card', mockCard);
+
   const theme = useTheme();
+  const { skin } = useContext(SkinContext);
 
   const classes = useDetailPageStyles();
 
@@ -43,8 +55,8 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
           sx={{
             maxWidth: 1440,
             margin: '0 auto',
-            marginTop: '0',
-            padding: '0 8px',
+            // marginTop: '0',
+            // padding: '0 8px',
             backgroundColor: theme.palette.accentSecondary.main,
           }}
         >
@@ -62,13 +74,20 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
               md={6}
               xs={12}
               rowSpacing={2}
-              sx={{ backgroundColor: theme.palette.secondary.main }}
+              className={classes.leftColumn}
+              sx={{
+                backgroundColor: theme.palette.secondary.main,
+                // backgroundImage: `url(${skin.listItem.backgroundDecoration})`,
+              }}
             >
               <Grid item xs={12}>
                 <Gallery images={mockProducImages} />
               </Grid>
               <Grid item xs={12}>
-                <Accordion>
+                <DescriptionText text={nftData.description} />
+
+                <Properties />
+                {/* <Accordion>
                   <>
                     <AccordionTextItem title={'Description'} isExpanded={true}>
                       {nftData.description}
@@ -81,21 +100,91 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                       />
                     )}
                   </>
-                </Accordion>
+                </Accordion> */}
                 {mockChartData && (
                   <Grid item xs={12}>
                     <PriceChart data={mockChartData} />
                   </Grid>
                 )}
               </Grid>
+              <Grid item xs={12}>
+                <EnhancedTable />
+              </Grid>
+              <Grid item xs={12}>
+                <SimpleTable />
+              </Grid>
             </Grid>
 
             <Grid container item md={6} xs={12} rowSpacing={2}>
               <Grid item xs={12}>
-                <Sticky enabled={true} top={192} bottomBoundary={'#footer'}>
+                <Sticky enabled={true} top={192} bottomBoundary={2000}>
                   <ProductCard cardData={mockProductData} />
                 </Sticky>
               </Grid>
+            </Grid>
+            <Grid
+              container
+              item
+              xs={12}
+              sx={{ backgroundColor: theme.palette.secondary.main, width: '100%' }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  flexWrap: 'no-wrap',
+                  overflowX: 'scroll',
+                }}
+              >
+                <Box sx={{ minWidth: 300 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 300 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 300 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 200 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 200 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 200 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 200 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 200 }}>
+                  <Card item={mockCard} />
+                </Box>
+                <Box sx={{ minWidth: 200 }}>
+                  <Card item={mockCard} />
+                </Box>
+              </Box>
+              <Button
+                endIcon={
+                  <ArrowForwardIcon
+                    sx={{
+                      fontSize: '96px !important',
+                    }}
+                  />
+                }
+                variant="contained"
+                size="large"
+                sx={{
+                  width: '100%',
+                  height: '184px',
+                  borderRadius: '146px',
+                  fontWeight: '800',
+                  fontSize: '96px',
+                }}
+              >
+                EXPLORE MORE
+              </Button>
             </Grid>
           </Grid>
         </Box>

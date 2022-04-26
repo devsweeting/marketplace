@@ -100,6 +100,35 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          scrollbarColor: '#8f9094 #e5e5e5',
+          '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
+            backgroundColor: '#e5e5e5',
+            borderRadius: 8,
+          },
+          '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
+            borderRadius: 8,
+            backgroundColor: '#8f9094',
+            minHeight: 24,
+            // border: '3px solid #2b2b2b',
+          },
+          '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
+            backgroundColor: '#959595',
+          },
+          '&::-webkit-scrollbar-thumb:active, & *::-webkit-scrollbar-thumb:active': {
+            backgroundColor: '#959595',
+          },
+          '&::-webkit-scrollbar-thumb:hover, & *::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#959595',
+          },
+          '&::-webkit-scrollbar-corner, & *::-webkit-scrollbar-corner': {
+            backgroundColor: '#2b2b2b',
+          },
+        },
+      },
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {

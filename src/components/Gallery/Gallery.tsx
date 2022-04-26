@@ -19,7 +19,7 @@ export const Gallery = ({ images }: { images: string[] }) => {
   return (
     <>
       <Grid container className={classes.galleryContainer}>
-        <Grid container item md={3} xs={12} className={classes.thumbnailContainer}>
+        <Grid container item md={4} xs={12} className={classes.thumbnailContainer}>
           {images.map((image, index) => {
             return (
               <Grid className={classes.thumbnailItem} key={`${index}${image}`}>
@@ -35,14 +35,14 @@ export const Gallery = ({ images }: { images: string[] }) => {
             );
           })}
         </Grid>
-        <Grid container item md={9} xs={12}>
+        <Grid container item md={8} xs={12}>
           <Grid item md={12} className={classes.imageContainer}>
             <img
               className={classes.image}
               src={mainImage}
               alt="Picture of the product"
-              width={233}
-              height={345}
+              width={337}
+              height={568}
             />
           </Grid>
         </Grid>
