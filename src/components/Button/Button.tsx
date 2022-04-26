@@ -11,6 +11,7 @@ export const Button: React.FC<MaterialButtonProps> = ({
   children,
   className,
   variant = 'contained',
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ...props
 }) => {
   const classes = useButtonStyles();

@@ -22,7 +22,7 @@ interface MyAppProps extends AppProps {
 }
 
 export default function MyApp(props: MyAppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const { /* Component, */ emotionCache = clientSideEmotionCache, /* pageProps */ } = props;
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -32,7 +32,7 @@ export default function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <Header />
-        <Component {...pageProps} />
+        {/* <Component {...pageProps} /> */}
       </ThemeProvider>
     </CacheProvider>
   );
