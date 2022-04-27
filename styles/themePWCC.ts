@@ -107,11 +107,13 @@ const theme = createTheme({
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: '#e5e5e5',
             borderRadius: 8,
+            width: '10px',
+            height: '10px',
           },
           '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
             borderRadius: 8,
             backgroundColor: '#8f9094',
-            minHeight: 24,
+            minHeight: 8,
             // border: '3px solid #2b2b2b',
           },
           '&::-webkit-scrollbar-thumb:focus, & *::-webkit-scrollbar-thumb:focus': {
@@ -149,23 +151,6 @@ const theme = createTheme({
           '& .MuiSelect-select': {
             color: '#fff',
           },
-        },
-      },
-    },
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          border: '1px solid rgba(255, 255, 255, 0.23)',
-          paddingLeft: '10px',
-          borderRadius: '4px !important',
-          height: '56px',
-          fontFamily: 'Montserrat',
-          color: '#000 !important',
-          fontSize: 'calc(10px + 0.4vw) !important',
-          fontWeight: '400 !important',
-          lineHeight: '150 !important',
-          letterSpacing: '0.15px !important',
-          textTransform: 'none',
         },
       },
     },
@@ -244,6 +229,34 @@ const theme = createTheme({
           borderRadius: '44px',
           display: 'flex',
           justifyContent: 'space-between',
+        },
+      },
+    },
+    MuiTablePagination: {
+      styleOverrides: {
+        root: {
+          overflow: 'hidden',
+        },
+        selectLabel: {
+          fontFamily: 'Rubik',
+          fontWeight: 400,
+          fontSize: '12px',
+          lineHeight: '14px',
+          letterSpacing: '0.4px',
+          textDecoration: 'none',
+          color: 'rgba(0,0,0,0.6)',
+        },
+        displayedRows: {
+          fontFamily: 'Rubik',
+          fontWeight: 400,
+          fontSize: '12px',
+          lineHeight: '14px',
+          letterSpacing: '0.4px',
+          textDecoration: 'none',
+          color: 'rgba(0,0,0,0.87)',
+        },
+        selectRoot: {
+          fontSize: '12px',
         },
       },
     },

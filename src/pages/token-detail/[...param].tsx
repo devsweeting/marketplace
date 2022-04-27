@@ -21,6 +21,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card } from '../../components/ListItem/components/Card';
 import { mockCards } from '../../__mocks__/mockCategoryViewApiData';
 import { Carousel } from '../../components/Carousel';
+import Image from 'next/image';
 
 // import { useRouter } from 'next/router';
 
@@ -55,8 +56,6 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
           sx={{
             maxWidth: 1440,
             margin: '0 auto',
-            // marginTop: '0',
-            // padding: '0 8px',
             backgroundColor: theme.palette.accentSecondary.main,
           }}
         >
@@ -71,8 +70,10 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             <Grid
               container
               item
+              mt={0}
               md={6}
               xs={12}
+              px={12.5}
               rowSpacing={2}
               className={classes.leftColumn}
               sx={{
@@ -94,7 +95,15 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                   </Grid>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{ position: 'relative' }}>
+                <Box className={classes.fixedImage}>
+                  <Image
+                    src="/images/nftDetail/gallery/product1a.svg"
+                    alt="asset"
+                    width={117}
+                    height={195}
+                  />
+                </Box>
                 <EnhancedTable />
               </Grid>
               <Grid item xs={12}>
@@ -104,7 +113,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
             <Grid container item md={6} xs={12} rowSpacing={2}>
               <Grid item xs={12}>
-                <Sticky enabled={true} top={192} bottomBoundary={2000}>
+                <Sticky enabled={true} top={192} bottomBoundary={2500}>
                   <ProductCard cardData={mockProductData} />
                 </Sticky>
               </Grid>
@@ -112,6 +121,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             <Grid
               container
               item
+              px={12.5}
               xs={12}
               sx={{ backgroundColor: theme.palette.secondary.main, width: '100%' }}
             >
@@ -134,7 +144,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                     fontWeight: '800',
                     fontSize: '96px',
                     lineHeight: '96px',
-                    marginBottom: '20px',
+                    marginBottom: '96px',
                   }}
                 >
                   EXPLORE MORE

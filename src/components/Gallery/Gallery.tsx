@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { useGalleryStyles } from './Gallery.styles';
+import classNames from 'classnames';
 
 export const Gallery = ({ images }: { images: string[] }) => {
   const classes = useGalleryStyles();
@@ -18,25 +19,43 @@ export const Gallery = ({ images }: { images: string[] }) => {
 
   return (
     <>
-      <Grid container className={classes.galleryContainer}>
-        <Grid container item md={4} xs={12} className={classes.thumbnailContainer}>
+      <Grid container className={classes.galleryContainer} py={12}>
+        <Grid container item pt={0} md={4} xs={12} className={classes.thumbnailContainer}>
           {images.map((image, index) => {
             return (
-              <Grid className={classes.thumbnailItem} key={`${index}${image}`}>
-                <img
-                  className={classes.thumbnail}
-                  src={image}
-                  alt="product thumbnail"
-                  width={80}
-                  height={114}
-                  onClick={handleImage}
-                />
-              </Grid>
+              <Box
+                className={classNames(classes.thumbnailWrapper, index === 0 ? classes.faded : null)}
+                key={`${index}${image}`}
+              >
+                <Box className={classes.thumbnailItem}>
+                  <img
+                    className={classes.thumbnail}
+                    src={image}
+                    alt="product thumbnail"
+                    width={80}
+                    height={114}
+                    onClick={handleImage}
+                  />
+                </Box>
+                <Typography
+                  variant="body2"
+                  component="p"
+                  sx={{
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    fontWeight: 400,
+                    fontFamily: 'Rubik',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  Front
+                </Typography>
+              </Box>
             );
           })}
         </Grid>
-        <Grid container item md={8} xs={12}>
-          <Grid item md={12} className={classes.imageContainer}>
+        <Grid container pt={0} item md={8} xs={12}>
+          <Grid item pt={0} md={12} className={classes.imageContainer}>
             <img
               className={classes.image}
               src={mainImage}

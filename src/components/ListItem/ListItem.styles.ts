@@ -5,7 +5,7 @@ export const useListItemStyles = makeStyles(
     wrapper: {
       display: 'flex',
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       alignItems: 'center',
       wrap: 'wrap',
       '@media (max-width: 900px)': {

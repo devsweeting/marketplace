@@ -22,7 +22,7 @@ export const Properties = () => {
         <Divider />
       </Box>
       <Typography variant="h4" component="h2" mb={3} sx={{ color: '#000' }}>
-        <Grid container spacing={2}>
+        <Grid container>
           {traits.map((trait) => (
             <PropertyBox trait={trait} key={trait.property} />
           ))}

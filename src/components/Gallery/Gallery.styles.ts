@@ -12,17 +12,18 @@ export const useGalleryStyles = makeStyles(
       borderRadius: theme.spacing(2),
       height: 400,
       width: '100%',
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
+      paddingBottom: theme.spacing(0),
       boxSizing: 'content-box',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'flex-start',
+      alignItems: 'flex-end',
     },
     image: {
       height: '100%',
       width: 'auto',
     },
+
     thumbnailContainer: {
       display: 'flex',
       flexDirection: 'column',
@@ -35,16 +36,16 @@ export const useGalleryStyles = makeStyles(
         marginTop: '20px',
       },
     },
-    thumbnailItem: {
+    thumbnailWrapper: {
       textAlign: 'center',
+      marginRight: theme.spacing(8),
+      marginTop: theme.spacing(2),
+    },
+    thumbnailItem: {
       border: `1px solid ${theme.palette.primary.main}`,
-      borderRadius: theme.spacing(1),
-      maxHeight: 67,
-      maxWidth: 85,
-      height: '100%',
-      width: '100%',
-      marginBottom: theme.spacing(1),
-      marginRight: '10px',
+      borderRadius: theme.spacing(0.5),
+      height: 64,
+      width: 64,
     },
     thumbnail: {
       height: '100%',
@@ -58,6 +59,9 @@ export const useGalleryStyles = makeStyles(
     carousel: {
       height: '100%',
       minHeight: 40,
+    },
+    faded: {
+      opacity: 0.3,
     },
   }),
   { name: 'gallery' },

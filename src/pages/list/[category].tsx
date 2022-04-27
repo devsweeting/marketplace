@@ -67,15 +67,20 @@ const CategoryPage = () => {
 
   return (
     <Box className={classes.wrapper}>
-      <Grid mt={15} container columnSpacing={4}>
+      <Grid
+        mt={15}
+        container
+        // columnSpacing={4}
+      >
         {isSidebarVisible && (
           <Grid
-            className={classes.sideBar}
+            className={classes.leftColumn}
             container
             item
             md={3}
             xs={12}
             rowSpacing={2}
+            // pl={12}
             sx={{
               backgroundColor: skin.listItem.filterBackgroundColor,
             }}
@@ -94,7 +99,7 @@ const CategoryPage = () => {
             </Grid>
           </Grid>
         )}
-        <Grid container item md={9} xs={12} rowSpacing={2}>
+        <Grid container item md={9} xs={12} rowSpacing={2} className={classes.rightColumn}>
           <Grid
             container
             item

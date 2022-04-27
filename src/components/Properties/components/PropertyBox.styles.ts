@@ -5,9 +5,9 @@ export const usePropertyBoxStyle = makeStyles(
     wrapper: {
       background: '#f8f8f8',
       width: '100%',
-      maxWidth: '180px',
+      maxWidth: '154px',
       borderRadius: theme.spacing(2),
-      margin: `0 ${theme.spacing(4)} ${theme.spacing(6)} 0`,
+      margin: `0 ${theme.spacing(2)} ${theme.spacing(4)} 0`,
       border: '1px solid #fff',
     },
     title: {

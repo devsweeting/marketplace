@@ -43,7 +43,7 @@ export const Header = () => {
               layout="fixed"
               onClick={handleClick}
             />
-            <Box className={classes.searchBoxContainer}>
+            <Box className={classes.searchBoxContainer} ml={3}>
               <SearchBox
                 iconColor={skin.header.searchIconColor}
                 borderRadius={true}

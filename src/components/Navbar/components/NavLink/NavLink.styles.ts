@@ -5,10 +5,10 @@ export const useNavLinkStyles = makeStyles(
   (theme) => ({
     navLink: {
       cursor: 'pointer',
-      marginRight: '36px',
+      marginLeft: theme.spacing(4),
       '@media (max-width:900px)': {
         color: theme.palette.accent.main,
-        marginRight: '24px',
+        marginLeft: theme.spacing(3),
       },
       '&:hover': {
         color: lighten(theme.palette.primary.main, 0.3),

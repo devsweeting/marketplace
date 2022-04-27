@@ -25,7 +25,7 @@ export const SimpleTable = ({
   // const { contact_id, token_id, token_type, supply, blockchain } = tableData;
   const { contact_id, token_id, token_type, supply, blockchain } = mockTraits;
   return (
-    <Box>
+    <Box pb={3} mt={6}>
       <Box mb={6}>
         <Divider />
       </Box>

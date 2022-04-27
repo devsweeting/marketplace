@@ -119,20 +119,20 @@ const theme = createTheme({
       },
     },
 
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          borderRadius: '4px !important',
-          height: '56px',
-          fontFamily: 'League Gothic !important',
-          color: '#000 !important',
-          fontSize: '18px !important',
-          fontWeight: '400 !important',
-          lineHeight: '22 !important',
-          letterSpacing: '0.15px !important',
-        },
-      },
-    },
+    // MuiInputBase: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderRadius: '4px !important',
+    //       height: '56px',
+    //       fontFamily: 'League Gothic !important',
+    //       color: '#000 !important',
+    //       fontSize: '18px !important',
+    //       fontWeight: '400 !important',
+    //       lineHeight: '22 !important',
+    //       letterSpacing: '0.15px !important',
+    //     },
+    //   },
+    // },
     MuiButton: {
       styleOverrides: {
         outlined: {

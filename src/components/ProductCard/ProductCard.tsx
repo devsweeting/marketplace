@@ -37,7 +37,7 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
   const { skin } = useContext(SkinContext);
   return (
     <Card className={classes.productContainer}>
-      <CardContent sx={{ padding: '16px 0' }}>
+      <CardContent sx={{ padding: '0' }}>
         <Box className={classes.flexWrapper}>
           <Typography component="p" variant="body1" className={classes.shareText}>
             Overstreet comic book collection

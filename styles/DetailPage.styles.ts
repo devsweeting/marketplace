@@ -6,12 +6,19 @@ export const useDetailPageStyles = makeStyles(({ theme }) => ({
   //   width: '100%',
   //   // backgroundColor: theme.palette.accentSecondary.main,
   // },
+  fixedImage: {
+    position: 'absolute',
+    top: 200,
+    right: -100,
+    transform: 'translateX(50%)',
+  },
   stickyItem: {},
   leftColumn: {
     backgroundPosition: 'top right',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '30%',
     backgroundImage: 'url(/images/list/gallery-background.svg)',
+    // padding: `0 100px`,
   },
 
   // wrapper: {

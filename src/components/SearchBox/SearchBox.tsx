@@ -4,6 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
+import { useSearchboxStyles } from './Searchbox.styles';
 
 interface SearchBoxProps {
   placeholder?: string;
@@ -17,6 +18,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   borderRadius = false,
   reverseTextColor = false,
 }) => {
+  const classes = useSearchboxStyles();
   const [value, setValue] = useState('');
   const { skin } = useContext(SkinContext);
 
@@ -25,7 +27,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   };
 
   return (
-    <FormControl variant="outlined" sx={{ width: '100%' }}>
+    <FormControl variant="outlined" className={classes.wrapper}>
       <OutlinedInput
         sx={{
           borderRadius: borderRadius && skin.header.searchInconBorderRadius,

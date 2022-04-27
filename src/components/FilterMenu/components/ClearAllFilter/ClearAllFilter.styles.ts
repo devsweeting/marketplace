@@ -10,6 +10,9 @@ export const useClearAllFilter = makeStyles(
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      ['@media (max-width:900px)']: {
+        paddingRight: 0,
+      },
     },
     closeButton: {
       display: 'flex',

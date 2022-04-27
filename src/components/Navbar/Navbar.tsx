@@ -23,7 +23,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
             {title}
           </NavLink>
         ))}
-        <Typography variant="h4" component="span" className={classes.searchIcon}>
+        <Typography variant="h4" component="span" className={classes.searchIcon} ml={3}>
           <SearchIcon />
         </Typography>
       </Stack>

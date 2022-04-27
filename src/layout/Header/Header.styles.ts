@@ -12,11 +12,14 @@ export const useHeaderStyles = makeStyles(
       alignItems: 'center',
       margin: '0 auto',
       width: '100%',
-      padding: `0`,
+      padding: `0 100px`,
       borderBottom: '4px solid',
       boxSizing: 'border-box',
       borderImageSlice: 1,
       color: theme.palette.primary.main,
+      '@media (max-width: 900px)': {
+        padding: `0 41px`,
+      },
       '& .MuiToolbar-root': {
         '@media (min-width: 600px)': {
           paddingRight: 0,

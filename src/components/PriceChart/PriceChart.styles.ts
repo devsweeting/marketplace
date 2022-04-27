@@ -3,24 +3,28 @@ import { makeStyles } from '@mui/styles';
 export const usePriceChartStyles = makeStyles(
   (theme) => ({
     chartContainer: {
-      padding: `${theme.spacing(2)} ${theme.spacing(4)}`,
       maxHeight: 400,
       boxShadow: 'none',
       borderRadius: 0,
-      borderLeft: '1px solid #efefef',
-      borderBottom: '1px solid #efefef',
     },
-    labelsContainer: {
+
+    flexContainer: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       padding: `0 ${theme.spacing(2)}`,
     },
+    priceContainer: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+    },
     soldPriceLabel: {
-      color: theme.palette.customGray.dark,
-      fontFamily: 'Roboto',
-      fontWeight: 500,
+      color: theme.palette.primary.main,
+      fontFamily: 'Montserrat',
+      fontWeight: 400,
       fontSize: '14px',
       lineHeight: '17px',
     },
@@ -34,6 +38,13 @@ export const usePriceChartStyles = makeStyles(
     },
     dateRangeButton: {
       color: theme.palette.customGray.dark,
+      paddingLeft: theme.spacing(2),
+    },
+    tabelWrapper: {
+      borderLeft: '1px solid #efefef',
+      borderBottom: '1px solid #efefef',
+      width: '100%',
+      height: 300,
     },
     active: {
       textDecoration: 'underline',
