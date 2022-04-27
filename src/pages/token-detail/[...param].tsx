@@ -19,7 +19,8 @@ import EnhancedTable from '../../components/EnhancedTable/EnhancedTable';
 import { Button } from '../../components/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card } from '../../components/ListItem/components/Card';
-import { mockCard } from '../../__mocks__/mockCategoryViewApiData';
+import { mockCards } from '../../__mocks__/mockCategoryViewApiData';
+import { Carousel } from '../../components/Carousel';
 
 // import { useRouter } from 'next/router';
 
@@ -31,7 +32,6 @@ type Trait = Record<string, string>;
 const DetailPage = ({ nftData }: { nftData: any }) => {
   // const router = useRouter();
   // const { param } = router.query;
-  console.log('card', mockCard);
 
   const theme = useTheme();
   const { skin } = useContext(SkinContext);
@@ -63,7 +63,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
           <Grid
             mt={15}
             container
-            columnSpacing={4}
+            // columnSpacing={4}
             direction="row"
             justifyContent="center"
             alignItems="flex-start"
@@ -87,20 +87,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 <DescriptionText text={nftData.description} />
 
                 <Properties />
-                {/* <Accordion>
-                  <>
-                    <AccordionTextItem title={'Description'} isExpanded={true}>
-                      {nftData.description}
-                    </AccordionTextItem>
-                    {traits && (
-                      <AccordionTableItem
-                        title={'Blockchain Info'}
-                        tableData={traits}
-                        isExpanded={false}
-                      />
-                    )}
-                  </>
-                </Accordion> */}
+
                 {mockChartData && (
                   <Grid item xs={12}>
                     <PriceChart data={mockChartData} />
@@ -128,63 +115,31 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
               xs={12}
               sx={{ backgroundColor: theme.palette.secondary.main, width: '100%' }}
             >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
-                  flexWrap: 'no-wrap',
-                  overflowX: 'scroll',
-                }}
-              >
-                <Box sx={{ minWidth: 300 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 300 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 300 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 200 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 200 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 200 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 200 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 200 }}>
-                  <Card item={mockCard} />
-                </Box>
-                <Box sx={{ minWidth: 200 }}>
-                  <Card item={mockCard} />
-                </Box>
-              </Box>
-              <Button
-                endIcon={
-                  <ArrowForwardIcon
-                    sx={{
-                      fontSize: '96px !important',
-                    }}
-                  />
-                }
-                variant="contained"
-                size="large"
-                sx={{
-                  width: '100%',
-                  height: '184px',
-                  borderRadius: '146px',
-                  fontWeight: '800',
-                  fontSize: '96px',
-                }}
-              >
-                EXPLORE MORE
-              </Button>
+              <Carousel data={mockCards} />
+              <Grid item xs={12}>
+                <Button
+                  endIcon={
+                    <ArrowForwardIcon
+                      sx={{
+                        fontSize: '96px !important',
+                      }}
+                    />
+                  }
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    width: '100%',
+                    height: '184px',
+                    borderRadius: '146px',
+                    fontWeight: '800',
+                    fontSize: '96px',
+                    lineHeight: '96px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  EXPLORE MORE
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
