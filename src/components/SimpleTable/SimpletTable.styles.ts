@@ -2,6 +2,11 @@ import { makeStyles } from '@mui/styles';
 
 export const useSimpleTableStyles = makeStyles(
   (theme) => ({
+    wrapper: {
+      [theme.breakpoints.down('md')]: {
+        paddingTop: theme.spacing(6),
+      },
+    },
     tableContainer: {
       boxShadow: 'none',
       padding: 0,
@@ -20,6 +25,7 @@ export const useSimpleTableStyles = makeStyles(
     // },
     boldText: {
       fontWeight: '700 !important',
+      paddingRight: '20px !important',
     },
     blueText: {
       color: theme.palette.customBlue.main,

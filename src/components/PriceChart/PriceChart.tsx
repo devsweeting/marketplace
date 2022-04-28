@@ -9,12 +9,16 @@ import { usePriceChartStyles } from './PriceChart.styles';
 export const PriceChart = ({ data }: { data: any }) => {
   const classes = usePriceChartStyles();
   return (
-    <Box>
-      <Box mb={6}>
+    <Box className={classes.wrapper}>
+      <Box my={6} sx={{ display: { xs: 'none', md: 'block' } }}>
         <Divider />
       </Box>
-      <Typography variant="h4" component="h2" mb={3} sx={{ color: '#000' }}>
-        Price history
+      <Typography
+        variant="h4"
+        component="h2"
+        sx={{ marginBottom: { xs: 2, md: 3 }, color: '#000' }}
+      >
+        Description
       </Typography>
 
       <Paper className={classes.chartContainer}>

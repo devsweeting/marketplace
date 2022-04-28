@@ -9,6 +9,10 @@ export const usePropertyBoxStyle = makeStyles(
       borderRadius: theme.spacing(2),
       margin: `0 ${theme.spacing(2)} ${theme.spacing(4)} 0`,
       border: '1px solid #fff',
+      [theme.breakpoints.down('md')]: {
+        maxWidth: '139.5px',
+        margin: `0 ${theme.spacing(1)} ${theme.spacing(2)} 0`,
+      },
     },
     title: {
       color: '#000',
@@ -24,12 +28,18 @@ export const usePropertyBoxStyle = makeStyles(
       fontWeight: 700,
       lineHeight: '32px',
       paddingTop: theme.spacing(2),
+      [theme.breakpoints.down('md')]: {
+        paddingTop: theme.spacing(1),
+      },
     },
     propertyDescription: {
       textAlign: 'center',
       textDecoration: 'none',
       paddingBottom: theme.spacing(2),
       textTransform: 'lowercase',
+      [theme.breakpoints.down('md')]: {
+        paddingBottom: theme.spacing(1),
+      },
     },
   }),
   { name: 'property-box' },

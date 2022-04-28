@@ -2,21 +2,17 @@ import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { Card, SingleListItem } from '../ListItem/components/Card';
 import { Button } from '../Button';
+import { useCarouselStyles } from './Carousel.styles';
 
 export const Carousel: React.FC<{ data: SingleListItem[] }> = ({ data }) => {
+  const classes = useCarouselStyles();
   return (
-    <Grid item xs={12} pt={12.5} pb={14}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant="h2" component="h4" sx={{ fontWeight: 700, fontSize: '42px' }}>
+    <Grid item xs={12} className={classes.wrapper}>
+      <Box className={classes.header}>
+        <Typography variant="h2" component="h4" className={classes.title}>
           More from collection
         </Typography>
-        <Button variant="outlined" size="large" sx={{ width: 232, height: 55, fontSize: '16px' }}>
+        <Button variant="outlined" size="large" className={classes.button}>
           whole collection
         </Button>
       </Box>
@@ -33,7 +29,7 @@ export const Carousel: React.FC<{ data: SingleListItem[] }> = ({ data }) => {
       >
         {data &&
           data.map((card, index) => (
-            <Box sx={{ minWidth: 280, marginRight: '46px' }} key={index}>
+            <Box key={index} className={classes.cardWrapper}>
               <Card item={card} />
             </Box>
           ))}

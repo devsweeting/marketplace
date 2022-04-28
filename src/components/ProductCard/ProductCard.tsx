@@ -10,6 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Divider from '@mui/material/Divider';
 import { SkinContext } from '../../../styles/skin-context';
+import classNames from 'classnames';
 
 export interface ProductDataProps {
   title: string;
@@ -38,7 +39,7 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
   return (
     <Card className={classes.productContainer}>
       <CardContent sx={{ padding: '0' }}>
-        <Box className={classes.flexWrapper}>
+        <Box className={classes.shareWrapper}>
           <Typography component="p" variant="body1" className={classes.shareText}>
             Overstreet comic book collection
           </Typography>
@@ -93,8 +94,10 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
                 </Box>
 
                 <Divider sx={{ padding: '16px 0' }} />
-                <CardActions className={classes.cardActions}>
-                  <Box className={classes.flexWrapper}>
+                <CardActions
+                //  className={classes.cardActions}
+                >
+                  <Box className={classNames(classes.flexWrapper, classes.centerOnMobile)}>
                     <Button variant="contained" size="small" className={classes.button}>
                       BUY NOW
                     </Button>

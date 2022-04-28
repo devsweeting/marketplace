@@ -19,7 +19,7 @@ export const Gallery = ({ images }: { images: string[] }) => {
 
   return (
     <>
-      <Grid container className={classes.galleryContainer} py={12}>
+      <Grid container className={classes.galleryContainer}>
         <Grid container item pt={0} md={4} xs={12} className={classes.thumbnailContainer}>
           {images.map((image, index) => {
             return (
@@ -37,17 +37,7 @@ export const Gallery = ({ images }: { images: string[] }) => {
                     onClick={handleImage}
                   />
                 </Box>
-                <Typography
-                  variant="body2"
-                  component="p"
-                  sx={{
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    fontWeight: 400,
-                    fontFamily: 'Rubik',
-                    textTransform: 'uppercase',
-                  }}
-                >
+                <Typography variant="body2" component="p" className={classes.thumbnailText}>
                   Front
                 </Typography>
               </Box>

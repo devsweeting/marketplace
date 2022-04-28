@@ -15,19 +15,25 @@ const traits = [
 
 export const Properties = () => {
   const classes = usePropertiesStyle();
-  console.log('properties', traits);
+
   return (
-    <Box>
-      <Box sx={{ my: 6 }}>
+    <Box className={classes.wrapper}>
+      <Box my={6} sx={{ display: { xs: 'none', md: 'block' } }}>
         <Divider />
       </Box>
-      <Typography variant="h4" component="h2" mb={3} sx={{ color: '#000' }}>
-        <Grid container>
-          {traits.map((trait) => (
-            <PropertyBox trait={trait} key={trait.property} />
-          ))}
-        </Grid>
+      <Typography
+        variant="h4"
+        component="h2"
+        sx={{ marginBottom: { xs: 2, md: 3 }, color: '#000' }}
+      >
+        Properties
       </Typography>
+
+      <Grid container>
+        {traits.map((trait) => (
+          <PropertyBox trait={trait} key={trait.property} />
+        ))}
+      </Grid>
     </Box>
   );
 };

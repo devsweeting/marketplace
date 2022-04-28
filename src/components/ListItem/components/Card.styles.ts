@@ -5,19 +5,23 @@ export const useCardStyles = makeStyles(
     container: {
       boxShadow: 'none',
       background: 'none',
-      width: 270,
+      maxWidth: 270,
       margin: `${theme.spacing(8)} ${theme.spacing(4)} ${theme.spacing(4)} 0`,
       '@media (max-width: 900px)': {
         margin: theme.spacing(2),
       },
       '@media (max-width:600px)': {
-        width: '139.5px',
+        width: '110px',
       },
     },
     itemType: {
       minHeight: 45,
       '@media (max-width: 600px)': {
         minHeight: 65,
+        fontFamily: 'Montserrat',
+        fontSize: '12px',
+        lineHeight: '21px',
+        fontWeight: '600',
       },
       '@media (max-width: 340px)': {
         minHeight: 0,
@@ -26,7 +30,11 @@ export const useCardStyles = makeStyles(
     itemTitle: {
       minHeight: 45,
       '@media (max-width: 600px)': {
-        minHeight: 145,
+        minHeight: 120,
+        fontFamily: 'Montserrat',
+        fontSize: '16px',
+        lineHeight: '19.5px',
+        fontWeight: '700',
       },
       '@media (max-width: 340px)': {
         minHeight: 0,

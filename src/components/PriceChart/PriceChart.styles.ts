@@ -2,6 +2,11 @@ import { makeStyles } from '@mui/styles';
 
 export const usePriceChartStyles = makeStyles(
   (theme) => ({
+    wrapper: {
+      [theme.breakpoints.down('md')]: {
+        paddingTop: theme.spacing(6),
+      },
+    },
     chartContainer: {
       maxHeight: 400,
       boxShadow: 'none',

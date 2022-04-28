@@ -2,7 +2,6 @@ import { makeStyles } from '@mui/styles';
 
 export const useHeaderStyles = makeStyles(
   (theme) => ({
-    wrapper: {},
     container: {
       maxWidth: `calc(1440px - ${theme.spacing(1)})`,
       height: '100%',

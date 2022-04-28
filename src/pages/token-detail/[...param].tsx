@@ -10,7 +10,7 @@ import { AccordionTableItem } from '../../components/Accordion/components/Accord
 import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
 import { SimpleTable } from '../../components/SimpleTable';
 import { Properties } from '../../components/Properties';
-import { DescriptionText } from '../../components/DescriptionText/DescriptionText';
+import { DescriptionText } from '../../components/DescriptionText';
 import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
 import { useTheme } from '@mui/styles';
@@ -22,6 +22,7 @@ import { Card } from '../../components/ListItem/components/Card';
 import { mockCards } from '../../__mocks__/mockCategoryViewApiData';
 import { Carousel } from '../../components/Carousel';
 import Image from 'next/image';
+import { ScrollUpWidget } from '../../components/ScrollUPWidget';
 
 // import { useRouter } from 'next/router';
 
@@ -73,85 +74,96 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
               mt={0}
               md={6}
               xs={12}
-              px={12.5}
               rowSpacing={2}
               className={classes.leftColumn}
               sx={{
-                backgroundColor: theme.palette.secondary.main,
-                // backgroundImage: `url(${skin.listItem.backgroundDecoration})`,
+                backgroundColor: {
+                  xs: theme.palette.accentSecondary.main,
+                  md: theme.palette.secondary.main,
+                },
               }}
             >
-              <Grid item xs={12}>
-                <Gallery images={mockProducImages} />
-              </Grid>
-              <Grid item xs={12}>
+              <Box className={classes.paddingOnMobile}>
+                <Grid item xs={12}>
+                  <Gallery images={mockProducImages} />
+                </Grid>
+                <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
+                  <ProductCard cardData={mockProductData} />
+                </Grid>
+              </Box>
+
+              <Grid
+                item
+                xs={12}
+                className={classes.paddingOnMobile}
+                sx={{
+                  background: { xs: theme.palette.secondary.main, md: 'none' },
+                  paddingTop: '0 !important',
+                }}
+              >
                 <DescriptionText text={nftData.description} />
-
                 <Properties />
-
                 {mockChartData && (
                   <Grid item xs={12}>
                     <PriceChart data={mockChartData} />
                   </Grid>
                 )}
-              </Grid>
-              <Grid item xs={12} sx={{ position: 'relative' }}>
-                <Box className={classes.fixedImage}>
-                  <Image
-                    src="/images/nftDetail/gallery/product1a.svg"
-                    alt="asset"
-                    width={117}
-                    height={195}
-                  />
+
+                <Box sx={{ position: 'relative' }}>
+                  <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
+                    <Image
+                      src="/images/nftDetail/gallery/product1a.svg"
+                      alt="asset"
+                      width={117}
+                      height={195}
+                    />
+                  </Box>
+                  <EnhancedTable />
                 </Box>
-                <EnhancedTable />
-              </Grid>
-              <Grid item xs={12}>
                 <SimpleTable />
               </Grid>
             </Grid>
 
-            <Grid container item md={6} xs={12} rowSpacing={2}>
+            <Grid
+              container
+              item
+              md={6}
+              xs={12}
+              rowSpacing={2}
+              sx={{ display: { xs: 'none', md: 'block' } }}
+            >
               <Grid item xs={12}>
                 <Sticky enabled={true} top={192} bottomBoundary={2500}>
                   <ProductCard cardData={mockProductData} />
                 </Sticky>
               </Grid>
             </Grid>
+
             <Grid
               container
               item
-              px={12.5}
+              // px={12.5}
               xs={12}
-              sx={{ backgroundColor: theme.palette.secondary.main, width: '100%' }}
+              sx={{
+                backgroundColor: theme.palette.secondary.main,
+                width: '100%',
+                padding: { xs: '0 40px', md: '0 100px' },
+              }}
             >
               <Carousel data={mockCards} />
               <Grid item xs={12}>
                 <Button
-                  endIcon={
-                    <ArrowForwardIcon
-                      sx={{
-                        fontSize: '96px !important',
-                      }}
-                    />
-                  }
+                  endIcon={<ArrowForwardIcon className={classes.exploreMoreIcon} />}
                   variant="contained"
                   size="large"
-                  sx={{
-                    width: '100%',
-                    height: '184px',
-                    borderRadius: '146px',
-                    fontWeight: '800',
-                    fontSize: '96px',
-                    lineHeight: '96px',
-                    marginBottom: '96px',
-                  }}
+                  className={classes.exploreMoreButton}
                 >
                   EXPLORE MORE
                 </Button>
               </Grid>
             </Grid>
           </Grid>
+          <ScrollUpWidget item={mockCards[0]} />
         </Box>
       )}
     </>

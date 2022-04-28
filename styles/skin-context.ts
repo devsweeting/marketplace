@@ -32,6 +32,7 @@ export const skins = {
       },
       dollarValue: {
         fontSize: '12px',
+        fontWeight: 400,
         lineHeight: '14px',
         letterSpacing: '1px',
         color: 'rgba(0, 0, 0, 0.87)',
@@ -70,6 +71,7 @@ export const skins = {
       dollarValue: {
         fontFamily: 'Montserrat',
         fontSize: '12px',
+        fontWeight: 400,
         lineHeight: '21px',
         letterSpacing: '0.15px',
         color: '#00',

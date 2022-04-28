@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Box, Typography, Divider } from '@mui/material';
+import { useEnhancedTableStyles } from './EnhancedTable.styles';
 
 interface Column {
   id: 'Event' | 'Price' | 'Qty' | 'From' | 'To' | 'Date';
@@ -66,6 +67,7 @@ const rows = [
 ];
 
 export default function EnhancedTable() {
+  const classes = useEnhancedTableStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -84,11 +86,11 @@ export default function EnhancedTable() {
         <Divider />
       </Box>
       <Typography variant="h4" component="h2" mb={3} sx={{ color: '#000' }}>
-        Event History
+        Price History
       </Typography>
 
       <Paper sx={{ width: '100%', boxShadow: 'none' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer sx={{ maxHeight: 440, paddingBottom: '20px' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -102,6 +104,7 @@ export default function EnhancedTable() {
                       fontFamily: 'League Gothic',
                       fontSize: '16px',
                     }}
+                    className={column.id === 'Event' ? classes.stickyPosition : 'undefined'}
                   >
                     {column.label}
                   </TableCell>
@@ -124,6 +127,7 @@ export default function EnhancedTable() {
                             fontFamily: 'Rubik',
                             fontSize: '12px',
                           }}
+                          className={column.id === 'Event' ? classes.stickyPosition : 'undefined'}
                         >
                           {column.format && typeof value === 'number'
                             ? column.format(value)

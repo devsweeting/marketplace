@@ -1,10 +1,10 @@
 import { makeStyles } from '@mui/styles';
 
-export const useDetailPageStyles = makeStyles(({ theme }) => ({
+export const useDetailPageStyles = makeStyles((theme) => ({
   // absoluteWrapper: {
   //   position: 'relative',
   //   width: '100%',
-  //   // backgroundColor: theme.palette.accentSecondary.main,
+  //   backgroundColor: theme.palette.accentSecondary.main,
   // },
   fixedImage: {
     position: 'absolute',
@@ -12,13 +12,42 @@ export const useDetailPageStyles = makeStyles(({ theme }) => ({
     right: -100,
     transform: 'translateX(50%)',
   },
-  stickyItem: {},
   leftColumn: {
     backgroundPosition: 'top right',
     backgroundRepeat: 'no-repeat',
     backgroundSize: '30%',
     backgroundImage: 'url(/images/list/gallery-background.svg)',
-    // padding: `0 100px`,
+    padding: `0 ${theme.spacing(12)}`,
+    [theme.breakpoints.down('md')]: {
+      padding: 0,
+    },
+  },
+  paddingOnMobile: {
+    [theme.breakpoints.down('md')]: {
+      padding: `0 ${theme.spacing(5)}`,
+    },
+  },
+  exploreMoreButton: {
+    width: '100%',
+    height: '184px',
+    borderRadius: theme.spacing(18),
+    fontWeight: '800',
+    fontSize: '96px',
+    lineHeight: '96px',
+    marginBottom: theme.spacing(12),
+    [theme.breakpoints.down('md')]: {
+      fontSize: '39px',
+      lineHeight: '39px',
+      borderRadius: theme.spacing(2.5),
+      justifyContent: 'space-between',
+      textAlign: 'left',
+    },
+  },
+  exploreMoreIcon: {
+    fontSize: '96px !important',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '32px !important',
+    },
   },
 
   // wrapper: {

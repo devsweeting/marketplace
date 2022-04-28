@@ -68,6 +68,7 @@ export const Card = ({ item }: { item: SingleListItem }) => {
           sx={{
             fontFamily: skin.listItem.dollarValue.fontFamily,
             fontSize: skin.listItem.dollarValue.fontSize,
+            fontWeight: skin.listItem.dollarValue.fontWeight,
             lineHeight: skin.listItem.dollarValue.lineHeight,
             letterSpacing: skin.listItem.dollarValue.letterSpacing,
             color: skin.listItem.dollarValue.color,

@@ -10,6 +10,23 @@ export const useProductStyles = makeStyles(
       background: 'none',
       // paddingBottom: theme.spacing(0.7),
       paddingBottom: '50px',
+      [theme.breakpoints.down('md')]: {
+        maxWidth: 'none',
+        marginTop: theme.spacing(4.5),
+      },
+    },
+    shareWrapper: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%',
+      [theme.breakpoints.down('md')]: {
+        display: 'flex',
+        flexDirection: 'column-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+      },
     },
     flexWrapper: {
       display: 'flex',
@@ -17,6 +34,14 @@ export const useProductStyles = makeStyles(
       justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
+      // [theme.breakpoints.down('md')]: {
+      //   flexDirection: 'column',
+      // },
+    },
+    centerOnMobile: {
+      [theme.breakpoints.down('md')]: {
+        flexDirection: 'column',
+      },
     },
     label: {
       width: '145px',
@@ -31,11 +56,20 @@ export const useProductStyles = makeStyles(
       fontSize: '16px',
       lineHeight: '32px',
       textDecoration: 'none',
+      [theme.breakpoints.down('md')]: {
+        fontSize: '16px',
+        fontWeight: 400,
+        lineHeigt: '28px',
+      },
     },
     shareText: {
       fontSize: '16px',
       textDecoration: 'underline',
       color: theme.palette.secondary.main,
+      [theme.breakpoints.down('md')]: {
+        marginTop: theme.spacing(1),
+        fontSize: '14px',
+      },
     },
     shareButton: {
       color: theme.palette.secondary.main,
@@ -47,6 +81,10 @@ export const useProductStyles = makeStyles(
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(6),
       color: theme.palette.secondary.main,
+      [theme.breakpoints.down('md')]: {
+        fontSize: '24px',
+        fontWeight: 700,
+      },
     },
     priceWrapper: {
       padding: theme.spacing(1),
@@ -78,6 +116,7 @@ export const useProductStyles = makeStyles(
       height: 55,
       fontSize: 16,
       justifyContent: 'center',
+      marginTop: theme.spacing(2.5),
     },
     watchListWrapper: {
       display: 'flex',
@@ -94,16 +133,17 @@ export const useProductStyles = makeStyles(
       textDecoration: 'none',
       fontSize: '12px',
       fontWeight: 700,
+      letter: '5%',
     },
     watchNumber: {
       fontFamily: 'Rubik',
       color: darken(theme.palette.secondary.main, 0.3),
     },
 
-    cardActions: {
-      padding: '0',
-      marginTop: 21,
-    },
+    // cardActions: {
+    //   padding: '0',
+    //   marginTop: 21,
+    // },
     // brandContainer: {
     //   textAlign: 'right',
     //   display: 'flex',
@@ -118,10 +158,6 @@ export const useProductStyles = makeStyles(
       fontWeight: 400,
       fontSize: 12,
       textTransform: 'uppercase',
-      // fontWeight: 500,
-      // fontSize: '14px',
-      // lineHeight: '22px',
-      // letter: 0.1,
     },
     // brandVerification: {
     //   display: 'flex',

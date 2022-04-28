@@ -1,6 +1,6 @@
 import makeStyles from '@mui/styles/makeStyles';
 
-export const useCategoryPageStyles = makeStyles(({ theme }) => ({
+export const useCategoryPageStyles = makeStyles((theme) => ({
   wrapper: {
     maxWidth: 1440,
     margin: '0 auto',

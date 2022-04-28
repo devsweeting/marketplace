@@ -25,11 +25,15 @@ export const SimpleTable = ({
   // const { contact_id, token_id, token_type, supply, blockchain } = tableData;
   const { contact_id, token_id, token_type, supply, blockchain } = mockTraits;
   return (
-    <Box pb={3} mt={6}>
-      <Box mb={6}>
+    <Box className={classes.wrapper}>
+      <Box my={6} sx={{ display: { xs: 'none', md: 'block' } }}>
         <Divider />
       </Box>
-      <Typography variant="h4" component="h2" mb={3} sx={{ color: '#000' }}>
+      <Typography
+        variant="h4"
+        component="h2"
+        sx={{ marginBottom: { xs: 2, md: 3 }, color: '#000' }}
+      >
         Blockchain info
       </Typography>
 
@@ -37,11 +41,22 @@ export const SimpleTable = ({
         <MaterialTable aria-label="accordion table">
           <TableBody>
             {contact_id && (
-              <TableRow>
+              <TableRow
+                sx={{
+                  verticalAlign: 'top',
+                }}
+              >
                 <TableCell component="th" scope="row" className={classes.boldText}>
                   Contact ID
                 </TableCell>
-                <TableCell align="right">{contact_id}</TableCell>
+                <TableCell
+                  align="right"
+                  sx={{
+                    wordBreak: 'break-all',
+                  }}
+                >
+                  {contact_id}
+                </TableCell>
               </TableRow>
             )}
             {token_id && (

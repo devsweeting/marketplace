@@ -24,8 +24,9 @@ export const Header = () => {
   };
   return (
     <>
-      <AppBar position="fixed" className={classes.wrapper}>
+      <AppBar position="fixed">
         <Toolbar
+          disableGutters
           sx={{
             backgroundColor: skin.header.headerBackground,
             height: '120px',
