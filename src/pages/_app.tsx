@@ -24,9 +24,9 @@ interface MyAppProps extends AppProps {
 }
 
 export default function MyApp(props: MyAppProps) {
-  const [skin, setSkin] = React.useState(skins.jump);
+  const [skin, setSkin] = React.useState(skins.pwcc);
 
-  const choosenTheme = skin === skins.jump ? themeJump : themePWCC;
+  const choosenTheme = skin === skins.pwcc ? themePWCC : themeJump;
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (

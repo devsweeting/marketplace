@@ -3,11 +3,11 @@ import Sticky from 'react-stickynode';
 import { Grid, Box, Typography } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
-import { Accordion } from '../../components/Accordion';
+// import { Accordion } from '../../components/Accordion';
 // import image from '../../../public/images/detail_page.png';
 import { mockProductData, mockProducImages, mockChartData } from '../../__mocks__/mockApiData';
-import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
-import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
+// import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
+// import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
 import { SimpleTable } from '../../components/SimpleTable';
 import { Properties } from '../../components/Properties';
 import { DescriptionText } from '../../components/DescriptionText';
@@ -182,7 +182,7 @@ export async function getServerSideProps(context: any) {
 
   const response = await fetch(
     // `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${token_id}.json`,
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/${contract_address}/${token_id}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/token/${contract_address}/${token_id}`,
   );
   const data = await response.json();
 
