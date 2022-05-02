@@ -17,6 +17,7 @@ import { mockCards } from '../../__mocks__/mockCategoryViewApiData';
 import { Carousel } from '../../components/Carousel';
 import Image from 'next/image';
 import { ScrollUpWidget } from '../../components/ScrollUPWidget';
+import Typography from '@mui/material/Typography';
 
 // link to example NFT detail page:
 // http://localhost:3001/v1/token/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08
@@ -44,7 +45,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
   return (
     <>
-      {nftData && (
+      {nftData ? (
         <Box
           sx={{
             maxWidth: 1440,
@@ -149,6 +150,10 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
           </Grid>
           <ScrollUpWidget item={mockCards[0]} />
         </Box>
+      ) : (
+        <Typography variant="h5" component="p" sx={{ paddingTop: '150px' }}>
+          Error, please refresh the page
+        </Typography>
       )}
     </>
   );
@@ -159,24 +164,28 @@ export default DetailPage;
 export async function getServerSideProps(context: any) {
   // contract_address = '0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185';
   // token_id = 920d16d7-208f-4955-98c2-f41bee527f08
-  const { param } = context.query;
+  try {
+    const { param } = context.query;
 
-  const contract_address = param[0];
-  const token_id = param[1];
+    const contract_address = param[0];
+    const token_id = param[1];
 
-  const response = await fetch(
-    // `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${token_id}.json`,
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/token/${contract_address}/${token_id}`,
-  );
-  const data = await response.json();
+    const response = await fetch(
+      // `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${token_id}.json`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/token/${contract_address}/${token_id}`,
+    );
+    const data = await response.json();
 
-  if (!data.traits) {
+    if (!data.traits) {
+      return {
+        notFound: true,
+      };
+    }
+
     return {
-      notFound: true,
+      props: { nftData: data },
     };
+  } catch {
+    return { props: {} };
   }
-
-  return {
-    props: { nftData: data },
-  };
 }
