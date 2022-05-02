@@ -15,8 +15,8 @@ export const useDetailPageStyles = makeStyles((theme) => ({
   leftColumn: {
     backgroundPosition: 'top right',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: '30%',
-    backgroundImage: 'url(/images/list/gallery-background.svg)',
+    backgroundSize: 'contain',
+    backgroundImage: 'url(/images/nftDetail/background.svg)',
     padding: `0 ${theme.spacing(12)}`,
     [theme.breakpoints.down('md')]: {
       padding: 0,

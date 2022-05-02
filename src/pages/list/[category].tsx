@@ -38,10 +38,10 @@ const CategoryPage = () => {
   useEffect(() => {
     let sorted: any;
     if (sortType === SortBy.LowestPrice) {
-      sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
+      sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
     }
     if (sortType === SortBy.HighestPrice) {
-      sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
+      sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
     }
     if (sortType === SortBy.LatestDate) {
       sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));

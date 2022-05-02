@@ -9,9 +9,8 @@ export type TraitType = {
   number: string;
   stat: string;
 };
-export type PropertyBoxProps = TraitType[];
 
-export const PropertyBox: React.FC<PropertyBoxProps> = ({ trait }) => {
+export const PropertyBox = ({ trait }: { trait: TraitType }) => {
   const classes = usePropertyBoxStyle();
   return (
     <Box className={classes.wrapper}>

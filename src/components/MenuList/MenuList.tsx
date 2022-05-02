@@ -29,7 +29,7 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 export interface MenuListProps {
-  handleSelect: () => void;
+  handleSelect: (id: string) => void;
   buttonType: 'text' | 'outlined' | 'contained' | undefined;
   buttonSize: 'small' | 'medium' | 'large' | undefined;
 }

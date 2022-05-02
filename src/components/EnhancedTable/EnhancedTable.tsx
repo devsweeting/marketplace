@@ -75,8 +75,8 @@ export default function EnhancedTable() {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (Qty: React.ChangeQty<HTMLInputElement>) => {
-    setRowsPerPage(+Qty.target.value);
+  const handleChangeRowsPerPage = (Price: any) => {
+    setRowsPerPage(+Price.target.value);
     setPage(0);
   };
 
