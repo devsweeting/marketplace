@@ -1,51 +1,43 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect /*,useContext */ } from 'react';
 import Sticky from 'react-stickynode';
-import { Grid, Box, Typography } from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
-// import { Accordion } from '../../components/Accordion';
-// import image from '../../../public/images/detail_page.png';
 import { mockProductData, mockProducImages, mockChartData } from '../../__mocks__/mockApiData';
-// import { AccordionTableItem } from '../../components/Accordion/components/AccordionTableItem';
-// import { AccordionTextItem } from '../../components/Accordion/components/AccordionTextItem';
 import { SimpleTable } from '../../components/SimpleTable';
 import { Properties } from '../../components/Properties';
 import { DescriptionText } from '../../components/DescriptionText';
 import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
 import { useTheme } from '@mui/styles';
-import { SkinContext } from '../../../styles/skin-context';
 import EnhancedTable from '../../components/EnhancedTable/EnhancedTable';
 import { Button } from '../../components/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Card } from '../../components/ListItem/components/Card';
 import { mockCards } from '../../__mocks__/mockCategoryViewApiData';
 import { Carousel } from '../../components/Carousel';
 import Image from 'next/image';
 import { ScrollUpWidget } from '../../components/ScrollUPWidget';
 
-// import { useRouter } from 'next/router';
-
 // link to example NFT detail page:
-// http://localhost:3000/token-detail/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08
+// http://localhost:3001/v1/token/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08
 
-type Trait = Record<string, string>;
+export type TraitType = Record<string, string>;
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
   // const router = useRouter();
   // const { param } = router.query;
 
   const theme = useTheme();
-  const { skin } = useContext(SkinContext);
+  // const { skin } = useContext(SkinContext);
 
   const classes = useDetailPageStyles();
 
-  const [traits, setTraits] = useState<Trait | null>(null);
+  const [traits, setTraits] = useState<TraitType | null>(null);
 
   useEffect(() => {
     const apiTraits: Record<string, string> = {};
     nftData?.traits?.map((item: Record<string, string>) => {
-      apiTraits[item.trait_type] = item.value;
+      apiTraits[item.trait] = item.value;
     });
     setTraits(apiTraits);
   }, [nftData]);
@@ -57,17 +49,10 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
           sx={{
             maxWidth: 1440,
             margin: '0 auto',
-            backgroundColor: theme.palette.accentSecondary.main,
+            backgroundColor: theme.palette.custom.accent,
           }}
         >
-          <Grid
-            mt={15}
-            container
-            // columnSpacing={4}
-            direction="row"
-            justifyContent="center"
-            alignItems="flex-start"
-          >
+          <Grid mt={15} container direction="row" justifyContent="center" alignItems="flex-start">
             <Grid
               container
               item
@@ -78,7 +63,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
               className={classes.leftColumn}
               sx={{
                 backgroundColor: {
-                  xs: theme.palette.accentSecondary.main,
+                  xs: theme.palette.custom.accent,
                   md: theme.palette.secondary.main,
                 },
               }}
@@ -120,7 +105,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                   </Box>
                   <EnhancedTable />
                 </Box>
-                <SimpleTable />
+                {traits && <SimpleTable tableData={traits} />}
               </Grid>
             </Grid>
 
@@ -142,7 +127,6 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             <Grid
               container
               item
-              // px={12.5}
               xs={12}
               sx={{
                 backgroundColor: theme.palette.secondary.main,

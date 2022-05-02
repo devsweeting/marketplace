@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
-export const useSearchboxStyles = makeStyles(({ theme }) => ({
+export const useSearchboxStyles = makeStyles(() => ({
   wrapper: {
     width: '100%',
     '& .MuiInputBase-root': {

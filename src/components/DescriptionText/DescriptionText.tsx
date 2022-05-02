@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React /* , { useContext } */ from 'react';
 import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import { SkinContext } from '../../../styles/skin-context';
+// import { SkinContext } from '../../../styles/skin-context';
 import { useDescriptionTextStyles } from './DescriptionText.styles';
 
 interface BorderBoxProps {
@@ -11,7 +11,7 @@ interface BorderBoxProps {
 
 export const DescriptionText: React.FC<BorderBoxProps> = ({ text }) => {
   const classes = useDescriptionTextStyles();
-  const { skin } = useContext(SkinContext);
+  // const { skin } = useContext(SkinContext);
   return (
     <Box className={classes.wrapper}>
       <Box my={6} sx={{ display: { xs: 'none', md: 'block' } }}>

@@ -35,7 +35,7 @@ export const ScrollUpWidget = ({ item }: { item: any }) => {
 
   return (
     <Box className={classNames(classes.wrapper, visible && classes.visible)}>
-      <Grid container direction="row" justifyContent="flex-start" alignItems="center">
+      <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start">
         <Grid item xs={2}>
           <Image src={item.imageLink} alt={item.title} width={30} height={44} />
         </Grid>
@@ -46,7 +46,7 @@ export const ScrollUpWidget = ({ item }: { item: any }) => {
             </Typography>
             <FavoriteIcon />
           </Box>
-          <Typography variant="h3" component="p" clasName={classes.title}>
+          <Typography variant="h3" component="p" className={classes.title}>
             {item.title}
           </Typography>
           <Divider sx={{ color: '#E5E5E5', paddingTop: '16px' }} />

@@ -7,23 +7,12 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography, Box, Divider } from '@mui/material';
 import { useSimpleTableStyles } from './SimpletTable.styles';
-import classNames from 'classnames';
-import { mockTraits } from '../../__mocks__/mockApiData';
+import { TraitType } from '../../pages/token-detail/[...param]';
 
-export type BlockChainInfoProps = Record<string, string>;
-
-export const SimpleTable = ({
-  title,
-}: // tableData,
-// isExpanded,
-{
-  title: string;
-  // tableData: BlockChainInfoProps;
-  isExpanded: boolean;
-}) => {
+export const SimpleTable = ({ tableData }: { tableData: TraitType }) => {
   const classes = useSimpleTableStyles();
-  // const { contact_id, token_id, token_type, supply, blockchain } = tableData;
-  const { contact_id, token_id, token_type, supply, blockchain } = mockTraits;
+  const { contact_id, token_id, token_type, supply, blockchain } = tableData;
+
   return (
     <Box className={classes.wrapper}>
       <Box my={6} sx={{ display: { xs: 'none', md: 'block' } }}>
