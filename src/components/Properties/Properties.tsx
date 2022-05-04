@@ -4,16 +4,11 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { Box, Grid } from '@mui/material';
 import { PropertyBox } from './components';
+import { TraitType } from './components/PropertyBox';
 
-const traits = [
-  { property: 'overall psa', number: '9', stat: '23%' },
-  { property: 'ocentering', number: '9', stat: '23%' },
-  { property: 'edges', number: '9', stat: '23%' },
-  { property: 'corners', number: '9', stat: '23%' },
-  { property: 'surface', number: '9', stat: '23%' },
-];
+type AttributeProps = TraitType[];
 
-export const Properties = () => {
+export const Properties = ({ attributes }: { attributes: AttributeProps }) => {
   const classes = usePropertiesStyle();
 
   return (
@@ -30,8 +25,8 @@ export const Properties = () => {
       </Typography>
 
       <Grid container>
-        {traits.map((trait) => (
-          <PropertyBox trait={trait} key={trait.property} />
+        {attributes.map((attribute) => (
+          <PropertyBox attribute={attribute} key={attribute.trait} />
         ))}
       </Grid>
     </Box>

@@ -27,6 +27,7 @@ export const useGalleryStyles = makeStyles(
     image: {
       height: '100%',
       width: 'auto',
+      borderRadius: theme.spacing(1),
     },
 
     thumbnailContainer: {

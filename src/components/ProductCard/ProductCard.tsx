@@ -13,27 +13,10 @@ import { SkinContext } from '../../../styles/skin-context';
 import classNames from 'classnames';
 
 export interface ProductDataProps {
-  title: string;
-  watchNumber: number;
-  price: {
-    icon: string;
-    cryptoValue: string;
-    dolarValue: string;
-  };
-  brand: {
-    logo?: string;
-    verified: boolean;
-    name: string;
-  };
+  name: string;
 }
 
-export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData }) => {
-  const {
-    title,
-    watchNumber,
-    price: { icon, cryptoValue, dolarValue },
-    brand: { name },
-  } = cardData;
+export const ProductCard: React.FC<{ name: ProductDataProps }> = ({ name }) => {
   const classes = useProductStyles();
   const { skin } = useContext(SkinContext);
   return (
@@ -48,7 +31,7 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
           </Typography>
         </Box>
         <Typography className={classes.porductTitle} variant="h2" component="h2">
-          {title}
+          {name}
         </Typography>
 
         <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
@@ -59,11 +42,11 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
                   Current Price
                 </Typography>
               </Box>
-              {name && (
-                <Typography variant="body2" component="p" className={classes.brandName}>
-                  OWNED BY <a style={{ textDecoration: 'underline' }}>{name}</a>
-                </Typography>
-              )}
+              {/* {name && ( */}
+              <Typography variant="body2" component="p" className={classes.brandName}>
+                OWNED BY <a style={{ textDecoration: 'underline' }}>Comix</a>
+              </Typography>
+              {/* )} */}
             </Box>
             <Box
               className={classes.priceWrapper}
@@ -73,13 +56,13 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
                 <Box className={classes.flexWrapper}>
                   <Box className={classes.cryptoValueWrapper}>
                     <Image
-                      src={`/images/nftDetail/cryptoCurencies/${icon}.png`}
-                      alt={`${icon} icon`}
+                      src={`/images/nftDetail/cryptoCurencies/${'etherum'}.png`}
+                      alt={`${'etherum'} icon`}
                       width={32}
                       height={32}
                     />
                     <Typography variant="h2" component="p" className={classes.priceCryptoValue}>
-                      {cryptoValue}
+                      2.1
                     </Typography>
                   </Box>
 
@@ -89,14 +72,12 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
                     className={classes.priceDollarValue}
                     data-testid="dollarValueId"
                   >
-                    (${dolarValue})
+                    (${'6234.33'})
                   </Typography>
                 </Box>
 
                 <Divider sx={{ padding: '16px 0' }} />
-                <CardActions
-                //  className={classes.cardActions}
-                >
+                <CardActions className={classes.cardActions}>
                   <Box className={classNames(classes.flexWrapper, classes.centerOnMobile)}>
                     <Button variant="contained" size="small" className={classes.button}>
                       BUY NOW
@@ -123,7 +104,7 @@ export const ProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData
                 variant="body1"
                 component="p"
               >
-                ({watchNumber} watching)
+                (2 watching)
               </Typography>
             </Box>
           </Grid>

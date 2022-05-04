@@ -1,5 +1,3 @@
-import { ProductDataProps } from '../components/ProductCard/ProductCard';
-
 export const mockTraits = {
   blockchain: 'Polygon',
   categories: 'cards',
@@ -9,7 +7,7 @@ export const mockTraits = {
   token_type: 'ERC-1151',
 };
 
-export const mockProductData: ProductDataProps = {
+export const mockProductData = {
   title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
   watchNumber: 2,
   price: {
@@ -34,7 +32,7 @@ export const mockNavLinks = [
   { title: 'Explore', path: '/' },
   {
     title: 'Sellers',
-    path: '/token-detail/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08',
+    path: '/token-detail/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint',
   },
 ];
 
