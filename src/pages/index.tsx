@@ -5,7 +5,7 @@ const Homepage = () => {
   return (
     <Container maxWidth="xl">
       <h1 style={{ paddingTop: 150 }}>
-        <Link href="/token-detail/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08">
+        <Link href="/token-detail/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint">
           <a>NFT Detail View</a>
         </Link>
       </h1>

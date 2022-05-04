@@ -111,6 +111,9 @@ export const useProductStyles = makeStyles(
       fontSize: '16px',
       textDecoration: 'none',
     },
+    cardActions: {
+      padding: '8px 0',
+    },
     button: {
       width: 214.5,
       height: 55,
@@ -140,17 +143,6 @@ export const useProductStyles = makeStyles(
       color: darken(theme.palette.secondary.main, 0.3),
     },
 
-    // cardActions: {
-    //   padding: '0',
-    //   marginTop: 21,
-    // },
-    // brandContainer: {
-    //   textAlign: 'right',
-    //   display: 'flex',
-    //   flexDirection: 'column',
-    //   justifyContent: 'flex-end',
-    //   alignItems: 'flex-end',
-    // },
     brandName: {
       textDecoration: 'none',
       color: theme.palette.secondary.main,
@@ -159,14 +151,6 @@ export const useProductStyles = makeStyles(
       fontSize: 12,
       textTransform: 'uppercase',
     },
-    // brandVerification: {
-    //   display: 'flex',
-    //   flexDirection: 'row',
-    //   justifyContent: 'flex-start',
-    //   alignItems: 'center',
-    //   width: '120px',
-    //   paddingTop: theme.spacing(1.5),
-    // },
   }),
   { name: 'productCard' },
 );

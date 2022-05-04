@@ -3,18 +3,24 @@ import { Grid, Box, Typography } from '@mui/material';
 import { useGalleryStyles } from './Gallery.styles';
 import classNames from 'classnames';
 
-export const Gallery = ({ images }: { images: string[] }) => {
+type Image = {
+  title: string;
+  description?: string;
+  url: string;
+  sortOrder: number;
+  assetId: string;
+  fileId: string;
+  file: string;
+};
+
+export const Gallery = ({ images }: { images: Image[] }) => {
   const classes = useGalleryStyles();
 
-  const appUrl = process.env.NEXT_PUBLIC_FRONTEND_URL as string;
-
-  const [mainImage, setMainImage] = useState(images[0]);
+  const [mainImage, setMainImage] = useState(images[0].url);
 
   const handleImage = (e: React.SyntheticEvent) => {
     const { src } = e.target as HTMLInputElement;
-    const imageSrcPath = src.replace(appUrl, '');
-    const ImagePostion = images.indexOf(imageSrcPath);
-    setMainImage(images[ImagePostion]);
+    setMainImage(src);
   };
 
   return (
@@ -25,20 +31,20 @@ export const Gallery = ({ images }: { images: string[] }) => {
             return (
               <Box
                 className={classNames(classes.thumbnailWrapper, index === 0 ? classes.faded : null)}
-                key={`${index}${image}`}
+                key={`${index}${image.title}`}
               >
                 <Box className={classes.thumbnailItem}>
                   <img
                     className={classes.thumbnail}
-                    src={image}
-                    alt="product thumbnail"
+                    src={image.url}
+                    alt={image.title}
                     width={80}
                     height={114}
                     onClick={handleImage}
                   />
                 </Box>
                 <Typography variant="body2" component="p" className={classes.thumbnailText}>
-                  Front
+                  {image.title}
                 </Typography>
               </Box>
             );
@@ -49,7 +55,7 @@ export const Gallery = ({ images }: { images: string[] }) => {
             <img
               className={classes.image}
               src={mainImage}
-              alt="Picture of the product"
+              alt={' main asset image'}
               width={337}
               height={568}
             />

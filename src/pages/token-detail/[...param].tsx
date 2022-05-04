@@ -1,9 +1,9 @@
-import React, { useState, useEffect /*,useContext */ } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sticky from 'react-stickynode';
 import { Grid, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
-import { mockProductData, mockProducImages, mockChartData } from '../../__mocks__/mockApiData';
+import { mockChartData, mockTraits } from '../../__mocks__/mockApiData';
 import { SimpleTable } from '../../components/SimpleTable';
 import { Properties } from '../../components/Properties';
 import { DescriptionText } from '../../components/DescriptionText';
@@ -18,29 +18,17 @@ import { Carousel } from '../../components/Carousel';
 import Image from 'next/image';
 import { ScrollUpWidget } from '../../components/ScrollUPWidget';
 import Typography from '@mui/material/Typography';
-
-// link to example NFT detail page:
-// http://localhost:3001/v1/token/0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185/920d16d7-208f-4955-98c2-f41bee527f08
-
-export type TraitType = Record<string, string>;
+import { TraitType } from '../../components/Properties/components/PropertyBox';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
-  // const router = useRouter();
-  // const { param } = router.query;
+  // const { name, description, media } = nftData;
 
   const theme = useTheme();
-  // const { skin } = useContext(SkinContext);
-
   const classes = useDetailPageStyles();
-
-  const [traits, setTraits] = useState<TraitType | null>(null);
+  const [traits, setTraits] = useState<TraitType[] | null>(null);
 
   useEffect(() => {
-    const apiTraits: Record<string, string> = {};
-    nftData?.traits?.map((item: Record<string, string>) => {
-      apiTraits[item.trait] = item.value;
-    });
-    setTraits(apiTraits);
+    setTraits(nftData.attributes);
   }, [nftData]);
 
   return (
@@ -71,10 +59,10 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             >
               <Box className={classes.paddingOnMobile}>
                 <Grid item xs={12}>
-                  <Gallery images={mockProducImages} />
+                  {nftData && <Gallery images={nftData.media} />}
                 </Grid>
                 <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
-                  <ProductCard cardData={mockProductData} />
+                  <ProductCard name={nftData.name} />
                 </Grid>
               </Box>
 
@@ -88,7 +76,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 }}
               >
                 <DescriptionText text={nftData.description} />
-                <Properties />
+                {traits && <Properties attributes={traits} />}
                 {mockChartData && (
                   <Grid item xs={12}>
                     <PriceChart data={mockChartData} />
@@ -106,7 +94,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                   </Box>
                   <EnhancedTable />
                 </Box>
-                {traits && <SimpleTable tableData={traits} />}
+                {mockTraits && <SimpleTable tableData={mockTraits} />}
               </Grid>
             </Grid>
 
@@ -120,7 +108,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             >
               <Grid item xs={12}>
                 <Sticky enabled={true} top={192} bottomBoundary={2500}>
-                  <ProductCard cardData={mockProductData} />
+                  {nftData && <ProductCard name={nftData.name} />}
                 </Sticky>
               </Grid>
             </Grid>
@@ -162,21 +150,17 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 export default DetailPage;
 
 export async function getServerSideProps(context: any) {
-  // contract_address = '0x54aE5302774dB6F54A52E7B6De1b0a9B3bd94185';
-  // token_id = 920d16d7-208f-4955-98c2-f41bee527f08
   try {
     const { param } = context.query;
-
-    const contract_address = param[0];
-    const token_id = param[1];
+    const asset_id = param[0];
 
     const response = await fetch(
-      // `${process.env.NEXT_PUBLIC_BACKEND_URL}/token/meta/${contract_address}/${token_id}.json`,
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/token/${contract_address}/${token_id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_id}`,
+      // 'https://api.staging.jump.co/v1/assets/82191303-fa4d-4168-9cc8-96d82a291975',
     );
     const data = await response.json();
 
-    if (!data.traits) {
+    if (!data.id) {
       return {
         notFound: true,
       };

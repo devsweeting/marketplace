@@ -7,9 +7,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography, Box, Divider } from '@mui/material';
 import { useSimpleTableStyles } from './SimpletTable.styles';
-import { TraitType } from '../../pages/token-detail/[...param]';
 
-export const SimpleTable = ({ tableData }: { tableData: TraitType }) => {
+export const SimpleTable = ({ tableData }: { tableData: any }) => {
   const classes = useSimpleTableStyles();
   const { contact_id, token_id, token_type, supply, blockchain } = tableData;
 
