@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Navbar } from '../../../components/Navbar';
 import { NavLinksProps } from '../../../components/Navbar/Navbar';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../../styles/theme';
+import theme from '../../../../styles/themeJump';
 import { mockNavLinks } from '../../../__mocks__/mockApiData';
 
 jest.mock('next/router', () => ({

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { SearchBox } from '../../components/SearchBox';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/theme';
+import theme from '../../../styles/themeJump';
 
 const MockSearchBox = () => {
   return (

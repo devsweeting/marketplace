@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useNavLinkStyles } from './NavLink.styles';
+import { Typography } from '@mui/material';
 import classNames from 'classnames';
+import { useNavLinkStyles } from './NavLink.styles';
+import { useRouter } from 'next/router';
 
 export interface NavLinksProps {
   className?: any;
@@ -11,14 +12,17 @@ export interface NavLinksProps {
 }
 export const NavLink: React.FC<NavLinksProps> = ({ href, children }) => {
   const classes = useNavLinkStyles();
-
   const router = useRouter();
 
   return (
     <Link href={href}>
-      <a className={classNames(href === router.pathname && classes.navLinkActive, classes.navLink)}>
+      <Typography
+        variant="h4"
+        component="span"
+        className={classNames(href === router.asPath && classes.navLinkActive, classes.navLink)}
+      >
         {children}
-      </a>
+      </Typography>
     </Link>
   );
 };

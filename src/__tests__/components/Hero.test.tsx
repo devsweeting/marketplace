@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Hero } from '../../components/Hero';
 import { HeroProps } from '../../components/Hero/Hero';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/theme';
+import theme from '../../../styles/themeJump';
 
 const MockHero: React.FC<HeroProps> = ({ imgSrc, imgFit, imgHeight, imgAlt }) => {
   return (

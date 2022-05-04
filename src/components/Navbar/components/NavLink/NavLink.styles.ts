@@ -4,24 +4,18 @@ import makeStyles from '@mui/styles/makeStyles';
 export const useNavLinkStyles = makeStyles(
   (theme) => ({
     navLink: {
-      fontFamily: 'Rubik',
-      textDecoration: 'none',
-      fontWeight: 500,
-      fontSize: '18px',
-      lineHeight: '21px',
-      color: theme.palette.primary.light,
-      marginRight: '9px',
-      marginLeft: 0,
+      cursor: 'pointer',
+      marginLeft: theme.spacing(4),
+      '@media (max-width:900px)': {
+        color: theme.palette.accent.main,
+        marginLeft: theme.spacing(3),
+      },
       '&:hover': {
-        color: lighten(theme.palette.primary.light, 0.3),
+        color: lighten(theme.palette.primary.main, 0.3),
       },
     },
     navLinkActive: {
-      textDecoration: 'none',
-      fontWeight: 500,
-      fontSize: '18px',
-      lineHeight: '21px',
-      color: lighten(theme.palette.secondary.main, 0.3),
+      textDecoration: 'underline',
     },
   }),
   { name: 'navlink' },

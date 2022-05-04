@@ -25,9 +25,9 @@ export const mockProductData: ProductDataProps = {
 };
 
 export const mockProducImages = [
-  '/images/nftDetail/gallery/product1b.png',
-  '/images/nftDetail/gallery/product1a.png',
-  '/images/nftDetail/gallery/product1b.png',
+  '/images/nftDetail/gallery/product1b.svg',
+  '/images/nftDetail/gallery/product1a.svg',
+  '/images/nftDetail/gallery/product1b.svg',
 ];
 
 export const mockNavLinks = [

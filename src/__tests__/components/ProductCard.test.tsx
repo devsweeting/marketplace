@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { ProductCard } from '../../components/ProductCard';
 import { ProductDataProps } from '../../components/ProductCard/ProductCard';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/theme';
+import theme from '../../../styles/themeJump';
 import { mockProductData } from '../../__mocks__/mockApiData';
 
 const MockProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData }) => {

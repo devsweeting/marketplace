@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Grid } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { useGalleryStyles } from './Gallery.styles';
+import classNames from 'classnames';
 
 export const Gallery = ({ images }: { images: string[] }) => {
   const classes = useGalleryStyles();
@@ -19,30 +20,38 @@ export const Gallery = ({ images }: { images: string[] }) => {
   return (
     <>
       <Grid container className={classes.galleryContainer}>
-        <Grid container item md={3} xs={12} className={classes.thumbnailContainer}>
+        <Grid container item pt={0} md={4} xs={12} className={classes.thumbnailContainer}>
           {images.map((image, index) => {
             return (
-              <Grid className={classes.thumbnailItem} key={`${index}${image}`}>
-                <img
-                  className={classes.thumbnail}
-                  src={image}
-                  alt="product thumbnail"
-                  width={80}
-                  height={114}
-                  onClick={handleImage}
-                />
-              </Grid>
+              <Box
+                className={classNames(classes.thumbnailWrapper, index === 0 ? classes.faded : null)}
+                key={`${index}${image}`}
+              >
+                <Box className={classes.thumbnailItem}>
+                  <img
+                    className={classes.thumbnail}
+                    src={image}
+                    alt="product thumbnail"
+                    width={80}
+                    height={114}
+                    onClick={handleImage}
+                  />
+                </Box>
+                <Typography variant="body2" component="p" className={classes.thumbnailText}>
+                  Front
+                </Typography>
+              </Box>
             );
           })}
         </Grid>
-        <Grid container item md={9} xs={12}>
-          <Grid item md={12} className={classes.imageContainer}>
+        <Grid container pt={0} item md={8} xs={12}>
+          <Grid item pt={0} md={12} className={classes.imageContainer}>
             <img
               className={classes.image}
               src={mainImage}
               alt="Picture of the product"
-              width={233}
-              height={345}
+              width={337}
+              height={568}
             />
           </Grid>
         </Grid>
