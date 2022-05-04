@@ -28,7 +28,10 @@ export default function MyApp(props: MyAppProps) {
 
   const choosenTheme = skin === skins.pwcc ? themePWCC : themeJump;
 
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const Component: any = props.Component;
+  // Known issue change when https://github.com/vercel/next.js/issues/36019 fixed
+
+  const { emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
     <CacheProvider value={emotionCache}>
       <Head>
