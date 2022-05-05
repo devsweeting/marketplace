@@ -32,7 +32,7 @@ export const mockNavLinks = [
   { title: 'Explore', path: '/' },
   {
     title: 'Sellers',
-    path: '/token-detail/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint',
+    path: '/items/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint',
   },
 ];
 
