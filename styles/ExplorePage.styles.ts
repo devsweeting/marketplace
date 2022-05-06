@@ -1,11 +1,10 @@
 import makeStyles from '@mui/styles/makeStyles';
 
-export const useCategoryPageStyles = makeStyles(() => ({
+export const useExplorePageStyles = makeStyles(() => ({
   wrapper: {
     maxWidth: 1440,
     margin: '0 auto',
     marginTop: '0',
-    // padding: '0 8px',
   },
   leftColumn: {
     paddingLeft: '100px',

@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SkinContext } from '../../../styles/skin-context';
-import { listViewData, mockCategoryFilters } from '../../__mocks__/mockCategoryViewApiData';
+import { SkinContext } from '../../styles/skin-context';
+import { listViewData, mockCategoryFilters } from '../__mocks__/mockCategoryViewApiData';
 import { Grid, Box, Typography, Divider } from '@mui/material';
-import { ClearAllFilter } from '../../components/FilterMenu/components/ClearAllFilter';
-import { ListItem } from '../../components/ListItem';
-import { FilterMenu } from '../../components/FilterMenu';
-import { SortBy } from '../../domain/Category';
-import { Button } from '../../components/Button';
-import { MenuList } from '../../components/MenuList/';
-import { useCategoryPageStyles } from '../../../styles/CategoryPage.styles';
+import { ClearAllFilter } from '../components/FilterMenu/components/ClearAllFilter';
+import { ListItem } from '../components/ListItem';
+import { FilterMenu } from '../components/FilterMenu';
+import { SortBy } from '../domain/Category';
+import { Button } from '../components/Button';
+import { MenuList } from '../components/MenuList';
+import { useExplorePageStyles } from '../../styles/ExplorePage.styles';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-const CategoryPage = () => {
-  const classes = useCategoryPageStyles();
+const ExplorePage = () => {
+  const classes = useExplorePageStyles();
   const { skin } = useContext(SkinContext);
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
   const [items, setItems] = useState(listViewData.assets);
@@ -178,4 +178,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default ExplorePage;

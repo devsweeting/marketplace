@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { Navbar } from '../../components/Navbar';
 import { SearchBox } from '../../components/SearchBox';
 import { useHeaderStyles } from './Header.styles';
-import { mockNavLinks } from '../../__mocks__/mockApiData';
+import { Routes } from '../../domain/Routes';
 import { SkinContext } from '../../../styles/skin-context';
 import { skins } from '../../../styles/skin-context';
 
@@ -52,7 +52,7 @@ export const Header = () => {
               />
             </Box>
 
-            <Navbar navLinks={mockNavLinks} />
+            <Navbar navLinks={Routes} />
           </Container>
         </Toolbar>
       </AppBar>

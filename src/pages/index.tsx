@@ -1,16 +1,17 @@
 import Container from '@mui/material/Container';
 import Link from 'next/link';
+import { Routes } from '../domain/Routes';
 
 const Homepage = () => {
   return (
     <Container maxWidth="xl">
       <h1 style={{ paddingTop: 150 }}>
-        <Link href="/items/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint">
+        <Link href={Routes[1].path}>
           <a>NFT Detail View</a>
         </Link>
       </h1>
       <h1>
-        <Link href="/list/someCategoryListing">
+        <Link href={Routes[0].path}>
           <a>List View</a>
         </Link>
       </h1>
