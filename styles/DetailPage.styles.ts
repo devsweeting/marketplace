@@ -14,6 +14,7 @@ export const useDetailPageStyles = makeStyles((theme) => ({
     width: '117px',
     height: '195px',
     borderRadius: theme.spacing(1),
+    zIndex: 100,
   },
   leftColumn: {
     backgroundPosition: 'top right',
