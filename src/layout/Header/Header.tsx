@@ -9,19 +9,22 @@ import { SearchBox } from '../../components/SearchBox';
 import { useHeaderStyles } from './Header.styles';
 import { mockNavLinks } from '../../__mocks__/mockApiData';
 import { SkinContext } from '../../../styles/skin-context';
-import { skins } from '../../../styles/skin-context';
+// import { skins } from '../../../styles/skin-context';
+import Link from 'next/link';
 
 export const Header = () => {
   const classes = useHeaderStyles();
-  const { skin, setSkin } = useContext(SkinContext);
+  const { skin /*, setSkin */ } = useContext(SkinContext);
 
-  const handleClick = () => {
-    if (skin === skins.pwcc) {
-      setSkin(skins.jump);
-    } else {
-      setSkin(skins.pwcc);
-    }
-  };
+  // disabled theme toggling
+  // const handleClick = () => {
+  //   if (skin === skins.pwcc) {
+  //     setSkin(skins.jump);
+  //   } else {
+  //     setSkin(skins.pwcc);
+  //   }
+  // };
+
   return (
     <>
       <AppBar position="fixed">
@@ -36,14 +39,20 @@ export const Header = () => {
             className={classes.container}
             sx={{ color: '#000', borderImageSource: `url(${skin.borderBoxBackground})` }}
           >
-            <Image
-              src={skin.logo.image}
-              alt={'logo'}
-              width={skin.logo.width}
-              height={skin.logo.height}
-              layout="fixed"
-              onClick={handleClick}
-            />
+            <Link href="/">
+              <a>
+                {' '}
+                <Image
+                  src={skin.logo.image}
+                  alt={'logo'}
+                  width={skin.logo.width}
+                  height={skin.logo.height}
+                  layout="fixed"
+                  // onClick={handleClick}
+                />
+              </a>
+            </Link>
+
             <Box className={classes.searchBoxContainer} ml={3}>
               <SearchBox
                 iconColor={skin.header.searchIconColor}
