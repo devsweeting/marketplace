@@ -3,14 +3,10 @@ import Sticky from 'react-stickynode';
 import { Grid, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
-import { mockChartData, mockTraits } from '../../__mocks__/mockApiData';
-import { SimpleTable } from '../../components/SimpleTable';
 import { Properties } from '../../components/Properties';
 import { DescriptionText } from '../../components/DescriptionText';
-import { PriceChart } from '../../components/PriceChart';
 import { Gallery } from '../../components/Gallery';
 import { useTheme } from '@mui/styles';
-import EnhancedTable from '../../components/EnhancedTable/EnhancedTable';
 import { Button } from '../../components/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { mockCards } from '../../__mocks__/mockCategoryViewApiData';
@@ -76,13 +72,6 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 }}
               >
                 <DescriptionText text={nftData.description} />
-                {traits && <Properties attributes={traits} />}
-                {mockChartData && (
-                  <Grid item xs={12}>
-                    <PriceChart data={mockChartData} />
-                  </Grid>
-                )}
-
                 <Box sx={{ position: 'relative' }}>
                   <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
                     <Image
@@ -93,9 +82,8 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                       style={{ borderRadius: '8px' }}
                     />
                   </Box>
-                  <EnhancedTable />
+                  {traits && <Properties attributes={traits} />}
                 </Box>
-                {mockTraits && <SimpleTable tableData={mockTraits} />}
               </Grid>
             </Grid>
 
@@ -108,7 +96,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
               sx={{ display: { xs: 'none', md: 'block' } }}
             >
               <Grid item xs={12}>
-                <Sticky enabled={true} top={192} bottomBoundary={2500}>
+                <Sticky enabled={true} top={192} bottomBoundary={1400}>
                   {nftData && <ProductCard name={nftData.name} />}
                 </Sticky>
               </Grid>
