@@ -34,20 +34,17 @@ export const ProductCard: React.FC<{ name: ProductDataProps }> = ({ name }) => {
 
         <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
           <Grid item md={12} xs={12}>
-            <Box className={classes.flexWrapper}>
-              <Box className={classes.label}>
-                <Typography variant="body2" component="p" className={classes.labelText}>
-                  Current Price
-                </Typography>
-              </Box>
+            <Box className={classes.label}>
+              <Typography variant="body2" component="p" className={classes.labelText}>
+                Current Price
+              </Typography>
             </Box>
             <Box
               className={classes.priceWrapper}
               sx={{ backgroundImage: `url(${skin.listItem.backgroundImage})` }}
             >
               <Box className={classes.priceContainer}>
-                <Box className={classes.flexWrapper} sx={{ paddingBottom: '16px' }}>
-                  <Box className={classes.cryptoValueWrapper}></Box>
+                <Box sx={{ paddingBottom: '16px', textAlign: 'right' }}>
                   <Typography
                     variant="body2"
                     component="p"
