@@ -52,7 +52,7 @@ export const skins = {
       accentColor: '#FFDD00',
       searchTextColor: '#fff !important',
       searchIconColor: '#fff',
-      searchInconBorderRadius: '50px !important',
+      searchIconBorderRadius: '50px !important',
       headerBackground: '#000',
       navLink: {
         fontSize: '16px',
