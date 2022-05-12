@@ -12,7 +12,7 @@ import { useCategoryPageStyles } from '../../../styles/CategoryPage.styles';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-// import { SingleListItem } from '../../domain/Items';
+import { SingleListItem } from '../../domain/Items';
 
 const CategoryPage = () => {
   const classes = useCategoryPageStyles();
