@@ -3,6 +3,8 @@ import { makeStyles } from '@mui/styles';
 export const useProductStyles = makeStyles(
   (theme) => ({
     productContainer: {
+      position: 'sticky',
+      top: '200px',
       maxWidth: 493,
       margin: '72px auto 0',
       boxShadow: 'none',

@@ -44,16 +44,7 @@ export const ProductCard: React.FC<{ name: ProductDataProps }> = ({ name }) => {
               sx={{ backgroundImage: `url(${skin.listItem.backgroundImage})` }}
             >
               <Box className={classes.priceContainer}>
-                <Box sx={{ paddingBottom: '16px', textAlign: 'right' }}>
-                  <Typography
-                    variant="body2"
-                    component="p"
-                    className={classes.priceDollarValue}
-                    data-testid="dollarValueId"
-                  >
-                    (${'6234.33'})
-                  </Typography>
-                </Box>
+                <Box sx={{ paddingBottom: '16px', textAlign: 'right' }}></Box>
 
                 <Divider />
                 <CardActions className={classes.cardActions}>

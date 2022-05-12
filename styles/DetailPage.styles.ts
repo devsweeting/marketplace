@@ -8,7 +8,7 @@ export const useDetailPageStyles = makeStyles((theme) => ({
   // },
   fixedImage: {
     position: 'absolute',
-    top: 200,
+    top: 100,
     right: -100,
     transform: 'translateX(50%)',
     width: '117px',

@@ -13,9 +13,6 @@ export const useNavLinkStyles = makeStyles(
       '&:hover': {
         color: lighten(theme.palette.primary.main, 0.3),
       },
-      '&:a': {
-        textDecoration: 'none',
-      },
     },
     navLinkActive: {
       textDecoration: 'underline',

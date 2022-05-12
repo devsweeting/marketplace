@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Sticky from 'react-stickynode';
 import { Grid, Box } from '@mui/material';
 import { ProductCard } from '../../components/ProductCard';
 import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
@@ -11,6 +10,7 @@ import { Button } from '../../components/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Carousel } from '../../components/Carousel';
 import Image from 'next/image';
+import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import { TraitType } from '../../components/Properties/components/PropertyBox';
 
@@ -33,7 +33,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             backgroundColor: theme.palette.custom.accent,
           }}
         >
-          <Grid mt={15} container direction="row" justifyContent="center" alignItems="flex-start">
+          <Grid mt={15} container direction="row" justifyContent="center" alignItems="stretch">
             <Grid
               container
               item
@@ -89,13 +89,11 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
               md={6}
               xs={12}
               rowSpacing={2}
-              sx={{ display: { xs: 'none', md: 'block' } }}
+              sx={{
+                display: { xs: 'none', md: 'block' },
+              }}
             >
-              <Grid item xs={12}>
-                <Sticky enabled={true} top={192} bottomBoundary={1400}>
-                  {nftData && <ProductCard name={nftData.name} />}
-                </Sticky>
-              </Grid>
+              {nftData && <ProductCard name={nftData.name} />}
             </Grid>
 
             <Grid
@@ -110,14 +108,16 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             >
               <Carousel />
               <Grid item xs={12}>
-                <Button
-                  endIcon={<ArrowForwardIcon className={classes.exploreMoreIcon} />}
-                  variant="contained"
-                  size="large"
-                  className={classes.exploreMoreButton}
-                >
-                  EXPLORE MORE
-                </Button>
+                <Link href="/list/someCategoryListing" passHref>
+                  <Button
+                    endIcon={<ArrowForwardIcon className={classes.exploreMoreIcon} />}
+                    variant="contained"
+                    size="large"
+                    className={classes.exploreMoreButton}
+                  >
+                    EXPLORE MORE
+                  </Button>
+                </Link>
               </Grid>
             </Grid>
           </Grid>

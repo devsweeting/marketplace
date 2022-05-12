@@ -16,7 +16,7 @@ export const NavLink: React.FC<NavLinksProps> = ({ href, children }) => {
 
   return (
     <Link href={href}>
-      <a>
+      <a style={{ textDecoration: 'none' }}>
         <Typography
           variant="h4"
           component="span"
