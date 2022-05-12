@@ -6,7 +6,7 @@ export const useListItemStyles = makeStyles(
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       wrap: 'wrap',
       '@media (max-width: 900px)': {
         justifyContent: 'center',

@@ -5,26 +5,28 @@ import { Grid, Box, Typography, Divider } from '@mui/material';
 import { ClearAllFilter } from '../../components/FilterMenu/components/ClearAllFilter';
 import { ListItem } from '../../components/ListItem';
 import { FilterMenu } from '../../components/FilterMenu';
-import { SortBy } from '../../domain/Category';
+// import { SortBy } from '../../domain/Category';
 import { Button } from '../../components/Button';
 import { MenuList } from '../../components/MenuList/';
 import { useCategoryPageStyles } from '../../../styles/CategoryPage.styles';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { SingleListItem } from '../../domain/Items';
 
 const CategoryPage = () => {
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
-  const [items, setItems] = useState(listViewData.assets);
-  const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+  // const [items, setItems] = useState<SingleListItem[]>(listViewData.items);
+  // const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
   const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const handleSortType = (id: string) => {
-    setSortType(id);
+    // setSortType(id);
+    console.log(id);
   };
 
   const toggleVisibility = (isVisible: boolean) => {
@@ -35,19 +37,19 @@ const CategoryPage = () => {
     matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
   }, [matchesDesktop]);
 
-  useEffect(() => {
-    let sorted: any;
-    if (sortType === SortBy.LowestPrice) {
-      sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
-    }
-    if (sortType === SortBy.HighestPrice) {
-      sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
-    }
-    if (sortType === SortBy.LatestDate) {
-      sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
-    }
-    setItems(sorted);
-  }, [sortType, items]);
+  // useEffect(() => {
+  //   let sorted: any;
+  //   if (sortType === SortBy.LowestPrice) {
+  //     sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
+  //   }
+  //   if (sortType === SortBy.HighestPrice) {
+  //     sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
+  //   }
+  //   if (sortType === SortBy.LatestDate) {
+  //     sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
+  //   }
+  //   setItems(sorted);
+  // }, [sortType, items]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name: filterName } = event.target;
@@ -135,16 +137,13 @@ const CategoryPage = () => {
                 </Box>
               )}
               <Typography variant="body1" component="p">
-                {listViewData.asset_number === 1
-                  ? `${listViewData.asset_number} asset`
-                  : `${listViewData.asset_number} assets`}
+                {listViewData.meta.totalItems === 1
+                  ? `${listViewData.meta.totalItems} asset`
+                  : `${listViewData.meta.totalItems} assets`}
               </Typography>
             </Box>
             {matchesDesktop && (
-              <Box
-                mt={3}
-                // className={classes.hideOnMobile}
-              >
+              <Box mt={3}>
                 <MenuList
                   handleSelect={handleSortType}
                   buttonType="contained"
@@ -154,23 +153,12 @@ const CategoryPage = () => {
             )}
           </Grid>
           <Grid>
-            <ListItem listItemData={items} />
+            <ListItem listItemData={listViewData.items} />
           </Grid>
           <Grid xs={12} sx={{ textAlign: 'center' }}>
-            <Button sx={{ marginTop: { xs: '36px', md: '95px' } }} size="large">
-              LOAD MORE
-            </Button>
-            <Typography
-              variant="body2"
-              component="p"
-              sx={{ margin: '24px 0 54px', textDecoration: 'none', color: 'rgba(0,0,0,0.6)' }}
-            >
-              Number of assets viewed:{' '}
-              <Box component="span" sx={{ color: '#000', display: 'inline' }}>
-                24 of 140
-              </Box>
-            </Typography>
-            <Divider sx={{ borderBottomWidth: 'medium', borderColor: '#000' }} />
+            <Divider
+              sx={{ borderBottomWidth: 'medium', borderColor: '#000', paddingTop: '297px' }}
+            />
           </Grid>
         </Grid>
       </Grid>

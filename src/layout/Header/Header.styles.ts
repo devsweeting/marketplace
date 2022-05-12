@@ -25,6 +25,15 @@ export const useHeaderStyles = makeStyles(
         },
       },
     },
+    logoWrapper: {
+      position: 'relative',
+      width: 134,
+      height: 33,
+      [theme.breakpoints.down('md')]: {
+        width: 97,
+        height: 23,
+      },
+    },
     searchBoxContainer: {
       width: '100%',
       margin: `0 ${theme.spacing(9)}`,

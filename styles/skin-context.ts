@@ -4,8 +4,6 @@ export const skins = {
   jump: {
     logo: {
       image: '/images/logoJump.svg',
-      width: 112,
-      height: 52,
     },
     sidebar: {
       borderRight: 4,
@@ -42,8 +40,6 @@ export const skins = {
   pwcc: {
     logo: {
       image: '/images/logoPWCC.svg',
-      width: 134,
-      height: 33,
     },
     sidebar: {
       borderRight: 0,

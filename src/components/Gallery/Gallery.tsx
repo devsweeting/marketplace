@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 import { useGalleryStyles } from './Gallery.styles';
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
 
 type Image = {
   title: string;
@@ -14,9 +15,14 @@ type Image = {
 };
 
 export const Gallery = ({ images }: { images: Image[] }) => {
+  const router = useRouter();
   const classes = useGalleryStyles();
 
   const [mainImage, setMainImage] = useState(images[0].url);
+
+  useEffect(() => {
+    setMainImage(images[0].url);
+  }, [router.asPath]);
 
   const handleImage = (e: React.SyntheticEvent) => {
     const { src } = e.target as HTMLInputElement;

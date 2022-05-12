@@ -1,20 +1,26 @@
 import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
-import { Card, SingleListItem } from '../ListItem/components/Card';
-import { Button } from '../Button';
+import { Card } from '../ListItem/components/Card';
 import { useCarouselStyles } from './Carousel.styles';
+import { SingleListItem } from '../../domain/Items';
+import useSWR from 'swr';
 
-export const Carousel: React.FC<{ data: SingleListItem[] }> = ({ data }) => {
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const items_endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`;
+
+export const Carousel = () => {
   const classes = useCarouselStyles();
+
+  const { data, error } = useSWR(items_endpoint, fetcher);
+
+  if (error) return <div>Something went wrong...</div>;
+  if (!data) return <div>Loading...</div>;
   return (
     <Grid item xs={12} className={classes.wrapper}>
       <Box className={classes.header}>
         <Typography variant="h2" component="h4" className={classes.title}>
-          More from collection
+          More to explore
         </Typography>
-        <Button variant="outlined" size="large" className={classes.button}>
-          whole collection
-        </Button>
       </Box>
 
       <Box
@@ -27,8 +33,8 @@ export const Carousel: React.FC<{ data: SingleListItem[] }> = ({ data }) => {
           overflowX: 'scroll',
         }}
       >
-        {data &&
-          data.map((card, index) => (
+        {data.items &&
+          data.items.map((card: SingleListItem, index: string) => (
             <Box key={index} className={classes.cardWrapper}>
               <Card item={card} />
             </Box>

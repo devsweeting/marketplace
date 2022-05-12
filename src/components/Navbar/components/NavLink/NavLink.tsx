@@ -16,13 +16,15 @@ export const NavLink: React.FC<NavLinksProps> = ({ href, children }) => {
 
   return (
     <Link href={href}>
-      <Typography
-        variant="h4"
-        component="span"
-        className={classNames(href === router.asPath && classes.navLinkActive, classes.navLink)}
-      >
-        {children}
-      </Typography>
+      <a>
+        <Typography
+          variant="h4"
+          component="span"
+          className={classNames(href === router.asPath && classes.navLinkActive, classes.navLink)}
+        >
+          {children}
+        </Typography>
+      </a>
     </Link>
   );
 };

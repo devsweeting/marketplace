@@ -9,16 +9,12 @@ import { Gallery } from '../../components/Gallery';
 import { useTheme } from '@mui/styles';
 import { Button } from '../../components/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { mockCards } from '../../__mocks__/mockCategoryViewApiData';
 import { Carousel } from '../../components/Carousel';
 import Image from 'next/image';
-import { ScrollUpWidget } from '../../components/ScrollUPWidget';
 import Typography from '@mui/material/Typography';
 import { TraitType } from '../../components/Properties/components/PropertyBox';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
-  // const { name, description, media } = nftData;
-
   const theme = useTheme();
   const classes = useDetailPageStyles();
   const [traits, setTraits] = useState<TraitType[] | null>(null);
@@ -112,7 +108,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 padding: { xs: '0 40px', md: '0 100px' },
               }}
             >
-              <Carousel data={mockCards} />
+              <Carousel />
               <Grid item xs={12}>
                 <Button
                   endIcon={<ArrowForwardIcon className={classes.exploreMoreIcon} />}
@@ -125,7 +121,6 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
               </Grid>
             </Grid>
           </Grid>
-          <ScrollUpWidget item={mockCards[0]} />
         </Box>
       ) : (
         <Typography variant="h5" component="p" sx={{ paddingTop: '150px' }}>

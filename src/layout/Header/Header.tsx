@@ -41,15 +41,13 @@ export const Header = () => {
           >
             <Link href="/">
               <a>
-                {' '}
-                <Image
-                  src={skin.logo.image}
-                  alt={'logo'}
-                  width={skin.logo.width}
-                  height={skin.logo.height}
-                  layout="fixed"
-                  // onClick={handleClick}
-                />
+                <Box
+                  className={classes.logoWrapper}
+                  sx={{ position: 'relative', width: 134, height: 33 }}
+                >
+                  {' '}
+                  <Image src={skin.logo.image} alt={'logo'} layout="fill" objectFit="contain" />
+                </Box>
               </a>
             </Link>
 
