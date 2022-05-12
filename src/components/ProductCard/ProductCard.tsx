@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
+import Image from 'next/image';
 import { Grid, Typography, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import { Button } from '../../components/Button';
-import { useProductStyles } from './ProductCard.styles';
-import Image from 'next/image';
 import ShareIcon from '@mui/icons-material/Share';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Divider from '@mui/material/Divider';
-import { SkinContext } from '../../../styles/skin-context';
 import classNames from 'classnames';
+import { Button } from '@/components/Button';
+import { SkinContext } from '@/styles/skin-context';
+import { useProductStyles } from './ProductCard.styles';
 
 export interface ProductDataProps {
   name: string;

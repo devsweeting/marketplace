@@ -1,10 +1,10 @@
 import React from 'react';
-import { usePropertyBoxStyle } from './PropertyBox.styles';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { Box } from '@mui/material';
-import { truncateName } from '../../../helpers/truncate';
 import Tooltip from '@mui/material/Tooltip';
+import { truncateName } from '@/helpers/truncate';
+import { usePropertyBoxStyle } from './PropertyBox.styles';
 
 export type TraitType = {
   trait: string;

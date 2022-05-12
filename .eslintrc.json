@@ -1,12 +1,25 @@
 {
   "plugins": ["@typescript-eslint"],
-  "extends": [
-    "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "eslint-import-resolver-typescript": "on"
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@/components", "./src/components"],
+          ["@/__mocks__", "./src/__mocks__"],
+          ["@/__tests__", "./src/__tests__"],
+          ["@/domain", "./src/domain"],
+          ["@/helpers", "./src/helpers"],
+          ["@/layout", "./src/layout"],
+          ["@/pages", "./src/pages"],
+          ["@/styles", "./styles"]
+        ]
+      }
+    }
   }
 }

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import { SkinContext } from '../../../../../styles/skin-context';
 import { Typography, Box } from '@mui/material';
-import { useClearAllFilter } from './ClearAllFilter.styles';
-import CloseIcon from '@mui/icons-material/Close';
-import { Button } from '../../../Button';
-import { BorderBox } from '../../../BorderBox/BorderBox';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
+import { Button } from '@/components/Button';
+import { BorderBox } from '@/components/BorderBox/BorderBox';
+import { SkinContext } from '@/styles/skin-context';
+import { useClearAllFilter } from './ClearAllFilter.styles';
 
 interface ClearAllFiltersProps {
   clearSelectedFilters: () => void;

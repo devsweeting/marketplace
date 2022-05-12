@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
-import { useGalleryStyles } from './Gallery.styles';
 import classNames from 'classnames';
+import { useGalleryStyles } from './Gallery.styles';
 
 type Image = {
   title: string;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { Accordion } from '../../../components/Accordion';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../../styles/themeJump';
+import { Accordion } from '@/components/Accordion';
+import theme from '@/styles/themeJump';
+import '@testing-library/jest-dom/extend-expect';
 
 const MockAccordionChildren = () => {
   return <p>children component</p>;

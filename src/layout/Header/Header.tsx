@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
-import Image from 'next/image';
-import { Navbar } from '../../components/Navbar';
-import { SearchBox } from '../../components/SearchBox';
+import { Navbar } from '@/components/Navbar';
+import { SearchBox } from '@/components/SearchBox';
+import { mockNavLinks } from '@/__mocks__/mockApiData';
+import { SkinContext } from '@/styles/skin-context';
 import { useHeaderStyles } from './Header.styles';
-import { mockNavLinks } from '../../__mocks__/mockApiData';
-import { SkinContext } from '../../../styles/skin-context';
 // import { skins } from '../../../styles/skin-context';
-import Link from 'next/link';
 
 export const Header = () => {
   const classes = useHeaderStyles();

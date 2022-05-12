@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { Typography } from '@mui/material';
 import classNames from 'classnames';
 import { useNavLinkStyles } from './NavLink.styles';
-import { useRouter } from 'next/router';
 
 export interface NavLinksProps {
   className?: any;

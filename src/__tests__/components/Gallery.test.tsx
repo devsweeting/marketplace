@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { Gallery } from '../../components/Gallery';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/theme';
-import { mockProducImages } from '../../__mocks__/mockApiData';
+import { Gallery } from '@/components/Gallery';
+import theme from '@/styles/themeJump';
+import { mockProducImages } from '@/__mocks__/mockApiData';
+import '@testing-library/jest-dom/extend-expect';
 
 const MockGallery = ({ images }: { images: string[] }) => {
   return (
