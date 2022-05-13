@@ -32,7 +32,7 @@ export const Header = () => {
           disableGutters
           sx={{
             backgroundColor: skin.header.headerBackground,
-            height: '120px',
+            height: { md: '120px', xs: '80px' },
           }}
         >
           <Container

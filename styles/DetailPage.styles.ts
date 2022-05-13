@@ -1,11 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
 export const useDetailPageStyles = makeStyles((theme) => ({
-  // absoluteWrapper: {
-  //   position: 'relative',
-  //   width: '100%',
-  //   backgroundColor: theme.palette.accentSecondary.main,
-  // },
   fixedImage: {
     position: 'absolute',
     top: 100,

@@ -4,6 +4,7 @@ export const useGalleryStyles = makeStyles(
   (theme) => ({
     galleryContainer: {
       paddingTop: theme.spacing(12),
+      paddingBottom: theme.spacing(13.5),
       [theme.breakpoints.down('md')]: {
         display: 'flex',
         flexDirection: 'column-reverse',
@@ -28,6 +29,9 @@ export const useGalleryStyles = makeStyles(
       height: '100%',
       width: 'auto',
       borderRadius: theme.spacing(1),
+      [theme.breakpoints.down('md')]: {
+        boxShadow: ' 0px 24px 24px 8px rgba(0, 0, 0, 0.7)',
+      },
     },
 
     thumbnailContainer: {
@@ -59,6 +63,8 @@ export const useGalleryStyles = makeStyles(
         backgroundColor: theme.palette.accent.main,
         height: 42,
         width: 42,
+        padding: theme.spacing(0.5),
+        borderRadius: theme.spacing(0.3),
       },
     },
     thumbnail: {

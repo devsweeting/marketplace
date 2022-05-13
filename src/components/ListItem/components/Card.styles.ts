@@ -15,16 +15,11 @@ export const useCardStyles = makeStyles(
       },
     },
     itemType: {
-      minHeight: 45,
       '@media (max-width: 600px)': {
-        minHeight: 65,
         fontFamily: 'Montserrat',
         fontSize: '12px',
         lineHeight: '21px',
         fontWeight: '600',
-      },
-      '@media (max-width: 340px)': {
-        minHeight: 0,
       },
     },
     itemTitle: {

@@ -12,7 +12,7 @@ export const Card = ({ item }: { item: SingleListItem }) => {
   const classes = useCardStyles();
 
   return (
-    <Link href={`/token-detail/${item.id}`}>
+    <Link href={`/token-detail/${item.id}${item.slug}`}>
       <a style={{ textDecoration: 'none', color: '#000' }}>
         <Box className={classes.container}>
           <Box

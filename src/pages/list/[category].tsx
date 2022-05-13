@@ -70,7 +70,7 @@ const CategoryPage = () => {
   return (
     <Box className={classes.wrapper}>
       <Grid
-        mt={15}
+        sx={{ marginTop: { xs: 10, md: 15 } }}
         container
         // columnSpacing={4}
       >

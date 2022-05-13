@@ -33,7 +33,13 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             backgroundColor: theme.palette.custom.accent,
           }}
         >
-          <Grid mt={15} container direction="row" justifyContent="center" alignItems="stretch">
+          <Grid
+            sx={{ marginTop: { xs: 10, md: 15 } }}
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="stretch"
+          >
             <Grid
               container
               item
