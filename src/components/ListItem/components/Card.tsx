@@ -3,19 +3,23 @@ import Image from 'next/image';
 import { Typography, Box, Divider } from '@mui/material';
 import { SkinContext } from '@/styles/skin-context';
 import { useCardStyles } from './Card.styles';
+import { IAsset } from 'src/types';
 
-export type SingleListItem = {
-  type: string;
-  title: string;
-  imageLink: string;
-  price: {
-    icon: string;
-    cryptoValue: string;
-    dolarValue: string;
-  };
-};
+// export type SingleListItem = {
+//   type: string;
+//   title: string;
+//   imageLink: string;
+//   price: {
+//     icon: string;
+//     cryptoValue: string;
+//     dolarValue: string;
+//   };
+// };
+interface CardProps {
+  item: IAsset;
+}
 
-export const Card = ({ item }: { item: SingleListItem }) => {
+export const Card = ({ item }: CardProps) => {
   const { skin } = useContext(SkinContext);
 
   const classes = useCardStyles();
@@ -28,23 +32,25 @@ export const Card = ({ item }: { item: SingleListItem }) => {
           backgroundImage: `url(${skin.listItem.backgroundImage})`,
         }}
       >
-        <Image
-          className={classes.mainImage}
-          src={item.imageLink}
-          alt={item.title}
-          width={280}
-          height={280}
-        />
+        {item?.media && item?.media.length > 0 &&
+          <Image
+            className={classes.mainImage}
+            src={item.media[0].url}
+            alt={item.media[0].title}
+            width={280}
+            height={280}
+          />
+        }
       </Box>
       <Typography variant="body2" component="p" mt={3} className={classes.itemType}>
-        {item.type}
+        {item.name}
       </Typography>
       <Typography variant="h3" component="p" mb={1} mt={1} className={classes.itemTitle}>
-        {item.title}
+        {item.name}
       </Typography>
       <Divider />
       <Box className={classes.priceContainer}>
-        <Image
+        {/* <Image
           src={`/images/nftDetail/cryptoCurencies/${item.price.icon}.svg`}
           alt={`${item.price.icon} icon`}
           width={20}
@@ -75,7 +81,7 @@ export const Card = ({ item }: { item: SingleListItem }) => {
           }}
         >
           (${item.price.dolarValue})
-        </Typography>
+        </Typography> */}
       </Box>
     </Box>
   );

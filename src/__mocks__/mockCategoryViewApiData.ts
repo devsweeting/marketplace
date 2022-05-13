@@ -212,13 +212,38 @@ export const mockCards = [
 ];
 
 export const mockCategoryFilters = [
-  { categoryName: 'Category', filters: ['Marvel', 'Baseball', 'Racing'] },
+  { 
+    categoryName: 'Category', 
+    categoryId: 'category', 
+    filters: ['Marvel', 'Baseball', 'Racing'] 
+  },
   {
     categoryName: 'Grade',
-    filters: ['Marvel', 'Baseball', 'Racing', 'Football', 'Soccer', 'Hockey', 'Combat Sports'],
+    categoryId: 'grade',
+    filters: [
+      'Marvel', 'Baseball', 'Racing', 'Football', 'Soccer', 'Hockey', 'Combat Sports'
+    ],
   },
-  { categoryName: 'Brand', filters: ['Sony', 'Casio'] },
-  { categoryName: 'Price', filters: ['Gaming', 'Others'] },
-  { categoryName: 'Collection', filters: ['Autumn', 'Spring'] },
-  { categoryName: 'Status', filters: ['Available', 'Sold', 'Auction'] },
+  { 
+    categoryName: 'Brand', 
+    categoryId: 'brand',
+    filters: [
+      'Sony', 'Casio'
+    ] 
+  },
+  { 
+    categoryName: 'Price', 
+    categoryId: 'price',
+    filters: ['Gaming', 'Others'] 
+  },
+  { 
+    categoryName: 'Collection', 
+    categoryId: 'collection',
+    filters: ['Autumn', 'Spring'] 
+  },
+  { 
+    categoryName: 'Status', 
+    categoryId: 'status',
+    filters: ['Available', 'Sold', 'Auction'] 
+  },
 ];

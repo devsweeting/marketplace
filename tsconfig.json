@@ -23,6 +23,7 @@
       "@/domain/*": ["src/domain/*"],
       "@/helpers/*": ["src/helpers/*"],
       "@/layout/*": ["src/layout/*"],
+      "@/api/*": ["src/api/*"],
       "@/pages/*": ["src/pages/*"],
       "@/containers/*": ["src/containers/*"]
     }
