@@ -86,10 +86,11 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 <Box sx={{ position: 'relative' }}>
                   <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
                     <Image
-                      src="/images/nftDetail/gallery/product1a.svg"
-                      alt="asset"
-                      width={117}
-                      height={195}
+                      src={nftData.media[0].url}
+                      alt={nftData.media[0].title}
+                      layout="fill"
+                      objectFit="contain"
+                      style={{ borderRadius: '8px' }}
                     />
                   </Box>
                   <EnhancedTable />
