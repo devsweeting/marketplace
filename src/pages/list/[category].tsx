@@ -12,9 +12,9 @@ import { useCategoryPageStyles } from '../../../styles/CategoryPage.styles';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { SingleListItem } from '../../domain/Items';
 
 const CategoryPage = () => {
+  const { items } = listViewData;
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
@@ -82,7 +82,6 @@ const CategoryPage = () => {
             md={3}
             xs={12}
             rowSpacing={2}
-            // pl={12}
             sx={{
               backgroundColor: skin.listItem.filterBackgroundColor,
             }}
@@ -153,7 +152,7 @@ const CategoryPage = () => {
             )}
           </Grid>
           <Grid>
-            <ListItem listItemData={listViewData.items} />
+            <ListItem listItemData={items} />
           </Grid>
           <Grid xs={12} sx={{ textAlign: 'center' }}>
             <Divider

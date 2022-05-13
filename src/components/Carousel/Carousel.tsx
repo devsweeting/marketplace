@@ -4,6 +4,7 @@ import { Card } from '../ListItem/components/Card';
 import { useCarouselStyles } from './Carousel.styles';
 import { SingleListItem } from '../../domain/Items';
 import useSWR from 'swr';
+import Loader from '../Loader';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const items_endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`;
@@ -13,8 +14,18 @@ export const Carousel = () => {
 
   const { data, error } = useSWR(items_endpoint, fetcher);
 
-  if (error) return <div>Something went wrong...</div>;
-  if (!data) return <div>Loading...</div>;
+  if (error)
+    return (
+      <Box sx={{ padding: '20px 0' }}>
+        <Typography variant="h2" component="h2">
+          Somthing went wrong...
+        </Typography>
+        <Typography variant="body1" component="p">
+          {error.message}
+        </Typography>
+      </Box>
+    );
+  if (!data) return <Loader />;
   return (
     <Grid item xs={12} className={classes.wrapper}>
       <Box className={classes.header}>
@@ -23,19 +34,10 @@ export const Carousel = () => {
         </Typography>
       </Box>
 
-      <Box
-        pb={3}
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          flexWrap: 'no-wrap',
-          overflowX: 'scroll',
-        }}
-      >
+      <Box className={classes.cardWrapper}>
         {data.items &&
           data.items.map((card: SingleListItem, index: string) => (
-            <Box key={index} className={classes.cardWrapper}>
+            <Box key={index} className={classes.cardContainer}>
               <Card item={card} />
             </Box>
           ))}

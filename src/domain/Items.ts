@@ -1,12 +1,17 @@
-export type ItemAttributes = Record<string, string>;
+export type ItemAttribute = {
+  trait: string;
+  value: string;
+  display: string | null;
+};
+
 export type ItemMedia = {
   title: string;
-  description?: string;
+  description: string | null;
   url: string;
   sortOrder: number;
   assetId: string;
   fileId: string;
-  file?: string;
+  file: string | null;
 };
 
 export type SingleListItem = {
@@ -18,5 +23,5 @@ export type SingleListItem = {
   slug: string;
   createdAt: string;
   updatedAt: string;
-  attributes: ItemAttributes[];
+  attributes: ItemAttribute[];
 };
