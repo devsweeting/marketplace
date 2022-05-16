@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { SearchBox } from '../../components/SearchBox';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/themeJump';
+import { SearchBox } from '@/components/SearchBox';
+import theme from '@/styles/themeJump';
+import '@testing-library/jest-dom/extend-expect';
 
 const MockSearchBox = () => {
   return (

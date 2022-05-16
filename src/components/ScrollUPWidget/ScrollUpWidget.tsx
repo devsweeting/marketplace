@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SkinContext } from '../../../styles/skin-context';
 import classNames from 'classnames';
+import Image from 'next/image';
 import { Typography, Box, Grid } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import Image from 'next/image';
-import { useScrollUpWidget } from './ScrollUpWidget.styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { SkinContext } from '@/styles/skin-context';
 import { Button } from '../Button';
+import { useScrollUpWidget } from './ScrollUpWidget.styles';
 
 export const ScrollUpWidget = ({ item }: { item: any }) => {
   const classes = useScrollUpWidget();

@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { AccordionTableItem } from '../../../../components/Accordion/components/AccordionTableItem';
-import { BlockChainInfoProps } from '../../../../components/Accordion/components/AccordionTableItem/AccordionTableItem';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../../../styles/themeJump';
-import { mockTraits } from '../../../../__mocks__/mockApiData';
+import { AccordionTableItem } from '@/components/Accordion/components/AccordionTableItem';
+import { BlockChainInfoProps } from '@/components/Accordion/components/AccordionTableItem/AccordionTableItem';
+import theme from '@/styles/themeJump';
+import { mockTraits } from '@/__mocks__/mockApiData';
+import '@testing-library/jest-dom/extend-expect';
 
 interface AccordionTableItemProps {
   title: string;

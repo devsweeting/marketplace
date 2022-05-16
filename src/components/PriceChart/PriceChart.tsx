@@ -1,8 +1,8 @@
 import React from 'react';
+import { Area, XAxis, ResponsiveContainer, Line, ComposedChart } from 'recharts';
 import { Grid, Typography, Paper, Box } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import classNames from 'classnames';
-import { Area, XAxis, ResponsiveContainer, Line, ComposedChart } from 'recharts';
 
 import { usePriceChartStyles } from './PriceChart.styles';
 

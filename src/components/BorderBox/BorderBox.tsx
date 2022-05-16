@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
-import { SkinContext } from '../../../styles/skin-context';
+import { SkinContext } from '@/styles/skin-context';
 
 interface BorderBoxProps {
   children: JSX.Element;

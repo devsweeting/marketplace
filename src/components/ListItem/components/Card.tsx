@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import { SkinContext } from '../../../../styles/skin-context';
-import { Typography, Box, Divider } from '@mui/material';
-import { useCardStyles } from './Card.styles';
 import Image from 'next/image';
+import { Typography, Box, Divider } from '@mui/material';
+import { SkinContext } from '@/styles/skin-context';
+import { useCardStyles } from './Card.styles';
 
 export type SingleListItem = {
   type: string;

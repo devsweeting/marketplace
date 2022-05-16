@@ -1,15 +1,15 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { ThemeProvider, Theme } from '@mui/material';
-import themeJump from '../../styles/themeJump';
-import themePWCC from '../../styles/themePWCC';
-import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
-import createEmotionCache from '../../styles/createEmotionCache';
-import { Header } from '../layout/Header';
-import { Footer } from '../layout/Footer';
-import { SkinContext, skins } from '../../styles/skin-context';
+import { ThemeProvider, Theme } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import themeJump from '@/styles/themeJump';
+import themePWCC from '@/styles/themePWCC';
+import createEmotionCache from '@/styles/createEmotionCache';
+import { Header } from '@/layout/Header';
+import { Footer } from '@/layout/Footer';
+import { SkinContext, skins } from '@/styles/skin-context';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
