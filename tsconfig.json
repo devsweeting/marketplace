@@ -23,7 +23,8 @@
       "@/domain/*": ["src/domain/*"],
       "@/helpers/*": ["src/helpers/*"],
       "@/layout/*": ["src/layout/*"],
-      "@/pages/*": ["src/pages/*"]
+      "@/pages/*": ["src/pages/*"],
+      "@/containers/*": ["src/containers/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
