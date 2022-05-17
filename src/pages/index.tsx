@@ -5,7 +5,7 @@ import OpenGraph from '@/components/OpenGraph';
 const Homepage = () => {
   return (
     <>
-      <OpenGraph title={'Hom page'} description={'Home page description'} />
+      <OpenGraph title={'Home page'} description={'Home page description'} />
       <Container maxWidth="xl">
         <h1 style={{ paddingTop: 150 }}>
           <Link href="/token-detail/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint">
