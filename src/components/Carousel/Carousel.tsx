@@ -27,12 +27,12 @@ export const Carousel: React.FC<{ data: SingleListItem[] }> = ({ data }) => {
           overflowX: 'scroll',
         }}
       >
-        {data &&
+        {/* {data &&
           data.map((card, index) => (
             <Box key={index} className={classes.cardWrapper}>
               <Card item={card} />
             </Box>
-          ))}
+          ))} */}
       </Box>
     </Grid>
   );
