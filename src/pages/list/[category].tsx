@@ -1,9 +1,13 @@
 import React from 'react';
 import CategoryListViewPage from '@/containers/CategoryListViewPage';
+import OpenGraph from '@/components/OpenGraph';
 
 const CategoryPage = () => {
   return (
-    <CategoryListViewPage />
+    <>
+      <OpenGraph title={'List view'} description={'List view page description'} />
+      <CategoryListViewPage />
+    </>
   );
 };
 

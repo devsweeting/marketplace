@@ -19,6 +19,7 @@ import { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
 import { mockCards } from '@/__mocks__/mockCategoryViewApiData';
 import { mockChartData, mockTraits } from '@/__mocks__/mockApiData';
+import OpenGraph from '@/components/OpenGraph';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
   // const { name, description, media } = nftData;
@@ -33,6 +34,12 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
   return (
     <>
+      <OpenGraph
+        title={nftData.name}
+        description={nftData.description}
+        image={nftData.media[0].url}
+        image_alt={nftData.media[0].description}
+      />
       {nftData ? (
         <Box
           sx={{

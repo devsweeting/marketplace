@@ -1,20 +1,24 @@
 import Container from '@mui/material/Container';
 import Link from 'next/link';
+import OpenGraph from '@/components/OpenGraph';
 
 const Homepage = () => {
   return (
-    <Container maxWidth="xl">
-      <h1 style={{ paddingTop: 150 }}>
-        <Link href="/token-detail/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint">
-          <a>NFT Detail View</a>
-        </Link>
-      </h1>
-      <h1>
-        <Link href="/list/someCategoryListing">
-          <a>List View</a>
-        </Link>
-      </h1>
-    </Container>
+    <>
+      <OpenGraph title={'Hom page'} description={'Home page description'} />
+      <Container maxWidth="xl">
+        <h1 style={{ paddingTop: 150 }}>
+          <Link href="/token-detail/82191303-fa4d-4168-9cc8-96d82a291975/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint">
+            <a>NFT Detail View</a>
+          </Link>
+        </h1>
+        <h1>
+          <Link href="/list/someCategoryListing">
+            <a>List View</a>
+          </Link>
+        </h1>
+      </Container>
+    </>
   );
 };
 
