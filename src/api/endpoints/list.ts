@@ -1,10 +1,11 @@
 import Axios from '@/api/axios';
+import { IFilter } from 'src/types';
 
 interface ListAssetParams {
     page: number;
     limit?: number;
     sort: string | undefined;
-    filter?: Array<string>;
+    filter?: Array<IFilter>;
 }
 export const loadListAssetByPage = async ({
     page, 
@@ -18,8 +19,8 @@ export const loadListAssetByPage = async ({
             query += `&sort=${sort}&order=DESC`;
         }
         if(filter) {
-            filter.forEach((item: string) => {
-                query += `&attr_eq[${item.split('^')[0]}]=${item.split('^')[1]}`;
+            filter.forEach((item: IFilter) => {
+                query += `&attr_eq[${item.categoryId}]=${item.filterId}`;
             })
         }
         const res = await Axios.get(`/v1/assets?${query}`);

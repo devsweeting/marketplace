@@ -9,13 +9,13 @@ import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IAsset, IMeta } from 'src/types';
+import { IFilter, IAsset, IMeta } from 'src/types';
 import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
 import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
-  const [checkedFilters, setcheckedFilters] = useState<any>([]);
+  const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
@@ -48,20 +48,22 @@ const CategoryListView = () => {
     loadListAssets(1);
   }, [sortType, checkedFilters]);
 
-  const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: filterName } = event.target;
+  const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
+    const { name: filterId } = event.target;
 
-    if (checkedFilters.includes(filterName)) {
-      const newcheckedFilters = checkedFilters.filter((el: string) => el !== filterName);
+    if (checkedFilters.find((filter: IFilter) => filter.categoryId === categoryId && filter.filterId === filterId)) {
+      const newcheckedFilters = checkedFilters.filter((filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId));
       setcheckedFilters(newcheckedFilters);
       return;
     }
-    setcheckedFilters([...checkedFilters, filterName]);
+    setcheckedFilters([
+      ...checkedFilters, 
+      {filterId, categoryId}
+    ]);
   };
 
   const clearAllSelectedFilters = () => {
-    const clearedFilters: string[] = [];
-    setcheckedFilters(clearedFilters);
+    setcheckedFilters([]);
   };
 
   const filterSidebarProps: FilterSidebarProps = {
@@ -76,7 +78,6 @@ const CategoryListView = () => {
     handleSortType
   };
 
-  console.log(checkedFilters)
   return (
     <Box className={classes.wrapper}>
       <Grid
@@ -136,7 +137,7 @@ const CategoryListView = () => {
                 sx={{ marginTop: { xs: '36px', md: '95px' } }} 
                 size="large" 
                 onClick={
-                  () => loadListAssets(currentMeta?.currentPage + 1)
+                  () => loadListAssets(currentMeta?.currentPage || 0 + 1)
                 }
               >
                 LOAD MORE

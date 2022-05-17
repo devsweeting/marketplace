@@ -8,7 +8,7 @@ import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 
 export interface FilterSidebarProps {
   toggleVisibility: (isVisible: boolean)=> void,
-  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void,
   clearAllSelectedFilters: () => void,
   checkedFilters: any;
 }
