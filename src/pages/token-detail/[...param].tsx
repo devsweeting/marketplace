@@ -28,7 +28,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
   const [traits, setTraits] = useState<TraitType[] | null>(null);
 
   useEffect(() => {
-    setTraits(nftData.attributes);
+    setTraits(nftData?.attributes);
   }, [nftData]);
 
   return (
