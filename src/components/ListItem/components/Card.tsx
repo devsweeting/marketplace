@@ -5,16 +5,16 @@ import { SkinContext } from '@/styles/skin-context';
 import { useCardStyles } from './Card.styles';
 import { IAsset } from 'src/types';
 
-// export type SingleListItem = {
-//   type: string;
-//   title: string;
-//   imageLink: string;
-//   price: {
-//     icon: string;
-//     cryptoValue: string;
-//     dolarValue: string;
-//   };
-// };
+export type SingleListItem = {
+  type: string;
+  title: string;
+  imageLink: string;
+  price: {
+    icon: string;
+    cryptoValue: string;
+    dolarValue: string;
+  };
+};
 interface CardProps {
   item: IAsset;
 }
