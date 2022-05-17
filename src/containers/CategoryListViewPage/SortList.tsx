@@ -7,12 +7,14 @@ import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 
 export interface SortListProps {
   toggleVisibility: (isVisible: boolean)=> void,
-  handleSortType: (id: string) => void
+  handleSortType: (id: string) => void;
+  sortType: string;
 }
 
 const SortList = ({
   toggleVisibility,
-  handleSortType
+  handleSortType,
+  sortType
 }: SortListProps) => {
   const classes = useCategoryPageStyles();
   return (
@@ -30,9 +32,10 @@ const SortList = ({
           Filter
         </Button>
         <MenuList
-            handleSelect={handleSortType}
-            buttonType="outlined"
-            buttonSize="medium"
+          sortType={sortType}
+          handleSelect={handleSortType}
+          buttonType="outlined"
+          buttonSize="medium"
         />
     </Box>
   );

@@ -75,7 +75,8 @@ const CategoryListView = () => {
 
   const sortListProps: SortListProps = {
     toggleVisibility,
-    handleSortType
+    handleSortType,
+    sortType
   };
 
   return (
