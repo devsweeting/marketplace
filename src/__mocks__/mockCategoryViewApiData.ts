@@ -232,11 +232,6 @@ export const mockCategoryFilters = [
     ] 
   },
   { 
-    categoryName: 'Price', 
-    categoryId: 'price',
-    filters: ['Gaming', 'Others'] 
-  },
-  { 
     categoryName: 'Collection', 
     categoryId: 'collection',
     filters: ['Autumn', 'Spring'] 
