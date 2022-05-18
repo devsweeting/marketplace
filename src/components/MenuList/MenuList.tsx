@@ -1,11 +1,11 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { Button } from '../../components/Button';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { SortBy } from '../../domain/Category';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Button } from '@/components/Button';
+import { SortBy } from '@/domain/Category';
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu

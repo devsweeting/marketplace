@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
-import { SkinContext } from '../../../styles/skin-context';
 import Box from '@mui/material/Box';
-import { SearchBox } from '../../components/SearchBox';
+import { SearchBox } from '@/components/SearchBox';
 import Typography from '@mui/material/Typography';
-import { FilterGroup } from './components/FilterGroup';
-import { BorderBox } from '../BorderBox/BorderBox';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { SkinContext } from '@/styles/skin-context';
+import { BorderBox } from '../BorderBox/BorderBox';
+import { FilterGroup } from './components/FilterGroup';
 
 export const FilterMenu: React.FC<any> = ({
   categoriesList,

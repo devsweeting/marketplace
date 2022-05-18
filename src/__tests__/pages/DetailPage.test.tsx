@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import DetailPage from '../../pages/item/[...param]';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/themeJump';
-import { mockedApiData } from '../../__mocks__/mockApiData';
+import DetailPage from '@/pages/item/[...param]';
+import theme from '@/styles/themeJump';
+import { mockedApiData } from '@/__mocks__/mockApiData';
+import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('next/router', () => ({
   useRouter() {

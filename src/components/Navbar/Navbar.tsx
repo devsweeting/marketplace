@@ -2,9 +2,9 @@ import React from 'react';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import SearchIcon from '@mui/icons-material/Search';
 import { NavLink } from './components/NavLink';
 import { useNavbarStyles } from './Navbar.styles';
-import SearchIcon from '@mui/icons-material/Search';
 
 type NavLink = {
   title: string;
