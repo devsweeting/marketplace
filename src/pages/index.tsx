@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 import Link from 'next/link';
-import { Routes } from '../domain/Routes';
+import { Routes } from '@/domain/Routes';
 
 const Homepage = () => {
   return (
