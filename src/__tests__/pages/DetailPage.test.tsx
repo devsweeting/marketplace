@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
-import DetailPage from '@/pages/token-detail/[...param]';
+import DetailPage from '@/pages/item/[...param]';
 import theme from '@/styles/themeJump';
 import { mockedApiData } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
@@ -17,17 +17,17 @@ jest.mock('next/router', () => ({
   },
 }));
 
-const MockDetailPage = ({ data }: { data: any }) => {
+const MockDetailPage = ({ nftData }: { nftData: any }) => {
   return (
     <ThemeProvider theme={theme}>
-      <DetailPage data={data} />
+      <DetailPage nftData={nftData} />
     </ThemeProvider>
   );
 };
 
 describe('DetailPage', () => {
   it('it should render with the fetched content ', async () => {
-    render(<MockDetailPage data={mockedApiData} />);
+    render(<MockDetailPage nftData={mockedApiData} />);
 
     // waitFor(() => expect(screen.getByText(mockedApiData.name)).toBeInTheDocument());
     waitFor(() => expect(screen.getByText(mockedApiData.description)).toBeInTheDocument());

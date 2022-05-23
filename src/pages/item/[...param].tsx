@@ -160,12 +160,9 @@ export default DetailPage;
 export async function getServerSideProps(context: any) {
   try {
     const { param } = context.query;
-    const asset_id = param[0];
+    const asset_slug = param[0];
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_id}`,
-      // 'https://api.staging.jump.co/v1/assets/82191303-fa4d-4168-9cc8-96d82a291975',
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_slug}`);
     const data = await response.json();
 
     if (!data.id) {

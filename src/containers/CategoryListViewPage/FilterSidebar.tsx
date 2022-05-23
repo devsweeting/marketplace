@@ -14,16 +14,16 @@ import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 
 interface FilterSidebarProps {
-  toggleVisibility: (isVisible: boolean)=> void,
-  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  clearAllSelectedFilters: () => void,
+  toggleVisibility: (isVisible: boolean) => void;
+  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  clearAllSelectedFilters: () => void;
   checkedFilters: any;
 }
 const FilterSidebar = ({
   toggleVisibility,
   handleFiltersChange,
   clearAllSelectedFilters,
-  checkedFilters
+  checkedFilters,
 }: FilterSidebarProps) => {
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
