@@ -18,7 +18,6 @@ export const loadListAssetByPage = async ({ page, limit = 12, sort, filter }: Li
       });
     }
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets?${query}`);
-    console.log(query);
     const data = await res.json();
     return data;
   } catch (err) {
