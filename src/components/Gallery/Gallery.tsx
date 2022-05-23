@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
-import { useGalleryStyles } from './Gallery.styles';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
+import { useGalleryStyles } from './Gallery.styles';
 
 type Image = {
   title: string;

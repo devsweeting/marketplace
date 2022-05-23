@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import { SkinContext } from '../../../../styles/skin-context';
 import { Typography, Box, Divider } from '@mui/material';
+import { SkinContext } from '@/styles/skin-context';
 import { useCardStyles } from './Card.styles';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SingleListItem } from '../../../domain/Items';
+import { SingleListItem } from '@/domain/Items'
 
 export const Card = ({ item }: { item: SingleListItem }) => {
   const { skin } = useContext(SkinContext);
@@ -12,7 +12,7 @@ export const Card = ({ item }: { item: SingleListItem }) => {
   const classes = useCardStyles();
 
   return (
-    <Link href={`/token-detail/${item.id}/${item.slug}`}>
+    <Link href={`/item/${item.slug}`}>
       <a style={{ textDecoration: 'none', color: '#000' }}>
         <Box className={classes.container}>
           <Box

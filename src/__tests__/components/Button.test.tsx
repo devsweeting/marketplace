@@ -1,9 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen, act, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { Button } from '../../components/Button';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/theme';
+import { Button } from '@/components/Button';
+import theme from '@/styles/themeJump';
+import '@testing-library/jest-dom/extend-expect';
 
 const handleClick = jest.fn();
 const mockVariant = 'outlined';

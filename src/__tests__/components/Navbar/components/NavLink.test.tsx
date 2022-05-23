@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { NavLink } from '../../../../components/Navbar/components/NavLink';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../../../styles/themeJump';
+import { NavLink } from '@/components/Navbar/components/NavLink';
+import theme from '@/styles/themeJump';
+import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('next/router', () => ({
   useRouter() {

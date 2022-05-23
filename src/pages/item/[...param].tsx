@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Box } from '@mui/material';
-import { ProductCard } from '../../components/ProductCard';
-import { useDetailPageStyles } from '../../../styles/DetailPage.styles';
-import { Properties } from '../../components/Properties';
-import { DescriptionText } from '../../components/DescriptionText';
-import { Gallery } from '../../components/Gallery';
-import { useTheme } from '@mui/styles';
-import { Button } from '../../components/Button';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Carousel } from '../../components/Carousel';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Grid, Box } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useTheme } from '@mui/styles';
 import Typography from '@mui/material/Typography';
-import { TraitType } from '../../components/Properties/components/PropertyBox';
+import { ProductCard } from '@/components/ProductCard';
+import { Properties } from '@/components/Properties';
+import { DescriptionText } from '@/components/DescriptionText';
+import { Gallery } from '@/components/Gallery';
+import { Button } from '@/components/Button';
+import { Carousel } from '@/components/Carousel';
+import { TraitType } from '@/components/Properties/components/PropertyBox';
+import { useDetailPageStyles } from '@/styles/DetailPage.styles';
+import OpenGraph from '@/components/OpenGraph';
+import { Routes } from '@/domain/Routes';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
   const theme = useTheme();
@@ -25,6 +27,12 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
   return (
     <>
+      <OpenGraph
+        title={nftData.name}
+        description={nftData.description}
+        image={nftData.media[0].url}
+        image_alt={nftData.media[0].description}
+      />
       {nftData ? (
         <Box
           sx={{
@@ -114,15 +122,17 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             >
               <Carousel />
               <Grid item xs={12}>
-                <Link href="/list/someCategoryListing" passHref>
-                  <Button
-                    endIcon={<ArrowForwardIcon className={classes.exploreMoreIcon} />}
-                    variant="contained"
-                    size="large"
-                    className={classes.exploreMoreButton}
-                  >
-                    EXPLORE MORE
-                  </Button>
+                <Link href={Routes[0].path}>
+                  <a className={classes.exploreMoreLink}>
+                    <Button
+                      endIcon={<ArrowForwardIcon className={classes.exploreMoreIcon} />}
+                      variant="contained"
+                      size="large"
+                      className={classes.exploreMoreButton}
+                    >
+                      EXPLORE MORE
+                    </Button>
+                  </a>
                 </Link>
               </Grid>
             </Grid>
@@ -142,12 +152,9 @@ export default DetailPage;
 export async function getServerSideProps(context: any) {
   try {
     const { param } = context.query;
-    const asset_id = param[0];
+    const asset_slug = param[0];
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_id}`,
-      // 'https://api.staging.jump.co/v1/assets/82191303-fa4d-4168-9cc8-96d82a291975',
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_slug}`);
     const data = await response.json();
 
     if (!data.id) {

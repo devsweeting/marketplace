@@ -48,6 +48,9 @@ export const useDetailPageStyles = makeStyles((theme) => ({
       fontSize: '32px !important',
     },
   },
+  exploreMoreLink: {
+    textDecoration: 'none',
+  },
 
   // wrapper: {
   //   maxWidth: 1440,

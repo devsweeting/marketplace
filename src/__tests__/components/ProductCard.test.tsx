@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { ProductCard } from '../../components/ProductCard';
-import { ProductDataProps } from '../../components/ProductCard/ProductCard';
 import { ThemeProvider } from '@mui/material';
-import theme from '../../../styles/themeJump';
-import { mockProductData } from '../../__mocks__/mockApiData';
+import { ProductCard } from '@/components/ProductCard';
+import { ProductDataProps } from '@/components/ProductCard/ProductCard';
+import theme from '@/styles/themeJump';
+import { mockProductData } from '@/__mocks__/mockApiData';
+import '@testing-library/jest-dom/extend-expect';
 
 const MockProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData }) => {
   return (

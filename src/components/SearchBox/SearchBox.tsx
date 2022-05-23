@@ -33,7 +33,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
           borderRadius: borderRadius && skin.header.searchIconBorderRadius,
           color: reverseTextColor && skin.header.searchTextColor,
         }}
-        // id="searchbox"
         value={value}
         onChange={handleChange}
         placeholder={placeholder}

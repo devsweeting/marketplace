@@ -1,23 +1,21 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { SkinContext } from '../../../styles/skin-context';
-import { listViewData, mockCategoryFilters } from '../../__mocks__/mockCategoryViewApiData';
-import { Grid, Box, Typography, Divider } from '@mui/material';
-import { ClearAllFilter } from '../../components/FilterMenu/components/ClearAllFilter';
-import { ListItem } from '../../components/ListItem';
-import { FilterMenu } from '../../components/FilterMenu';
-// import { SortBy } from '../../domain/Category';
-import { Button } from '../../components/Button';
-import { MenuList } from '../../components/MenuList/';
-import { useCategoryPageStyles } from '../../../styles/CategoryPage.styles';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Grid, Box, Typography, Divider } from '@mui/material';
+import { SkinContext } from '@/styles/skin-context';
+import { listViewData } from '@/__mocks__/mockCategoryViewApiData';
+import { ListItem } from '@/components/ListItem';
+import { Button } from '@/components/Button';
+import { MenuList } from '@/components/MenuList/';
+import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
+import FilterSidebar from './FilterSidebar';
 
-const CategoryPage = () => {
-  const { items } = listViewData;
+const CategoryListView = () => {
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
   const [checkedFilters, setcheckedFilters] = useState<any>([]);
+  const { items } = listViewData;
   // const [items, setItems] = useState<SingleListItem[]>(listViewData.items);
   // const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
   const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
@@ -67,6 +65,12 @@ const CategoryPage = () => {
     setcheckedFilters(clearedFilters);
   };
 
+  const filterSidebarProps = {
+    toggleVisibility,
+    handleFiltersChange,
+    clearAllSelectedFilters,
+    checkedFilters,
+  };
   return (
     <Box className={classes.wrapper}>
       <Grid
@@ -74,32 +78,7 @@ const CategoryPage = () => {
         container
         // columnSpacing={4}
       >
-        {isSidebarVisible && (
-          <Grid
-            className={classes.leftColumn}
-            container
-            item
-            md={3}
-            xs={12}
-            rowSpacing={2}
-            sx={{
-              backgroundColor: skin.listItem.filterBackgroundColor,
-            }}
-          >
-            <Grid item xs={12}>
-              <ClearAllFilter
-                clearSelectedFilters={clearAllSelectedFilters}
-                toggleVisibility={toggleVisibility}
-                isFilterButtonVisible={checkedFilters.length}
-              />
-              <FilterMenu
-                categoriesList={mockCategoryFilters}
-                handleFiltersChange={handleFiltersChange}
-                checkedFilters={checkedFilters}
-              />
-            </Grid>
-          </Grid>
-        )}
+        {isSidebarVisible && <FilterSidebar {...filterSidebarProps} />}
         <Grid container item md={9} xs={12} rowSpacing={2} className={classes.rightColumn}>
           <Grid
             container
@@ -165,4 +144,4 @@ const CategoryPage = () => {
   );
 };
 
-export default CategoryPage;
+export default CategoryListView;
