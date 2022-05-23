@@ -10,6 +10,7 @@ import { SearchBox } from '@/components/SearchBox';
 import { mockNavLinks } from '@/__mocks__/mockApiData';
 import { SkinContext } from '@/styles/skin-context';
 import { useHeaderStyles } from './Header.styles';
+import { Routes } from '@/domain/Routes';
 // import { skins } from '../../../styles/skin-context';
 
 export const Header = () => {
@@ -61,7 +62,7 @@ export const Header = () => {
               />
             </Box>
 
-            <Navbar navLinks={mockNavLinks} />
+            <Navbar navLinks={Routes} />
           </Container>
         </Toolbar>
       </AppBar>

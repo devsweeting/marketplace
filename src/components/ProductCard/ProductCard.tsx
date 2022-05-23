@@ -4,13 +4,13 @@ import { Grid, Typography, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import ShareIcon from '@mui/icons-material/Share';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Divider from '@mui/material/Divider';
 import classNames from 'classnames';
 import { Button } from '@/components/Button';
 import { SkinContext } from '@/styles/skin-context';
 import { useProductStyles } from './ProductCard.styles';
+import ShareButton from '@/components/ShareButton';
 
 export interface ProductDataProps {
   name: string;
@@ -26,9 +26,7 @@ export const ProductCard: React.FC<{ name: ProductDataProps }> = ({ name }) => {
           <Typography component="p" variant="body1" className={classes.shareText}>
             Overstreet comic book collection
           </Typography>
-          <Typography component="p" variant="body1" className={classes.shareButton}>
-            share <ShareIcon sx={{ fontSize: '16px', transform: 'translateY(3px)' }} />
-          </Typography>
+          <ShareButton />
         </Box>
         <Typography className={classes.porductTitle} variant="h2" component="h2">
           {name}

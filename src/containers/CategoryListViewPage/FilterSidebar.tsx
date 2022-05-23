@@ -7,9 +7,9 @@ import { FilterMenu } from '@/components/FilterMenu';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 
 export interface FilterSidebarProps {
-  toggleVisibility: (isVisible: boolean)=> void,
-  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void,
-  clearAllSelectedFilters: () => void,
+  toggleVisibility: (isVisible: boolean) => void;
+  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
+  clearAllSelectedFilters: () => void;
   checkedFilters: any;
 }
 
@@ -17,7 +17,7 @@ const FilterSidebar = ({
   toggleVisibility,
   handleFiltersChange,
   clearAllSelectedFilters,
-  checkedFilters
+  checkedFilters,
 }: FilterSidebarProps) => {
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);

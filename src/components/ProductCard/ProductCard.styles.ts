@@ -71,12 +71,6 @@ export const useProductStyles = makeStyles(
         fontSize: '14px',
       },
     },
-    shareButton: {
-      color: theme.palette.secondary.main,
-      textTransform: 'uppercase',
-      fontSize: '12px',
-      fontWeight: 700,
-    },
     porductTitle: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(6),

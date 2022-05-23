@@ -19,6 +19,7 @@ import { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
 import { mockCards } from '@/__mocks__/mockCategoryViewApiData';
 import { mockChartData, mockTraits } from '@/__mocks__/mockApiData';
+import OpenGraph from '@/components/OpenGraph';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
   // const { name, description, media } = nftData;
@@ -33,6 +34,12 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
   return (
     <>
+      <OpenGraph
+        title={nftData.name}
+        description={nftData.description}
+        image={nftData.media[0].url}
+        image_alt={nftData.media[0].description}
+      />
       {nftData ? (
         <Box
           sx={{
@@ -153,12 +160,9 @@ export default DetailPage;
 export async function getServerSideProps(context: any) {
   try {
     const { param } = context.query;
-    const asset_id = param[0];
+    const asset_slug = param[0];
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_id}`,
-      // 'https://api.staging.jump.co/v1/assets/82191303-fa4d-4168-9cc8-96d82a291975',
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_slug}`);
     const data = await response.json();
 
     if (!data.id) {
