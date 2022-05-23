@@ -19,14 +19,12 @@ export const FilterGroup: React.FC<any> = ({ category, handleFiltersChange, chec
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={
-                        checkedFilters.find(
-                        (item: IFilter) => 
-                        item.categoryId === categoryId && 
-                        item.filterId === filter.toLowerCase())
-                      }
-                      onChange={ev => handleFiltersChange(ev, categoryId)}
-                      name={filter.toLowerCase()}
+                      checked={checkedFilters.find(
+                        (item: IFilter) =>
+                          item.categoryId === categoryId && item.filterId === filter.toLowerCase(),
+                      )}
+                      onChange={(ev) => handleFiltersChange(ev, categoryId)}
+                      name={filter}
                     />
                   }
                   label={filter}
