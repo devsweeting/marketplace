@@ -7,8 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import themeJump from '@/styles/themeJump';
 import themePWCC from '@/styles/themePWCC';
 import createEmotionCache from '@/styles/createEmotionCache';
-import { Header } from '@/layout/Header';
-import { Footer } from '@/layout/Footer';
+import Layout from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
 
 declare module '@mui/styles/defaultTheme' {
@@ -40,9 +39,9 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={choosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
           <CssBaseline />
-          <Header />
-          <Component {...pageProps} />
-          <Footer />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </SkinContext.Provider>
       </ThemeProvider>
     </CacheProvider>
