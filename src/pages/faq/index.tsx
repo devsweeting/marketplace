@@ -17,7 +17,7 @@ const PostPage = ({ article }: { article: any }) => (
 PostPage.getInitialProps = async () => {
   const res = await fetch(`http://localhost:3000/api/faq/topics`);
   const json = await res.json();
-  return { article: json.items[0] };
+  return { article: json.items };
 };
 
 export default PostPage;

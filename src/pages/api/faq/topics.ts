@@ -4,7 +4,7 @@ const data = {
   items: [
     {
       category: 'selling',
-      subcategory: 'selling',
+      name: 'Selling',
       questions: [
         {
           question: 'What is the biggest advantage of selling my items with PWCC?',
@@ -24,30 +24,11 @@ const data = {
       ],
     },
     {
-      category: 'selling',
+      category: 'about-vault',
+      name: 'About vault',
       questions: [
         {
-          question: 'What is the biggest advantage of selling my items with PWCC?',
-          answer:
-            "PWCC offers the largest auction venue specifically targeted to trading cards worldwide with thousands of unique users participating in every auction. PWCC's strong reputation in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace generally garner higher sale prices when compared with prices from other venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases than selling individually.",
-        },
-        {
-          question: 'What is the biggest advantage of selling my items with PWCC?',
-          answer:
-            "PWCC offers the largest auction venue specifically targeted to trading cards worldwide with thousands of unique users participating in every auction. PWCC's strong reputation in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace generally garner higher sale prices when compared with prices from other venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases than selling individually.",
-        },
-        {
-          question: 'What is the biggest advantage of selling my items with PWCC?',
-          answer:
-            "PWCC offers the largest auction venue specifically targeted to trading cards worldwide with thousands of unique users participating in every auction. PWCC's strong reputation in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace generally garner higher sale prices when compared with prices from other venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases than selling individually.",
-        },
-      ],
-    },
-    {
-      category: 'About vault',
-      questions: [
-        {
-          question: 'What is the biggest advantage of selling my items with PWCC?',
+          question: 'Vault: What is the biggest advantage of selling my items with PWCC?',
           answer:
             "PWCC offers the largest auction venue specifically targeted to trading cards worldwide with thousands of unique users participating in every auction. PWCC's strong reputation in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace generally garner higher sale prices when compared with prices from other venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases than selling individually.",
         },
@@ -65,9 +46,10 @@ const data = {
     },
     {
       category: 'safety',
+      name: 'Safety',
       questions: [
         {
-          question: 'What is the biggest advantage of selling my items with PWCC?',
+          question: 'Safety: What is the biggest advantage of selling my items with PWCC?',
           answer:
             "PWCC offers the largest auction venue specifically targeted to trading cards worldwide with thousands of unique users participating in every auction. PWCC's strong reputation in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace generally garner higher sale prices when compared with prices from other venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases than selling individually.",
         },
@@ -85,9 +67,10 @@ const data = {
     },
     {
       category: 'buying',
+      name: 'Buying',
       questions: [
         {
-          question: 'What is the biggest advantage of selling my items with PWCC?',
+          question: 'Buying: What is the biggest advantage of selling my items with PWCC?',
           answer:
             "PWCC offers the largest auction venue specifically targeted to trading cards worldwide with thousands of unique users participating in every auction. PWCC's strong reputation in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace generally garner higher sale prices when compared with prices from other venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases than selling individually.",
         },
@@ -104,10 +87,11 @@ const data = {
       ],
     },
     {
-      category: 'How to get started?',
+      category: 'how-to-get-started',
+      name: 'How to get started?',
       questions: [
         {
-          question: 'What is the biggest advantage of selling my items with PWCC?',
+          question: 'Get started: What is the biggest advantage of selling my items with PWCC?',
           answer:
             "PWCC offers the largest auction venue specifically targeted to trading cards worldwide with thousands of unique users participating in every auction. PWCC's strong reputation in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace generally garner higher sale prices when compared with prices from other venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases than selling individually.",
         },
