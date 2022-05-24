@@ -17,7 +17,7 @@ export const loadListAssetByPage = async ({ page, limit = 12, sort, filter }: Li
         query += `&attr_eq[${item.categoryId}]=${item.filterId}`;
       });
     }
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets?${query}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/assets?${query}`);
     const data = await res.json();
     return data;
   } catch (err) {
