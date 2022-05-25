@@ -29,5 +29,6 @@ describe('Navbar', () => {
     const { debug } = render(<MockNavbar navLinks={mockNavLinks} />);
 
     expect(screen.getByText(mockNavLinks[0].title)).toBeTruthy();
+    expect(screen.getByText(mockNavLinks[1].title)).toBeTruthy();
   });
 });
