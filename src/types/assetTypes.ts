@@ -21,7 +21,7 @@ export interface IMedia {
 	title: string;
 	url: string;
 	description: string | null;
-	file: string | null;
+	file: string;
 	fileId: string;
 	sortOrder: number;
 }

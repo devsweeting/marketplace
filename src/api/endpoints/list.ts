@@ -7,7 +7,7 @@ interface ListAssetParams {
   filter?: Array<IFilter>;
 }
 export const loadListAssetByPage = async ({ page, limit = 12, sort, filter }: ListAssetParams) => {
-  try {
+
     let query = `page=${page}&limit=${limit}`;
     if (sort) {
       query += `&sort=${sort}&order=DESC`;
@@ -18,9 +18,5 @@ export const loadListAssetByPage = async ({ page, limit = 12, sort, filter }: Li
       });
     }
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets?${query}`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
+    return await res.json();
 };
