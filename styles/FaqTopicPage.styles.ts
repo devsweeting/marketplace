@@ -2,6 +2,18 @@ import { makeStyles } from '@mui/styles';
 import { lighten } from '@mui/material';
 
 export const useFaqPageStyles = makeStyles((theme) => ({
+  showOnMobile: {
+    display: 'none',
+    [theme.breakpoints.down('md')]: {
+      display: 'block',
+    },
+  },
+  showOnDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'block',
+    },
+  },
   leftColumn: {
     display: 'flex',
     flexDirection: 'column',

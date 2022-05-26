@@ -8,6 +8,9 @@ import { AccordionTextItem } from '@/components/Accordion/components/AccordionTe
 import { v4 as uuidv4 } from 'uuid';
 import { Button } from '@/components/Button';
 import classNames from 'classnames';
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+import FaqCta from '@/components/FaqCta';
+import SelectInput from '@/components/SelectInput';
 
 interface Article {
   category: string;
@@ -15,7 +18,11 @@ interface Article {
   questions: { question: string; answer: string }[];
 }
 
-const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
+const FaqTopicPage = ({ article, articles }: { article: Article; articles: Article[] }) => {
+  console.log('single', article);
+  console.log('all', articles);
+
+  const scrollToAnchor = (i) => {};
   const classes = useFaqPageStyles();
 
   const router = useRouter();
@@ -25,6 +32,7 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
 
   const changeTopic = (e: React.SyntheticEvent) => {
     const { id } = e.target as Element;
+    console.log(id);
     router.push(`/faq/${id}`, undefined, { shallow: true });
   };
 
@@ -45,31 +53,39 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
       <Grid mt={15} container>
         <Grid className={classes.leftColumn} container item md={3} xs={12}>
           <Grid item xs={12}>
-            <Typography variant="h2" component="h2" className={classes.menuTitle}>
-              Topics
-            </Typography>
-            {articles &&
-              articles.map((a) => {
-                return (
-                  <Box
-                    className={classNames(
-                      classes.topicLinkWrapper,
-                      a.category === urlParam && classes.active,
-                    )}
-                  >
-                    <Typography
-                      className={classes.topicLink}
-                      variant="h5"
-                      component="h4"
-                      key={a.category}
-                      id={a.category}
-                      onClick={changeTopic}
+            <Box className={classes.showOnMobile}>
+              <SelectInput
+                options={articles.map((a) => ({ name: a.name, id: a.category }))}
+                scrollToAnchor={scrollToAnchor}
+              />
+            </Box>
+            <Box className={classes.showOnDesktop}>
+              <Typography variant="h2" component="h2" className={classes.menuTitle}>
+                Topics
+              </Typography>
+              {articles &&
+                articles.map((a) => {
+                  return (
+                    <Box
+                      className={classNames(
+                        classes.topicLinkWrapper,
+                        a.category === urlParam && classes.active,
+                      )}
                     >
-                      {a.name}
-                    </Typography>
-                  </Box>
-                );
-              })}
+                      <Typography
+                        className={classes.topicLink}
+                        variant="h5"
+                        component="h4"
+                        key={a.category}
+                        id={a.category}
+                        onClick={changeTopic}
+                      >
+                        {a.name}
+                      </Typography>
+                    </Box>
+                  );
+                })}
+            </Box>
           </Grid>
         </Grid>
         <Grid container item md={9} xs={12} className={classes.rightColumn}>
@@ -81,30 +97,66 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
             justifyContent="space-between"
             alignItems="flex-start"
           >
-            {activeTopic && (
-              <Box>
-                <Typography variant="h2" component="h1" className={classes.topicTitle}>
-                  {activeTopic.name}
-                </Typography>
-                <Box className={classes.accordionWrapper}>
-                  <Accordion>
-                    <>
-                      {activeTopic.questions.map((q) => {
-                        return (
-                          <Box key={uuidv4()}>
-                            <AccordionTextItem title={q.question} isExpanded={false}>
-                              {q.answer}
-                            </AccordionTextItem>
-                          </Box>
-                        );
-                      })}
-                    </>
-                  </Accordion>
+            <Box className={classes.showOnMobile}>
+              {articles &&
+                articles.map((a) => {
+                  return (
+                    <Box>
+                      <Typography variant="h2" component="h1" className={classes.topicTitle}>
+                        {a.name}
+                      </Typography>
+                      <Box className={classes.accordionWrapper}>
+                        <Accordion>
+                          <>
+                            {a.questions.map((q) => {
+                              return (
+                                <Box key={uuidv4()}>
+                                  <AccordionTextItem title={q.question} isExpanded={false}>
+                                    {q.answer}
+                                  </AccordionTextItem>
+                                </Box>
+                              );
+                            })}
+                          </>
+                        </Accordion>
+
+                        <FaqCta />
+                      </Box>
+                    </Box>
+                  );
+                })}
+            </Box>
+
+            <Box className={classes.showOnDesktop}>
+              {activeTopic && (
+                <Box>
+                  <Typography variant="h2" component="h1" className={classes.topicTitle}>
+                    {activeTopic.name}
+                  </Typography>
+                  <Box className={classes.accordionWrapper}>
+                    <Accordion>
+                      <>
+                        {activeTopic.questions.map((q) => {
+                          return (
+                            <Box key={uuidv4()}>
+                              <AccordionTextItem title={q.question} isExpanded={false}>
+                                {q.answer}
+                              </AccordionTextItem>
+                            </Box>
+                          );
+                        })}
+                      </>
+                    </Accordion>
+                  </Box>
                 </Box>
-              </Box>
-            )}
+              )}
+            </Box>
           </Grid>
-          <Grid container item xs={12} mt={9} mb={9.5} className={classes.ctaWrapper}>
+
+          <Box className={classes.showOnDesktop}>
+            <FaqCta />
+          </Box>
+          {/* <Grid container item xs={12} mt={9} mb={9.5} className={classes.ctaWrapper}>
             <Typography variant="h3" component="p">
               Couldn’t find answer?
             </Typography>
@@ -128,7 +180,7 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
                 .
               </Typography>
             </Box>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Box>
@@ -144,6 +196,7 @@ export async function getServerSideProps() {
     return {
       props: {
         articles: data.items,
+        article: data.items[0],
       },
     };
   } catch (err) {
