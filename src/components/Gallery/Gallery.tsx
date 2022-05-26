@@ -16,7 +16,7 @@ type Image = {
 export const Gallery = ({ images }: { images: Image[] }) => {
   const classes = useGalleryStyles();
 
-  const [mainImage, setMainImage] = useState(images[0].url);
+  const [mainImage, setMainImage] = useState(images[0].file);
 
   const handleImage = (e: React.SyntheticEvent) => {
     const { src } = e.target as HTMLInputElement;
@@ -36,7 +36,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
                 <Box className={classes.thumbnailItem}>
                   <img
                     className={classes.thumbnail}
-                    src={image.url}
+                    src={image.file}
                     alt={image.title}
                     width={80}
                     height={114}
