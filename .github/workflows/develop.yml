@@ -30,6 +30,8 @@ jobs:
         run: yarn install
 
       - name: 'Build'
+        env:
+          NEXT_PUBLIC_BACKEND_URL: https://api.staging.jump.co/v1
         run: yarn build
 
       # Uncomment this when tests work :)
