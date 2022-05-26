@@ -24,4 +24,7 @@ export const useFaqCtaStyles = makeStyles((theme) => ({
     lineHeight: '150%',
     letter: '0.15px',
   },
+  ctaLink: {
+    color: theme.palette.primary.main,
+  },
 }));

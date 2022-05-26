@@ -13,7 +13,9 @@ import { useHeaderStyles } from './Header.styles';
 import { Routes } from '@/domain/Routes';
 // import { skins } from '../../../styles/skin-context';
 
-export const Header = () => {
+export type HeaderPosition = 'fixed' | 'absolute' | 'relative' | 'static' | 'sticky' | undefined;
+
+export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) => {
   const classes = useHeaderStyles();
   const { skin /*, setSkin */ } = useContext(SkinContext);
 
@@ -28,7 +30,7 @@ export const Header = () => {
 
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar position={headerPosition}>
         <Toolbar
           disableGutters
           sx={{

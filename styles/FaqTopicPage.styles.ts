@@ -62,6 +62,7 @@ export const useFaqPageStyles = makeStyles((theme) => ({
     letter: '-0.5px',
     [theme.breakpoints.down('md')]: {
       textAlign: 'center',
+      marginTop: theme.spacing(9),
     },
   },
   accordionWrapper: {

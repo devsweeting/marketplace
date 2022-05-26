@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 import Link from 'next/link';
 import { Grid, Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -6,9 +6,7 @@ import { useFaqPageStyles } from '@/styles/FaqTopicPage.styles';
 import { Accordion } from '@/components/Accordion';
 import { AccordionTextItem } from '@/components/Accordion/components/AccordionTextItem';
 import { v4 as uuidv4 } from 'uuid';
-import { Button } from '@/components/Button';
 import classNames from 'classnames';
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 import FaqCta from '@/components/FaqCta';
 import SelectInput from '@/components/SelectInput';
 
@@ -18,45 +16,69 @@ interface Article {
   questions: { question: string; answer: string }[];
 }
 
-const FaqTopicPage = ({ article, articles }: { article: Article; articles: Article[] }) => {
-  console.log('single', article);
-  console.log('all', articles);
-
-  const scrollToAnchor = (i) => {};
-  const classes = useFaqPageStyles();
+const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
+  const [activeTopicOnDesktop, setActiveTopicOnDesktop] = useState<Article>(articles[0]);
+  const [mobileAnchor, setMobileAnchor] = useState<number>(0);
 
   const router = useRouter();
   const urlParam = router.query.topic;
+  const classes = useFaqPageStyles();
+  const myRefs = useRef<any>([]);
 
-  const [activeTopic, setActiveTopic] = useState<Article>(articles[0]);
+  // co zamiast any ?
+  myRefs.current = articles.map((article, i) => myRefs.current[i] ?? createRef());
 
-  const changeTopic = (e: React.SyntheticEvent) => {
-    const { id } = e.target as Element;
-    console.log(id);
-    router.push(`/faq/${id}`, undefined, { shallow: true });
+  const setRouterPath = (param: string) =>
+    router.push(`/faq/${param}`, undefined, { shallow: true });
+
+  const findAnchorIndexMobile = (param: string) => {
+    const refIndex = myRefs.current.findIndex((el: any) => el?.current.id === param);
+    return refIndex;
   };
 
-  const findTopic = (urlParam: string | string[]) => {
+  const handleSelectChangeMobile = (param: string) => {
+    findAnchorIndexMobile(param);
+    setRouterPath(param);
+  };
+
+  const changeTopicOnDekstop = (e: React.SyntheticEvent) => {
+    const { id } = e.target as Element;
+    setRouterPath(id);
+  };
+
+  const findTopicOnDesktop = (urlParam: string | string[]) => {
     const topic = articles.filter((t) => t.category === urlParam);
     return topic[0];
   };
 
   useEffect(() => {
+    const newAnchorIndex = findAnchorIndexMobile(urlParam as string);
+    setMobileAnchor(newAnchorIndex);
+  }, [urlParam]);
+
+  useEffect(() => {
+    myRefs.current[mobileAnchor].current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }, [mobileAnchor]);
+
+  useEffect(() => {
     if (urlParam) {
-      const topic = findTopic(urlParam);
-      topic && setActiveTopic(topic);
+      const topic = findTopicOnDesktop(urlParam);
+      topic && setActiveTopicOnDesktop(topic);
     }
   }, [urlParam]);
 
   return (
     <Box>
-      <Grid mt={15} container>
+      <Grid mt={0} container>
         <Grid className={classes.leftColumn} container item md={3} xs={12}>
           <Grid item xs={12}>
             <Box className={classes.showOnMobile}>
               <SelectInput
                 options={articles.map((a) => ({ name: a.name, id: a.category }))}
-                scrollToAnchor={scrollToAnchor}
+                handleSelectChangeMobile={handleSelectChangeMobile}
               />
             </Box>
             <Box className={classes.showOnDesktop}>
@@ -78,7 +100,7 @@ const FaqTopicPage = ({ article, articles }: { article: Article; articles: Artic
                         component="h4"
                         key={a.category}
                         id={a.category}
-                        onClick={changeTopic}
+                        onClick={changeTopicOnDekstop}
                       >
                         {a.name}
                       </Typography>
@@ -99,9 +121,9 @@ const FaqTopicPage = ({ article, articles }: { article: Article; articles: Artic
           >
             <Box className={classes.showOnMobile}>
               {articles &&
-                articles.map((a) => {
+                articles.map((a, i) => {
                   return (
-                    <Box>
+                    <div id={a.category} ref={myRefs.current[i]}>
                       <Typography variant="h2" component="h1" className={classes.topicTitle}>
                         {a.name}
                       </Typography>
@@ -122,21 +144,21 @@ const FaqTopicPage = ({ article, articles }: { article: Article; articles: Artic
 
                         <FaqCta />
                       </Box>
-                    </Box>
+                    </div>
                   );
                 })}
             </Box>
 
             <Box className={classes.showOnDesktop}>
-              {activeTopic && (
+              {activeTopicOnDesktop && (
                 <Box>
                   <Typography variant="h2" component="h1" className={classes.topicTitle}>
-                    {activeTopic.name}
+                    {activeTopicOnDesktop.name}
                   </Typography>
                   <Box className={classes.accordionWrapper}>
                     <Accordion>
                       <>
-                        {activeTopic.questions.map((q) => {
+                        {activeTopicOnDesktop.questions.map((q) => {
                           return (
                             <Box key={uuidv4()}>
                               <AccordionTextItem title={q.question} isExpanded={false}>
@@ -156,37 +178,13 @@ const FaqTopicPage = ({ article, articles }: { article: Article; articles: Artic
           <Box className={classes.showOnDesktop}>
             <FaqCta />
           </Box>
-          {/* <Grid container item xs={12} mt={9} mb={9.5} className={classes.ctaWrapper}>
-            <Typography variant="h3" component="p">
-              Couldn’t find answer?
-            </Typography>
-            <Box sx={{ padding: '0 16px' }}>
-              <Button variant="outlined" size="small" sx={{ marginRight: { md: '10px', sx: 0 } }}>
-                YES
-              </Button>
-              <Button variant="outlined" size="small">
-                NO
-              </Button>
-            </Box>
-            <Box>
-              <Typography variant="body1" component="p" className={classes.ctaDescription}>
-                2 out of 15 found this helpful.
-              </Typography>
-              <Typography variant="body1" component="p" className={classes.ctaDescription}>
-                Please{' '}
-                <Link href="#">
-                  <a>contact us</a>
-                </Link>
-                .
-              </Typography>
-            </Box>
-          </Grid> */}
         </Grid>
       </Grid>
     </Box>
   );
 };
 
+FaqTopicPage.layout = 'faqPages';
 export default FaqTopicPage;
 
 export async function getServerSideProps() {
@@ -196,7 +194,6 @@ export async function getServerSideProps() {
     return {
       props: {
         articles: data.items,
-        article: data.items[0],
       },
     };
   } catch (err) {

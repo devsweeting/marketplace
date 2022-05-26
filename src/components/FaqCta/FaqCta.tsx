@@ -7,12 +7,12 @@ import Link from 'next/link';
 const FaqCta = () => {
   const classes = useFaqCtaStyles();
   return (
-    <Grid container item xs={12} mt={9} mb={9.5} className={classes.ctaWrapper}>
-      <Typography variant="h3" component="p">
+    <Grid container item xs={12} mt={9} mb={{ xs: 9.5, md: 0 }} className={classes.ctaWrapper}>
+      <Typography variant="h3" component="p" className={classes.ctaTitle}>
         Couldn’t find answer?
       </Typography>
-      <Box sx={{ padding: '0 16px' }}>
-        <Button variant="outlined" size="small" sx={{ marginRight: { md: '10px', sx: 0 } }}>
+      <Box sx={{ padding: { md: '0 16px', xs: '16px' } }}>
+        <Button variant="outlined" size="small" sx={{ marginRight: '10px' }}>
           YES
         </Button>
         <Button variant="outlined" size="small">
@@ -26,7 +26,7 @@ const FaqCta = () => {
         <Typography variant="body1" component="p" className={classes.ctaDescription}>
           Please{' '}
           <Link href="#">
-            <a>contact us</a>
+            <a className={classes.ctaLink}>contact us</a>
           </Link>
           .
         </Typography>

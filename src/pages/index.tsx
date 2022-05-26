@@ -19,6 +19,11 @@ const Homepage = () => {
             <a>List View</a>
           </Link>
         </h1>
+        <h1>
+          <Link href="/faq/selling">
+            <a>Faq (detail view)</a>
+          </Link>
+        </h1>
       </Container>
     </>
   );
