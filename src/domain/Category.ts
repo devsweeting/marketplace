@@ -1,5 +1,5 @@
 export enum SortBy {
   LowestPrice = 'lowest price',
   HighestPrice = 'highest price',
-  LatestDate = 'recently added',
+  LatestDate = 'asset.createdAt',
 }

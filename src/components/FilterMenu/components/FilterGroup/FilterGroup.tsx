@@ -4,9 +4,10 @@ import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { IFilter } from 'src/types';
 
 export const FilterGroup: React.FC<any> = ({ category, handleFiltersChange, checkedFilters }) => {
-  const { categoryName, filters } = category;
+  const { categoryId, categoryName, filters } = category;
 
   return (
     <Box>
@@ -18,9 +19,12 @@ export const FilterGroup: React.FC<any> = ({ category, handleFiltersChange, chec
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={checkedFilters.includes(`${categoryName}_${filter}`)}
-                      onChange={handleFiltersChange}
-                      name={`${categoryName}_${filter}`}
+                      checked={checkedFilters.find(
+                        (item: IFilter) =>
+                          item.categoryId === categoryId && item.filterId === filter.toLowerCase(),
+                      )}
+                      onChange={(ev) => handleFiltersChange(ev, categoryId)}
+                      name={filter}
                     />
                   }
                   label={filter}

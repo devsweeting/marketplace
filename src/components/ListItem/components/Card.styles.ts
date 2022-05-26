@@ -58,6 +58,11 @@ export const useCardStyles = makeStyles(
     },
     mainImage: {
       borderRadius: theme.spacing(1),
+      width: 'unset !important',
+      height: 'unset !important',
+      minWidth: 'unset !important',
+      maxWidth: 'unset !important',
+      minHeight: 'unset !important',
     },
     priceDollarValue: {
       fontFamily: 'Rubik',
