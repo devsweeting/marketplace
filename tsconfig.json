@@ -28,6 +28,6 @@
       "@/containers/*": ["src/containers/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.ts"],
   "exclude": ["node_modules"]
 }

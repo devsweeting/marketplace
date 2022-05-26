@@ -37,7 +37,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
       <OpenGraph
         title={nftData.name}
         description={nftData.description}
-        image={nftData.media[0].url}
+        image={nftData.media[0].file}
         image_alt={nftData.media[0].description}
       />
       {nftData ? (
@@ -93,7 +93,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 <Box sx={{ position: 'relative' }}>
                   <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
                     <Image
-                      src={nftData.media[0].url}
+                      src={nftData.media[0].file}
                       alt={nftData.media[0].title}
                       layout="fill"
                       objectFit="contain"
@@ -158,7 +158,6 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 export default DetailPage;
 
 export async function getServerSideProps(context: any) {
-  try {
     const { param } = context.query;
     const asset_slug = param[0];
 
@@ -174,7 +173,5 @@ export async function getServerSideProps(context: any) {
     return {
       props: { nftData: data },
     };
-  } catch {
-    return { props: {} };
-  }
+
 }
