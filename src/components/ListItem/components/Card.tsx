@@ -4,9 +4,13 @@ import { SkinContext } from '@/styles/skin-context';
 import { useCardStyles } from './Card.styles';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SingleListItem } from '@/domain/Items'
+import { IAsset } from 'src/types';
 
-export const Card = ({ item }: { item: SingleListItem }) => {
+interface CardProps {
+  item: IAsset;
+}
+
+export const Card = ({ item }: CardProps) => {
   const { skin } = useContext(SkinContext);
 
   const classes = useCardStyles();
@@ -21,21 +25,24 @@ export const Card = ({ item }: { item: SingleListItem }) => {
               backgroundImage: `url(${skin.listItem.backgroundImage})`,
             }}
           >
-            <Box sx={{ width: 155, height: 259, position: 'relative' }}>
-              <Image
-                className={classes.mainImage}
-                src={item.media[0].url}
-                alt={item.media[0].title}
-                layout="fill"
-                objectFit="contain"
-              />
+            <Box className={classes.imageInnerContainer}>
+              {item?.media && item?.media.length > 0 && (
+                <Image
+                  className={classes.mainImage}
+                  src={item.media[0].file}
+                  alt={item.media[0].title}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              )}
             </Box>
           </Box>
+
           <Typography variant="body2" component="p" mt={3} className={classes.itemType}>
-            Overstreet comic book collection
+            {item.name}
           </Typography>
           <Typography variant="h3" component="p" mb={1} mt={1} className={classes.itemTitle}>
-            {item.name}
+            {item.description}
           </Typography>
           <Divider />
         </Box>

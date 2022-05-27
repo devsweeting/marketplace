@@ -44,6 +44,15 @@ export const useCardStyles = makeStyles(
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
     },
+    imageInnerContainer: {
+      width: '155px',
+      height: '259px',
+      position: 'relative',
+      [theme.breakpoints.down('md')]: {
+        width: '84px',
+        height: '140px',
+      },
+    },
     priceContainer: {
       display: 'flex',
       flexDirection: 'row',
@@ -53,6 +62,14 @@ export const useCardStyles = makeStyles(
     },
     mainImage: {
       borderRadius: theme.spacing(1),
+      // width: 'unset !important',
+      // height: 'unset !important',
+      // minWidth: 'unset !important',
+      // maxWidth: 'unset !important',
+      // minHeight: 'unset !important',
+      [theme.breakpoints.down('md')]: {
+        borderRadius: theme.spacing(0.5),
+      },
     },
     priceDollarValue: {
       fontFamily: 'Rubik',

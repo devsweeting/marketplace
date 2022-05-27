@@ -18,6 +18,7 @@
           ["@/helpers", "./src/helpers"],
           ["@/layout", "./src/layout"],
           ["@/pages", "./src/pages"],
+          ["@/api", "./src/api"],
           ["@/styles", "./styles"]
         ]
       }

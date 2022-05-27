@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { Grid, Box, Typography, Divider } from '@mui/material';
-import { SkinContext } from '@/styles/skin-context';
-import { listViewData } from '@/__mocks__/mockCategoryViewApiData';
 import { ListItem } from '@/components/ListItem';
+import { SortBy } from '@/domain/Category';
 import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
-import FilterSidebar from './FilterSidebar';
+import { loadListAssetByPage } from 'src/api/endpoints/list';
+import { IFilter, IAsset, IMeta } from 'src/types';
+import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
+import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
-  const { skin } = useContext(SkinContext);
-  const [checkedFilters, setcheckedFilters] = useState<any>([]);
-  const { items } = listViewData;
-  // const [items, setItems] = useState<SingleListItem[]>(listViewData.items);
-  // const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+  const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
+  const [currentMeta, setCurrentMeta] = useState<IMeta>();
+  const [listAssets, setListAssets] = useState<IAsset[]>([]);
+  const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
   const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -49,28 +49,54 @@ const CategoryListView = () => {
   //   setItems(sorted);
   // }, [sortType, items]);
 
-  const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: filterName } = event.target;
+  const loadListAssets = async (page: number = 1) => {
+    const { meta, items } = await loadListAssetByPage({
+      page,
+      sort: sortType,
+      filter: checkedFilters,
+    });
+    setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+    setCurrentMeta(meta);
+    console.log(meta, items);
+  };
+  useEffect(() => {
+    loadListAssets(1);
+  }, [sortType, checkedFilters]);
 
-    if (checkedFilters.includes(filterName)) {
-      const newcheckedFilters = checkedFilters.filter((el: string) => el !== filterName);
+  const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
+    const { name: filterId } = event.target;
+
+    if (
+      checkedFilters.find(
+        (filter: IFilter) => filter.categoryId === categoryId && filter.filterId === filterId,
+      )
+    ) {
+      const newcheckedFilters = checkedFilters.filter(
+        (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
+      );
       setcheckedFilters(newcheckedFilters);
       return;
     }
-    setcheckedFilters([...checkedFilters, filterName]);
+    setcheckedFilters([...checkedFilters, { filterId, categoryId }]);
   };
 
   const clearAllSelectedFilters = () => {
-    const clearedFilters: string[] = [];
-    setcheckedFilters(clearedFilters);
+    setcheckedFilters([]);
   };
 
-  const filterSidebarProps = {
+  const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
     checkedFilters,
   };
+
+  const sortListProps: SortListProps = {
+    toggleVisibility,
+    handleSortType,
+    sortType,
+  };
+
   return (
     <Box className={classes.wrapper}>
       <Grid
@@ -92,38 +118,19 @@ const CategoryListView = () => {
               <Typography variant="h2" component="h2" mb={1}>
                 Explore
               </Typography>
-              {!matchesDesktop && (
-                <Box
-                  className={classes.hideOnDesktop}
-                  my={2}
-                  sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}
-                >
-                  <Button
-                    onClick={() => toggleVisibility(true)}
-                    endIcon={<SettingsIcon />}
-                    variant="contained"
-                    size="small"
-                  >
-                    Filter
-                  </Button>
-
-                  <MenuList
-                    handleSelect={handleSortType}
-                    buttonType="outlined"
-                    buttonSize="medium"
-                  />
-                </Box>
-              )}
+              {!matchesDesktop && <SortList {...sortListProps} />}
               <Typography variant="body1" component="p">
-                {listViewData.meta.totalItems === 1
-                  ? `${listViewData.meta.totalItems} asset`
-                  : `${listViewData.meta.totalItems} assets`}
+                {currentMeta?.totalItems &&
+                  (currentMeta?.totalItems === 1
+                    ? `${currentMeta?.totalItems} asset`
+                    : `${currentMeta?.totalItems} assets`)}
               </Typography>
             </Box>
             {matchesDesktop && (
               <Box mt={3}>
                 <MenuList
                   handleSelect={handleSortType}
+                  sortType={sortType}
                   buttonType="contained"
                   buttonSize="medium"
                 />
@@ -131,9 +138,28 @@ const CategoryListView = () => {
             )}
           </Grid>
           <Grid>
-            <ListItem listItemData={items} />
+            <ListItem listItemData={listAssets} />
           </Grid>
-          <Grid xs={12} sx={{ textAlign: 'center' }}>
+          <Grid item xs={12} sx={{ textAlign: 'center' }}>
+            {listAssets.length < (currentMeta?.totalItems || 0) && (
+              <Button
+                sx={{ marginTop: { xs: '36px', md: '95px' } }}
+                size="large"
+                onClick={() => loadListAssets(currentMeta?.currentPage || 0 + 1)}
+              >
+                LOAD MORE
+              </Button>
+            )}
+            <Typography
+              variant="body2"
+              component="p"
+              sx={{ margin: '24px 0 54px', textDecoration: 'none', color: 'rgba(0,0,0,0.6)' }}
+            >
+              Number of assets viewed:{' '}
+              <Box component="span" sx={{ color: '#000', display: 'inline' }}>
+                {listAssets.length} of {currentMeta?.totalItems}
+              </Box>
+            </Typography>
             <Divider
               sx={{ borderBottomWidth: 'medium', borderColor: '#000', paddingTop: '297px' }}
             />

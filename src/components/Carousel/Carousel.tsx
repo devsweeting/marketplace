@@ -5,6 +5,7 @@ import { useCarouselStyles } from './Carousel.styles';
 import { SingleListItem } from '../../domain/Items';
 import useSWR from 'swr';
 import Loader from '../Loader';
+import { IAsset } from 'src/types';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const items_endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`;
@@ -18,7 +19,7 @@ export const Carousel = () => {
     return (
       <Box sx={{ padding: '20px 0' }}>
         <Typography variant="h2" component="h2">
-          Somthing went wrong...
+          Something went wrong...
         </Typography>
         <Typography variant="body1" component="p">
           {error.message}
@@ -36,7 +37,7 @@ export const Carousel = () => {
 
       <Box className={classes.cardWrapper}>
         {data.items &&
-          data.items.map((card: SingleListItem, index: string) => (
+          data.items.map((card: IAsset, index: string) => (
             <Box key={index} className={classes.cardContainer}>
               <Card item={card} />
             </Box>

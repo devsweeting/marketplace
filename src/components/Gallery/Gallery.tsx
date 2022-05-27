@@ -18,7 +18,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
   const router = useRouter();
   const classes = useGalleryStyles();
 
-  const [mainImage, setMainImage] = useState(images[0].url);
+  const [mainImage, setMainImage] = useState(images[0].file);
 
   useEffect(() => {
     setMainImage(images[0].url);
@@ -42,7 +42,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
                 <Box className={classes.thumbnailItem}>
                   <img
                     className={classes.thumbnail}
-                    src={image.url}
+                    src={image.file}
                     alt={image.title}
                     width={80}
                     height={114}
