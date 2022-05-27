@@ -35,20 +35,6 @@ const CategoryListView = () => {
     matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
   }, [matchesDesktop]);
 
-  // useEffect(() => {
-  //   let sorted: any;
-  //   if (sortType === SortBy.LowestPrice) {
-  //     sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
-  //   }
-  //   if (sortType === SortBy.HighestPrice) {
-  //     sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
-  //   }
-  //   if (sortType === SortBy.LatestDate) {
-  //     sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
-  //   }
-  //   setItems(sorted);
-  // }, [sortType, items]);
-
   const loadListAssets = async (page: number = 1) => {
     const { meta, items } = await loadListAssetByPage({
       page,
@@ -120,10 +106,7 @@ const CategoryListView = () => {
               </Typography>
               {!matchesDesktop && <SortList {...sortListProps} />}
               <Typography variant="body1" component="p">
-                {currentMeta?.totalItems &&
-                  (currentMeta?.totalItems === 1
-                    ? `${currentMeta?.totalItems} asset`
-                    : `${currentMeta?.totalItems} assets`)}
+                {currentMeta?.totalItems === 1 ? `1 asset` : `${currentMeta?.totalItems} assets`}
               </Typography>
             </Box>
             {matchesDesktop && (
@@ -145,7 +128,9 @@ const CategoryListView = () => {
               <Button
                 sx={{ marginTop: { xs: '36px', md: '95px' } }}
                 size="large"
-                onClick={() => loadListAssets(currentMeta?.currentPage || 0 + 1)}
+                onClick={() => {
+                  loadListAssets((currentMeta?.currentPage ?? 0) + 1);
+                }}
               >
                 LOAD MORE
               </Button>
