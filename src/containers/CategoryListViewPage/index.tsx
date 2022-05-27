@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
 import { Grid, Box, Typography, Divider } from '@mui/material';
-import { listViewData } from '@/__mocks__/mockCategoryViewApiData';
 import { ListItem } from '@/components/ListItem';
 import { SortBy } from '@/domain/Category';
 import { Button } from '@/components/Button';
@@ -22,9 +21,10 @@ const CategoryListView = () => {
   const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  
+
   const handleSortType = (id: string) => {
-    setSortType(id);
+    // setSortType(id);
+    console.log(id);
   };
 
   const toggleVisibility = (isVisible: boolean) => {
@@ -34,16 +34,31 @@ const CategoryListView = () => {
   useEffect(() => {
     matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
   }, [matchesDesktop]);
+
+  // useEffect(() => {
+  //   let sorted: any;
+  //   if (sortType === SortBy.LowestPrice) {
+  //     sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
+  //   }
+  //   if (sortType === SortBy.HighestPrice) {
+  //     sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
+  //   }
+  //   if (sortType === SortBy.LatestDate) {
+  //     sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
+  //   }
+  //   setItems(sorted);
+  // }, [sortType, items]);
+
   const loadListAssets = async (page: number = 1) => {
     const { meta, items } = await loadListAssetByPage({
       page,
       sort: sortType,
-      filter: checkedFilters
+      filter: checkedFilters,
     });
-    setListAssets(prev => (page === 1 ? items : [...prev, ...items]));
+    setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
     console.log(meta, items);
-  }
+  };
   useEffect(() => {
     loadListAssets(1);
   }, [sortType, checkedFilters]);
@@ -51,15 +66,18 @@ const CategoryListView = () => {
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
 
-    if (checkedFilters.find((filter: IFilter) => filter.categoryId === categoryId && filter.filterId === filterId)) {
-      const newcheckedFilters = checkedFilters.filter((filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId));
+    if (
+      checkedFilters.find(
+        (filter: IFilter) => filter.categoryId === categoryId && filter.filterId === filterId,
+      )
+    ) {
+      const newcheckedFilters = checkedFilters.filter(
+        (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
+      );
       setcheckedFilters(newcheckedFilters);
       return;
     }
-    setcheckedFilters([
-      ...checkedFilters, 
-      {filterId, categoryId}
-    ]);
+    setcheckedFilters([...checkedFilters, { filterId, categoryId }]);
   };
 
   const clearAllSelectedFilters = () => {
@@ -70,27 +88,23 @@ const CategoryListView = () => {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
-    checkedFilters
+    checkedFilters,
   };
 
   const sortListProps: SortListProps = {
     toggleVisibility,
     handleSortType,
-    sortType
+    sortType,
   };
 
   return (
     <Box className={classes.wrapper}>
       <Grid
-        mt={15}
+        sx={{ marginTop: { xs: 10, md: 15 } }}
         container
         // columnSpacing={4}
       >
-        {isSidebarVisible && (
-          <FilterSidebar 
-            {...filterSidebarProps}
-          />
-        )}
+        {isSidebarVisible && <FilterSidebar {...filterSidebarProps} />}
         <Grid container item md={9} xs={12} rowSpacing={2} className={classes.rightColumn}>
           <Grid
             container
@@ -104,22 +118,16 @@ const CategoryListView = () => {
               <Typography variant="h2" component="h2" mb={1}>
                 Explore
               </Typography>
-              {!matchesDesktop && (
-                <SortList 
-                  {...sortListProps}
-                />
-              )}
+              {!matchesDesktop && <SortList {...sortListProps} />}
               <Typography variant="body1" component="p">
-                {currentMeta?.totalItems && (currentMeta?.totalItems === 1
-                  ? `${currentMeta?.totalItems} asset`
-                  : `${currentMeta?.totalItems} assets`)}
+                {currentMeta?.totalItems &&
+                  (currentMeta?.totalItems === 1
+                    ? `${currentMeta?.totalItems} asset`
+                    : `${currentMeta?.totalItems} assets`)}
               </Typography>
             </Box>
             {matchesDesktop && (
-              <Box
-                mt={3}
-                // className={classes.hideOnMobile}
-              >
+              <Box mt={3}>
                 <MenuList
                   handleSelect={handleSortType}
                   sortType={sortType}
@@ -133,17 +141,15 @@ const CategoryListView = () => {
             <ListItem listItemData={listAssets} />
           </Grid>
           <Grid item xs={12} sx={{ textAlign: 'center' }}>
-            {(listAssets.length < (currentMeta?.totalItems || 0)) &&
-              <Button 
-                sx={{ marginTop: { xs: '36px', md: '95px' } }} 
-                size="large" 
-                onClick={
-                  () => loadListAssets(currentMeta?.currentPage || 0 + 1)
-                }
+            {listAssets.length < (currentMeta?.totalItems || 0) && (
+              <Button
+                sx={{ marginTop: { xs: '36px', md: '95px' } }}
+                size="large"
+                onClick={() => loadListAssets(currentMeta?.currentPage || 0 + 1)}
               >
                 LOAD MORE
               </Button>
-            }
+            )}
             <Typography
               variant="body2"
               component="p"
@@ -154,7 +160,9 @@ const CategoryListView = () => {
                 {listAssets.length} of {currentMeta?.totalItems}
               </Box>
             </Typography>
-            <Divider sx={{ borderBottomWidth: 'medium', borderColor: '#000' }} />
+            <Divider
+              sx={{ borderBottomWidth: 'medium', borderColor: '#000', paddingTop: '297px' }}
+            />
           </Grid>
         </Grid>
       </Grid>

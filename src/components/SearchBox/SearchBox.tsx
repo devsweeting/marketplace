@@ -30,7 +30,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
     <FormControl variant="outlined" className={classes.wrapper}>
       <OutlinedInput
         sx={{
-          borderRadius: borderRadius && skin.header.searchInconBorderRadius,
+          borderRadius: borderRadius && skin.header.searchIconBorderRadius,
           color: reverseTextColor && skin.header.searchTextColor,
         }}
         value={value}

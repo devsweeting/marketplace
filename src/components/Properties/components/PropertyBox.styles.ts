@@ -22,6 +22,11 @@ export const usePropertyBoxStyle = makeStyles(
       lineHeight: '26px',
       textAlign: 'center',
       textTransform: 'uppercase',
+      [theme.breakpoints.down('md')]: {
+        fontFamily: 'Montserrat',
+        fontWeight: 700,
+        fontSize: '12px',
+      },
     },
     propertyValue: {
       textAlign: 'center',

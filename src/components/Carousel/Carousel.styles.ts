@@ -19,6 +19,14 @@ export const useCarouselStyles = makeStyles((theme) => ({
     },
   },
   cardWrapper: {
+    paddingBottom: theme.spacing(3),
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'nowrap',
+    overflowX: 'scroll',
+  },
+  cardContainer: {
     minWidth: 280,
     marginRight: '46px',
     [theme.breakpoints.down('md')]: {

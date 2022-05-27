@@ -1,20 +1,15 @@
 import { makeStyles } from '@mui/styles';
 
 export const useDetailPageStyles = makeStyles((theme) => ({
-  // absoluteWrapper: {
-  //   position: 'relative',
-  //   width: '100%',
-  //   backgroundColor: theme.palette.accentSecondary.main,
-  // },
   fixedImage: {
     position: 'absolute',
-    top: 200,
+    top: 100,
     right: -100,
     transform: 'translateX(50%)',
     width: '117px',
     height: '195px',
     borderRadius: theme.spacing(1),
-    zIndex: 100,
+    zIndex: 10,
   },
   leftColumn: {
     backgroundPosition: 'top right',
@@ -52,6 +47,9 @@ export const useDetailPageStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('md')]: {
       fontSize: '32px !important',
     },
+  },
+  exploreMoreLink: {
+    textDecoration: 'none',
   },
 
   // wrapper: {

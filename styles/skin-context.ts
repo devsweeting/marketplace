@@ -4,8 +4,6 @@ export const skins = {
   jump: {
     logo: {
       image: '/images/logoJump.svg',
-      width: 112,
-      height: 52,
     },
     sidebar: {
       borderRight: 4,
@@ -42,8 +40,6 @@ export const skins = {
   pwcc: {
     logo: {
       image: '/images/logoPWCC.svg',
-      width: 134,
-      height: 33,
     },
     sidebar: {
       borderRight: 0,
@@ -52,7 +48,7 @@ export const skins = {
       accentColor: '#FFDD00',
       searchTextColor: '#fff !important',
       searchIconColor: '#fff',
-      searchInconBorderRadius: '50px !important',
+      searchIconBorderRadius: '50px !important',
       headerBackground: '#000',
       navLink: {
         fontSize: '16px',

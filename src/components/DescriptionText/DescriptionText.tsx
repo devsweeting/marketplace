@@ -14,14 +14,10 @@ export const DescriptionText: React.FC<BorderBoxProps> = ({ text }) => {
   // const { skin } = useContext(SkinContext);
   return (
     <Box className={classes.wrapper}>
-      <Box my={6} sx={{ display: { xs: 'none', md: 'block' } }}>
+      <Box mb={6} sx={{ display: { xs: 'none', md: 'block' } }}>
         <Divider />
       </Box>
-      <Typography
-        variant="h4"
-        component="h2"
-        sx={{ marginBottom: { xs: 2, md: 3 }, color: '#000' }}
-      >
+      <Typography variant="h4" component="h2" className={classes.title}>
         Description
       </Typography>
       <Typography variant="body1" component="h2" sx={{ fontSize: '16px' }}>

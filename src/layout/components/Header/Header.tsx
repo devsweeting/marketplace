@@ -33,7 +33,7 @@ export const Header = () => {
           disableGutters
           sx={{
             backgroundColor: skin.header.headerBackground,
-            height: '120px',
+            height: { md: '120px', xs: '80px' },
           }}
         >
           <Container
@@ -42,15 +42,13 @@ export const Header = () => {
           >
             <Link href="/">
               <a>
-                {' '}
-                <Image
-                  src={skin.logo.image}
-                  alt={'logo'}
-                  width={skin.logo.width}
-                  height={skin.logo.height}
-                  layout="fixed"
-                  // onClick={handleClick}
-                />
+                <Box
+                  className={classes.logoWrapper}
+                  sx={{ position: 'relative', width: 134, height: 33 }}
+                >
+                  {' '}
+                  <Image src={skin.logo.image} alt={'logo'} layout="fill" objectFit="contain" />
+                </Box>
               </a>
             </Link>
 
