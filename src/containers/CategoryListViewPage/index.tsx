@@ -17,14 +17,13 @@ const CategoryListView = () => {
   const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
-  const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+  const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const handleSortType = (id: string) => {
-    // setSortType(id);
-    console.log(id);
+  const handleSortType = (sortBy: string) => {
+    setSortType(sortBy);
   };
 
   const toggleVisibility = (isVisible: boolean) => {
@@ -34,20 +33,6 @@ const CategoryListView = () => {
   useEffect(() => {
     matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
   }, [matchesDesktop]);
-
-  // useEffect(() => {
-  //   let sorted: any;
-  //   if (sortType === SortBy.LowestPrice) {
-  //     sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
-  //   }
-  //   if (sortType === SortBy.HighestPrice) {
-  //     sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
-  //   }
-  //   if (sortType === SortBy.LatestDate) {
-  //     sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
-  //   }
-  //   setItems(sorted);
-  // }, [sortType, items]);
 
   const loadListAssets = async (page: number = 1) => {
     const { meta, items } = await loadListAssetByPage({
@@ -120,10 +105,7 @@ const CategoryListView = () => {
               </Typography>
               {!matchesDesktop && <SortList {...sortListProps} />}
               <Typography variant="body1" component="p">
-                {currentMeta?.totalItems &&
-                  (currentMeta?.totalItems === 1
-                    ? `${currentMeta?.totalItems} asset`
-                    : `${currentMeta?.totalItems} assets`)}
+                {currentMeta?.totalItems === 1 ? `1 asset` : `${currentMeta?.totalItems} assets`}
               </Typography>
             </Box>
             {matchesDesktop && (
@@ -145,7 +127,9 @@ const CategoryListView = () => {
               <Button
                 sx={{ marginTop: { xs: '36px', md: '95px' } }}
                 size="large"
-                onClick={() => loadListAssets(currentMeta?.currentPage || 0 + 1)}
+                onClick={() => {
+                  loadListAssets((currentMeta?.currentPage ?? 0) + 1);
+                }}
               >
                 LOAD MORE
               </Button>

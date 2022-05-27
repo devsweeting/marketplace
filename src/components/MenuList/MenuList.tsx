@@ -35,7 +35,12 @@ export interface MenuListProps {
   buttonSize: 'small' | 'medium' | 'large' | undefined;
 }
 
-export const MenuList: React.FC<MenuListProps> = ({ handleSelect, sortType, buttonType, buttonSize }) => {
+export const MenuList: React.FC<MenuListProps> = ({
+  handleSelect,
+  sortType,
+  buttonType,
+  buttonSize,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
@@ -59,34 +64,22 @@ export const MenuList: React.FC<MenuListProps> = ({ handleSelect, sortType, butt
       >
         SORT BY
       </Button>
-      <StyledMenu 
-        anchorEl={anchorEl} 
-        open={open} 
-        onClose={setSortValue}
-      >
-        <MenuItem 
-          id={SortBy.LatestDate} 
-          onClick={setSortValue} 
-          selected={sortType === SortBy.LatestDate}
-          disableRipple 
-        >
-          Recently Added
-        </MenuItem>
-        <MenuItem 
-          id={SortBy.HighestPrice} 
-          onClick={setSortValue} 
-          selected={sortType === SortBy.HighestPrice}
-          disableRipple 
-        >
-          Price: High to low
-        </MenuItem>
-        <MenuItem 
-          id={SortBy.LowestPrice} 
-          onClick={setSortValue} 
-          selected={sortType === SortBy.LowestPrice}
+      <StyledMenu anchorEl={anchorEl} open={open} onClose={setSortValue}>
+        <MenuItem
+          id={SortBy.DESC}
+          onClick={setSortValue}
+          selected={sortType === SortBy.DESC}
           disableRipple
         >
-          Price: Low to High
+          Newest
+        </MenuItem>
+        <MenuItem
+          id={SortBy.ASC}
+          onClick={setSortValue}
+          selected={sortType === SortBy.ASC}
+          disableRipple
+        >
+          Oldest
         </MenuItem>
       </StyledMenu>
     </Box>

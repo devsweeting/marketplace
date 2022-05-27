@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
-import { SearchBox } from '@/components/SearchBox';
 import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -30,7 +29,6 @@ export const FilterMenu: React.FC<any> = ({
                   sx={{ paddingLeft: 0 }}
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1bh-content"
-                  // id="panel1bh-header"
                 >
                   <Typography variant="h3" component="h3">
                     {category.categoryName}
@@ -38,9 +36,6 @@ export const FilterMenu: React.FC<any> = ({
                 </AccordionSummary>
                 <AccordionDetails sx={{ padding: 0 }}>
                   <Box>
-                    <Box mb={2} mr={2.5}>
-                      <SearchBox placeholder={'Search CATEGORY'} />
-                    </Box>
                     <FilterGroup
                       category={category}
                       handleFiltersChange={handleFiltersChange}
