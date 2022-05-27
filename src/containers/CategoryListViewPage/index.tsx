@@ -17,14 +17,13 @@ const CategoryListView = () => {
   const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
-  const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+  const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const handleSortType = (id: string) => {
-    // setSortType(id);
-    console.log(id);
+  const handleSortType = (sortBy: string) => {
+    setSortType(sortBy);
   };
 
   const toggleVisibility = (isVisible: boolean) => {
