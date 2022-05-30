@@ -10,36 +10,26 @@ import classNames from 'classnames';
 import FaqCta from '@/components/FaqCta';
 import SelectInput from '@/components/SelectInput';
 
-interface Article {
+export interface Article {
   category: string;
   name: string;
   questions: { question: string; answer: string }[];
 }
 
+interface Articles {
+  items: Article[];
+}
+
 const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
-  const [activeTopicOnDesktop, setActiveTopicOnDesktop] = useState<Article>(articles[0]);
+  const [activeTopic, setActiveTopic] = useState<Article>(articles[0]);
   const [mobileAnchor, setMobileAnchor] = useState<number>(0);
   const [showFixedDropdown, setShowFixedDropdown] = useState<boolean>(false);
-
-  useEffect(() => {
-    const isFixedDropdownVisible = () => {
-      if (window.pageYOffset >= 255) {
-        setShowFixedDropdown(true);
-      } else {
-        setShowFixedDropdown(false);
-      }
-    };
-
-    window.addEventListener('scroll', isFixedDropdownVisible);
-    return () => window.removeEventListener('scroll', isFixedDropdownVisible);
-  }, []);
-
   const router = useRouter();
   const urlParam = router.query.topic;
   const classes = useFaqPageStyles();
   const myRefs = useRef<any>([]);
 
-  myRefs.current = articles.map((article, i) => myRefs.current[i] ?? createRef());
+  myRefs.current = articles.map((articles, i) => myRefs.current[i] ?? createRef());
 
   const setRouterPath = (param: string) =>
     router.push(`/faq/${param}`, undefined, { shallow: true });
@@ -49,9 +39,12 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
     return refIndex;
   };
 
-  const handleSelectChangeMobile = (param: string) => {
-    findAnchorIndexMobile(param);
-    setRouterPath(param);
+  const handleSelectChangeOnMobile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    findAnchorIndexMobile(value);
+    setRouterPath(value);
+    const topic = findTopicOnDesktop(value);
+    topic && setActiveTopic(topic);
   };
 
   const changeTopicOnDekstop = (e: React.SyntheticEvent) => {
@@ -77,9 +70,22 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
   useEffect(() => {
     if (urlParam) {
       const topic = findTopicOnDesktop(urlParam);
-      topic && setActiveTopicOnDesktop(topic);
+      topic && setActiveTopic(topic);
     }
   }, [urlParam]);
+
+  useEffect(() => {
+    const isFixedDropdownVisible = () => {
+      if (window.pageYOffset >= 255) {
+        setShowFixedDropdown(true);
+      } else {
+        setShowFixedDropdown(false);
+      }
+    };
+
+    window.addEventListener('scroll', isFixedDropdownVisible);
+    return () => window.removeEventListener('scroll', isFixedDropdownVisible);
+  }, []);
 
   return (
     <>
@@ -90,8 +96,9 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
         >
           <SelectInput
             options={articles.map((a) => ({ name: a.name, id: a.category }))}
-            handleSelectChangeMobile={handleSelectChangeMobile}
+            handleSelectChangeOnMobile={handleSelectChangeOnMobile}
             fixedType={true}
+            activeTopic={activeTopic}
           />
         </Box>
       )}
@@ -102,7 +109,8 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
               <Box className={classes.showOnMobile}>
                 <SelectInput
                   options={articles.map((a) => ({ name: a.name, id: a.category }))}
-                  handleSelectChangeMobile={handleSelectChangeMobile}
+                  handleSelectChangeOnMobile={handleSelectChangeOnMobile}
+                  activeTopic={activeTopic}
                 />
               </Box>
               <Box className={classes.showOnDesktop}>
@@ -174,15 +182,15 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
               </Box>
 
               <Box className={classes.showOnDesktop}>
-                {activeTopicOnDesktop && (
+                {activeTopic && (
                   <Box>
                     <Typography variant="h2" component="h1" className={classes.topicTitle}>
-                      {activeTopicOnDesktop.name}
+                      {activeTopic.name}
                     </Typography>
                     <Box className={classes.accordionWrapper}>
                       <Accordion>
                         <>
-                          {activeTopicOnDesktop.questions.map((q) => {
+                          {activeTopic.questions.map((q) => {
                             return (
                               <Box key={uuidv4()}>
                                 <AccordionTextItem title={q.question} isExpanded={false}>
@@ -215,7 +223,7 @@ export default FaqTopicPage;
 export async function getServerSideProps() {
   try {
     const res = await fetch(`http://localhost:3000/api/faq/topics`);
-    const data: any = await res.json();
+    const data: Articles = await res.json();
     return {
       props: {
         articles: data.items,

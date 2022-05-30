@@ -6,26 +6,22 @@ import classNames from 'classnames';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelectInput } from './SelectInput.styles';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Article } from '@/pages/faq/[topic]';
 
 interface SelectInputProps {
   options: { name: string; id: string }[];
-  handleSelectChangeMobile: (val: string) => void;
+  handleSelectChangeOnMobile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fixedType?: boolean;
+  activeTopic: Article;
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({
   options,
-  handleSelectChangeMobile,
+  handleSelectChangeOnMobile,
   fixedType = false,
+  activeTopic,
 }) => {
   const classes = useSelectInput();
-  const [select, setSelect] = React.useState<string>(options[0].id);
-
-  const handleChange = (e: SelectChangeEvent<string>, child: React.ReactNode) => {
-    const { value } = e.target;
-    handleSelectChangeMobile(value);
-    setSelect(value);
-  };
 
   return (
     <Grid
@@ -44,14 +40,15 @@ const SelectInput: React.FC<SelectInputProps> = ({
       >
         <FormControl>
           <Select
-            value={select}
-            onChange={handleChange}
+            value={activeTopic.category}
+            onChange={(e: any) => handleSelectChangeOnMobile(e)}
             IconComponent={KeyboardArrowDownIcon}
             inputProps={{
               classes: {
                 icon: classNames(fixedType ? classes.fixedSelectIcon : null),
               },
             }}
+            MenuProps={{ classes: { paper: classNames(fixedType ? classes.dropdown : null) } }}
           >
             {options &&
               options.map((o: any) => (

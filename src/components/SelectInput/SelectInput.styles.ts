@@ -89,6 +89,9 @@ export const useSelectInput = makeStyles(
         textTransform: 'uppercase',
       },
     },
+    dropdown: {
+      width: '100%',
+    },
     fixedSelectIcon: {
       color: theme.palette.accent.main,
       marginRight: theme.spacing(2),
