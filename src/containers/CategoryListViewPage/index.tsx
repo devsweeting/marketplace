@@ -1,31 +1,29 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { Grid, Box, Typography, Divider } from '@mui/material';
-import { SkinContext } from '@/styles/skin-context';
-import { listViewData, mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
-import { ClearAllFilter } from '@/components/FilterMenu/components/ClearAllFilter';
 import { ListItem } from '@/components/ListItem';
-import { FilterMenu } from '@/components/FilterMenu';
 import { SortBy } from '@/domain/Category';
 import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
-import FilterSidebar from './FilterSidebar';
+import { loadListAssetByPage } from 'src/api/endpoints/list';
+import { IFilter, IAsset, IMeta } from 'src/types';
+import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
+import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
-  const { skin } = useContext(SkinContext);
-  const [checkedFilters, setcheckedFilters] = useState<any>([]);
-  const [items, setItems] = useState(listViewData.assets);
-  const [sortType, setSortType] = useState<string>(SortBy.LatestDate);
+  const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
+  const [currentMeta, setCurrentMeta] = useState<IMeta>();
+  const [listAssets, setListAssets] = useState<IAsset[]>([]);
+  const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
-  const handleSortType = (id: string) => {
-    setSortType(id);
+  const handleSortType = (sortBy: string) => {
+    setSortType(sortBy);
   };
 
   const toggleVisibility = (isVisible: boolean) => {
@@ -36,54 +34,62 @@ const CategoryListView = () => {
     matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
   }, [matchesDesktop]);
 
+  const loadListAssets = async (page: number = 1) => {
+    const { meta, items } = await loadListAssetByPage({
+      page,
+      sort: sortType,
+      filter: checkedFilters,
+    });
+    setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+    setCurrentMeta(meta);
+    console.log(meta, items);
+  };
   useEffect(() => {
-    let sorted: any;
-    if (sortType === SortBy.LowestPrice) {
-      sorted = items.sort((a: any, b: any) => b.price.cryptoValue - a.price.cryptoValue);
-    }
-    if (sortType === SortBy.HighestPrice) {
-      sorted = items.sort((a: any, b: any) => a.price.cryptoValue - b.price.cryptoValue);
-    }
-    if (sortType === SortBy.LatestDate) {
-      sorted = items.sort((a, b) => Date.parse(a.create_date) - Date.parse(b.create_date));
-    }
-    setItems(sorted);
-  }, [sortType, items]);
+    loadListAssets(1);
+  }, [sortType, checkedFilters]);
 
-  const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: filterName } = event.target;
+  const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
+    const { name: filterId } = event.target;
 
-    if (checkedFilters.includes(filterName)) {
-      const newcheckedFilters = checkedFilters.filter((el: string) => el !== filterName);
+    if (
+      checkedFilters.find(
+        (filter: IFilter) => filter.categoryId === categoryId && filter.filterId === filterId,
+      )
+    ) {
+      const newcheckedFilters = checkedFilters.filter(
+        (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
+      );
       setcheckedFilters(newcheckedFilters);
       return;
     }
-    setcheckedFilters([...checkedFilters, filterName]);
+    setcheckedFilters([...checkedFilters, { filterId, categoryId }]);
   };
 
   const clearAllSelectedFilters = () => {
-    const clearedFilters: string[] = [];
-    setcheckedFilters(clearedFilters);
+    setcheckedFilters([]);
   };
 
-  const filterSidebarProps = {
+  const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
-    checkedFilters
-  }
+    checkedFilters,
+  };
+
+  const sortListProps: SortListProps = {
+    toggleVisibility,
+    handleSortType,
+    sortType,
+  };
+
   return (
     <Box className={classes.wrapper}>
       <Grid
-        mt={15}
+        sx={{ marginTop: { xs: 10, md: 15 } }}
         container
         // columnSpacing={4}
       >
-        {isSidebarVisible && (
-          <FilterSidebar 
-            {...filterSidebarProps}
-          />
-        )}
+        {isSidebarVisible && <FilterSidebar {...filterSidebarProps} />}
         <Grid container item md={9} xs={12} rowSpacing={2} className={classes.rightColumn}>
           <Grid
             container
@@ -97,41 +103,16 @@ const CategoryListView = () => {
               <Typography variant="h2" component="h2" mb={1}>
                 Explore
               </Typography>
-              {!matchesDesktop && (
-                <Box
-                  className={classes.hideOnDesktop}
-                  my={2}
-                  sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}
-                >
-                  <Button
-                    onClick={() => toggleVisibility(true)}
-                    endIcon={<SettingsIcon />}
-                    variant="contained"
-                    size="small"
-                  >
-                    Filter
-                  </Button>
-
-                  <MenuList
-                    handleSelect={handleSortType}
-                    buttonType="outlined"
-                    buttonSize="medium"
-                  />
-                </Box>
-              )}
+              {!matchesDesktop && <SortList {...sortListProps} />}
               <Typography variant="body1" component="p">
-                {listViewData.asset_number === 1
-                  ? `${listViewData.asset_number} asset`
-                  : `${listViewData.asset_number} assets`}
+                {currentMeta?.totalItems === 1 ? `1 asset` : `${currentMeta?.totalItems} assets`}
               </Typography>
             </Box>
             {matchesDesktop && (
-              <Box
-                mt={3}
-                // className={classes.hideOnMobile}
-              >
+              <Box mt={3}>
                 <MenuList
                   handleSelect={handleSortType}
+                  sortType={sortType}
                   buttonType="contained"
                   buttonSize="medium"
                 />
@@ -139,12 +120,20 @@ const CategoryListView = () => {
             )}
           </Grid>
           <Grid>
-            <ListItem listItemData={items} />
+            <ListItem listItemData={listAssets} />
           </Grid>
           <Grid item xs={12} sx={{ textAlign: 'center' }}>
-            <Button sx={{ marginTop: { xs: '36px', md: '95px' } }} size="large">
-              LOAD MORE
-            </Button>
+            {listAssets.length < (currentMeta?.totalItems || 0) && (
+              <Button
+                sx={{ marginTop: { xs: '36px', md: '95px' } }}
+                size="large"
+                onClick={() => {
+                  loadListAssets((currentMeta?.currentPage ?? 0) + 1);
+                }}
+              >
+                LOAD MORE
+              </Button>
+            )}
             <Typography
               variant="body2"
               component="p"
@@ -152,10 +141,12 @@ const CategoryListView = () => {
             >
               Number of assets viewed:{' '}
               <Box component="span" sx={{ color: '#000', display: 'inline' }}>
-                24 of 140
+                {listAssets.length} of {currentMeta?.totalItems}
               </Box>
             </Typography>
-            <Divider sx={{ borderBottomWidth: 'medium', borderColor: '#000' }} />
+            <Divider
+              sx={{ borderBottomWidth: 'medium', borderColor: '#000', paddingTop: '297px' }}
+            />
           </Grid>
         </Grid>
       </Grid>
