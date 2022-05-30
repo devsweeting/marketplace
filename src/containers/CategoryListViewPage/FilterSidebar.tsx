@@ -10,6 +10,7 @@ export interface FilterSidebarProps {
   toggleVisibility: (isVisible: boolean) => void;
   handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
   clearAllSelectedFilters: () => void;
+  handleRange: () => void;
   checkedFilters: any;
 }
 
@@ -17,6 +18,7 @@ const FilterSidebar = ({
   toggleVisibility,
   handleFiltersChange,
   clearAllSelectedFilters,
+  handleRange,
   checkedFilters,
 }: FilterSidebarProps) => {
   const classes = useCategoryPageStyles();
@@ -44,6 +46,7 @@ const FilterSidebar = ({
           categoriesList={mockCategoryFilters}
           handleFiltersChange={handleFiltersChange}
           checkedFilters={checkedFilters}
+          handleRange={handleRange}
         />
       </Grid>
     </Grid>

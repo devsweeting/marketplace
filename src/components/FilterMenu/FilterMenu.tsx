@@ -8,11 +8,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { SkinContext } from '@/styles/skin-context';
 import { BorderBox } from '../BorderBox/BorderBox';
 import { FilterGroup } from './components/FilterGroup';
+import Slider from './components/Slider';
 
 export const FilterMenu: React.FC<any> = ({
   categoriesList,
   handleFiltersChange,
   checkedFilters,
+  handleRange,
 }) => {
   const { skin } = useContext(SkinContext);
   return (
@@ -36,11 +38,20 @@ export const FilterMenu: React.FC<any> = ({
                 </AccordionSummary>
                 <AccordionDetails sx={{ padding: 0 }}>
                   <Box>
-                    <FilterGroup
-                      category={category}
-                      handleFiltersChange={handleFiltersChange}
-                      checkedFilters={checkedFilters}
-                    />
+                    {category.filterType === 'checkbox' && (
+                      <FilterGroup
+                        category={category}
+                        handleFiltersChange={handleFiltersChange}
+                        checkedFilters={checkedFilters}
+                      />
+                    )}
+                    {category.filterType === 'slider' && (
+                      <Slider
+                        category={category}
+                        handleFiltersChange={handleFiltersChange}
+                        handleRange={handleRange}
+                      />
+                    )}
                   </Box>
                 </AccordionDetails>
               </Accordion>

@@ -14,7 +14,8 @@ import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
-  const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
+  const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
+  const [ranges, setRanges] = useState<any[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
@@ -39,6 +40,7 @@ const CategoryListView = () => {
       page,
       sort: sortType,
       filter: checkedFilters,
+      ranges: ranges,
     });
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
@@ -46,7 +48,7 @@ const CategoryListView = () => {
   };
   useEffect(() => {
     loadListAssets(1);
-  }, [sortType, checkedFilters]);
+  }, [sortType, checkedFilters, ranges]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -69,11 +71,20 @@ const CategoryListView = () => {
     setcheckedFilters([]);
   };
 
+  const handleRange = (val, id) => {
+    console.log(val, id);
+    setRanges((ranges) => ({
+      ...ranges,
+      [id]: { min: val[0], max: val[1] },
+    }));
+  };
+
   const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
     checkedFilters,
+    handleRange,
   };
 
   const sortListProps: SortListProps = {
@@ -134,6 +145,7 @@ const CategoryListView = () => {
                 LOAD MORE
               </Button>
             )}
+
             <Typography
               variant="body2"
               component="p"
