@@ -19,13 +19,26 @@ interface Article {
 const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
   const [activeTopicOnDesktop, setActiveTopicOnDesktop] = useState<Article>(articles[0]);
   const [mobileAnchor, setMobileAnchor] = useState<number>(0);
+  const [showFixedDropdown, setShowFixedDropdown] = useState<boolean>(false);
+
+  useEffect(() => {
+    const isFixedDropdownVisible = () => {
+      if (window.pageYOffset >= 255) {
+        setShowFixedDropdown(true);
+      } else {
+        setShowFixedDropdown(false);
+      }
+    };
+
+    window.addEventListener('scroll', isFixedDropdownVisible);
+    return () => window.removeEventListener('scroll', isFixedDropdownVisible);
+  }, []);
 
   const router = useRouter();
   const urlParam = router.query.topic;
   const classes = useFaqPageStyles();
   const myRefs = useRef<any>([]);
 
-  // co zamiast any ?
   myRefs.current = articles.map((article, i) => myRefs.current[i] ?? createRef());
 
   const setRouterPath = (param: string) =>
@@ -57,10 +70,8 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
   }, [urlParam]);
 
   useEffect(() => {
-    myRefs.current[mobileAnchor].current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
+    let elementOffset = myRefs.current[mobileAnchor].current.offsetTop;
+    window.scrollTo({ top: elementOffset - 50, behavior: 'smooth' });
   }, [mobileAnchor]);
 
   useEffect(() => {
@@ -71,116 +82,130 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
   }, [urlParam]);
 
   return (
-    <Box>
-      <Grid mt={0} container>
-        <Grid className={classes.leftColumn} container item md={3} xs={12}>
-          <Grid item xs={12}>
-            <Box className={classes.showOnMobile}>
-              <SelectInput
-                options={articles.map((a) => ({ name: a.name, id: a.category }))}
-                handleSelectChangeMobile={handleSelectChangeMobile}
-              />
-            </Box>
-            <Box className={classes.showOnDesktop}>
-              <Typography variant="h2" component="h2" className={classes.menuTitle}>
-                Topics
-              </Typography>
-              {articles &&
-                articles.map((a) => {
-                  return (
-                    <Box
-                      className={classNames(
-                        classes.topicLinkWrapper,
-                        a.category === urlParam && classes.active,
-                      )}
-                    >
-                      <Typography
-                        className={classes.topicLink}
-                        variant="h5"
-                        component="h4"
+    <>
+      {showFixedDropdown && (
+        <Box
+          className={classes.showOnMobile}
+          sx={{ position: 'fixed', top: '0px', left: '0', zIndex: '10' }}
+        >
+          <SelectInput
+            options={articles.map((a) => ({ name: a.name, id: a.category }))}
+            handleSelectChangeMobile={handleSelectChangeMobile}
+            fixedType={true}
+          />
+        </Box>
+      )}
+      <Box>
+        <Grid mt={0} container>
+          <Grid className={classes.leftColumn} container item md={3} xs={12}>
+            <Grid item xs={12}>
+              <Box className={classes.showOnMobile}>
+                <SelectInput
+                  options={articles.map((a) => ({ name: a.name, id: a.category }))}
+                  handleSelectChangeMobile={handleSelectChangeMobile}
+                />
+              </Box>
+              <Box className={classes.showOnDesktop}>
+                <Typography variant="h2" component="h2" className={classes.menuTitle}>
+                  Topics
+                </Typography>
+                {articles &&
+                  articles.map((a) => {
+                    return (
+                      <Box
                         key={a.category}
-                        id={a.category}
-                        onClick={changeTopicOnDekstop}
+                        className={classNames(
+                          classes.topicLinkWrapper,
+                          a.category === urlParam && classes.active,
+                        )}
                       >
-                        {a.name}
-                      </Typography>
-                    </Box>
-                  );
-                })}
-            </Box>
-          </Grid>
-        </Grid>
-        <Grid container item md={9} xs={12} className={classes.rightColumn}>
-          <Grid
-            container
-            item
-            xs={12}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="flex-start"
-          >
-            <Box className={classes.showOnMobile}>
-              {articles &&
-                articles.map((a, i) => {
-                  return (
-                    <div id={a.category} ref={myRefs.current[i]}>
-                      <Typography variant="h2" component="h1" className={classes.topicTitle}>
-                        {a.name}
-                      </Typography>
-                      <Box className={classes.accordionWrapper}>
-                        <Accordion>
-                          <>
-                            {a.questions.map((q) => {
-                              return (
-                                <Box key={uuidv4()}>
-                                  <AccordionTextItem title={q.question} isExpanded={false}>
-                                    {q.answer}
-                                  </AccordionTextItem>
-                                </Box>
-                              );
-                            })}
-                          </>
-                        </Accordion>
-
-                        <FaqCta />
+                        <Typography
+                          className={classes.topicLink}
+                          variant="h5"
+                          component="h4"
+                          id={a.category}
+                          onClick={changeTopicOnDekstop}
+                        >
+                          {a.name}
+                        </Typography>
                       </Box>
-                    </div>
-                  );
-                })}
-            </Box>
+                    );
+                  })}
+              </Box>
+            </Grid>
+          </Grid>
+          <Grid container item md={9} xs={12} className={classes.rightColumn}>
+            <Grid
+              container
+              item
+              xs={12}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+            >
+              <Box className={classes.showOnMobile}>
+                {articles &&
+                  articles.map((a, i) => {
+                    return (
+                      <div key={a.category} id={a.category} ref={myRefs.current[i]}>
+                        <Typography variant="h2" component="h1" className={classes.topicTitle}>
+                          {a.name}
+                        </Typography>
+                        <Box className={classes.accordionWrapper}>
+                          <Accordion>
+                            <>
+                              {a.questions.map((q) => {
+                                return (
+                                  <Box key={uuidv4()}>
+                                    <AccordionTextItem title={q.question} isExpanded={false}>
+                                      {q.answer}
+                                    </AccordionTextItem>
+                                  </Box>
+                                );
+                              })}
+                            </>
+                          </Accordion>
+
+                          <FaqCta />
+                        </Box>
+                      </div>
+                    );
+                  })}
+              </Box>
+
+              <Box className={classes.showOnDesktop}>
+                {activeTopicOnDesktop && (
+                  <Box>
+                    <Typography variant="h2" component="h1" className={classes.topicTitle}>
+                      {activeTopicOnDesktop.name}
+                    </Typography>
+                    <Box className={classes.accordionWrapper}>
+                      <Accordion>
+                        <>
+                          {activeTopicOnDesktop.questions.map((q) => {
+                            return (
+                              <Box key={uuidv4()}>
+                                <AccordionTextItem title={q.question} isExpanded={false}>
+                                  {q.answer}
+                                </AccordionTextItem>
+                              </Box>
+                            );
+                          })}
+                        </>
+                      </Accordion>
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            </Grid>
 
             <Box className={classes.showOnDesktop}>
-              {activeTopicOnDesktop && (
-                <Box>
-                  <Typography variant="h2" component="h1" className={classes.topicTitle}>
-                    {activeTopicOnDesktop.name}
-                  </Typography>
-                  <Box className={classes.accordionWrapper}>
-                    <Accordion>
-                      <>
-                        {activeTopicOnDesktop.questions.map((q) => {
-                          return (
-                            <Box key={uuidv4()}>
-                              <AccordionTextItem title={q.question} isExpanded={false}>
-                                {q.answer}
-                              </AccordionTextItem>
-                            </Box>
-                          );
-                        })}
-                      </>
-                    </Accordion>
-                  </Box>
-                </Box>
-              )}
+              <FaqCta />
             </Box>
           </Grid>
-
-          <Box className={classes.showOnDesktop}>
-            <FaqCta />
-          </Box>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 };
 
