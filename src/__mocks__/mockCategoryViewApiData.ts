@@ -1189,7 +1189,6 @@ const generateYears = (min: number, max: number) => {
   let years = [];
   for (let i = min; i <= max; i++) {
     years.push(i.toString());
-    console.log(typeof i);
   }
 
   return years;
