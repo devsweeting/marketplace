@@ -15,6 +15,7 @@ export const FilterMenu: React.FC<any> = ({
   handleFiltersChange,
   checkedFilters,
   handleRange,
+  ranges,
 }) => {
   const { skin } = useContext(SkinContext);
   return (
@@ -50,6 +51,7 @@ export const FilterMenu: React.FC<any> = ({
                         category={category}
                         handleFiltersChange={handleFiltersChange}
                         handleRange={handleRange}
+                        ranges={ranges}
                       />
                     )}
                   </Box>

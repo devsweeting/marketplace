@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useSliderStyles } from './Slider.styles';
 
-const RangeSlider: React.FC<any> = ({ category, handleRange }) => {
+const RangeSlider: React.FC<any> = ({ category, handleRange, ranges }) => {
   const { categoryId, range } = category;
   const classes = useSliderStyles();
 
@@ -11,6 +11,12 @@ const RangeSlider: React.FC<any> = ({ category, handleRange }) => {
     Number(range[0]),
     Number(range[range.length - 1]),
   ]);
+
+  React.useEffect(() => {
+    if (!ranges) {
+      setValue([Number(range[0]), Number(range[range.length - 1])]);
+    }
+  }, [ranges]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);

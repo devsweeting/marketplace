@@ -12,6 +12,7 @@ export interface FilterSidebarProps {
   clearAllSelectedFilters: () => void;
   handleRange: () => void;
   checkedFilters: any;
+  ranges: any;
 }
 
 const FilterSidebar = ({
@@ -20,9 +21,12 @@ const FilterSidebar = ({
   clearAllSelectedFilters,
   handleRange,
   checkedFilters,
+  ranges,
 }: FilterSidebarProps) => {
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
+
+  console.log('range', ranges, 'checedfiltes', checkedFilters);
   return (
     <Grid
       className={classes.leftColumn}
@@ -40,13 +44,14 @@ const FilterSidebar = ({
         <ClearAllFilter
           clearSelectedFilters={clearAllSelectedFilters}
           toggleVisibility={toggleVisibility}
-          isFilterButtonVisible={checkedFilters.length}
+          isFilterButtonVisible={checkedFilters.length || ranges}
         />
         <FilterMenu
           categoriesList={mockCategoryFilters}
           handleFiltersChange={handleFiltersChange}
-          checkedFilters={checkedFilters}
           handleRange={handleRange}
+          checkedFilters={checkedFilters}
+          ranges={ranges}
         />
       </Grid>
     </Grid>

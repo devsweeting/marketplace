@@ -15,7 +15,7 @@ import SortList, { SortListProps } from './SortList';
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
   const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
-  const [ranges, setRanges] = useState<any[]>([]);
+  const [ranges, setRanges] = useState<any[]>(null);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
@@ -69,6 +69,7 @@ const CategoryListView = () => {
 
   const clearAllSelectedFilters = () => {
     setcheckedFilters([]);
+    setRanges(null);
   };
 
   const handleRange = (val, id) => {
@@ -83,8 +84,9 @@ const CategoryListView = () => {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
-    checkedFilters,
     handleRange,
+    checkedFilters,
+    ranges,
   };
 
   const sortListProps: SortListProps = {
