@@ -1,19 +1,19 @@
 import { responseSymbol } from 'next/dist/server/web/spec-compliant/fetch-event';
-import { IFilter } from 'src/types';
-import { isBooleanObject } from 'util/types';
+import { IFilter, RangeFilters } from 'src/types';
 
 interface ListAssetParams {
   page: number;
   limit?: number;
   sort: string | undefined;
   filter?: Array<IFilter>;
+  filterRanges: null | RangeFilters;
 }
 export const loadListAssetByPage = async ({
   page,
   limit = 12,
   sort,
   filter,
-  ranges,
+  filterRanges,
 }: ListAssetParams) => {
   let query = `page=${page}&limit=${limit}`;
   if (sort) {
@@ -25,15 +25,14 @@ export const loadListAssetByPage = async ({
     });
   }
 
-  if (ranges) {
-    Object.entries(ranges).forEach(([key, value]) => {
+  if (filterRanges) {
+    Object.entries(filterRanges).forEach(([key, value]) => {
       query += `&attr_gte[${key}]=${value.min}&attr_lte[${key}]=${value.max}`;
     });
   }
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets?${query}`);
-    console.log(query);
 
     if (res.status !== 200) {
       return {

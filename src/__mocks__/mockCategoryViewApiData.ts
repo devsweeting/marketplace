@@ -1185,11 +1185,13 @@ export const listViewData = {
   ],
 };
 
-const gnerateYears = (min: number, max: number) => {
+const generateYears = (min: number, max: number) => {
   let years = [];
   for (let i = min; i <= max; i++) {
-    years.push(i);
+    years.push(i.toString());
+    console.log(typeof i);
   }
+
   return years;
 };
 
@@ -1212,17 +1214,10 @@ export const mockCategoryFilters = [
     categoryId: 'Grading Service',
     filters: ['PSA', 'BGS'],
   },
-  // {
-  //   categoryName: 'Year',
-  //   filterType: 'checkbox',
-  //   categoryId: 'Year',
-  //   filters: ['1909', '1986', '1996', '2009'],
-  // },
   {
     categoryName: 'Year',
     filterType: 'slider',
     categoryId: 'Year',
-    range: gnerateYears(1800, 2100),
-    // range: ['1909', '1986', '1996', '2009'], Year should be sliding bar, min of 1800 and max of 2100
+    range: generateYears(1800, 2100),
   },
 ];

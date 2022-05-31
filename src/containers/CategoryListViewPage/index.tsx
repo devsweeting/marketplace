@@ -8,14 +8,14 @@ import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IFilter, IAsset, IMeta } from 'src/types';
+import { IFilter, IAsset, IMeta, RangeFilters, IRange } from 'src/types';
 import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
 import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
   const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
-  const [ranges, setRanges] = useState<any[]>(null);
+  const [filterRanges, setfilterRanges] = useState<RangeFilters>(null);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
@@ -40,7 +40,7 @@ const CategoryListView = () => {
       page,
       sort: sortType,
       filter: checkedFilters,
-      ranges: ranges,
+      filterRanges: filterRanges,
     });
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
@@ -48,7 +48,7 @@ const CategoryListView = () => {
   };
   useEffect(() => {
     loadListAssets(1);
-  }, [sortType, checkedFilters, ranges]);
+  }, [sortType, checkedFilters, filterRanges]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -69,13 +69,12 @@ const CategoryListView = () => {
 
   const clearAllSelectedFilters = () => {
     setcheckedFilters([]);
-    setRanges(null);
+    setfilterRanges(null);
   };
 
-  const handleRange = (val, id) => {
-    console.log('val & id', val, id);
-    setRanges((ranges) => ({
-      ...ranges,
+  const handleRange = (id: string, val: any) => {
+    setfilterRanges((filterRanges) => ({
+      ...filterRanges,
       [id]: { min: val[0], max: val[1] },
     }));
   };
@@ -86,7 +85,7 @@ const CategoryListView = () => {
     clearAllSelectedFilters,
     handleRange,
     checkedFilters,
-    ranges,
+    filterRanges,
   };
 
   const sortListProps: SortListProps = {

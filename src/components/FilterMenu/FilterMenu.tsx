@@ -9,13 +9,22 @@ import { SkinContext } from '@/styles/skin-context';
 import { BorderBox } from '../BorderBox/BorderBox';
 import { FilterGroup } from './components/FilterGroup';
 import Slider from './components/Slider';
+import { IFilter, RangeFilters } from 'src/types';
 
-export const FilterMenu: React.FC<any> = ({
+export interface FilterMenuProps {
+  categoriesList: any;
+  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
+  checkedFilters: IFilter[];
+  handleRange: (id: string, val: number[]) => void;
+  filterRanges: RangeFilters;
+}
+
+export const FilterMenu: React.FC<FilterMenuProps> = ({
   categoriesList,
   handleFiltersChange,
   checkedFilters,
   handleRange,
-  ranges,
+  filterRanges,
 }) => {
   const { skin } = useContext(SkinContext);
   return (
@@ -51,7 +60,7 @@ export const FilterMenu: React.FC<any> = ({
                         category={category}
                         handleFiltersChange={handleFiltersChange}
                         handleRange={handleRange}
-                        ranges={ranges}
+                        filterRanges={filterRanges}
                       />
                     )}
                   </Box>
