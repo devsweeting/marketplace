@@ -13,8 +13,11 @@ const RangeSlider: React.FC<any> = ({ category, handleRange }) => {
   ]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    handleRange(newValue, categoryId);
     setValue(newValue as number[]);
+  };
+
+  const handleRangeLocally = (event: any, newValue: number | number[]) => {
+    handleRange(newValue, categoryId);
   };
 
   return (
@@ -23,6 +26,7 @@ const RangeSlider: React.FC<any> = ({ category, handleRange }) => {
         getAriaLabel={() => 'Grade'}
         value={value}
         onChange={handleChange}
+        onChangeCommitted={handleRangeLocally}
         valueLabelDisplay="on"
         min={Number(range[0])}
         max={Number(range[range.length - 1])}

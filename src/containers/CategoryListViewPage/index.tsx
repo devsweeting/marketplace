@@ -72,7 +72,7 @@ const CategoryListView = () => {
   };
 
   const handleRange = (val, id) => {
-    console.log(val, id);
+    console.log('val & id', val, id);
     setRanges((ranges) => ({
       ...ranges,
       [id]: { min: val[0], max: val[1] },

@@ -1187,7 +1187,7 @@ export const listViewData = {
 
 const gnerateYears = (min: number, max: number) => {
   let years = [];
-  for (var i = min; i < max; i++) {
+  for (let i = min; i <= max; i++) {
     years.push(i);
   }
   return years;

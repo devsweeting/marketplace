@@ -1,3 +1,4 @@
+import { responseSymbol } from 'next/dist/server/web/spec-compliant/fetch-event';
 import { IFilter } from 'src/types';
 import { isBooleanObject } from 'util/types';
 
@@ -30,7 +31,23 @@ export const loadListAssetByPage = async ({
     });
   }
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets?${query}`);
-  console.log(query);
-  return await res.json();
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets?${query}`);
+    console.log(query);
+
+    if (res.status !== 200) {
+      return {
+        meta: { currentPage: 1, itemCount: 0, itemsPerPage: 0, totalItems: 0, totalPages: 1 },
+        items: [],
+      };
+    }
+    return await res.json();
+  } catch (err) {
+    console.log(err);
+
+    return {
+      meta: { currentPage: 1, itemCount: 0, itemsPerPage: 0, totalItems: 0, totalPages: 1 },
+      items: [],
+    };
+  }
 };
