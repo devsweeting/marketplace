@@ -21,7 +21,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
   const [mainImage, setMainImage] = useState(images[0].file);
 
   useEffect(() => {
-    setMainImage(images[0].url);
+    setMainImage(images[0].file);
   }, [router.asPath]);
 
   const handleImage = (e: React.SyntheticEvent) => {
