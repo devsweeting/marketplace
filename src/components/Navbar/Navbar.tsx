@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import { NavLink } from './components/NavLink';
 import { useNavbarStyles } from './Navbar.styles';
+import { Login } from '../Login/components';
 
 type NavLink = {
   title: string;
@@ -26,6 +27,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
         <Typography variant="h4" component="span" className={classes.searchIcon} ml={3}>
           <SearchIcon />
         </Typography>
+        <Login />
       </Stack>
     </Toolbar>
   );
