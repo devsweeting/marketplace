@@ -4,24 +4,13 @@ import { useNavLinkStyles } from '../../Navbar/components/NavLink/NavLink.styles
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useLoginStyles } from './Login.styles';
+import { useLoginStyles, modal } from './Login.styles';
 import classNames from 'classnames';
 import { Button } from '@/components/Button';
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 600,
-    bgcolor: 'background.paper',
-    borderRadius: 2,
-    boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
-    p: 4,
-  };
+
 
 export const Login = () => {
    const modalBox = useRef<HTMLDivElement>(null);
-   const buttonElement = useRef<HTMLButtonElement>(null);
     const [open, setOpen] = React.useState(false);
     const [emailState, setEmailState] = React.useState('');
     const [buttonState, setButtonState] = React.useState(false);
@@ -34,44 +23,43 @@ export const Login = () => {
        if (email.length === 0) {
         return false;
       }
-      if (email.indexOf('@') === -1) {
+      if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         return false;
       }
-      if (email.indexOf(' ') !== -1) {
-        return false;
-      }
-      if (email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         return true;
-      }
     }
     const handleSubmit = (e: React.SyntheticEvent)=>{
         e.preventDefault()
         validate(emailState)
         if(!validate(emailState)){
             modalBox.current!.innerText = 'Invalid email'
-            modalBox.current!.style.color = 'red'
+            modalBox.current!.style.color = '#f44336'
+            return;
         }
-        fetch('http://localhost:3001/v1/users/login/', {
+      
+       const formBody = encodeURIComponent('email') + '=' + encodeURIComponent(emailState);
+        fetch('http://localhost:3001/v1/users/login/request', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: JSON.stringify({
-                email: emailState
-            })
+            body: formBody
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
-        //     if(data.status=== 200){
-        //         modalBox.current!.innerText = 'Check your email for a link to sign in.'
-        //         modalBox.current!.style.color = 'green'
-        //         setButtonState(true)
-        //     }
-        //    if (data.status === 429) {
-        //     modalBox.current!.innerText = 'Too many requests. Please try again later.'
-        //     modalBox.current!.style.color = 'red'
-        //    }
+            if(data.status=== 200){
+                modalBox.current!.innerText = 'Check your email for a link to sign in.'
+                modalBox.current!.style.color = '#4caf50'
+                setButtonState(true)
+                return;
+            }
+           if (data.status === 429) {
+            modalBox.current!.innerText = 'Too many requests. Please try again later.'
+            modalBox.current!.style.color = '#f44336'
+            return;
+           }
+           modalBox.current!.innerText = 'Something went wrong.'
+           modalBox.current!.style.color = '#ffae00'
         })
     }
     const classes = useNavLinkStyles();
@@ -97,13 +85,13 @@ export const Login = () => {
         aria-describedby="modal-modal-description"
         
       >
-        <Box sx={style} className={loginClasses.modal}>
+        <Box sx={modal} className={`${loginClasses.modal} `}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
           Login
             <span className={loginClasses.message} ref={modalBox}>
               
             </span>
-          <form onSubmit={handleSubmit} action="/v1/users/login/request " method='POST' >
+          <form onSubmit={handleSubmit} >
               <div style={{display: 'flex', marginBottom: '5px', justifyContent: 'flex-start'}}>
               <input className={loginClasses.wrapper} type="email" placeholder='Email Address' onChange={handleChange}/>
               <Button disabled={buttonState} className={loginClasses.button} type="submit">Login <LoginIcon /></Button>
