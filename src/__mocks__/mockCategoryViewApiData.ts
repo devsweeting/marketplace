@@ -1185,7 +1185,9 @@ export const listViewData = {
   ],
 };
 
-const generateYears = (min: number, max: number) => {
+const getCurrentYear = new Date().getFullYear();
+
+const generateYears = (min: number, max = getCurrentYear + 1) => {
   let years = [];
   for (let i = min; i <= max; i++) {
     years.push(i.toString());
@@ -1217,6 +1219,6 @@ export const mockCategoryFilters = [
     categoryName: 'Year',
     filterType: 'slider',
     categoryId: 'Year',
-    range: generateYears(1800, 2100),
+    range: generateYears(1800),
   },
 ];

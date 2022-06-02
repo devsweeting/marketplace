@@ -8,7 +8,7 @@ export const Footer = () => {
     <Grid container item xs={12} flexDirection={'row'} justifyContent={'center'} id="footer">
       <Grid item className={classes.container}>
         <Typography variant="body1" component="p" className={classes.text}>
-          © 2022 Third Venture, Inc. - All rights reserved.
+          © 2022 PWCC - All rights reserved.
         </Typography>
       </Grid>
     </Grid>

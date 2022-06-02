@@ -1,5 +1,6 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import { Stack, Box, Typography } from '@mui/material';
+import Switch, { SwitchProps } from '@mui/material/Switch';
 import Slider from '@mui/material/Slider';
 import { useSliderStyles } from './Slider.styles';
 import { RangeFilters } from 'src/types';
@@ -16,6 +17,7 @@ const filterRangeslider: React.FC<any> = ({
   const { categoryId, range } = category;
   const classes = useSliderStyles();
 
+  const [disabled, setDisabled] = React.useState<boolean>(false);
   const [value, setValue] = React.useState<number[]>([
     Number(range![0]),
     Number(range![range!.length - 1]),
@@ -46,7 +48,17 @@ const filterRangeslider: React.FC<any> = ({
         min={Number(range![0])}
         max={Number(range![range!.length - 1])}
         step={1}
+        disabled={disabled}
       />
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" mr={'-19px'}>
+        <Typography>{disabled ? 'Disabled' : 'Enabled'}</Typography>
+        <Switch
+          className={classes.switch}
+          defaultChecked
+          inputProps={{ 'aria-label': 'switch' }}
+          onChange={() => setDisabled(!disabled)}
+        />
+      </Stack>
     </Box>
   );
 };
