@@ -4,7 +4,7 @@ import { useNavLinkStyles } from '../../Navbar/components/NavLink/NavLink.styles
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useLoginStyles, modal } from './Login.styles';
+import { useLoginStyles, modal, title } from './Login.styles';
 import classNames from 'classnames';
 import { Button } from '@/components/Button';
 
@@ -89,35 +89,36 @@ export const Login = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modal} className={`${loginClasses.modal}`} id="modal">
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" variant="h6" component="h2" sx={title}>
             Login
-            <span className={loginClasses.message} role="message" ref={modalBox}></span>
-            <form onSubmit={handleSubmit}>
-              <div style={{ display: 'flex', marginBottom: '5px', justifyContent: 'flex-start' }}>
-                <label htmlFor="email" aria-label="email" className={loginClasses.srOnly}>
-                  email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  className={loginClasses.wrapper}
-                  type="email"
-                  placeholder="Email Address"
-                  onChange={handleChange}
-                />
-
-                <Button
-                  id="submit"
-                  disabled={buttonState}
-                  className={loginClasses.button}
-                  name="Login"
-                  type="submit"
-                >
-                  Login <LoginIcon />
-                </Button>
-              </div>
-            </form>
           </Typography>
+
+          <span className={loginClasses.message} role="message" ref={modalBox}></span>
+          <form onSubmit={handleSubmit}>
+            <div style={{ display: 'flex', marginBottom: '5px', justifyContent: 'flex-start' }}>
+              <label htmlFor="email" aria-label="email" className={loginClasses.srOnly}>
+                email
+              </label>
+              <input
+                id="email"
+                name="email"
+                className={loginClasses.wrapper}
+                type="email"
+                placeholder="Email Address"
+                onChange={handleChange}
+              />
+
+              <Button
+                id="submit"
+                disabled={buttonState}
+                className={loginClasses.button}
+                name="Login"
+                type="submit"
+              >
+                Login <LoginIcon />
+              </Button>
+            </div>
+          </form>
         </Box>
       </Modal>
     </div>
