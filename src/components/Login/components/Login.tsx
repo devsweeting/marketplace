@@ -17,7 +17,7 @@ export const Login = () => {
 
   const [buttonState, setButtonState] = React.useState(false);
 
-  useEffect(() => {}, [emailState, buttonState]);
+  useEffect(() => { }, [emailState, buttonState]);
 
   const classes = useNavLinkStyles();
 
@@ -50,7 +50,7 @@ export const Login = () => {
     }
 
     const formBody = encodeURIComponent('email') + '=' + encodeURIComponent(emailState);
-    fetch('http://localhost:3001/v1/users/login/request', {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login/request`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -107,7 +107,7 @@ export const Login = () => {
                 />
 
                 <Button
-                id="submit"
+                  id="submit"
                   disabled={buttonState}
                   className={loginClasses.button}
                   name="Login"
