@@ -17,7 +17,11 @@ export const Login = () => {
 
   const [buttonState, setButtonState] = React.useState(false);
 
+<<<<<<< HEAD
   const [alertMessage, setAlertMessage] = React.useState('');
+=======
+  useEffect(() => { }, [emailState, buttonState]);
+>>>>>>> 706295e (Update Login.tsx)
 
   const classes = useNavLinkStyles();
 
