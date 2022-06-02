@@ -4,7 +4,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { Button } from '@/components/Button';
-
 import { useProductStyles } from './ProductCard.styles';
 import ShareButton from '@/components/ShareButton';
 

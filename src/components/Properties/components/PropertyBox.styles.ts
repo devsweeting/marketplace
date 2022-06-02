@@ -8,15 +8,15 @@ export const usePropertyBoxStyle = makeStyles(
       maxWidth: '154px',
       borderRadius: theme.spacing(2),
       margin: `0 ${theme.spacing(2)} ${theme.spacing(4)} 0`,
-      border: '1px solid #fff',
+      border: `1px solid ${theme.palette.secondary.main}`,
       [theme.breakpoints.down('md')]: {
         maxWidth: '139.5px',
         margin: `0 ${theme.spacing(1)} ${theme.spacing(2)} 0`,
       },
     },
     title: {
-      color: '#000',
-      background: '#FFDD00',
+      color: theme.palette.primary.main,
+      background: theme.palette.accent.main,
       borderRadius: `${theme.spacing(2)} ${theme.spacing(2)} 0 0`,
       fontSize: '12px',
       lineHeight: '26px',
