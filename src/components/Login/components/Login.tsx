@@ -10,15 +10,27 @@ import { Button } from '@/components/Button';
 
 
 export const Login = () => {
-   const modalBox = useRef<HTMLDivElement>(null);
+    const modalBox = useRef<HTMLDivElement>(null);
+
     const [open, setOpen] = React.useState(false);
+
     const [emailState, setEmailState] = React.useState('');
+
     const [buttonState, setButtonState] = React.useState(false);
+
+    useEffect(()=>{}, [emailState, buttonState])
+
+    const classes = useNavLinkStyles();
+
+    const loginClasses = useLoginStyles();
+
     const handleOpen = () => setOpen(true);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmailState(e.target.value);
     }
     const handleClose = () => setOpen(false);
+
     const validate = (email: string) => {
        if (email.length === 0) {
         return false;
@@ -28,6 +40,7 @@ export const Login = () => {
       }
         return true;
     }
+
     const handleSubmit = (e: React.SyntheticEvent)=>{
         e.preventDefault()
         validate(emailState)
@@ -62,11 +75,9 @@ export const Login = () => {
            modalBox.current!.style.color = '#ffae00'
         })
     }
-    const classes = useNavLinkStyles();
-    const loginClasses = useLoginStyles();
 
-    useEffect(()=>{
-    }, [emailState, buttonState])
+
+
   return (
     <div>
        <a style={{ textDecoration: 'none' }} onClick={handleOpen} >
