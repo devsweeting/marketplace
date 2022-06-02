@@ -32,18 +32,9 @@ export const usePropertyBoxStyle = makeStyles(
       textAlign: 'center',
       fontWeight: 700,
       lineHeight: '32px',
-      paddingTop: theme.spacing(2),
+      padding: `${theme.spacing(2)} 0`,
       [theme.breakpoints.down('md')]: {
         paddingTop: theme.spacing(1),
-      },
-    },
-    propertyDescription: {
-      textAlign: 'center',
-      textDecoration: 'none',
-      paddingBottom: theme.spacing(2),
-      textTransform: 'lowercase',
-      [theme.breakpoints.down('md')]: {
-        paddingBottom: theme.spacing(1),
       },
     },
   }),
