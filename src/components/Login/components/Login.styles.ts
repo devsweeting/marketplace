@@ -58,4 +58,4 @@ export const modal = {
 
 export const title = {
   color: 'black'
-}
+};
