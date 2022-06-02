@@ -94,7 +94,7 @@ export const Login = () => {
             <span className={loginClasses.message} role="message" ref={modalBox}></span>
             <form onSubmit={handleSubmit}>
               <div style={{ display: 'flex', marginBottom: '5px', justifyContent: 'flex-start' }}>
-                <label htmlFor="email" aria-label="email">
+                <label htmlFor="email" aria-label="email" className={loginClasses.srOnly}>
                   email
                 </label>
                 <input
