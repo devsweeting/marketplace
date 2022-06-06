@@ -12,6 +12,7 @@ export interface FilterSidebarProps {
   handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
   clearAllSelectedFilters: () => void;
   handleRange: (id: string, val: number[]) => void;
+  removeFilterRange: (id: string) => void;
   checkedFilters: IFilter[];
   filterRanges: RangeFilters;
 }
@@ -21,6 +22,7 @@ const FilterSidebar = ({
   handleFiltersChange,
   clearAllSelectedFilters,
   handleRange,
+  removeFilterRange,
   checkedFilters,
   filterRanges,
 }: FilterSidebarProps) => {
@@ -50,6 +52,7 @@ const FilterSidebar = ({
           categoriesList={mockCategoryFilters}
           handleFiltersChange={handleFiltersChange}
           handleRange={handleRange}
+          removeFilterRange={removeFilterRange}
           checkedFilters={checkedFilters}
           filterRanges={filterRanges}
         />

@@ -8,14 +8,14 @@ import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IFilter, IAsset, IMeta, RangeFilters, IRange } from 'src/types';
+import { IFilter, IAsset, IMeta, RangeFilters } from 'src/types';
 import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
 import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
   const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
-  const [filterRanges, setfilterRanges] = useState<RangeFilters>(null);
+  const [filterRanges, setfilterRanges] = useState<RangeFilters>({});
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
@@ -79,11 +79,16 @@ const CategoryListView = () => {
     }));
   };
 
+  const removeFilterRange = (id: string) => {
+    filterRanges && delete filterRanges[id];
+  };
+
   const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
     handleRange,
+    removeFilterRange,
     checkedFilters,
     filterRanges,
   };

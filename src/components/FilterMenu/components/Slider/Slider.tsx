@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Stack, Box, Typography } from '@mui/material';
-import Switch, { SwitchProps } from '@mui/material/Switch';
+import Switch from '@mui/material/Switch';
 import Slider from '@mui/material/Slider';
 import { useSliderStyles } from './Slider.styles';
 import { RangeFilters } from 'src/types';
@@ -8,10 +8,12 @@ import { RangeFilters } from 'src/types';
 const filterRangeslider: React.FC<any> = ({
   category,
   handleRange,
+  removeFilterRange,
   filterRanges,
 }: {
   category: any;
   handleRange: (id: string, val: number | number[]) => void;
+  removeFilterRange: (id: string) => void;
   filterRanges: RangeFilters;
 }) => {
   const { categoryId, range } = category;
@@ -37,6 +39,15 @@ const filterRangeslider: React.FC<any> = ({
     setValue(newValue as number[]);
   };
 
+  const handleDisabled = () => {
+    setDisabled(!disabled);
+    handleRange(categoryId, value);
+  };
+
+  React.useEffect(() => {
+    disabled && removeFilterRange(categoryId);
+  }, [disabled]);
+
   return (
     <Box className={classes.wrapper}>
       <Slider
@@ -51,12 +62,12 @@ const filterRangeslider: React.FC<any> = ({
         disabled={disabled}
       />
       <Stack direction="row" justifyContent="flex-end" alignItems="center" mr={'-19px'}>
-        <Typography>{disabled ? 'Disabled' : 'Enabled'}</Typography>
+        <Typography>{disabled ? 'Off' : 'On'}</Typography>
         <Switch
           className={classes.switch}
           defaultChecked
           inputProps={{ 'aria-label': 'switch' }}
-          onChange={() => setDisabled(!disabled)}
+          onChange={handleDisabled}
         />
       </Stack>
     </Box>

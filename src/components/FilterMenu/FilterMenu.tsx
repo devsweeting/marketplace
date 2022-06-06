@@ -16,6 +16,7 @@ export interface FilterMenuProps {
   handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
   checkedFilters: IFilter[];
   handleRange: (id: string, val: number[]) => void;
+  removeFilterRange: (id: string) => void;
   filterRanges: RangeFilters;
 }
 
@@ -24,6 +25,7 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
   handleFiltersChange,
   checkedFilters,
   handleRange,
+  removeFilterRange,
   filterRanges,
 }) => {
   const { skin } = useContext(SkinContext);
@@ -60,6 +62,7 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
                         category={category}
                         handleFiltersChange={handleFiltersChange}
                         handleRange={handleRange}
+                        removeFilterRange={removeFilterRange}
                         filterRanges={filterRanges}
                       />
                     )}
