@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { SkinContext } from '../../../styles/skin-context';
 import SearchIcon from '@mui/icons-material/Search';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -8,14 +7,12 @@ import { IconButton } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useSearchboxStyles } from './Searchbox.styles';
 
-
 interface SearchBoxProps {
   placeholder?: string;
   iconColor?: string;
   borderRadius?: any;
   reverseTextColor?: any;
 }
-
 
 export const SearchBox: React.FC<SearchBoxProps> = ({
   placeholder = 'Search',
@@ -29,15 +26,9 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-   
-      if (event.key === 'Enter') {
-        handleSubmit(event);
-      }
   };
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const query = value.trim();
-    const searchQuery = encodeURIComponent(query);
+   setValue(value.trim());
   }
 
 useEffect(() => {
@@ -45,7 +36,7 @@ useEffect(() => {
 }, [value])
 
   return (
-    <form action='/explore' method="get" autoComplete='off' >
+    <form action='/explore' method="get" autoComplete='off' onSubmit={handleSubmit} >
     <FormControl variant="outlined" className={classes.wrapper}>
       <OutlinedInput
         sx={{
