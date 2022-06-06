@@ -17,18 +17,18 @@ export const Login = () => {
 
   const [buttonState, setButtonState] = React.useState(false);
 
-  useEffect(() => { }, [emailState, buttonState]);
-
   const classes = useNavLinkStyles();
 
   const loginClasses = useLoginStyles();
 
   const handleOpen = () => setOpen(true);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmailState(e.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmailState(event.target.value);
   };
   const handleClose = () => setOpen(false);
+
+  useEffect(() => { }, [emailState, buttonState]);
 
   const validate = (email: string) => {
     if (email.length === 0) {
@@ -106,6 +106,7 @@ export const Login = () => {
                 type="email"
                 placeholder="Email Address"
                 onChange={handleChange}
+                value={emailState}
               />
 
               <Button
