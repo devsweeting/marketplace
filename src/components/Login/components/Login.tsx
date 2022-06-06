@@ -93,7 +93,7 @@ export const Login = () => {
             Login
           </Typography>
 
-          <span className={loginClasses.message} role="message" ref={modalBox}></span>
+          <span className={loginClasses.message} role="alert" ref={modalBox}></span>
           <form onSubmit={handleSubmit}>
             <div style={{ display: 'flex', marginBottom: '5px', justifyContent: 'flex-start' }}>
               <label htmlFor="email" aria-label="email" className={loginClasses.srOnly}>
