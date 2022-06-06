@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useTheme } from '@mui/styles';
 import { useMediaQuery, Grid, Box, Typography, Divider } from '@mui/material';
 import { ListItem } from '@/components/ListItem';
@@ -34,6 +35,8 @@ export const CategoryListViewPage = () => {
   const [isSidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const searchQuery = useRouter().query.q;
+  const search = searchQuery ? searchQuery.toString().replace(/\ /g, '+') : '';
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -53,15 +56,18 @@ export const CategoryListViewPage = () => {
       sort: sortType,
       filter: checkedFilters,
       filterRanges: filterRanges,
+      search: search as string | undefined,
     });
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
     console.log(meta, items);
   };
+
   useEffect(() => {
     loadListAssets(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType, checkedFilters, filterRanges, disabledRanges]);
+  }, [sortType, checkedFilters, filterRanges, disabledRanges, search]);
+
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -100,6 +106,7 @@ export const CategoryListViewPage = () => {
   const removeFilterRange = (id: string) => {
     filterRanges && delete filterRanges[id];
   };
+
 
   const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,
