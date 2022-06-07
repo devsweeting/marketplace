@@ -70,6 +70,7 @@ const Login = ({token}) => {
         </>
     )
 }
+<<<<<<< HEAD
 
 export default Login
 
@@ -81,3 +82,5 @@ export default Login
 //         }
 //     }
 // }
+=======
+>>>>>>> df6d0e0 (Add better tests and clean up login)
