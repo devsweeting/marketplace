@@ -1185,25 +1185,40 @@ export const listViewData = {
   ],
 };
 
+const getCurrentYear = new Date().getFullYear();
+
+const generateYears = (min: number, max = getCurrentYear + 1) => {
+  let years = [];
+  for (let i = min; i <= max; i++) {
+    years.push(i.toString());
+  }
+
+  return years;
+};
+
 export const mockCategoryFilters = [
   {
     categoryName: 'Category',
+    filterType: 'checkbox',
     categoryId: 'Category',
     filters: ['Baseball', 'Basketball'],
   },
   {
     categoryName: 'Grade',
+    filterType: 'slider',
     categoryId: 'Grade',
-    filters: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+    range: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
   },
   {
     categoryName: 'Grading Service',
+    filterType: 'checkbox',
     categoryId: 'Grading Service',
     filters: ['PSA', 'BGS'],
   },
   {
     categoryName: 'Year',
+    filterType: 'slider',
     categoryId: 'Year',
-    filters: ['1909', '1986', '1996', '2009'],
+    range: generateYears(1800),
   },
 ];

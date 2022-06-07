@@ -10,6 +10,7 @@ export const useClearAllFilter = makeStyles(
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      flexWrap: 'wrap',
       ['@media (max-width:900px)']: {
         paddingRight: 0,
       },

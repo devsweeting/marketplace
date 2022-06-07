@@ -8,13 +8,14 @@ import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IFilter, IAsset, IMeta } from 'src/types';
+import { IFilter, IAsset, IMeta, RangeFilters } from 'src/types';
 import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
 import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
-  const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
+  const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
+  const [filterRanges, setfilterRanges] = useState<RangeFilters>({});
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
@@ -39,6 +40,7 @@ const CategoryListView = () => {
       page,
       sort: sortType,
       filter: checkedFilters,
+      filterRanges: filterRanges,
     });
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
@@ -46,7 +48,7 @@ const CategoryListView = () => {
   };
   useEffect(() => {
     loadListAssets(1);
-  }, [sortType, checkedFilters]);
+  }, [sortType, checkedFilters, filterRanges]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -67,13 +69,28 @@ const CategoryListView = () => {
 
   const clearAllSelectedFilters = () => {
     setcheckedFilters([]);
+    setfilterRanges(null);
+  };
+
+  const handleRange = (id: string, val: any) => {
+    setfilterRanges((filterRanges) => ({
+      ...filterRanges,
+      [id]: { min: val[0], max: val[1] },
+    }));
+  };
+
+  const removeFilterRange = (id: string) => {
+    filterRanges && delete filterRanges[id];
   };
 
   const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
+    handleRange,
+    removeFilterRange,
     checkedFilters,
+    filterRanges,
   };
 
   const sortListProps: SortListProps = {
@@ -134,6 +151,7 @@ const CategoryListView = () => {
                 LOAD MORE
               </Button>
             )}
+
             <Typography
               variant="body2"
               component="p"
