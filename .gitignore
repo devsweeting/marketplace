@@ -52,4 +52,5 @@ lerna-debug.log
 .yarn-integrity
 
 ## IDEA Editors
-/.idea
+.idea
+*.iml
