@@ -50,3 +50,7 @@ lerna-debug.log
 
 # Yarn Integrity file
 .yarn-integrity
+
+## IDEA Editors
+.idea
+*.iml
