@@ -16,6 +16,8 @@ const MockLogin = () => {
   );
 }
 
+
+
 async function openModal() {
   render(<MockLogin />);
   await user.click(screen.getByText('Login'));
@@ -32,24 +34,65 @@ test('Login button opens modal on click', async () => {
   expect(modal).toBeTruthy();
 })
 
-test('Modal should be a valid form', async () => {
+test('Modal should be contain a valid form, input, and button', async () => {
   const modal = await openModal();
+  const input = screen.getByRole('textbox', { name: /email/i });
+  const inputLabel = queries.getByText(modal, /email/i);
   const button = screen.getByRole('button', { name: /login/i });
-  expect(button).toBeInTheDocument();
-  const input = screen.getByRole('textbox', { name: /email/i })
+  const form = modal.querySelector('form');
+  const formViolations = await axe(form ?? '');
+  const alert = screen.getByRole('alert');
+  expect(modal.querySelector('form')).toBeTruthy();
   expect(input).toBeInTheDocument();
-  const inputLabel = queries.getByText(modal, /email/i)
+  expect(input).toBeTruthy();
+  expect(input).toHaveAttribute('type', 'email');
   expect(inputLabel).toHaveAttribute('for', 'email');
   expect(inputLabel).toBeTruthy();
-  expect(input).toHaveAttribute('type', 'email')
-  expect(input).toHaveValue('')
-  await user.type(input, 'test@test.com')
-  expect(input).toHaveValue('test@test.com');
-  // await user.click(button)
-  // expect(button).toBeDisabled();
-  const form = modal.querySelector('#modal');
-  const formViolations = await axe(form ?? '')
+  expect(button).toBeInTheDocument();
+  expect(button).toBeTruthy();
   expect(formViolations).toHaveNoViolations();
-  expect(button).toBeTruthy()
+  expect(alert).toBeTruthy();
 
 })
+
+test('Input should be able to be filled', async () => {
+  await openModal();
+  const input = screen.getByRole('textbox', { name: /email/i });
+  await user.type(input, 'test@test.com');
+  expect(input).toHaveValue('test@test.com');
+})
+
+test('Input should not allow invalid fields', async () => {
+  await openModal();
+  const input = screen.getByRole('textbox', { name: /email/i });
+  const button = screen.getByRole('button', { name: /login/i });
+  const alert = screen.getByRole('alert');
+  await user.type(input, 'test@test');
+  await user.click(button);
+  expect(input).toHaveValue('test@test');
+  expect(alert).toHaveTextContent(/please enter a valid email/i);
+})
+
+test('User should be able to submit a valid email', async () => {
+  await openModal();
+  const originalFetch = global.fetch;
+  global.fetch = jest.fn(() => Promise.resolve({
+    json: () => Promise.resolve({
+      status: 200,
+    })
+  })) as jest.Mock;
+  const input = screen.getByRole('textbox', { name: /email/i });
+  const button = screen.getByRole('button', { name: /login/i });
+  const alert = screen.getByRole('alert');
+  await user.type(input, 'test@test.com');
+  await user.click(button);
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(alert).toHaveTextContent(/Check your email for a link to sign in/i);
+  expect(button).toBeDisabled();
+  global.fetch = originalFetch;
+})
+
+
+
+
+

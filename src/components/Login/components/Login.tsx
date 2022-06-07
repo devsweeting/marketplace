@@ -17,6 +17,8 @@ export const Login = () => {
 
   const [buttonState, setButtonState] = React.useState(false);
 
+  const [alertMessage, setAlertMessage] = React.useState('');
+
   const classes = useNavLinkStyles();
 
   const loginClasses = useLoginStyles();
@@ -28,7 +30,9 @@ export const Login = () => {
   };
   const handleClose = () => setOpen(false);
 
-  useEffect(() => { }, [emailState, buttonState]);
+  useEffect(() => {
+    //
+  }, [emailState, buttonState, alertMessage]);
 
   const validate = (email: string) => {
     if (email.length === 0) {
@@ -44,8 +48,10 @@ export const Login = () => {
     e.preventDefault();
     validate(emailState);
     if (!validate(emailState)) {
-      modalBox.current!.innerText = 'Please enter a valid email';
-      modalBox.current!.style.color = '#f44336';
+      setAlertMessage('Please enter a valid email address');
+      if (modalBox.current) {
+        modalBox.current.style.color = '#f44336';
+      }
       return;
     }
 
@@ -60,18 +66,24 @@ export const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === 200) {
-          modalBox.current!.innerText = 'Check your email for a link to sign in.';
-          modalBox.current!.style.color = '#4caf50';
+          setAlertMessage('Check your email for a link to sign in.')
+          if (modalBox.current) {
+            modalBox.current.style.color = '#4caf50';
+          }
           setButtonState(true);
           return;
         }
         if (data.status === 429) {
-          modalBox.current!.innerText = 'Too many requests. Please try again later.';
-          modalBox.current!.style.color = '#f44336';
+          setAlertMessage('Too many requests. Please try again later.')
+          if (modalBox.current) {
+            modalBox.current.style.color = '#f44336';
+          }
           return;
         }
-        modalBox.current!.innerText = 'Something went wrong.';
-        modalBox.current!.style.color = '#ffae00';
+        if (modalBox.current) {
+          setAlertMessage('Something went wrong. Please try again later.')
+          modalBox.current.style.color = '#ffae00';
+        }
       });
   };
 
@@ -93,7 +105,7 @@ export const Login = () => {
             Login
           </Typography>
 
-          <span className={loginClasses.message} role="alert" ref={modalBox}></span>
+          <span className={loginClasses.message} role="alert" ref={modalBox}>{alertMessage}</span>
           <form onSubmit={handleSubmit}>
             <div style={{ display: 'flex', marginBottom: '5px', justifyContent: 'flex-start' }}>
               <label htmlFor="email" aria-label="email" className={loginClasses.srOnly}>
