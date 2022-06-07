@@ -1,15 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, getByText, findByText, queries } from '@testing-library/react';
-// import user from '@testing-library/user-event'
-import { axe } from 'jest-axe'
-import { ThemeProvider } from '@mui/material';
-import { Login } from '../../../../components/Login/components';
-import theme from '@/styles/themeJump';
+import { render, screen, waitFor, queries } from '@testing-library/react';
+import user from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import 'jest-axe/extend-expect'
-import userEvent from '@testing-library/user-event';
-
-const mockChildren = 'mockedChildren';
+import { axe } from 'jest-axe'
+import { ThemeProvider } from '@mui/material';
+import { Login } from '@/components/Login/components';
+import theme from '@/styles/themeJump';
 
 const MockLogin = () => {
   return (
@@ -21,9 +18,8 @@ const MockLogin = () => {
 
 async function openModal() {
   render(<MockLogin />);
-  userEvent.click(screen.getByText('Login'));
-  const modal = await waitFor(() => screen.findByRole("presentation"));
-  return modal;
+  await user.click(screen.getByText('Login'));
+  return await waitFor(() => screen.findByRole("presentation"));
 }
 
 test('Login button exists', () => {
@@ -32,16 +28,12 @@ test('Login button exists', () => {
 });
 
 test('Login button opens modal on click', async () => {
-  const modal = await openModal()
-  expect(modal).toBeTruthy()
+  const modal = await openModal();
+  expect(modal).toBeTruthy();
 })
 
 test('Modal should be a valid form', async () => {
-  const user = userEvent.setup()
-  // const modal = await openModal()
-  const { debug } = render(<MockLogin />);
-  userEvent.click(screen.getByText('Login'));
-  const modal = await waitFor(() => screen.findByRole("presentation"));
+  const modal = await openModal();
   const button = screen.getByRole('button', { name: /login/i });
   expect(button).toBeInTheDocument();
   const input = screen.getByRole('textbox', { name: /email/i })
@@ -51,10 +43,9 @@ test('Modal should be a valid form', async () => {
   expect(inputLabel).toBeTruthy();
   expect(input).toHaveAttribute('type', 'email')
   expect(input).toHaveValue('')
-  user.type(input, 'test@test.com')
-  fireEvent.change(input, { target: { value: 'test@test.com' } });
+  await user.type(input, 'test@test.com')
   expect(input).toHaveValue('test@test.com');
-  user.click(button)
+  // await user.click(button)
   // expect(button).toBeDisabled();
   const form = modal.querySelector('#modal');
   const formViolations = await axe(form ?? '')
