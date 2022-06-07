@@ -27,7 +27,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = () => {
    setValue(value.trim());
   }
 
@@ -36,7 +36,7 @@ useEffect(() => {
 }, [value])
 
   return (
-    <form action='/explore' method="get" autoComplete='off' onSubmit={handleSubmit} >
+    <form action='/explore' method="get" onSubmit={handleSubmit} autoComplete="off" >
     <FormControl variant="outlined" className={classes.wrapper}>
       <OutlinedInput
         sx={{
@@ -44,7 +44,6 @@ useEffect(() => {
           color: reverseTextColor && skin.header.searchTextColor,
         }}
         name="q"
-        type="search"
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
