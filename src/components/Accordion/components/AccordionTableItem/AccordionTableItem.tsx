@@ -1,15 +1,13 @@
 import * as React from 'react';
-import { Table as MaterialTable } from '@mui/material';
+import { Table as MaterialTable , Accordion as MaterialAccordion , Typography } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Accordion as MaterialAccordion } from '@mui/material';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Typography } from '@mui/material';
 import classNames from 'classnames';
 import { useTableStyles } from './AccordionTableItem.styles';
 

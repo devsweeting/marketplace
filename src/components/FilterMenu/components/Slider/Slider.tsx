@@ -3,7 +3,7 @@ import { Stack, Box, Typography } from '@mui/material';
 import Switch from '@mui/material/Switch';
 import Slider from '@mui/material/Slider';
 import { useSliderStyles } from './Slider.styles';
-import { RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
+import type { RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
 const filterRangeslider: React.FC<any> = ({
   category,

@@ -9,7 +9,7 @@ import { SkinContext } from '@/styles/skin-context';
 import { BorderBox } from '../BorderBox/BorderBox';
 import { FilterGroup } from './components/FilterGroup';
 import Slider from './components/Slider';
-import { IFilter, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
+import type { IFilter, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
 export interface FilterMenuProps {
   categoriesList: any;

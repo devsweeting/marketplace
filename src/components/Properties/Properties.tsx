@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { Box, Grid } from '@mui/material';
 import { PropertyBox } from './components';
-import { TraitType } from './components/PropertyBox';
+import type { TraitType } from './components/PropertyBox';
 import { usePropertiesStyle } from './Properties.styles';
 
 type AttributeProps = TraitType[];

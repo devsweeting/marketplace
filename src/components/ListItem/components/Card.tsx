@@ -4,7 +4,7 @@ import { SkinContext } from '@/styles/skin-context';
 import { useCardStyles } from './Card.styles';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IAsset } from 'src/types';
+import type { IAsset } from 'src/types';
 
 interface CardProps {
   item: IAsset;

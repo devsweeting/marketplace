@@ -5,7 +5,7 @@ import { useCarouselStyles } from './Carousel.styles';
 import { SingleListItem } from '../../domain/Items';
 import useSWR from 'swr';
 import Loader from '../Loader';
-import { IAsset } from 'src/types';
+import type { IAsset } from 'src/types';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const items_endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`;
