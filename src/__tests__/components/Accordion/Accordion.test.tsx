@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Accordion } from '@/components/Accordion';
-import theme from '@/styles/themeJump';
+import { themeJump } from '@/styles/themeJump';
 import '@testing-library/jest-dom/extend-expect';
 
 const MockAccordionChildren = () => {
@@ -11,7 +11,7 @@ const MockAccordionChildren = () => {
 
 const MockAccordion = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <Accordion>
         <MockAccordionChildren />
       </Accordion>

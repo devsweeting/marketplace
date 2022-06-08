@@ -1,5 +1,5 @@
 import React from 'react';
-import CategoryListViewPage from '@/containers/CategoryListViewPage';
+import { CategoryListViewPage } from '@/containers/CategoryListViewPage';
 import { OpenGraph } from '@/components/OpenGraph';
 
 const CategoryPage = () => {

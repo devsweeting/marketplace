@@ -24,7 +24,7 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
-const theme = createTheme({
+export const themePWCC = createTheme({
   palette: {
     primary: {
       main: '#000',
@@ -271,5 +271,3 @@ const theme = createTheme({
     },
   },
 });
-
-export default theme;
