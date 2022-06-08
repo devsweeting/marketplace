@@ -27,6 +27,7 @@ export const Login = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailState(event.target.value);
+    setButtonState(false);
   };
   const handleClose = () => setOpen(false);
 
