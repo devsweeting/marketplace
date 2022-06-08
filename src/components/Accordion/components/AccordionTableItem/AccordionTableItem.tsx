@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table as MaterialTable , Accordion as MaterialAccordion , Typography } from '@mui/material';
+import { Table as MaterialTable, Accordion as MaterialAccordion, Typography } from '@mui/material';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
