@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { SkinContext } from '../../../styles/skin-context';
 import SearchIcon from '@mui/icons-material/Search';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -37,10 +37,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   const handleSubmit = () => {
    setValue(value.trim());
   }
-
-useEffect(() => {
-
-}, [value])
 
   return (
     <form action='/explore' method="get" onSubmit={handleSubmit} autoComplete="off" id='searchBar'>
