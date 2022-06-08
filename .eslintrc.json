@@ -1,26 +1,55 @@
 {
-  "plugins": ["@typescript-eslint"],
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
+  "root": true,
+  "env": {
+    "node": true,
+    "browser": true,
+    "jest": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["import", "@typescript-eslint", "react-hooks", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "prettier"
+  ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "off",
-    "eslint-import-resolver-typescript": "on"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      { "prefer": "type-imports" }
+    ],
+    "import/no-anonymous-default-export": [
+      "error",
+      {
+        "allowArray": false,
+        "allowArrowFunction": false,
+        "allowAnonymousClass": false,
+        "allowAnonymousFunction": false,
+        "allowCallExpression": true,
+        "allowLiteral": false,
+        "allowObject": false
+      }
+    ],
+    "import/no-named-as-default": "off",
+    "import/no-default-export": "error",
+    "import/prefer-default-export": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
     "import/resolver": {
-      "alias": {
-        "map": [
-          ["@/components", "./src/components"],
-          ["@/__mocks__", "./src/__mocks__"],
-          ["@/__tests__", "./src/__tests__"],
-          ["@/domain", "./src/domain"],
-          ["@/containers", "./src/containers"],
-          ["@/helpers", "./src/helpers"],
-          ["@/layout", "./src/layout"],
-          ["@/pages", "./src/pages"],
-          ["@/api", "./src/api"],
-          ["@/styles", "./styles"]
-        ]
+      "typescript": {
+        "alwaysTryTypes": true
       }
     }
   }
