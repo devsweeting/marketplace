@@ -8,14 +8,18 @@ import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IFilter, IAsset, IMeta, RangeFilters } from 'src/types';
+import { IFilter, IAsset, IMeta, RangeFilters, DisabledRanges } from 'src/types';
 import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
 import SortList, { SortListProps } from './SortList';
 
 const CategoryListView = () => {
   const classes = useCategoryPageStyles();
   const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
-  const [filterRanges, setfilterRanges] = useState<RangeFilters>({});
+  const [filterRanges, setfilterRanges] = useState<RangeFilters>(null);
+  const [disabledRanges, setDisabledRanges] = React.useState<DisabledRanges>({
+    Grade: true,
+    Year: true,
+  });
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
@@ -48,7 +52,7 @@ const CategoryListView = () => {
   };
   useEffect(() => {
     loadListAssets(1);
-  }, [sortType, checkedFilters, filterRanges]);
+  }, [sortType, checkedFilters, filterRanges, disabledRanges]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -69,7 +73,12 @@ const CategoryListView = () => {
 
   const clearAllSelectedFilters = () => {
     setcheckedFilters([]);
-    setfilterRanges(null);
+    setfilterRanges({});
+    setDisabledRanges({ Grade: true, Year: true });
+  };
+
+  const handleDisabled = (key: any) => {
+    setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key as keyof DisabledRanges] });
   };
 
   const handleRange = (id: string, val: any) => {
@@ -91,6 +100,8 @@ const CategoryListView = () => {
     removeFilterRange,
     checkedFilters,
     filterRanges,
+    disabledRanges,
+    handleDisabled,
   };
 
   const sortListProps: SortListProps = {

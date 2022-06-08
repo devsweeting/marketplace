@@ -9,7 +9,7 @@ import { SkinContext } from '@/styles/skin-context';
 import { BorderBox } from '../BorderBox/BorderBox';
 import { FilterGroup } from './components/FilterGroup';
 import Slider from './components/Slider';
-import { IFilter, RangeFilters } from 'src/types';
+import { IFilter, RangeFilters, DisabledRanges } from 'src/types';
 
 export interface FilterMenuProps {
   categoriesList: any;
@@ -18,6 +18,8 @@ export interface FilterMenuProps {
   handleRange: (id: string, val: number[]) => void;
   removeFilterRange: (id: string) => void;
   filterRanges: RangeFilters;
+  disabledRanges: DisabledRanges;
+  handleDisabled: (key: any) => void;
 }
 
 export const FilterMenu: React.FC<FilterMenuProps> = ({
@@ -26,7 +28,9 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
   checkedFilters,
   handleRange,
   removeFilterRange,
+  handleDisabled,
   filterRanges,
+  disabledRanges,
 }) => {
   const { skin } = useContext(SkinContext);
   return (
@@ -64,6 +68,8 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({
                         handleRange={handleRange}
                         removeFilterRange={removeFilterRange}
                         filterRanges={filterRanges}
+                        handleDisabled={handleDisabled}
+                        disabledRanges={disabledRanges}
                       />
                     )}
                   </Box>
