@@ -9,7 +9,7 @@ import { SkinContext } from '@/styles/skin-context';
 import { BorderBox } from '../BorderBox/BorderBox';
 import { FilterGroup } from './components/FilterGroup';
 import Slider from './components/Slider';
-import { IFilter, RangeFilters, DisabledRanges } from 'src/types';
+import { IFilter, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
 export interface FilterMenuProps {
   categoriesList: any;
@@ -19,7 +19,7 @@ export interface FilterMenuProps {
   removeFilterRange: (id: string) => void;
   filterRanges: RangeFilters;
   disabledRanges: DisabledRanges;
-  handleDisabled: (key: any) => void;
+  handleDisabled: (key: DisabledRangesKey) => void;
 }
 
 export const FilterMenu: React.FC<FilterMenuProps> = ({

@@ -5,7 +5,7 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/FilterMenu/components/ClearAllFilter';
 import { FilterMenu } from '@/components/FilterMenu';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
-import { IFilter, RangeFilters, DisabledRanges } from 'src/types';
+import { IFilter, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
 export interface FilterSidebarProps {
   toggleVisibility: (isVisible: boolean) => void;
@@ -13,7 +13,7 @@ export interface FilterSidebarProps {
   clearAllSelectedFilters: () => void;
   handleRange: (id: string, val: number[]) => void;
   disabledRanges: DisabledRanges;
-  handleDisabled: (key: any) => void;
+  handleDisabled: (key: DisabledRangesKey) => void;
   removeFilterRange: (id: string) => void;
   checkedFilters: IFilter[];
   filterRanges: RangeFilters;

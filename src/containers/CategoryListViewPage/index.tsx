@@ -8,7 +8,7 @@ import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IFilter, IAsset, IMeta, RangeFilters, DisabledRanges } from 'src/types';
+import { IFilter, IAsset, IMeta, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
 import SortList, { SortListProps } from './SortList';
 
@@ -77,8 +77,8 @@ const CategoryListView = () => {
     setDisabledRanges({ Grade: true, Year: true });
   };
 
-  const handleDisabled = (key: any) => {
-    setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key as keyof DisabledRanges] });
+  const handleDisabled = (key: DisabledRangesKey) => {
+    setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key] });
   };
 
   const handleRange = (id: string, val: any) => {
