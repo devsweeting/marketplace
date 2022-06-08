@@ -39,13 +39,15 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   }
 
 useEffect(() => {
-  
+
 }, [value])
 
   return (
-    <form action='/explore' method="get" onSubmit={handleSubmit} autoComplete="off" >
+    <form action='/explore' method="get" onSubmit={handleSubmit} autoComplete="off" id='searchBar'>
     <FormControl variant="outlined" className={classes.wrapper}>
       <OutlinedInput
+      role={'textbox'}
+      aria-label={'search'}
         sx={{
           borderRadius: borderRadius && skin.header.searchIconBorderRadius,
           color: reverseTextColor && skin.header.searchTextColor,
@@ -57,7 +59,11 @@ useEffect(() => {
         placeholder={placeholder}
         endAdornment={
           <InputAdornment position="end">
-           <IconButton type='submit'>
+           <IconButton type='submit' role={'button'}>
+             <span style={{
+             height: 0,
+              width: 0,
+             }}>Search Button</span>
            <SearchIcon aria-label="search icon" sx={{ color: iconColor, opacity: '40%' }} />
             </IconButton>
           </InputAdornment>

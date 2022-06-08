@@ -65,13 +65,9 @@ export const CategoryListViewPage = () => {
 
   useEffect(() => {
     loadListAssets(1);
-<<<<<<< HEAD
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType, checkedFilters, filterRanges, disabledRanges, search]);
 
-=======
-  }, [sortType, checkedFilters, filterRanges, disabledRanges, search]);
->>>>>>> 0006353 (fix/update search for keydown event)
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;

@@ -1,4 +1,3 @@
-import { blue } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 
 export const useSearchboxStyles = makeStyles((theme) => ({
