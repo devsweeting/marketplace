@@ -70,17 +70,5 @@ const Login = ({token}) => {
         </>
     )
 }
-<<<<<<< HEAD
 
 export default Login
-
-// export const getServerSideProps = async (req: any, res: any) => {
-// const cookies = parseCookies(req)
-//     return {
-//         props: {
-//             token: cookies
-//         }
-//     }
-// }
-=======
->>>>>>> df6d0e0 (Add better tests and clean up login)
