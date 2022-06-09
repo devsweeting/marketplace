@@ -38,10 +38,16 @@ export interface IFilter {
   categoryId: string;
   filterId: string;
 }
-
 export interface IRange {
   min: string;
   max: string;
 }
+
+export type DisabledRanges = {
+  Grade: boolean;
+  Year: boolean;
+};
+
+export type DisabledRangesKey = keyof DisabledRanges;
 
 export type RangeFilters = Record<string, IRange> | null;

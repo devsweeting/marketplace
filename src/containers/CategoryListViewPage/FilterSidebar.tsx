@@ -5,13 +5,15 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/FilterMenu/components/ClearAllFilter';
 import { FilterMenu } from '@/components/FilterMenu';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
-import { IFilter, RangeFilters } from 'src/types';
+import { IFilter, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
 export interface FilterSidebarProps {
   toggleVisibility: (isVisible: boolean) => void;
   handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
   clearAllSelectedFilters: () => void;
   handleRange: (id: string, val: number[]) => void;
+  disabledRanges: DisabledRanges;
+  handleDisabled: (key: DisabledRangesKey) => void;
   removeFilterRange: (id: string) => void;
   checkedFilters: IFilter[];
   filterRanges: RangeFilters;
@@ -25,6 +27,8 @@ const FilterSidebar = ({
   removeFilterRange,
   checkedFilters,
   filterRanges,
+  disabledRanges,
+  handleDisabled,
 }: FilterSidebarProps) => {
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
@@ -46,15 +50,19 @@ const FilterSidebar = ({
         <ClearAllFilter
           clearSelectedFilters={clearAllSelectedFilters}
           toggleVisibility={toggleVisibility}
-          isFilterButtonVisible={!!checkedFilters.length || !!filterRanges}
+          isFilterButtonVisible={
+            checkedFilters.length || !disabledRanges.Grade || !disabledRanges.Year
+          }
         />
         <FilterMenu
           categoriesList={mockCategoryFilters}
           handleFiltersChange={handleFiltersChange}
           handleRange={handleRange}
           removeFilterRange={removeFilterRange}
+          handleDisabled={handleDisabled}
           checkedFilters={checkedFilters}
           filterRanges={filterRanges}
+          disabledRanges={disabledRanges}
         />
       </Grid>
     </Grid>

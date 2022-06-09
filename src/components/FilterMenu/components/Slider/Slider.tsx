@@ -3,23 +3,26 @@ import { Stack, Box, Typography } from '@mui/material';
 import Switch from '@mui/material/Switch';
 import Slider from '@mui/material/Slider';
 import { useSliderStyles } from './Slider.styles';
-import { RangeFilters } from 'src/types';
+import { RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
 const filterRangeslider: React.FC<any> = ({
   category,
   handleRange,
   removeFilterRange,
   filterRanges,
+  handleDisabled,
+  disabledRanges,
 }: {
-  category: any;
+  category: { categoryId: DisabledRangesKey; range: string[] };
   handleRange: (id: string, val: number | number[]) => void;
   removeFilterRange: (id: string) => void;
   filterRanges: RangeFilters;
+  handleDisabled: (key: keyof DisabledRanges) => void;
+  disabledRanges: DisabledRanges;
 }) => {
   const { categoryId, range } = category;
   const classes = useSliderStyles();
 
-  const [disabled, setDisabled] = React.useState<boolean>(false);
   const [value, setValue] = React.useState<number[]>([
     Number(range![0]),
     Number(range![range!.length - 1]),
@@ -39,14 +42,10 @@ const filterRangeslider: React.FC<any> = ({
     setValue(newValue as number[]);
   };
 
-  const handleDisabled = () => {
-    setDisabled(!disabled);
-    handleRange(categoryId, value);
-  };
-
   React.useEffect(() => {
-    disabled && removeFilterRange(categoryId);
-  }, [disabled]);
+    !disabledRanges[categoryId] && handleRange(categoryId, value);
+    disabledRanges[categoryId] && removeFilterRange(categoryId);
+  }, [disabledRanges[categoryId]]);
 
   return (
     <Box className={classes.wrapper}>
@@ -59,15 +58,15 @@ const filterRangeslider: React.FC<any> = ({
         min={Number(range![0])}
         max={Number(range![range!.length - 1])}
         step={1}
-        disabled={disabled}
+        disabled={!!disabledRanges[categoryId]}
       />
       <Stack direction="row" justifyContent="flex-end" alignItems="center" mr={'-19px'}>
-        <Typography>{disabled ? 'Off' : 'On'}</Typography>
+        <Typography>{disabledRanges[categoryId] ? 'Off' : 'On'}</Typography>
         <Switch
           className={classes.switch}
-          defaultChecked
+          checked={!!disabledRanges[categoryId]}
           inputProps={{ 'aria-label': 'switch' }}
-          onChange={handleDisabled}
+          onChange={() => handleDisabled(categoryId)}
         />
       </Stack>
     </Box>
