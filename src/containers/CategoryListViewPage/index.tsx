@@ -20,11 +20,13 @@ import type { FilterSidebarProps } from './FilterSidebar';
 import { FilterSidebar } from './FilterSidebar';
 import type { SortListProps } from './SortList';
 import { SortList } from './SortList';
+import { useFilters } from '@/helpers/hooks/useFilters';
 
 export const CategoryListViewPage = () => {
   const classes = useCategoryPageStyles();
-  const [checkedFilters, setCheckedFilters] = useState<any[]>([]);
-  const [filterRanges, setFilterRanges] = useState<RangeFilters>(null);
+  const {checkedFilters, rangeFilters, updateCheckedFilters, updateRangeFilters} = useFilters();
+  // const [checkedFilters, setCheckedFilters] = useState<any[]>([]);
+  // const [filterRanges, setFilterRanges] = useState<RangeFilters>(null);
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: true,
     Year: true,
@@ -55,7 +57,7 @@ export const CategoryListViewPage = () => {
       page,
       sort: sortType,
       filter: checkedFilters,
-      filterRanges: filterRanges,
+      filterRanges: rangeFilters,
       search: search as string | undefined,
     });
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
@@ -65,7 +67,7 @@ export const CategoryListViewPage = () => {
   useEffect(() => {
     loadListAssets(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType, checkedFilters, filterRanges, disabledRanges, search]);
+  }, [sortType, checkedFilters, rangeFilters, disabledRanges, search]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -78,15 +80,15 @@ export const CategoryListViewPage = () => {
       const newcheckedFilters = checkedFilters.filter(
         (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
       );
-      setCheckedFilters(newcheckedFilters);
+      updateCheckedFilters(newcheckedFilters);
       return;
     }
-    setCheckedFilters([...checkedFilters, { filterId, categoryId }]);
+    updateCheckedFilters([...checkedFilters, { filterId, categoryId }]);
   };
 
   const clearAllSelectedFilters = () => {
-    setCheckedFilters([]);
-    setFilterRanges({});
+    updateCheckedFilters([]);
+    updateRangeFilters({});
     setDisabledRanges({ Grade: true, Year: true });
   };
 
@@ -95,14 +97,14 @@ export const CategoryListViewPage = () => {
   };
 
   const handleRange = (id: string, val: any) => {
-    setFilterRanges((filterRanges) => ({
-      ...filterRanges,
+    updateRangeFilters({
+      ...rangeFilters,
       [id]: { min: val[0], max: val[1] },
-    }));
+    });
   };
 
   const removeFilterRange = (id: string) => {
-    filterRanges && delete filterRanges[id];
+    rangeFilters && delete rangeFilters[id];
   };
 
   const filterSidebarProps: FilterSidebarProps = {
@@ -112,7 +114,7 @@ export const CategoryListViewPage = () => {
     handleRange,
     removeFilterRange,
     checkedFilters,
-    filterRanges,
+    filterRanges: rangeFilters,
     disabledRanges,
     handleDisabled,
   };
