@@ -72,3 +72,12 @@ const Login = ({token}) => {
 }
 
 export default Login
+
+export const getServerSideProps = async (req: any, res: any) => {
+const cookies = parseCookies(req)
+    return {
+        props: {
+            token: cookies
+        }
+    }
+}
