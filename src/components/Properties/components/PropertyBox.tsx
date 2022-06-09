@@ -29,5 +29,3 @@ export const PropertyBox = ({ attribute }: { attribute: TraitType }) => {
     </Box>
   );
 };
-
-export default PropertyBox;

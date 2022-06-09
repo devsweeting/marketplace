@@ -1188,7 +1188,7 @@ export const listViewData = {
 const getCurrentYear = new Date().getFullYear();
 
 const generateYears = (min: number, max = getCurrentYear + 1) => {
-  let years = [];
+  const years = [];
   for (let i = min; i <= max; i++) {
     years.push(i.toString());
   }

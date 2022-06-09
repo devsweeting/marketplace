@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Stack, Box, Typography } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import Slider from '@mui/material/Slider';
+import MaterialSlider from '@mui/material/Slider';
 import { useSliderStyles } from './Slider.styles';
-import { RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
+import type { RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
-const filterRangeslider: React.FC<any> = ({
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+export const Slider: React.FC<any> = ({
   category,
   handleRange,
   removeFilterRange,
@@ -32,6 +33,7 @@ const filterRangeslider: React.FC<any> = ({
     if (!filterRanges) {
       setValue([Number(range![0]), Number(range![range!.length - 1])]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterRanges]);
 
   const handleChange = (event: any, newValue: number | number[]) => {
@@ -45,11 +47,12 @@ const filterRangeslider: React.FC<any> = ({
   React.useEffect(() => {
     !disabledRanges[categoryId] && handleRange(categoryId, value);
     disabledRanges[categoryId] && removeFilterRange(categoryId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabledRanges[categoryId]]);
 
   return (
     <Box className={classes.wrapper}>
-      <Slider
+      <MaterialSlider
         getAriaLabel={() => 'Grade'}
         value={value}
         onChange={handleRangeLocally}
@@ -72,5 +75,3 @@ const filterRangeslider: React.FC<any> = ({
     </Box>
   );
 };
-
-export default filterRangeslider;

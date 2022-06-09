@@ -19,7 +19,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { Paper } from '@mui/material';
 
-export default function ShareButton() {
+export const ShareButton = () => {
   const { asPath } = useRouter();
   const URL = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${asPath}`;
   const classes = useShareButtonStyles();
@@ -83,4 +83,4 @@ export default function ShareButton() {
       </Box>
     </ClickAwayListener>
   );
-}
+};

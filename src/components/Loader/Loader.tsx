@@ -1,7 +1,7 @@
 import { CircularProgress, Fade, Grid } from '@mui/material';
 import React from 'react';
 
-const Loadable: React.FC<{
+export const Loader: React.FC<{
   transitionDelay?: boolean;
 }> = ({ transitionDelay = false }) => {
   return (
@@ -20,5 +20,3 @@ const Loadable: React.FC<{
     </Grid>
   );
 };
-
-export default Loadable;

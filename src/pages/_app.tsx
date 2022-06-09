@@ -1,13 +1,15 @@
 import * as React from 'react';
 import Head from 'next/head';
-import { AppProps } from 'next/app';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import { ThemeProvider, Theme } from '@mui/material';
+import type { AppProps } from 'next/app';
+import type { EmotionCache } from '@emotion/react';
+import { CacheProvider } from '@emotion/react';
+import type { Theme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import themeJump from '@/styles/themeJump';
-import themePWCC from '@/styles/themePWCC';
-import createEmotionCache from '@/styles/createEmotionCache';
-import Layout from '@/layout/index';
+import { themeJump } from '@/styles/themeJump';
+import { themePWCC } from '@/styles/themePWCC';
+import { createEmotionCache } from '@/styles/createEmotionCache';
+import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
 
 declare module '@mui/styles/defaultTheme' {

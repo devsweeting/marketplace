@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { AccordionTableItem } from '@/components/Accordion/components/AccordionTableItem';
-import { BlockChainInfoProps } from '@/components/Accordion/components/AccordionTableItem/AccordionTableItem';
-import theme from '@/styles/themeJump';
+import type { BlockChainInfoProps } from '@/components/Accordion/components/AccordionTableItem/AccordionTableItem';
+import { themeJump } from '@/styles/themeJump';
 import { mockTraits } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -19,7 +19,7 @@ const MockAccordionTableItem: React.FC<AccordionTableItemProps> = ({
   isExpanded,
 }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <AccordionTableItem title={title} tableData={tableData} isExpanded={isExpanded} />
     </ThemeProvider>
   );

@@ -11,9 +11,9 @@ import { DescriptionText } from '@/components/DescriptionText';
 import { Gallery } from '@/components/Gallery';
 import { Button } from '@/components/Button';
 import { Carousel } from '@/components/Carousel';
-import { TraitType } from '@/components/Properties/components/PropertyBox';
+import type { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
-import OpenGraph from '@/components/OpenGraph';
+import { OpenGraph } from '@/components/OpenGraph';
 import { Routes } from '@/domain/Routes';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {

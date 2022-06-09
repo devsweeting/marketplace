@@ -2,14 +2,14 @@ import React from 'react';
 import { fireEvent, render, screen, act, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Button } from '@/components/Button/index';
-import theme from '@/styles/themeJump';
+import { themeJump } from '@/styles/themeJump';
 import '@testing-library/jest-dom/extend-expect';
 
 const handleClick = jest.fn();
 const mockVariant = 'outlined';
 const MockButton = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <Button variant={mockVariant} onClick={handleClick}>
         Click me!
       </Button>

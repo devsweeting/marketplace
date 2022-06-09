@@ -1,29 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@mui/styles';
-import { useMediaQuery } from '@mui/material';
-import { Grid, Box, Typography, Divider } from '@mui/material';
+import { useMediaQuery, Grid, Box, Typography, Divider } from '@mui/material';
 import { ListItem } from '@/components/ListItem';
 import { SortBy } from '@/domain/Category';
 import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IFilter, IAsset, IMeta, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
-import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
-import SortList, { SortListProps } from './SortList';
+import type {
+  IFilter,
+  IAsset,
+  IMeta,
+  RangeFilters,
+  DisabledRanges,
+  DisabledRangesKey,
+} from 'src/types';
+import type { FilterSidebarProps } from './FilterSidebar';
+import { FilterSidebar } from './FilterSidebar';
+import type { SortListProps } from './SortList';
+import { SortList } from './SortList';
 
-const CategoryListView = () => {
+export const CategoryListViewPage = () => {
   const classes = useCategoryPageStyles();
   const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
   const [filterRanges, setfilterRanges] = useState<RangeFilters>(null);
-  const [disabledRanges, setDisabledRanges] = React.useState<DisabledRanges>({
+  const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: true,
     Year: true,
   });
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
-  const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
+  const [isSidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -39,7 +47,7 @@ const CategoryListView = () => {
     matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
   }, [matchesDesktop]);
 
-  const loadListAssets = async (page: number = 1) => {
+  const loadListAssets = async (page = 1) => {
     const { meta, items } = await loadListAssetByPage({
       page,
       sort: sortType,
@@ -52,6 +60,7 @@ const CategoryListView = () => {
   };
   useEffect(() => {
     loadListAssets(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType, checkedFilters, filterRanges, disabledRanges]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
@@ -182,5 +191,3 @@ const CategoryListView = () => {
     </Box>
   );
 };
-
-export default CategoryListView;

@@ -2,8 +2,8 @@ import * as React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@mui/styles';
 import createEmotionServer from '@emotion/server/create-instance';
-import theme from '@/styles/themePWCC';
-import createEmotionCache from '@/styles/createEmotionCache';
+import { themePWCC } from '@/styles/themePWCC';
+import { createEmotionCache } from '@/styles/createEmotionCache';
 
 export default class MyDocument extends Document {
   render() {
@@ -11,7 +11,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           {/* PWA primary color */}
-          <meta name="theme-color" content={theme.palette.primary.main} />
+          <meta name="theme-color" content={themePWCC.palette.primary.main} />
           <link rel="shortcut icon" href="/static/favicon.ico" />
           <link
             rel="stylesheet"

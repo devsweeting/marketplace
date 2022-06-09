@@ -1,6 +1,5 @@
 import React from 'react';
-import { Typography } from '@mui/material';
-import { Accordion as MaterialAccordion } from '@mui/material';
+import { Typography, Accordion as MaterialAccordion } from '@mui/material';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -28,5 +27,3 @@ export const AccordionTextItem: React.FC<AccordionTextItemProps> = ({
     </MaterialAccordion>
   );
 };
-
-export default AccordionTextItem;

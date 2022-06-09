@@ -36,4 +36,5 @@ const config: Config.InitialOptions = {
   },
   transformIgnorePatterns: ['/node_modules/', '^.+\\.module\\.(css|sass|scss)$'],
 };
+// eslint-disable-next-line import/no-default-export
 export default config;

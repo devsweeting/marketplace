@@ -1,1 +1,1 @@
-export { default } from './OpenGraph';
+export { OpenGraph } from './OpenGraph';

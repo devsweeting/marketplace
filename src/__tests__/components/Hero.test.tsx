@@ -3,12 +3,12 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { ThemeProvider } from '@mui/material';
 import { Hero } from '@/components/Hero';
-import { HeroProps } from '@/components/Hero/Hero';
-import theme from '@/styles/themeJump';
+import type { HeroProps } from '@/components/Hero/Hero';
+import { themeJump } from '@/styles/themeJump';
 
 const MockHero: React.FC<HeroProps> = ({ imgSrc, imgFit, imgHeight, imgAlt }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <Hero imgSrc={imgSrc} imgFit={imgFit} imgHeight={imgHeight} imgAlt={imgAlt} />
     </ThemeProvider>
   );

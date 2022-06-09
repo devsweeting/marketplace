@@ -1,5 +1,4 @@
-import { responseSymbol } from 'next/dist/server/web/spec-compliant/fetch-event';
-import { IFilter, RangeFilters } from 'src/types';
+import type { IFilter, RangeFilters } from 'src/types';
 
 interface ListAssetParams {
   page: number;

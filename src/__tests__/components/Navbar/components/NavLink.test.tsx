@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { NavLink } from '@/components/Navbar/components/NavLink';
-import theme from '@/styles/themeJump';
+import { themeJump } from '@/styles/themeJump';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('next/router', () => ({
@@ -19,7 +19,7 @@ const mockChildren = 'mockedChildren';
 
 const MockNavLink = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <NavLink href={mockHref}>{mockChildren}</NavLink>
     </ThemeProvider>
   );

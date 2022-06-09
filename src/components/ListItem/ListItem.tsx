@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@mui/material';
 import { useListItemStyles } from './ListItem.styles';
 import { Card } from './components';
-import { IAsset } from 'src/types';
+import type { IAsset } from 'src/types';
 
 interface ListItemProps {
   listItemData: Array<IAsset>;

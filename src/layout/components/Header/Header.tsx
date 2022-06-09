@@ -7,7 +7,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import { Navbar } from '@/components/Navbar';
 import { SearchBox } from '@/components/SearchBox';
-import { mockNavLinks } from '@/__mocks__/mockApiData';
 import { SkinContext } from '@/styles/skin-context';
 import { useHeaderStyles } from './Header.styles';
 import { Routes } from '@/domain/Routes';
