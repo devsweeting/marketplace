@@ -3,15 +3,16 @@ import { useRouter } from "next/router"
 import OpenGraph from "@/components/OpenGraph"
 import { Container} from "@mui/material"
 import { ParsedUrlQuery } from 'querystring';
+import { parseCookies } from '@/helpers/parseCookies';
 
-const Login = () => {
+const Login = ({token}) => {
     const { query } = useRouter()
     const [response, setReponse] = React.useState<number | null>(null)
+    const [loggedIn, setLoggedIn] = React.useState<boolean>(false)
     const fetchTokenStatus = async (query: ParsedUrlQuery) => {
         if(query.token) {
-            const { token } = query
             const authBody = {
-                token: token,
+                token: query.token,
                 metadata: {
                     ipAddress: '',
                     browserUserAgent: '',
@@ -22,7 +23,7 @@ const Login = () => {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
+                  'Authorization': `Bearer ${query.ßtoken}`
                 },
                 body: JSON.stringify(authBody)
         })
@@ -31,6 +32,23 @@ const Login = () => {
         }
         return
     }
+
+    const sendLoginToken = async () => {
+       const res = await fetch("/api/login", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                token: token
+
+        })
+    }
+    )
+        const data = await res
+        return data
+}
     React.useEffect(() => {
         fetchTokenStatus(query)
         .then((data) => {
@@ -55,3 +73,12 @@ const Login = () => {
 }
 
 export default Login
+
+export const getServerSideProps = async (req: any, res: any) => {
+const cookies = parseCookies(req)
+    return {
+        props: {
+            token: cookies
+        }
+    }
+}
