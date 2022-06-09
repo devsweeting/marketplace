@@ -6,6 +6,7 @@ interface ListAssetParams {
   sort: string | undefined;
   filter?: Array<IFilter>;
   filterRanges: null | RangeFilters;
+  search?: string | undefined;
 }
 export const loadListAssetByPage = async ({
   page,
@@ -13,6 +14,7 @@ export const loadListAssetByPage = async ({
   sort,
   filter,
   filterRanges,
+  search,
 }: ListAssetParams) => {
   let query = `page=${page}&limit=${limit}`;
   if (sort) {
@@ -23,11 +25,13 @@ export const loadListAssetByPage = async ({
       query += `&attr_eq[${item.categoryId}]=${item.filterId}`;
     });
   }
-
   if (filterRanges) {
     Object.entries(filterRanges).forEach(([key, value]) => {
       query += `&attr_gte[${key}]=${value.min}&attr_lte[${key}]=${value.max}`;
     });
+  }
+  if (search) {
+    query += `&search=${search}`;
   }
 
   try {
