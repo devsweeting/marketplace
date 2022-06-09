@@ -14,6 +14,14 @@ const getStringFromQuery = (query: string | string[] | undefined): string | unde
   return query;
 };
 
+const getArrayFromQuery = (query: string | string[] | undefined): string[] => {
+    if (Array.isArray(query)) {
+        return query;
+    }
+    
+    return query ? [query] : [];
+} 
+
 export const useFilters = () => {
   const router = useRouter();
   const { query } = router;
@@ -24,10 +32,12 @@ export const useFilters = () => {
   for (const [key, value] of Object.entries(query)) {
     if (key.startsWith('attr_eq')) {
       const strippedKey = getAttrFromKey(key);
-      const parsedValue = getStringFromQuery(value);
+      const parsedValue = getArrayFromQuery(value);
 
-      if (strippedKey && parsedValue) {
-        checkedFilters.push({ categoryId: strippedKey, filterId: parsedValue });
+      if (strippedKey) {
+        checkedFilters.push(
+            ...parsedValue.map((item: string) => ({ categoryId: strippedKey, filterId: item })),
+        );
       }
     }
 
@@ -59,17 +69,27 @@ export const useFilters = () => {
 
   const updateCheckedFilters = (newCheckedFilters: IFilter[]) => {
     const updatedQuery = { ...query };
-
+console.log(updatedQuery);
     for (const key of Object.keys(updatedQuery)) {
       if (key.startsWith('attr_eq')) {
         delete updatedQuery[key];
       }
     }
-
+console.log(updatedQuery);
+console.log(newCheckedFilters);
     for (const filter of newCheckedFilters) {
-      updatedQuery[`attr_eq[${filter.categoryId}]`] = filter.filterId;
-    }
+        const key = `attr_eq[${filter.categoryId}]`;
 
+        const currentFilters = updatedQuery[key];
+        const filters = [filter.filterId];
+
+        if(Array.isArray(currentFilters)) {
+            filters.push(...currentFilters);
+        }
+
+        updatedQuery[key] = filters;
+    }
+console.log(updatedQuery);
     router.replace({
       pathname: router.pathname,
       query: updatedQuery,

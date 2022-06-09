@@ -87,7 +87,7 @@ export const CategoryListViewPage = () => {
 
   const clearAllSelectedFilters = () => {
     updateCheckedFilters([]);
-    updateRangeFilters({});
+    // updateRangeFilters({});
     setDisabledRanges({ Grade: true, Year: true });
   };
 
