@@ -1,100 +1,113 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { IFilter, RangeFilters } from 'src/types';
+import type { IFilter, RangeFilters } from 'src/types';
 
 const getAttrFromKey = (key: string): string | undefined => {
-    return key.split('[')?.[1]?.replace(']', '');
-}
+  return key.split('[')?.[1]?.replace(']', '');
+};
 
 const getStringFromQuery = (query: string | string[] | undefined): string | undefined => {
-    if (Array.isArray(query)) {
-        return query[0];
-    }
+  if (Array.isArray(query)) {
+    return query[0];
+  }
 
-    return query;
-}
-
+  return query;
+};
 
 export const useFilters = () => {
-    const router = useRouter();
-    const { query } = router;
+  const router = useRouter();
+  const { query } = router;
 
-    let checkedFilters: IFilter[] = [];
-    let rangeFiltersObj: RangeFilters = {};
+  const checkedFilters: IFilter[] = [];
+  const rangeFiltersObj: RangeFilters = {};
 
-    for (const [key, value] of Object.entries(query)) {
-        if (key.startsWith('attr_eq')) {
-            const strippedKey = getAttrFromKey(key);
-            const parsedValue = getStringFromQuery(value);
+  for (const [key, value] of Object.entries(query)) {
+    if (key.startsWith('attr_eq')) {
+      const strippedKey = getAttrFromKey(key);
+      const parsedValue = getStringFromQuery(value);
 
-            if (strippedKey && parsedValue) {
-                checkedFilters.push({ categoryId: strippedKey, filterId: parsedValue });
-            }
-        }
-
-        if (key.startsWith('attr_gte')) {
-            const strippedKey = getAttrFromKey(key);
-            const minValue = getStringFromQuery(value);
-            const maxValue = getStringFromQuery(query[`attr_lte[${strippedKey}]`]);
-
-            if (strippedKey && minValue && maxValue) {
-               rangeFiltersObj[strippedKey] = { min: minValue, max: maxValue };
-            }
-        }
+      if (strippedKey && parsedValue) {
+        checkedFilters.push({ categoryId: strippedKey, filterId: parsedValue });
+      }
     }
 
-    const checkedFiltersMemo = useMemo(() => checkedFilters, [checkedFilters.map(item => `${item.categoryId}-${item.filterId}`).join('')]);
-    const rangeFiltersMemo = useMemo(() => rangeFiltersObj, [Object.entries(rangeFiltersObj).map(([key, value]) => `${key}-${value.min}-${value.max}`).join('')]);
+    if (key.startsWith('attr_gte')) {
+      const strippedKey = getAttrFromKey(key);
+      const minValue = getStringFromQuery(value);
+      const maxValue = getStringFromQuery(query[`attr_lte[${strippedKey}]`]);
 
-    let rangeFilters = Object.keys(rangeFiltersMemo ?? {}).length > 0 ? rangeFiltersMemo : null;
+      if (strippedKey && minValue && maxValue) {
+        rangeFiltersObj[strippedKey] = { min: minValue, max: maxValue };
+      }
+    }
+  }
 
-    const updateCheckedFilters = (newCheckedFilters: IFilter[]) => {
-        const updatedQuery = { ...query };
+  const checkedFiltersMemo = useMemo(
+    () => checkedFilters,
+    [checkedFilters.map((item) => `${item.categoryId}-${item.filterId}`).join('')],
+  );
+  const rangeFiltersMemo = useMemo(
+    () => rangeFiltersObj,
+    [
+      Object.entries(rangeFiltersObj)
+        .map(([key, value]) => `${key}-${value.min}-${value.max}`)
+        .join(''),
+    ],
+  );
 
-        for (const key of Object.keys(updatedQuery)) {
-            if (key.startsWith('attr_eq')) {
-                delete updatedQuery[key];
-            }
-        }
+  const rangeFilters = Object.keys(rangeFiltersMemo ?? {}).length > 0 ? rangeFiltersMemo : null;
 
-        for (const filter of newCheckedFilters) {
-            updatedQuery[`attr_eq[${filter.categoryId}]`] = filter.filterId;
-        }
+  const updateCheckedFilters = (newCheckedFilters: IFilter[]) => {
+    const updatedQuery = { ...query };
 
-        router.replace({
-            pathname: router.pathname,
-            query: updatedQuery
-        })
+    for (const key of Object.keys(updatedQuery)) {
+      if (key.startsWith('attr_eq')) {
+        delete updatedQuery[key];
+      }
     }
 
-    const updateRangeFilters = (newRangeFilters: RangeFilters) => {
-        const updatedQuery = { ...query };
-
-        for (const key of Object.keys(updatedQuery)) {
-            if (key.startsWith('attr_gte')) {
-                delete updatedQuery[key];
-            }
-
-            if (key.startsWith('attr_lte')) {
-                delete updatedQuery[key];
-            }
-        }
-        
-        if (newRangeFilters === null) {
-            return;
-        }
-
-        for (const [key, range] of Object.entries(newRangeFilters)) {
-            updatedQuery[`attr_gte[${key}]`] = range.min;
-            updatedQuery[`attr_lte[${key}]`] = range.max; 
-        }
-
-        router.replace({
-            pathname: router.pathname,
-            query: updatedQuery
-        })
+    for (const filter of newCheckedFilters) {
+      updatedQuery[`attr_eq[${filter.categoryId}]`] = filter.filterId;
     }
 
+    router.replace({
+      pathname: router.pathname,
+      query: updatedQuery,
+    });
+  };
 
-    return { checkedFilters: checkedFiltersMemo, rangeFilters, updateCheckedFilters, updateRangeFilters };
-}
+  const updateRangeFilters = (newRangeFilters: RangeFilters) => {
+    const updatedQuery = { ...query };
+
+    for (const key of Object.keys(updatedQuery)) {
+      if (key.startsWith('attr_gte')) {
+        delete updatedQuery[key];
+      }
+
+      if (key.startsWith('attr_lte')) {
+        delete updatedQuery[key];
+      }
+    }
+
+    if (newRangeFilters === null) {
+      return;
+    }
+
+    for (const [key, range] of Object.entries(newRangeFilters)) {
+      updatedQuery[`attr_gte[${key}]`] = range.min;
+      updatedQuery[`attr_lte[${key}]`] = range.max;
+    }
+
+    router.replace({
+      pathname: router.pathname,
+      query: updatedQuery,
+    });
+  };
+
+  return {
+    checkedFilters: checkedFiltersMemo,
+    rangeFilters,
+    updateCheckedFilters,
+    updateRangeFilters,
+  };
+};

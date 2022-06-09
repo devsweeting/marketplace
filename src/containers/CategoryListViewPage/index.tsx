@@ -12,7 +12,6 @@ import type {
   IFilter,
   IAsset,
   IMeta,
-  RangeFilters,
   DisabledRanges,
   DisabledRangesKey,
 } from 'src/types';
@@ -24,7 +23,7 @@ import { useFilters } from '@/helpers/hooks/useFilters';
 
 export const CategoryListViewPage = () => {
   const classes = useCategoryPageStyles();
-  const {checkedFilters, rangeFilters, updateCheckedFilters, updateRangeFilters} = useFilters();
+  const { checkedFilters, rangeFilters, updateCheckedFilters, updateRangeFilters } = useFilters();
   // const [checkedFilters, setCheckedFilters] = useState<any[]>([]);
   // const [filterRanges, setFilterRanges] = useState<RangeFilters>(null);
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
