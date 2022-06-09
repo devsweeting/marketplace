@@ -86,8 +86,13 @@ export const useFilters = () => {
 
         for (const [key, range] of Object.entries(newRangeFilters)) {
             updatedQuery[`attr_gte[${key}]`] = range.min;
-            updatedQuery[`attr_lte[${key}]`] = range.max;
+            updatedQuery[`attr_lte[${key}]`] = range.max; 
         }
+
+        router.replace({
+            pathname: router.pathname,
+            query: updatedQuery
+        })
     }
 
 
