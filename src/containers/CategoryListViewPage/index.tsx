@@ -36,7 +36,7 @@ export const CategoryListViewPage = () => {
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const searchQuery = useRouter().query.q;
-  const search = searchQuery ? searchQuery.toString().replace(/\ /g, '+') : '';
+  const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -67,7 +67,6 @@ export const CategoryListViewPage = () => {
     loadListAssets(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType, checkedFilters, filterRanges, disabledRanges, search]);
-
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -106,7 +105,6 @@ export const CategoryListViewPage = () => {
   const removeFilterRange = (id: string) => {
     filterRanges && delete filterRanges[id];
   };
-
 
   const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,

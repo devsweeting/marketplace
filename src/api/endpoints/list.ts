@@ -1,7 +1,5 @@
 import type { IFilter, RangeFilters } from 'src/types';
 
-
-
 interface ListAssetParams {
   page: number;
   limit?: number;
@@ -32,7 +30,7 @@ export const loadListAssetByPage = async ({
       query += `&attr_gte[${key}]=${value.min}&attr_lte[${key}]=${value.max}`;
     });
   }
-  if(search){
+  if (search) {
     query += `&search=${search}`;
   }
 

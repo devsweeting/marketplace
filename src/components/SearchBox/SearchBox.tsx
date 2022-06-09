@@ -27,45 +27,49 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   const handleKeyPress = (event: any) => {
     if (event.key === 'Enter') {
       handleSubmit();
-     }
-  }
+    }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-   handleKeyPress(event);
+    handleKeyPress(event);
   };
   const handleSubmit = () => {
-   setValue(value.trim());
-  }
+    setValue(value.trim());
+  };
 
   return (
-    <form action='/explore' method="get" onSubmit={handleSubmit} autoComplete="off" id='searchBar'>
-    <FormControl variant="outlined" className={classes.wrapper}>
-      <OutlinedInput
-      role={'textbox'}
-      aria-label={'search'}
-        sx={{
-          borderRadius: borderRadius && skin.header.searchIconBorderRadius,
-          color: reverseTextColor && skin.header.searchTextColor,
-        }}
-        name="q"
-        value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyPress}
-        placeholder={placeholder}
-        endAdornment={
-          <InputAdornment position="end">
-           <IconButton type='submit' role={'button'}>
-             <span style={{
-             height: 0,
-              width: 0,
-             }}>Search Button</span>
-           <SearchIcon aria-label="search icon" sx={{ color: iconColor, opacity: '40%' }} />
-            </IconButton>
-          </InputAdornment>
-        }
-      />
-    </FormControl>
+    <form action="/explore" method="get" onSubmit={handleSubmit} autoComplete="off" id="searchBar">
+      <FormControl variant="outlined" className={classes.wrapper}>
+        <OutlinedInput
+          role={'textbox'}
+          aria-label={'search'}
+          sx={{
+            borderRadius: borderRadius && skin.header.searchIconBorderRadius,
+            color: reverseTextColor && skin.header.searchTextColor,
+          }}
+          name="q"
+          value={value}
+          onChange={handleChange}
+          onKeyDown={handleKeyPress}
+          placeholder={placeholder}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton type="submit" role={'button'}>
+                <span
+                  style={{
+                    height: 0,
+                    width: 0,
+                  }}
+                >
+                  Search Button
+                </span>
+                <SearchIcon aria-label="search icon" sx={{ color: iconColor, opacity: '40%' }} />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
     </form>
   );
 };
