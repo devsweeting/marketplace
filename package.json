@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
+    "lint:fix": "yarn lint --fix",
     "test": "jest --watch"
   },
   "dependencies": {
