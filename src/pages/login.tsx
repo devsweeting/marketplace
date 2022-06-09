@@ -23,7 +23,7 @@ const Login = ({token}) => {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${query.ßtoken}`
+                  'Authorization': `Bearer ${query.token}`
                 },
                 body: JSON.stringify(authBody)
         })
@@ -33,22 +33,21 @@ const Login = ({token}) => {
         return
     }
 
-    const sendLoginToken = async () => {
-       const res = await fetch("/api/login", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-                token: token
+//     const sendLoginToken = async () => {
+//        const res = await fetch("/api/authenticate", {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 token: token
 
-        })
-    }
-    )
-        const data = await res
-        return data
-}
+//         })
+//     }
+//     )
+//         const data = await res
+//         return data
+// }
     React.useEffect(() => {
         fetchTokenStatus(query)
         .then((data) => {
@@ -74,11 +73,11 @@ const Login = ({token}) => {
 
 export default Login
 
-export const getServerSideProps = async (req: any, res: any) => {
-const cookies = parseCookies(req)
-    return {
-        props: {
-            token: cookies
-        }
-    }
-}
+// export const getServerSideProps = async (req: any, res: any) => {
+// const cookies = parseCookies(req)
+//     return {
+//         props: {
+//             token: cookies
+//         }
+//     }
+// }
