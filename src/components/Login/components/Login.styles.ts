@@ -1,13 +1,10 @@
 import { makeStyles } from '@mui/styles';
-import { error } from 'console';
-import { format } from 'path';
 
-export const useLoginStyles = makeStyles((theme) => ({
+export const useLoginStyles = makeStyles(() => ({
   wrapper: {
     margin: '10px 0',
     height: '43px',
     width: '80%',
-
   },
   button: {
     marginTop: '10px',
@@ -23,14 +20,15 @@ export const useLoginStyles = makeStyles((theme) => ({
     color: '#666',
   },
   modal: {
-    position: 'absolute' as 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 600,
     bgcolor: 'background.paper',
     borderRadius: 2,
-    boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+    boxShadow:
+      '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
     p: 4,
     outline: 'none !important',
   },
@@ -41,21 +39,22 @@ export const useLoginStyles = makeStyles((theme) => ({
     width: '1px',
     height: '1px',
     overflow: 'hidden',
-  }
+  },
 }));
 
 export const modal = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 600,
   bgcolor: 'background.paper',
   borderRadius: 2,
-  boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
+  boxShadow:
+    '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
   p: 4,
 };
 
 export const title = {
-  color: 'black'
+  color: 'black',
 };

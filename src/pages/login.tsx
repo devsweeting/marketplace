@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { useRouter } from "next/router"
-import OpenGraph from "@/components/OpenGraph"
-import { Container} from "@mui/material"
-import { ParsedUrlQuery } from 'querystring';
+import { useRouter } from 'next/router';
+import { OpenGraph } from '@/components/OpenGraph';
+import { Container } from '@mui/material';
+import type { ParsedUrlQuery } from 'querystring';
 import { parseCookies } from '@/helpers/parseCookies';
 
 const Login = ({token}) => {
@@ -32,6 +32,8 @@ const Login = ({token}) => {
         }
         return
     }
+    return;
+  };
 
 //     const sendLoginToken = async () => {
 //        const res = await fetch("/api/authenticate", {
@@ -71,13 +73,13 @@ const Login = ({token}) => {
     )
 }
 
-export default Login
+export default Login;
 
-export const getServerSideProps = async (req: any, res: any) => {
-const cookies = parseCookies(req)
-    return {
-        props: {
-            token: cookies
-        }
-    }
-}
+export const getServerSideProps = async (req: any) => {
+  const cookies = parseCookies(req);
+  return {
+    props: {
+      token: cookies,
+    },
+  };
+};

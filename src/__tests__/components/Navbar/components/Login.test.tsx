@@ -2,26 +2,24 @@ import React from 'react';
 import { render, screen, waitFor, queries } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import 'jest-axe/extend-expect'
-import { axe } from 'jest-axe'
+import 'jest-axe/extend-expect';
+import { axe } from 'jest-axe';
 import { ThemeProvider } from '@mui/material';
 import { Login } from '@/components/Login/components';
-import theme from '@/styles/themeJump';
+import { themeJump } from '@/styles/themeJump';
 
 const MockLogin = () => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <Login />
     </ThemeProvider>
   );
-}
-
-
+};
 
 async function openModal() {
   render(<MockLogin />);
   await user.click(screen.getByText('Login'));
-  return await waitFor(() => screen.findByRole("presentation"));
+  return await waitFor(() => screen.findByRole('presentation'));
 }
 
 test('Login button exists', () => {
@@ -32,7 +30,7 @@ test('Login button exists', () => {
 test('Login button opens modal on click', async () => {
   const modal = await openModal();
   expect(modal).toBeTruthy();
-})
+});
 
 test('Modal should be contain a valid form, input, and button', async () => {
   const modal = await openModal();
@@ -52,15 +50,14 @@ test('Modal should be contain a valid form, input, and button', async () => {
   expect(button).toBeTruthy();
   expect(formViolations).toHaveNoViolations();
   expect(alert).toBeTruthy();
-
-})
+});
 
 test('Input should be able to be filled', async () => {
   await openModal();
   const input = screen.getByRole('textbox', { name: /email/i });
   await user.type(input, 'test@test.com');
   expect(input).toHaveValue('test@test.com');
-})
+});
 
 test('Input should not allow invalid fields', async () => {
   await openModal();
@@ -71,16 +68,19 @@ test('Input should not allow invalid fields', async () => {
   await user.click(button);
   expect(input).toHaveValue('test@test');
   expect(alert).toHaveTextContent(/please enter a valid email/i);
-})
+});
 
 test('User should be able to submit a valid email', async () => {
   await openModal();
   const originalFetch = global.fetch;
-  global.fetch = jest.fn(() => Promise.resolve({
-    json: () => Promise.resolve({
-      status: 200,
-    })
-  })) as jest.Mock;
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () =>
+        Promise.resolve({
+          status: 200,
+        }),
+    }),
+  ) as jest.Mock;
   const input = screen.getByRole('textbox', { name: /email/i });
   const button = screen.getByRole('button', { name: /login/i });
   const alert = screen.getByRole('alert');
@@ -90,9 +90,4 @@ test('User should be able to submit a valid email', async () => {
   expect(alert).toHaveTextContent(/Check your email for a link to sign in/i);
   expect(button).toBeDisabled();
   global.fetch = originalFetch;
-})
-
-
-
-
-
+});
