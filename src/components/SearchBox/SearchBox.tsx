@@ -7,6 +7,7 @@ import { IconButton } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useSearchboxStyles } from './Searchbox.styles';
 
+
 interface SearchBoxProps {
   placeholder?: string;
   iconColor?: string;
@@ -24,8 +25,15 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   const [value, setValue] = useState('');
   const { skin } = useContext(SkinContext);
 
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+     }
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+   handleKeyPress(event);
   };
   const handleSubmit = () => {
    setValue(value.trim());
@@ -46,6 +54,7 @@ useEffect(() => {
         name="q"
         value={value}
         onChange={handleChange}
+        onKeyDown={handleKeyPress}
         placeholder={placeholder}
         endAdornment={
           <InputAdornment position="end">
