@@ -1083,11 +1083,6 @@
   resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.4.1.tgz#bfd02c1f2224567676c1545199f87c3a861d878d"
   integrity sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==
 
-"@types/cookie@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.5.1.tgz#b29aa1f91a59f35e29ff8f7cb24faf1a3a750554"
-  integrity sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==
-
 "@types/d3-color@^2":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/d3-color/-/d3-color-2.0.3.tgz#8bc4589073c80e33d126345542f588056511fe82"
@@ -1190,13 +1185,6 @@
   version "16.11.39"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-16.11.39.tgz#07223cd2bc332ad9d92135e3a522eebdee3b060e"
   integrity sha512-K0MsdV42vPwm9L6UwhIxMAOmcvH/1OoVkZyCgEtVu4Wx7sElGloy/W7kMBNe/oJ7V/jW9BVt1F6RahH6e7tPXw==
-
-"@types/nookies@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@types/nookies/-/nookies-2.0.3.tgz#2173e8977a9163defc37fdcc3140a834f21373d1"
-  integrity sha512-+PO/CKwVx7gDG5Pjr+UU/hL6/vFm1ppgW8cilV4AreLEpjbz0wiFvZ5Nld1VIRTr/RiB/KFmiyOzr8GboJfpqg==
-  dependencies:
-    nookies "*"
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -4003,7 +3991,7 @@ node-releases@^2.0.2:
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.3.tgz#225ee7488e4a5e636da8da52854844f9d716ca96"
   integrity sha512-maHFz6OLqYxz+VQyCAtA3PTX4UP/53pa05fyDNc9CwjvJ0yEh6+xBwKsgCxMNhS8taUKBFYxfuiaD9U/55iFaw==
 
-nookies@*, nookies@^2.5.2:
+nookies@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/nookies/-/nookies-2.5.2.tgz#cc55547efa982d013a21475bd0db0c02c1b35b27"
   integrity sha512-x0TRSaosAEonNKyCrShoUaJ5rrT5KHRNZ5DwPCuizjgrnkpE5DRf3VL7AyyQin4htict92X1EQ7ejDbaHDVdYA==
