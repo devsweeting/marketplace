@@ -9,6 +9,7 @@ import { TOKEN_COOKIE } from '@/helpers/constants';
 import { loginWithToken } from '@/api/endpoints/login';
 import { getUserFromJwt, getUserFromRequest } from '@/helpers/getUserFrom';
 import { Button } from '@/components/Button';
+import { removeUndefinedProps } from '@/helpers/removeUndefinedProps';
 
 const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ user }) => {
   const classes = useLoginPageStyles();
@@ -55,22 +56,24 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
 
 export default Login;
 
-export const getServerSideProps = async ({ req, res, query }: GetServerSidePropsContext) => {
-  const jwt = await loginWithToken({ req, token: query.token });
+export const getServerSideProps = removeUndefinedProps(
+  async ({ req, res, query }: GetServerSidePropsContext) => {
+    const jwt = await loginWithToken({ req, token: query.token });
 
-  if (!jwt) {
-    res.statusCode = 400;
+    if (!jwt) {
+      res.statusCode = 400;
+      return {
+        props: {
+          // In case the user refreshes this page after successful login
+          user: getUserFromRequest(req),
+        },
+      };
+    }
+
+    setCookies(TOKEN_COOKIE, jwt, { req, res, httpOnly: true, maxAge: 60 * 60 * 24 * 365 });
+
     return {
-      props: {
-        // In case the user refreshes this page after successful login
-        user: getUserFromRequest(req) ?? null,
-      },
+      props: { user: getUserFromJwt(jwt) },
     };
-  }
-
-  setCookies(TOKEN_COOKIE, jwt, { req, res, httpOnly: true, maxAge: 60 * 60 * 24 * 365 });
-
-  return {
-    props: { user: getUserFromJwt(jwt) ?? null },
-  };
-};
+  },
+);
