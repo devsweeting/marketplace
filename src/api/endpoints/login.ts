@@ -3,7 +3,7 @@ import { getStringFromQuery } from '@/helpers/getStringFromQuery';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
 
-export const login = async ({
+export const loginWithToken = async ({
   req,
   token,
 }: {
