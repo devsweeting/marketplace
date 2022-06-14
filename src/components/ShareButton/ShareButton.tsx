@@ -21,7 +21,6 @@ import { Paper } from '@mui/material';
 
 export const ShareButton = () => {
   const { asPath } = useRouter();
-  console.log(asPath);
   const URL = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${asPath}`;
   const classes = useShareButtonStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

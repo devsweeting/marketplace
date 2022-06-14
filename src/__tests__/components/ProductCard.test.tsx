@@ -17,7 +17,7 @@ const MockProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData })
     <ThemeProvider theme={themeJump}>
       <ProductCard cardData={cardData} />
     </ThemeProvider>,
-    { asPath: '/item/sint-et-culpa-fugiat' },
+    { asPath: '/item/' },
   );
 };
 

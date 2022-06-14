@@ -22,7 +22,7 @@ export const mockProductData = {
   },
 };
 
-export const mockProducImages = [
+export const mockProductImages = [
   '/images/nftDetail/gallery/product1b.svg',
   '/images/nftDetail/gallery/product1a.svg',
   '/images/nftDetail/gallery/product1b.svg',

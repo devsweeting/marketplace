@@ -45,6 +45,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
                   <img
                     className={classes.thumbnail}
                     src={image.file}
+                    name={'product-thumbnail'}
                     alt={image.title}
                     width={80}
                     height={114}
@@ -64,7 +65,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
             <img
               className={classes.image}
               src={mainImage}
-              alt={' main asset image'}
+              alt={'main asset image'}
               width={337}
               height={568}
             />
