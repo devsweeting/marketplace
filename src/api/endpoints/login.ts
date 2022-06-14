@@ -25,8 +25,8 @@ export const loginWithToken = async ({
       token: parsedToken,
       metadata: {
         ipAddress: getIpAddress(req),
-        browserUserAgent: parseLocale(req),
-        localeInformation: req.headers['user-agent'],
+        browserUserAgent: req.headers['user-agent'],
+        localeInformation: parseLocale(req),
       },
     }),
   });

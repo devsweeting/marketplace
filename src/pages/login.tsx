@@ -1,12 +1,17 @@
 import type { GetServerSidePropsContext, InferGetServerSidePropsType, NextPage } from 'next';
 import { OpenGraph } from '@/components/OpenGraph';
-import { Container } from '@mui/material';
+import { Container, Box, Typography } from '@mui/material';
+import classNames from 'classnames';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { setCookies } from 'cookies-next';
 import { TOKEN_COOKIE } from '@/helpers/constants';
 import { loginWithToken } from '@/api/endpoints/login';
 import { getUserFromJwt, getUserFromRequest } from '@/helpers/getUserFrom';
+import { Button } from '@/components/Button';
 
 const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ user }) => {
+  const classes = useLoginPageStyles();
   return (
     <>
       <OpenGraph title={'Login'} description={'Login page description'} />
@@ -20,26 +25,29 @@ const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = 
         }}
         maxWidth="xl"
       >
-        <div
-          style={{
-            display: 'flex',
-            flexFlow: 'column',
-            borderRadius: '4px',
-            boxShadow: ' 0 3px 10px rgb(0 0 0 / 0.2)',
-            height: '25%',
-            width: '25%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <div>
-            {user && (
-              <>
-                <p>You are logged in</p>
-              </>
-            )}
-          </div>
-        </div>
+        <Box className={classNames(classes.loginSuccessBox)}>
+          {user && (
+            <>
+              <Typography variant="h2" className={classNames(classes.loginSuccessText)}>
+                Logged in successfully
+              </Typography>
+              <Button href="/explore" className={classNames(classes.loginSuccessButton)}>
+                <Typography variant="h3">Go Explore</Typography>
+                <StorefrontIcon />
+              </Button>
+            </>
+          )}
+          {!user && (
+            <>
+              <Typography variant="h2" className={classNames(classes.loginFailText)}>
+                Invalid Token
+              </Typography>
+              <Typography variant="subtitle2" className={classNames(classes.loginFailSubtext)}>
+                Please Try Again. If you continue to have issues, please contact us
+              </Typography>
+            </>
+          )}
+        </Box>
       </Container>
     </>
   );
@@ -55,7 +63,7 @@ export const getServerSideProps = async ({ req, res, query }: GetServerSideProps
     return {
       props: {
         // In case the user refreshes this page after successful login
-        user: getUserFromRequest(req),
+        user: getUserFromRequest(req) ?? null,
       },
     };
   }
@@ -63,6 +71,6 @@ export const getServerSideProps = async ({ req, res, query }: GetServerSideProps
   setCookies(TOKEN_COOKIE, jwt, { req, res, httpOnly: true, maxAge: 60 * 60 * 24 * 365 });
 
   return {
-    props: { user: getUserFromJwt(jwt) },
+    props: { user: getUserFromJwt(jwt) ?? null },
   };
 };
