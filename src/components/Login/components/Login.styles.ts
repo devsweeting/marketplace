@@ -25,6 +25,7 @@ export const useLoginStyles = makeStyles(() => ({
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 600,
+    height: 180,
     bgcolor: 'background.paper',
     borderRadius: 2,
     boxShadow:
