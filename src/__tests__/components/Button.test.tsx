@@ -25,7 +25,14 @@ describe('Button', () => {
     expect(buttonElement).toHaveClass('MuiButtonBase-root');
     expect(screen.getByText('Click me!')).toBeTruthy();
 
+<<<<<<< HEAD
     await user.click(buttonElement);
     await waitFor(async () => await expect(handleClick).toHaveBeenCalledTimes(1));
+=======
+    await act(async () => {
+      await fireEvent.click(buttonElement);
+      await waitFor(() => expect(handleClick).toHaveBeenCalledTimes(1));
+    });
+>>>>>>> ebe6a48 (updated button tests to be async)
   });
 });
