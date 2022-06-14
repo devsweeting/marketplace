@@ -16,7 +16,11 @@ export const getUserFromRequest = (req: Request): IUser | undefined => {
     return;
   }
 
-  const jwt = jwtDecode<{ subId: string }>(cookie);
+  return getUserFromJwt(cookie);
+};
 
-  return { id: jwt.subId };
+export const getUserFromJwt = (jwt: string): IUser | undefined => {
+  const parsedJwt = jwtDecode<{ subId: string }>(jwt);
+
+  return { id: parsedJwt.subId };
 };
