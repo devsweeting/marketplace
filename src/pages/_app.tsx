@@ -11,6 +11,7 @@ import { themePWCC } from '@/styles/themePWCC';
 import { createEmotionCache } from '@/styles/createEmotionCache';
 import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
+import { UserProvider } from '@/helpers/UserContext';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -40,10 +41,12 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={choosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
-          <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <UserProvider>
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </UserProvider>
         </SkinContext.Provider>
       </ThemeProvider>
     </CacheProvider>
