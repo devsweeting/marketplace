@@ -4,6 +4,7 @@ import HomePage from '../pages';
 describe('HomePage', () => {
   it('renders page', () => {
     render(<HomePage />);
-    expect(screen.queryByText(/jump/i)).toBeVisible();
+    expect(screen.getByText(/nft detail view/i)).toBeInTheDocument();
+    expect(screen.getByText(/list view/i)).toBeInTheDocument();
   });
 });

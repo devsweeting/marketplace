@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/default
 import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -6,9 +7,9 @@ import { APP_TITLE, APP_DESCRIPTION, APP_IMAGE, APP_IMAGE_ALT } from './config';
 type OpenGraphType = Record<string, string>;
 
 export const OpenGraph: React.FC<OpenGraphType> = ({ title, description, image, image_alt }) => {
-  const { asPath } = useRouter();
+  const asPath = useRouter();
 
-  const page_url = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${asPath}`;
+  const page_url = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${asPath ? asPath : ''}`;
   const page_title = title || APP_TITLE;
   const page_description = description || APP_DESCRIPTION;
   const page_image = image || `${process.env.NEXT_PUBLIC_FRONTEND_URL}${APP_IMAGE}`;

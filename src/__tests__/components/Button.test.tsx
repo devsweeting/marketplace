@@ -22,12 +22,12 @@ describe('Button', () => {
     render(<MockButton />);
 
     const buttonElement = screen.getByRole('button');
-    expect(buttonElement).toHaveClass('button-outlined-1');
+    expect(buttonElement).toHaveClass('MuiButtonBase-root');
     expect(screen.getByText('Click me!')).toBeTruthy();
 
-    act(() => {
-      fireEvent.click(buttonElement);
-      waitFor(() => expect(handleClick).toHaveBeenCalledTimes(1));
+    await act(async () => {
+      await fireEvent.click(buttonElement);
+      await waitFor(() => expect(handleClick).toHaveBeenCalledTimes(1));
     });
   });
 });
