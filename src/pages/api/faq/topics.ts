@@ -110,6 +110,8 @@ const data = {
   ],
 };
 
-export default (req: NextApiRequest, res: NextApiResponse<any>) => {
+const apiData = (req: NextApiRequest, res: NextApiResponse<any>) => {
   res.status(200).json(data);
 };
+
+export default apiData;

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef, createRef } from 'react';
-import Link from 'next/link';
+import React, { useState, useEffect, useRef, createRef, useCallback } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useFaqPageStyles } from '@/styles/FaqTopicPage.styles';
@@ -7,8 +6,8 @@ import { Accordion } from '@/components/Accordion';
 import { AccordionTextItem } from '@/components/Accordion/components/AccordionTextItem';
 import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
-import FaqCta from '@/components/FaqCta';
-import SelectInput from '@/components/SelectInput';
+import { FaqCta } from '@/components/FaqCta';
+import { SelectInput } from '@/components/SelectInput';
 
 export interface Article {
   category: string;
@@ -52,10 +51,13 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
     setRouterPath(id);
   };
 
-  const findTopicOnDesktop = (urlParam: string | string[]) => {
-    const topic = articles.filter((t) => t.category === urlParam);
-    return topic[0];
-  };
+  const findTopicOnDesktop = useCallback(
+    (urlParam: string | string[]) => {
+      const topic = articles.filter((t) => t.category === urlParam);
+      return topic[0];
+    },
+    [articles],
+  );
 
   useEffect(() => {
     const newAnchorIndex = findAnchorIndexMobile(urlParam as string);
@@ -63,7 +65,7 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
   }, [urlParam]);
 
   useEffect(() => {
-    let elementOffset = myRefs.current[mobileAnchor].current.offsetTop;
+    const elementOffset = myRefs.current[mobileAnchor].current.offsetTop;
     window.scrollTo({ top: elementOffset - 50, behavior: 'smooth' });
   }, [mobileAnchor]);
 
@@ -72,7 +74,7 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
       const topic = findTopicOnDesktop(urlParam);
       topic && setActiveTopic(topic);
     }
-  }, [urlParam]);
+  }, [urlParam, findTopicOnDesktop]);
 
   useEffect(() => {
     const isFixedDropdownVisible = () => {

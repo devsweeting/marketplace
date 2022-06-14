@@ -4,7 +4,7 @@ import { Button } from '../Button';
 import { useFaqCtaStyles } from './FaqCta.styles';
 import Link from 'next/link';
 
-const FaqCta = () => {
+export const FaqCta = () => {
   const classes = useFaqCtaStyles();
   return (
     <Grid container item xs={12} mt={9} mb={{ xs: 9.5, md: 0 }} className={classes.ctaWrapper}>
@@ -34,5 +34,3 @@ const FaqCta = () => {
     </Grid>
   );
 };
-
-export default FaqCta;

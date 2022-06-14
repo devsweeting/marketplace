@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Box, Grid, Typography, SelectChangeEvent } from '@mui/material/';
+import { Box, Grid, Typography } from '@mui/material/';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import classNames from 'classnames';
 import MenuItem from '@mui/material/MenuItem';
 import { useSelectInput } from './SelectInput.styles';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Article } from '@/pages/faq/[topic]';
+import type { Article } from '@/pages/faq/[topic]';
 
 interface SelectInputProps {
   options: { name: string; id: string }[];
@@ -15,7 +15,7 @@ interface SelectInputProps {
   activeTopic: Article;
 }
 
-const SelectInput: React.FC<SelectInputProps> = ({
+export const SelectInput: React.FC<SelectInputProps> = ({
   options,
   handleSelectChangeOnMobile,
   fixedType = false,
@@ -62,5 +62,3 @@ const SelectInput: React.FC<SelectInputProps> = ({
     </Grid>
   );
 };
-
-export default SelectInput;

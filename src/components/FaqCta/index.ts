@@ -1,1 +1,1 @@
-export { default } from './FaqCta';
+export { FaqCta } from './FaqCta';
