@@ -1,7 +1,7 @@
 import { getClientIp } from 'request-ip';
 import type { IncomingMessage } from 'http';
 
-export function getIpAddress(request: IncomingMessage): string | undefined {
+export const getIpAddress = (request: IncomingMessage): string | undefined => {
   const detectedIp = getClientIp(request);
 
   if (!detectedIp) {
@@ -9,4 +9,4 @@ export function getIpAddress(request: IncomingMessage): string | undefined {
   }
 
   return detectedIp;
-}
+};

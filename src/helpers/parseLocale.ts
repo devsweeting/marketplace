@@ -1,7 +1,7 @@
 import { parse } from 'accept-language-parser';
 import type { IncomingMessage } from 'http';
 
-export function parseLocale(request: IncomingMessage): string | undefined {
+export const parseLocale = (request: IncomingMessage): string | undefined => {
   const [locale] = parse(request.headers['accept-language']);
 
   if (!locale) {
@@ -15,4 +15,4 @@ export function parseLocale(request: IncomingMessage): string | undefined {
   }
 
   return parsedLocale;
-}
+};

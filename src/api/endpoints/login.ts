@@ -1,25 +1,39 @@
-import * as cookie from 'cookie';
+import type { IncomingMessage } from 'http';
+import { getStringFromQuery } from '@/helpers/getStringFromQuery';
+import { getIpAddress } from '@/helpers/getIpAddress';
+import { parseLocale } from '@/helpers/parseLocale';
 
-export const login = (
-  req: { body: { token: string } },
-  res: {
-    setHeader: (arg0: string, arg1: string) => void;
-    status: (arg0: number) => void;
-    json: (arg0: { success: boolean }) => void;
-  },
-) => {
-  res.setHeader(
-    'Set-Cookie',
-    cookie.serialize('token', req.body.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV !== 'development',
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: 'strict',
-      path: '/',
+export const login = async ({
+  req,
+  token,
+}: {
+  req: IncomingMessage;
+  token?: string | string[];
+}): Promise<string | undefined> => {
+  const parsedToken = getStringFromQuery(token);
+
+  if (!parsedToken) {
+    return;
+  }
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login/confirm`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: parsedToken,
+      metadata: {
+        ipAddress: getIpAddress(req),
+        browserUserAgent: parseLocale(req),
+        localeInformation: req.headers['user-agent'],
+      },
     }),
-  );
-  res.status(200);
-  res.json({
-    success: true,
   });
+
+  if (!response.ok) {
+    return;
+  }
+
+  return await response.text();
 };
