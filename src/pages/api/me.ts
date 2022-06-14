@@ -1,16 +1,13 @@
-import type { NextApiHandler } from 'next';
+import { apiWithUser } from '@/helpers/withUser';
 import type { IUser } from '../../types/user';
-import { getUserFromRequest } from '@/helpers/getUserFromRequest';
 
-const me: NextApiHandler<IUser | undefined> = (req, res) => {
-  const user = getUserFromRequest(req);
-
-  if (!user) {
+const me = apiWithUser<IUser | undefined>((req, res) => {
+  if (!req.user) {
     res.send(undefined);
     return;
   }
 
-  res.json(user);
-};
+  res.json(req.user);
+});
 
 export default me;

@@ -1,36 +1,42 @@
-import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import type {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  NextApiHandler,
+  NextApiRequest,
+} from 'next';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PreviewData, Redirect } from 'next/types';
 import type { IUser } from '../types/user';
 import { getUserFromRequest } from '@/helpers/getUserFromRequest';
+import type { NextApiResponse } from 'next/dist/shared/lib/utils';
 
-interface WithUser {
+export interface IWithUser {
   user?: IUser;
 }
 
-type GetServerSidePropsContextWithUser<
+export type GetServerSidePropsContextWithUser<
   Q extends ParsedUrlQuery = ParsedUrlQuery,
   D extends PreviewData = PreviewData,
-> = GetServerSidePropsContext<Q, D> & WithUser;
+> = GetServerSidePropsContext<Q, D> & IWithUser;
 
-type GetServerSidePropsWithUserContext<
+export type GetServerSidePropsWithUserContext<
   P extends { [key: string]: any } = { [key: string]: any },
   Q extends ParsedUrlQuery = ParsedUrlQuery,
   D extends PreviewData = PreviewData,
 > = (context: GetServerSidePropsContextWithUser<Q, D>) => Promise<GetServerSidePropsResult<P>>;
 
-type GetServerSidePropsResultWithUser<P> =
-  | { props: (P & WithUser) | Promise<P & WithUser> }
+export type GetServerSidePropsResultWithUser<P> =
+  | { props: (P & IWithUser) | Promise<P & IWithUser> }
   | { redirect: Redirect }
   | { notFound: true };
 
-type GetServerSidePropsWithUserResult<
+export type GetServerSidePropsWithUserResult<
   P extends { [key: string]: any } = { [key: string]: any },
   Q extends ParsedUrlQuery = ParsedUrlQuery,
   D extends PreviewData = PreviewData,
 > = (context: GetServerSidePropsContext<Q, D>) => Promise<GetServerSidePropsResultWithUser<P>>;
 
-export const withUser = <
+export const getServerSidePropsWithUser = <
   P extends { [key: string]: any } = { [key: string]: any },
   Q extends ParsedUrlQuery = ParsedUrlQuery,
   D extends PreviewData = PreviewData,
@@ -57,5 +63,25 @@ export const withUser = <
     }
 
     return updatedResult;
+  };
+};
+
+export type NextApiRequestWithUser = NextApiRequest & IWithUser;
+export type NextApiHandlerWithUser<T = any> = (
+  req: NextApiRequestWithUser,
+  res: NextApiResponse<T>,
+) => unknown | Promise<unknown>;
+
+export const apiWithUser = <T>(handler: NextApiHandlerWithUser<T>): NextApiHandler<T> => {
+  return (req, res) => {
+    const user = getUserFromRequest(req);
+
+    const updatedRequest = req as NextApiRequestWithUser;
+
+    if (user) {
+      updatedRequest.user = user;
+    }
+
+    return handler(updatedRequest, res);
   };
 };

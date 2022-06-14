@@ -1,7 +1,7 @@
 import React from 'react';
 import { CategoryListViewPage } from '@/containers/CategoryListViewPage';
 import { OpenGraph } from '@/components/OpenGraph';
-import { withUser } from '@/helpers/withUser';
+import { getServerSidePropsWithUser } from '@/helpers/withUser';
 import type { InferGetServerSidePropsType, NextPage } from 'next';
 
 const CategoryPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
@@ -18,7 +18,7 @@ const CategoryPage: NextPage<InferGetServerSidePropsType<typeof getServerSidePro
 
 export default CategoryPage;
 
-export const getServerSideProps = withUser(async () => {
+export const getServerSideProps = getServerSidePropsWithUser(async () => {
   return {
     props: {
       test: true,
