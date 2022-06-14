@@ -27,7 +27,7 @@ const config: Config.InitialOptions = {
   },
   //  Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '__tests__/helpers/'],
   testEnvironment: 'jsdom',
   transform: {
     // Use babel-jest to transpile tests with the next/babel preset

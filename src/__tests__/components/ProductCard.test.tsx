@@ -10,12 +10,14 @@ import { themeJump } from '@/styles/themeJump';
 // eslint-disable-next-line import/no-unresolved
 import { mockProductData } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
+import { withTestRouter } from '../helpers/TestRouter';
 
 const MockProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData }) => {
-  return (
+  return withTestRouter(
     <ThemeProvider theme={themeJump}>
       <ProductCard cardData={cardData} />
-    </ThemeProvider>
+    </ThemeProvider>,
+    { asPath: '/item/sint-et-culpa-fugiat' },
   );
 };
 
