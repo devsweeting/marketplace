@@ -19,7 +19,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { Paper } from '@mui/material';
 
-export default function ShareButton() {
+export const ShareButton = () => {
   const { asPath } = useRouter();
   const URL = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${asPath}`;
   const classes = useShareButtonStyles();
@@ -38,13 +38,18 @@ export default function ShareButton() {
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <Box>
+      <Box sx={{ position: 'relative' }}>
         <Box aria-describedby={id} onClick={handleClick} className={classes.buttonWrapper}>
           <Typography component="p" variant="body1" className={classes.shareButton}>
             share <ShareIcon sx={{ fontSize: '16px', transform: 'translateY(3px)' }} />
           </Typography>
         </Box>
-        <Popper id={id} open={open} anchorEl={anchorEl}>
+        <Popper
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          sx={{ inset: '0px auto auto -7px !important' }}
+        >
           <AnimatePresence>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <Paper className={classes.iconsList}>
@@ -78,4 +83,4 @@ export default function ShareButton() {
       </Box>
     </ClickAwayListener>
   );
-}
+};

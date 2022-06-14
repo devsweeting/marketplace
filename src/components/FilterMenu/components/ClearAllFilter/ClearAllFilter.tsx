@@ -10,7 +10,7 @@ import { useClearAllFilter } from './ClearAllFilter.styles';
 interface ClearAllFiltersProps {
   clearSelectedFilters: () => void;
   toggleVisibility: (item: boolean) => void;
-  isFilterButtonVisible: boolean;
+  isFilterButtonVisible: number | boolean;
 }
 
 export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
@@ -35,6 +35,7 @@ export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
           <Button
             variant="outlined"
             size="small"
+            sx={{ lineHeight: 1 }}
             endIcon={<CloseIcon />}
             onClick={clearSelectedFilters}
           >

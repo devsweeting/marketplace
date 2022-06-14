@@ -2,13 +2,13 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Gallery } from '@/components/Gallery';
-import theme from '@/styles/themeJump';
+import { themeJump } from '@/styles/themeJump';
 import { mockProducImages } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 
 const MockGallery = ({ images }: { images: string[] }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <Gallery images={images} />
     </ThemeProvider>
   );

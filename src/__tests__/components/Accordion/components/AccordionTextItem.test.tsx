@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { AccordionTextItem } from '@/components/Accordion/components/AccordionTextItem';
-import { AccordionTextItemProps } from '@/components/Accordion/components/AccordionTextItem/AccordionTextItem';
-import theme from '@/styles/themeJump';
+import type { AccordionTextItemProps } from '@/components/Accordion/components/AccordionTextItem/AccordionTextItem';
+import { themeJump } from '@/styles/themeJump';
 import '@testing-library/jest-dom/extend-expect';
 
 const mockTitle = 'mockedTitle';
@@ -15,7 +15,7 @@ const MockAccordionTextItem: React.FC<AccordionTextItemProps> = ({
   children,
 }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <AccordionTextItem title={title} isExpanded={isExpanded}>
         {children}
       </AccordionTextItem>
@@ -26,11 +26,9 @@ const MockAccordionTextItem: React.FC<AccordionTextItemProps> = ({
 describe('AccordionTextItem', () => {
   it('should render OPEN AccordionTextItem and the rest of the props', () => {
     render(
-      <MockAccordionTextItem
-        title={mockTitle}
-        children={mockChildren}
-        isExpanded={mockIsExpanded}
-      />,
+      <MockAccordionTextItem title={mockTitle} isExpanded={mockIsExpanded}>
+        {mockChildren}
+      </MockAccordionTextItem>,
     );
 
     expect(screen.getByText(mockTitle)).toBeVisible();
@@ -43,11 +41,9 @@ describe('AccordionTextItem', () => {
   it('should render CLOSED AccordionTextItem and the rest of the props', () => {
     const mockIsExpanded = false;
     render(
-      <MockAccordionTextItem
-        title={mockTitle}
-        children={mockChildren}
-        isExpanded={mockIsExpanded}
-      />,
+      <MockAccordionTextItem title={mockTitle} isExpanded={mockIsExpanded}>
+        {mockChildren}
+      </MockAccordionTextItem>,
     );
 
     expect(screen.getByText(mockTitle)).toBeVisible();

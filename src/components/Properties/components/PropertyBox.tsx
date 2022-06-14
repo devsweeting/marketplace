@@ -1,6 +1,5 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import { Box } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { truncateName } from '@/helpers/truncate';
@@ -27,12 +26,6 @@ export const PropertyBox = ({ attribute }: { attribute: TraitType }) => {
           {truncateName(value, 8)}
         </Typography>
       </Tooltip>
-      <Divider />
-      <Typography variant="body2" component="p" className={classes.propertyDescription}>
-        23% have this trait
-      </Typography>
     </Box>
   );
 };
-
-export default PropertyBox;

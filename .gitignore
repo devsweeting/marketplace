@@ -29,11 +29,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
 
 # vercel
 .vercel
@@ -54,3 +50,7 @@ lerna-debug.log
 
 # Yarn Integrity file
 .yarn-integrity
+
+## IDEA Editors
+.idea
+*.iml

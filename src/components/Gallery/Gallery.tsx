@@ -21,7 +21,8 @@ export const Gallery = ({ images }: { images: Image[] }) => {
   const [mainImage, setMainImage] = useState(images[0].file);
 
   useEffect(() => {
-    setMainImage(images[0].url);
+    setMainImage(images[0].file);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
   const handleImage = (e: React.SyntheticEvent) => {
@@ -40,6 +41,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
                 key={`${index}${image.title}`}
               >
                 <Box className={classes.thumbnailItem}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     className={classes.thumbnail}
                     src={image.file}
@@ -58,6 +60,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
         </Grid>
         <Grid container pt={0} item md={8} xs={12}>
           <Grid item pt={0} md={12} className={classes.imageContainer}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               className={classes.image}
               src={mainImage}

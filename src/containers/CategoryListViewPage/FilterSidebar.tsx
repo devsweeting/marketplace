@@ -5,22 +5,34 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/FilterMenu/components/ClearAllFilter';
 import { FilterMenu } from '@/components/FilterMenu';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
+import type { IFilter, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 
 export interface FilterSidebarProps {
   toggleVisibility: (isVisible: boolean) => void;
   handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
   clearAllSelectedFilters: () => void;
-  checkedFilters: any;
+  handleRange: (id: string, val: number[]) => void;
+  disabledRanges: DisabledRanges;
+  handleDisabled: (key: DisabledRangesKey) => void;
+  removeFilterRange: (id: string) => void;
+  checkedFilters: IFilter[];
+  filterRanges: RangeFilters;
 }
 
-const FilterSidebar = ({
+export const FilterSidebar = ({
   toggleVisibility,
   handleFiltersChange,
   clearAllSelectedFilters,
+  handleRange,
+  removeFilterRange,
   checkedFilters,
+  filterRanges,
+  disabledRanges,
+  handleDisabled,
 }: FilterSidebarProps) => {
   const classes = useCategoryPageStyles();
   const { skin } = useContext(SkinContext);
+
   return (
     <Grid
       className={classes.leftColumn}
@@ -38,16 +50,21 @@ const FilterSidebar = ({
         <ClearAllFilter
           clearSelectedFilters={clearAllSelectedFilters}
           toggleVisibility={toggleVisibility}
-          isFilterButtonVisible={checkedFilters.length}
+          isFilterButtonVisible={
+            checkedFilters.length || !disabledRanges.Grade || !disabledRanges.Year
+          }
         />
         <FilterMenu
           categoriesList={mockCategoryFilters}
           handleFiltersChange={handleFiltersChange}
+          handleRange={handleRange}
+          removeFilterRange={removeFilterRange}
+          handleDisabled={handleDisabled}
           checkedFilters={checkedFilters}
+          filterRanges={filterRanges}
+          disabledRanges={disabledRanges}
         />
       </Grid>
     </Grid>
   );
 };
-
-export default FilterSidebar;

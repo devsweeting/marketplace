@@ -2,10 +2,9 @@ import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { Card } from '../ListItem/components/Card';
 import { useCarouselStyles } from './Carousel.styles';
-import { SingleListItem } from '../../domain/Items';
 import useSWR from 'swr';
-import Loader from '../Loader';
-import { IAsset } from 'src/types';
+import { Loader } from '../Loader';
+import type { IAsset } from 'src/types';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const items_endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/assets`;
@@ -46,5 +45,3 @@ export const Carousel = () => {
     </Grid>
   );
 };
-
-export default Carousel;

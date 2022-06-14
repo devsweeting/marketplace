@@ -1,9 +1,9 @@
 import React from 'react';
 import { Header } from './components/Header';
-import { HeaderPosition } from './components/Header/Header';
+import type { HeaderPosition } from './components/Header/Header';
 import { Footer } from './components/Footer';
 
-const Layout = ({
+export const Layout = ({
   children,
   headerPosition,
 }: {
@@ -18,5 +18,3 @@ const Layout = ({
     </>
   );
 };
-
-export default Layout;

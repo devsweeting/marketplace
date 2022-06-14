@@ -1,26 +1,42 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { useTheme } from '@mui/styles';
-import { useMediaQuery } from '@mui/material';
-import { Grid, Box, Typography, Divider } from '@mui/material';
+import { useMediaQuery, Grid, Box, Typography, Divider } from '@mui/material';
 import { ListItem } from '@/components/ListItem';
 import { SortBy } from '@/domain/Category';
 import { Button } from '@/components/Button';
 import { MenuList } from '@/components/MenuList/';
 import { useCategoryPageStyles } from '@/styles/CategoryPage.styles';
 import { loadListAssetByPage } from 'src/api/endpoints/list';
-import { IFilter, IAsset, IMeta } from 'src/types';
-import FilterSidebar, { FilterSidebarProps } from './FilterSidebar';
-import SortList, { SortListProps } from './SortList';
+import type {
+  IFilter,
+  IAsset,
+  IMeta,
+  RangeFilters,
+  DisabledRanges,
+  DisabledRangesKey,
+} from 'src/types';
+import type { FilterSidebarProps } from './FilterSidebar';
+import { FilterSidebar } from './FilterSidebar';
+import type { SortListProps } from './SortList';
+import { SortList } from './SortList';
 
-const CategoryListView = () => {
+export const CategoryListViewPage = () => {
   const classes = useCategoryPageStyles();
-  const [checkedFilters, setcheckedFilters] = useState<IFilter[]>([]);
+  const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
+  const [filterRanges, setfilterRanges] = useState<RangeFilters>(null);
+  const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
+    Grade: true,
+    Year: true,
+  });
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
-  const [isSidebarVisible, setSidebarVisible] = React.useState<boolean>(false);
+  const [isSidebarVisible, setSidebarVisible] = useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const searchQuery = useRouter().query.q;
+  const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -34,19 +50,23 @@ const CategoryListView = () => {
     matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
   }, [matchesDesktop]);
 
-  const loadListAssets = async (page: number = 1) => {
+  const loadListAssets = async (page = 1) => {
     const { meta, items } = await loadListAssetByPage({
       page,
       sort: sortType,
       filter: checkedFilters,
+      filterRanges: filterRanges,
+      search: search as string | undefined,
     });
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
     console.log(meta, items);
   };
+
   useEffect(() => {
     loadListAssets(1);
-  }, [sortType, checkedFilters]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortType, checkedFilters, filterRanges, disabledRanges, search]);
 
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
@@ -67,13 +87,35 @@ const CategoryListView = () => {
 
   const clearAllSelectedFilters = () => {
     setcheckedFilters([]);
+    setfilterRanges({});
+    setDisabledRanges({ Grade: true, Year: true });
+  };
+
+  const handleDisabled = (key: DisabledRangesKey) => {
+    setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key] });
+  };
+
+  const handleRange = (id: string, val: any) => {
+    setfilterRanges((filterRanges) => ({
+      ...filterRanges,
+      [id]: { min: val[0], max: val[1] },
+    }));
+  };
+
+  const removeFilterRange = (id: string) => {
+    filterRanges && delete filterRanges[id];
   };
 
   const filterSidebarProps: FilterSidebarProps = {
     toggleVisibility,
     handleFiltersChange,
     clearAllSelectedFilters,
+    handleRange,
+    removeFilterRange,
     checkedFilters,
+    filterRanges,
+    disabledRanges,
+    handleDisabled,
   };
 
   const sortListProps: SortListProps = {
@@ -134,6 +176,7 @@ const CategoryListView = () => {
                 LOAD MORE
               </Button>
             )}
+
             <Typography
               variant="body2"
               component="p"
@@ -153,5 +196,3 @@ const CategoryListView = () => {
     </Box>
   );
 };
-
-export default CategoryListView;

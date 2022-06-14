@@ -1,6 +1,7 @@
 import React from 'react';
 // import classNames from 'classnames';
-import MaterialButton, { ButtonProps as MaterialButtonProps } from '@mui/material/Button';
+import type { ButtonProps as MaterialButtonProps } from '@mui/material/Button';
+import MaterialButton from '@mui/material/Button';
 // import { useButtonStyles } from './Button.styles';
 
 export interface ButtonProps extends Omit<MaterialButtonProps, 'variant'> {

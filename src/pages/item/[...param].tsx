@@ -11,9 +11,9 @@ import { DescriptionText } from '@/components/DescriptionText';
 import { Gallery } from '@/components/Gallery';
 import { Button } from '@/components/Button';
 import { Carousel } from '@/components/Carousel';
-import { TraitType } from '@/components/Properties/components/PropertyBox';
+import type { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
-import OpenGraph from '@/components/OpenGraph';
+import { OpenGraph } from '@/components/OpenGraph';
 import { Routes } from '@/domain/Routes';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
@@ -150,20 +150,19 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 export default DetailPage;
 
 export async function getServerSideProps(context: any) {
-    const { param } = context.query;
-    const asset_slug = param[0];
+  const { param } = context.query;
+  const asset_slug = param[0];
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_slug}`);
-    const data = await response.json();
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_slug}`);
+  const data = await response.json();
 
-    if (!data.id) {
-      return {
-        notFound: true,
-      };
-    }
-
+  if (!data.id) {
     return {
-      props: { nftData: data },
+      notFound: true,
     };
+  }
 
+  return {
+    props: { nftData: data },
+  };
 }

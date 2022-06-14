@@ -8,15 +8,15 @@ export const usePropertyBoxStyle = makeStyles(
       maxWidth: '154px',
       borderRadius: theme.spacing(2),
       margin: `0 ${theme.spacing(2)} ${theme.spacing(4)} 0`,
-      border: '1px solid #fff',
+      border: `1px solid ${theme.palette.secondary.main}`,
       [theme.breakpoints.down('md')]: {
         maxWidth: '139.5px',
         margin: `0 ${theme.spacing(1)} ${theme.spacing(2)} 0`,
       },
     },
     title: {
-      color: '#000',
-      background: '#FFDD00',
+      color: theme.palette.primary.main,
+      background: theme.palette.accent.main,
       borderRadius: `${theme.spacing(2)} ${theme.spacing(2)} 0 0`,
       fontSize: '12px',
       lineHeight: '26px',
@@ -32,18 +32,9 @@ export const usePropertyBoxStyle = makeStyles(
       textAlign: 'center',
       fontWeight: 700,
       lineHeight: '32px',
-      paddingTop: theme.spacing(2),
+      padding: `${theme.spacing(2)} 0`,
       [theme.breakpoints.down('md')]: {
         paddingTop: theme.spacing(1),
-      },
-    },
-    propertyDescription: {
-      textAlign: 'center',
-      textDecoration: 'none',
-      paddingBottom: theme.spacing(2),
-      textTransform: 'lowercase',
-      [theme.breakpoints.down('md')]: {
-        paddingBottom: theme.spacing(1),
       },
     },
   }),

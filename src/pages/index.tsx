@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import Link from 'next/link';
 import { Routes } from '@/domain/Routes';
-import OpenGraph from '@/components/OpenGraph';
+import { OpenGraph } from '@/components/OpenGraph';
 
 const Homepage = () => {
   return (

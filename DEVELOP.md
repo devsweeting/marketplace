@@ -39,7 +39,7 @@ Code that makes changes to entity files will need to enclude migration scripts b
 
 ## Linting
 
-This project uses _prettier_ and _eslint_. Code that doesn't pass linting is not acceptable for merging. In some cases the linting rules are prohibitive or just plain dumb. In those cases disabling linting for a particular line or block of code is acceptable, but use sparingly.
+This project uses _prettier_ and _eslint_. Use `yarn lint` to run both and `yarn lint:fix` to apply an automatic fixes that are available. Code that doesn't pass linting is not acceptable for merging. In some cases the linting rules are prohibitive or just plain dumb. In those cases disabling linting for a particular line or block of code is acceptable, but use sparingly.
 
 ## Data Models
 

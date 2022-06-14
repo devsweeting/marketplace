@@ -5,7 +5,7 @@ import { APP_TITLE, APP_DESCRIPTION, APP_IMAGE, APP_IMAGE_ALT } from './config';
 
 type OpenGraphType = Record<string, string>;
 
-const OpenGraph: React.FC<OpenGraphType> = ({ title, description, image, image_alt }) => {
+export const OpenGraph: React.FC<OpenGraphType> = ({ title, description, image, image_alt }) => {
   const { asPath } = useRouter();
 
   const page_url = `${process.env.NEXT_PUBLIC_FRONTEND_URL}${asPath}`;
@@ -38,5 +38,3 @@ const OpenGraph: React.FC<OpenGraphType> = ({ title, description, image, image_a
     </Head>
   );
 };
-
-export default OpenGraph;

@@ -2,14 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { ProductCard } from '@/components/ProductCard';
-import { ProductDataProps } from '@/components/ProductCard/ProductCard';
-import theme from '@/styles/themeJump';
+import type { ProductDataProps } from '@/components/ProductCard/ProductCard';
+import { themeJump } from '@/styles/themeJump';
 import { mockProductData } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 
 const MockProductCard: React.FC<{ cardData: ProductDataProps }> = ({ cardData }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <ProductCard cardData={cardData} />
     </ThemeProvider>
   );

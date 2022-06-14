@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import DetailPage from '@/pages/item/[...param]';
-import theme from '@/styles/themeJump';
+import { themeJump } from '@/styles/themeJump';
 import { mockedApiData } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -19,7 +19,7 @@ jest.mock('next/router', () => ({
 
 const MockDetailPage = ({ nftData }: { nftData: any }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeJump}>
       <DetailPage nftData={nftData} />
     </ThemeProvider>
   );
