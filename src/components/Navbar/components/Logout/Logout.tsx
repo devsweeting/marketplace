@@ -1,4 +1,4 @@
-import { useNavLinkStyles } from '@/components/Navbar/components/NavLink/NavLink.styles';
+import { useNavLinkStyles } from '../NavLink/NavLink.styles';
 import { Typography } from '@mui/material';
 import classNames from 'classnames';
 import { useContext } from 'react';

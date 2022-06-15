@@ -5,9 +5,9 @@ import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import { NavLink } from './components/NavLink';
 import { useNavbarStyles } from './Navbar.styles';
-import { Login } from '../Login/components';
+import { Login } from './components/Login';
 import { useUser } from '@/helpers/hooks/useUser';
-import { Logout } from '@/components/Logout/components';
+import { Logout } from '@/components/Navbar/components/Logout';
 
 type NavLink = {
   title: string;

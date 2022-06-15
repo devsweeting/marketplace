@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import LoginIcon from '@mui/icons-material/Login';
-import { useNavLinkStyles } from '../../Navbar/components/NavLink/NavLink.styles';
+import { useNavLinkStyles } from '../NavLink/NavLink.styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';

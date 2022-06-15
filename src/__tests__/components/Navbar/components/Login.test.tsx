@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import 'jest-axe/extend-expect';
 import { axe } from 'jest-axe';
 import { ThemeProvider } from '@mui/material';
-import { Login } from '@/components/Login/components';
+import { Login } from '@/components/Navbar/components/Login';
 import { themeJump } from '@/styles/themeJump';
 
 const MockLogin = () => {
