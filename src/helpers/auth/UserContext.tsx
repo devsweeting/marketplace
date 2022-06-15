@@ -14,6 +14,10 @@ export const UserContext = createContext<IUserContext>({
   logout: () => {},
 });
 
+/**
+ * Custom provider for {@link UserContext} that loads the user from the `/api/me`
+ * endpoint on initial mount and then provides the loaded value to all consumers
+ */
 export const UserProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<IUser | undefined>();
 
