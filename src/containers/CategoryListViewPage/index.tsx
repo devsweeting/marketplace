@@ -23,8 +23,8 @@ import { SortList } from './SortList';
 
 export const CategoryListViewPage = () => {
   const classes = useCategoryPageStyles();
-  const [checkedFilters, setcheckedFilters] = useState<any[]>([]);
-  const [filterRanges, setfilterRanges] = useState<RangeFilters>(null);
+  const [checkedFilters, setCheckedFilters] = useState<any[]>([]);
+  const [filterRanges, setFilterRanges] = useState<RangeFilters>(null);
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: true,
     Year: true,
@@ -32,7 +32,7 @@ export const CategoryListViewPage = () => {
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [listAssets, setListAssets] = useState<IAsset[]>([]);
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
-  const [isSidebarVisible, setSidebarVisible] = useState<boolean>(false);
+  const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(false);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const searchQuery = useRouter().query.q;
@@ -43,11 +43,11 @@ export const CategoryListViewPage = () => {
   };
 
   const toggleVisibility = (isVisible: boolean) => {
-    setSidebarVisible(isVisible);
+    setIsSidebarVisible(isVisible);
   };
 
   useEffect(() => {
-    matchesDesktop ? setSidebarVisible(true) : setSidebarVisible(false);
+    matchesDesktop ? setIsSidebarVisible(true) : setIsSidebarVisible(false);
   }, [matchesDesktop]);
 
   const loadListAssets = async (page = 1) => {
@@ -79,15 +79,15 @@ export const CategoryListViewPage = () => {
       const newcheckedFilters = checkedFilters.filter(
         (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
       );
-      setcheckedFilters(newcheckedFilters);
+      setCheckedFilters(newcheckedFilters);
       return;
     }
-    setcheckedFilters([...checkedFilters, { filterId, categoryId }]);
+    setCheckedFilters([...checkedFilters, { filterId, categoryId }]);
   };
 
   const clearAllSelectedFilters = () => {
-    setcheckedFilters([]);
-    setfilterRanges({});
+    setCheckedFilters([]);
+    setFilterRanges({});
     setDisabledRanges({ Grade: true, Year: true });
   };
 
@@ -96,7 +96,7 @@ export const CategoryListViewPage = () => {
   };
 
   const handleRange = (id: string, val: any) => {
-    setfilterRanges((filterRanges) => ({
+    setFilterRanges((filterRanges) => ({
       ...filterRanges,
       [id]: { min: val[0], max: val[1] },
     }));
