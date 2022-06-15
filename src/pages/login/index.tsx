@@ -1,10 +1,11 @@
-import type { GetServerSidePropsContext, NextPage } from 'next';
+import type { NextPage } from 'next';
 import { loginWithToken } from '@/api/endpoints/login';
 import { setUserCookie } from '@/helpers/auth/userCookie';
 import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, Container, Typography } from '@mui/material';
 import classNames from 'classnames';
+import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
 
 const Login: NextPage = () => {
   const classes = useLoginPageStyles();
@@ -38,13 +39,22 @@ const Login: NextPage = () => {
 
 export default Login;
 
-export const getServerSideProps = async ({ req, res, query }: GetServerSidePropsContext) => {
+export const getServerSideProps = getServerSidePropsWithUser(async ({ req, res, query, user }) => {
   const jwt = await loginWithToken({ req, token: query.token });
 
-  if (!jwt) {
+  if (!jwt && !user) {
     res.statusCode = 400;
     return {
       props: {},
+    };
+  }
+
+  if (!jwt) {
+    return {
+      redirect: {
+        statusCode: 302,
+        destination: '/login/success',
+      },
     };
   }
 
@@ -56,4 +66,4 @@ export const getServerSideProps = async ({ req, res, query }: GetServerSideProps
       destination: '/login/success',
     },
   };
-};
+});
