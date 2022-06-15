@@ -5,7 +5,8 @@ import { ThemeProvider } from '@mui/material';
 import { SearchBox } from '@/components/SearchBox';
 import { themeJump } from '@/styles/themeJump';
 import '@testing-library/jest-dom/extend-expect';
-
+import 'jest-axe/extend-expect';
+import { axe } from 'jest-axe';
 const MockSearchBox = () => {
   return (
     <ThemeProvider theme={themeJump}>
@@ -20,6 +21,7 @@ describe('SearchBox', () => {
     const { container } = render(<MockSearchBox />);
     const button = screen.getByRole('button');
     const form = container.querySelector('form');
+    const formViolations = await axe(form ?? '');
     const onSubmit = jest.fn((e) => {
       e.preventDefault();
     });
@@ -34,5 +36,6 @@ describe('SearchBox', () => {
     expect(screen.getAllByPlaceholderText('Search')[0]).toHaveValue('test');
     expect(container).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'search' })).toHaveAttribute('aria-label', 'search');
+    expect(formViolations).toHaveNoViolations();
   });
 });

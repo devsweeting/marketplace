@@ -28,27 +28,28 @@ const MockGallery = ({ images }: { images: Image[] }) => {
     },
   );
 };
-
-test('Gallery should have images with src and alt', async () => {
-  render(<MockGallery images={mockGalleryImages} />);
-  const images = screen.getAllByRole('img');
-  images.map((image) => {
-    expect(image).toBeTruthy();
-    expect(image).toBeInTheDocument();
-    expect(image).toHaveAttribute('src');
-    expect(image).toHaveAttribute('alt');
+describe('Gallery', () => {
+  test('Gallery should have images with src and alt', async () => {
+    render(<MockGallery images={mockGalleryImages} />);
+    const images = screen.getAllByRole('img');
+    images.map((image) => {
+      expect(image).toBeTruthy();
+      expect(image).toBeInTheDocument();
+      expect(image).toHaveAttribute('src');
+      expect(image).toHaveAttribute('alt');
+    });
+    expect(screen.queryAllByRole('img' as any)).toHaveLength(4);
   });
-  expect(screen.queryAllByRole('img' as any)).toHaveLength(4);
-});
 
-test('Gallery image switches on click', async () => {
-  render(<MockGallery images={mockGalleryImages} />);
-  const images = screen.getAllByRole('img') as HTMLImageElement[];
+  test('Gallery image switches on click', async () => {
+    render(<MockGallery images={mockGalleryImages} />);
+    const images = screen.getAllByRole('img') as HTMLImageElement[];
 
-  await images.map(async (image) => {
-    await user.click(image);
-    const mainImage = document.getElementById('main-gallery-image') as HTMLImageElement;
-    expect(mainImage).toBeVisible();
-    expect(mainImage.src).toBe(image.src);
+    await images.map(async (image) => {
+      await user.click(image);
+      const mainImage = document.getElementById('main-gallery-image') as HTMLImageElement;
+      expect(mainImage).toBeVisible();
+      expect(mainImage.src).toBe(image.src);
+    });
   });
 });
