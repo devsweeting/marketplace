@@ -28,7 +28,7 @@ const MockDetailPage = ({ nftData }: { nftData: any }) => {
 };
 
 describe('DetailPage', () => {
-  it('it should render with the fetched content ', async () => {
+  it('should render with the fetched content ', async () => {
     render(<MockDetailPage nftData={mockedApiData} />);
     // waitFor(() => expect(screen.getByText(mockedApiData.name)).toBeInTheDocument());
     await waitFor(() => expect(screen.getByText(mockedApiData.description)).toBeInTheDocument());
