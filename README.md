@@ -15,5 +15,8 @@ To compile, run `yarn` to install dependencies, and `yarn build` to confirm it c
  * Start up the API and its dependencies as outlined in its 
 [README.md](https://github.com/FractionalDev/jump-marketplace-api#running-the-app).
  * Run `yarn` to install dependencies
+ * Generate an encryption key and save it in the `ENCRYPTION_KEY` variable in `.env.local`
+   * You can generate a key in your terminal with the following command
+   * `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`
  * Run `NEXT_PUBLIC_BACKEND_URL=http://localhost:3001/v1 yarn dev` to run the development server
  * Navigate to `http://localhost:3000/` in your browser to view the app
