@@ -91,3 +91,24 @@ test('User should be able to submit a valid email', async () => {
   expect(button).toBeDisabled();
   global.fetch = originalFetch;
 });
+
+test('User should get a too many requests error after 6 login attempts', async () => {
+  await openModal();
+  const originalFetch = global.fetch;
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: () =>
+        Promise.resolve({
+          statusCode: 429,
+        }),
+    }),
+  ) as jest.Mock;
+  const input = screen.getByRole('textbox', { name: /email/i });
+  const button = screen.getByRole('button', { name: /login/i });
+  const alert = screen.getByRole('alert');
+  expect(alert).toHaveTextContent('');
+  await user.type(input, 'test@test.com');
+  await user.click(button);
+  expect(alert).toHaveTextContent(/too many requests/i);
+  global.fetch = originalFetch;
+});

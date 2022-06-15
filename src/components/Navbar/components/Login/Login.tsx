@@ -66,6 +66,7 @@ export const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         if (data.status === 200) {
           setAlertMessage('Check your email for a link to sign in.');
           if (modalBox.current) {
@@ -74,11 +75,12 @@ export const Login = () => {
           setButtonState(true);
           return;
         }
-        if (data.status === 429) {
+        if (data.statusCode === 429) {
           setAlertMessage('Too many requests. Please try again later.');
           if (modalBox.current) {
             modalBox.current.style.color = '#f44336';
           }
+          setButtonState(true);
           return;
         }
         if (modalBox.current) {
