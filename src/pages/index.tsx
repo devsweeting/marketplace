@@ -1,7 +1,6 @@
 import Container from '@mui/material/Container';
-import Link from 'next/link';
-import { Routes } from '@/domain/Routes';
 import { OpenGraph } from '@/components/OpenGraph';
+import { Typography } from '@mui/material';
 
 const Homepage = () => {
   return (
@@ -9,21 +8,9 @@ const Homepage = () => {
       <OpenGraph title={'Home page'} description={'Home page description'} />
 
       <Container maxWidth="xl">
-        <h1 style={{ paddingTop: 150 }}>
-          <Link href={Routes[1].path}>
-            <a>NFT Detail View</a>
-          </Link>
-        </h1>
-        <h1>
-          <Link href={Routes[0].path}>
-            <a>List View</a>
-          </Link>
-        </h1>
-        <h1>
-          <Link href="/faq/selling">
-            <a>Faq (detail view)</a>
-          </Link>
-        </h1>
+        <Typography variant="h1" component="h1" sx={{ marginTop: 15 }}>
+          Home page
+        </Typography>
       </Container>
     </>
   );

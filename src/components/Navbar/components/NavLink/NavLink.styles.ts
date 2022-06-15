@@ -8,7 +8,7 @@ export const useNavLinkStyles = makeStyles(
       marginLeft: theme.spacing(4),
       '@media (max-width:900px)': {
         color: theme.palette.accent.main,
-        marginLeft: theme.spacing(3),
+        marginLeft: theme.spacing(1),
       },
       '&:hover': {
         color: lighten(theme.palette.primary.main, 0.3),

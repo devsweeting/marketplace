@@ -5,6 +5,9 @@ const data = {
     {
       category: 'selling',
       name: 'Selling',
+      cta: 'view selling',
+      description:
+        'Topic description lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nisi nulla, imperdiet et diam nec, viverra bibendum dui. Maecenas porttitor leo at venenatis varius.',
       questions: [
         {
           question: 'What is the biggest advantage of selling my items with PWCC?',
@@ -26,6 +29,9 @@ const data = {
     {
       category: 'about-vault',
       name: 'About vault',
+      cta: 'more about vault',
+      description:
+        'Topic description lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nisi nulla, imperdiet et diam nec, viverra bibendum dui. Maecenas porttitor leo at venenatis varius.',
       questions: [
         {
           question: 'Vault: What is the biggest advantage of selling my items with PWCC?',
@@ -47,6 +53,9 @@ const data = {
     {
       category: 'safety',
       name: 'Safety',
+      cta: 'user safety in pwcc',
+      description:
+        'Topic description lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nisi nulla, imperdiet et diam nec, viverra bibendum dui. Maecenas porttitor leo at venenatis varius.',
       questions: [
         {
           question: 'Safety: What is the biggest advantage of selling my items with PWCC?',
@@ -68,6 +77,9 @@ const data = {
     {
       category: 'buying',
       name: 'Buying',
+      cta: 'view all buying options',
+      description:
+        'Topic description lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nisi nulla, imperdiet et diam nec, viverra bibendum dui. Maecenas porttitor leo at venenatis varius.',
       questions: [
         {
           question: 'Buying: What is the biggest advantage of selling my items with PWCC?',
@@ -89,6 +101,8 @@ const data = {
     {
       category: 'how-to-get-started',
       name: 'How to get started?',
+      cta: 'guides to start easy as possible',
+      description: '',
       questions: [
         {
           question: 'Get started: What is the biggest advantage of selling my items with PWCC?',

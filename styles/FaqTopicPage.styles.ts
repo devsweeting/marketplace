@@ -2,6 +2,16 @@ import { makeStyles } from '@mui/styles';
 import { lighten } from '@mui/material';
 
 export const useFaqPageStyles = makeStyles((theme) => ({
+  wrapper: {
+    maxWidth: 1440,
+    margin: '0 auto',
+    marginTop: '0',
+    padding: '0 100px',
+    [theme.breakpoints.down('md')]: {
+      padding: '0',
+    },
+  },
+
   showOnMobile: {
     display: 'none',
     [theme.breakpoints.down('md')]: {
@@ -90,5 +100,38 @@ export const useFaqPageStyles = makeStyles((theme) => ({
     fontSize: '16px',
     lineHeight: '150%',
     letter: '0.15px',
+  },
+  blackContainer: {
+    background: '#2c2c2c',
+    padding: `${theme.spacing(7)} ${theme.spacing(12)}`,
+    maxWidth: '1440px',
+    margin: `${theme.spacing(8)} auto 0`,
+    [theme.breakpoints.down('md')]: {
+      padding: `${theme.spacing(7)} ${theme.spacing(5)}`,
+    },
+  },
+  sectionHeading: {
+    fontFamily: 'Montserrat',
+    fontWeight: 800,
+    fontSize: '48px',
+    lineHeight: '57px',
+    letter: '-0.5px',
+    marginTop: theme.spacing(0),
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'center',
+      marginTop: theme.spacing(9),
+    },
+  },
+  heading: {
+    fontFamily: 'Montserrat',
+    fontWeight: 700,
+    fontSize: 34,
+    letter: 0.25,
+    lineHeight: '123%',
+    color: theme.palette.secondary.main,
+  },
+  accordionBox: {
+    borderRadius: theme.spacing(0.5),
+    overflow: 'hidden',
   },
 }));

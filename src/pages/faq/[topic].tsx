@@ -12,10 +12,12 @@ import { SelectInput } from '@/components/SelectInput';
 export interface Article {
   category: string;
   name: string;
+  cta: string;
+  description: string;
   questions: { question: string; answer: string }[];
 }
 
-interface Articles {
+export interface Articles {
   items: Article[];
 }
 
@@ -223,6 +225,7 @@ FaqTopicPage.layout = 'faqPages';
 export default FaqTopicPage;
 
 export async function getServerSideProps() {
+  // mocked fetching to be replaced with cms source
   try {
     const res = await fetch(`http://localhost:3000/api/faq/topics`);
     const data: Articles = await res.json();
