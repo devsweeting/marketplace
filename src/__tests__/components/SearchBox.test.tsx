@@ -6,7 +6,6 @@ import { SearchBox } from '@/components/SearchBox';
 import { themeJump } from '@/styles/themeJump';
 import '@testing-library/jest-dom/extend-expect';
 
-
 const MockSearchBox = () => {
   return (
     <ThemeProvider theme={themeJump}>
