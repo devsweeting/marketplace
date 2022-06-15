@@ -1,1 +1,1 @@
-export const TOKEN_COOKIE = 'JUMP_TOKEN';
+export const USER_TOKEN_COOKIE = 'USER_TOKEN';

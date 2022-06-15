@@ -6,8 +6,8 @@ import type {
 } from 'next';
 import type { ParsedUrlQuery } from 'querystring';
 import type { PreviewData, Redirect } from 'next/types';
-import type { IUser } from '../types/user';
-import { getUserFromRequest } from '@/helpers/getUserFrom';
+import type { IUser } from '../../types/user';
+import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import type { NextApiResponse } from 'next/dist/shared/lib/utils';
 
 export interface IWithUser {

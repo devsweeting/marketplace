@@ -2,7 +2,7 @@ import { useNavLinkStyles } from '../NavLink/NavLink.styles';
 import { Typography } from '@mui/material';
 import classNames from 'classnames';
 import { useContext } from 'react';
-import { UserContext } from '@/helpers/UserContext';
+import { UserContext } from '@/helpers/auth/UserContext';
 import { useRouter } from 'next/router';
 
 export const Logout = () => {

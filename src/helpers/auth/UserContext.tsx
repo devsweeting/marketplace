@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useEffect, useState, useMemo } from 'react';
-import type { IUser } from '../types/user';
+import type { IUser } from '../../types/user';
 
 export interface IUserContext {
   user?: IUser;

@@ -11,7 +11,7 @@ import { themePWCC } from '@/styles/themePWCC';
 import { createEmotionCache } from '@/styles/createEmotionCache';
 import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
-import { UserProvider } from '@/helpers/UserContext';
+import { UserProvider } from '@/helpers/auth/UserContext';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

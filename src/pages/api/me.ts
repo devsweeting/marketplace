@@ -1,4 +1,4 @@
-import { apiWithUser } from '@/helpers/withUser';
+import { apiWithUser } from '@/helpers/auth/withUser';
 import type { IUser } from '../../types/user';
 
 const me = apiWithUser<IUser | undefined>((req, res) => {

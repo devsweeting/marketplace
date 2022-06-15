@@ -4,12 +4,11 @@ import { Container, Box, Typography } from '@mui/material';
 import classNames from 'classnames';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { useLoginPageStyles } from '@/styles/LoginPage.styles';
-import { setCookies } from 'cookies-next';
-import { TOKEN_COOKIE } from '@/helpers/constants';
 import { loginWithToken } from '@/api/endpoints/login';
-import { getUserFromJwt, getUserFromRequest } from '@/helpers/getUserFrom';
+import { getUserFromJwt, getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import { Button } from '@/components/Button';
 import { removeUndefinedProps } from '@/helpers/removeUndefinedProps';
+import { setUserCookie } from '@/helpers/auth/userCookie';
 
 const Login: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ user }) => {
   const classes = useLoginPageStyles();
@@ -70,7 +69,7 @@ export const getServerSideProps = removeUndefinedProps(
       };
     }
 
-    setCookies(TOKEN_COOKIE, jwt, { req, res, httpOnly: true, maxAge: 60 * 60 * 24 * 365 });
+    setUserCookie(jwt, req, res);
 
     return {
       props: { user: getUserFromJwt(jwt) },
