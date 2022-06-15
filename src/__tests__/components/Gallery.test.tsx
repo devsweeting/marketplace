@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Gallery } from '@/components/Gallery';
-import type Image from '@/components/Gallery';
 import { themeJump } from '@/styles/themeJump';
 import { mockGalleryImages } from '@/__mocks__/mockApiData';
 import { withTestRouter } from '../utils/TestRouter';
