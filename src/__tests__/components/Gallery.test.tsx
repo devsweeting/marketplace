@@ -1,36 +1,45 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { getByAltText, render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Gallery } from '@/components/Gallery';
+import type Image from '@/components/Gallery';
 import { themeJump } from '@/styles/themeJump';
-import { mockProductImages } from '@/__mocks__/mockApiData';
+import { mockGalleryImages } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 import { withTestRouter } from '../helpers/TestRouter';
+import user from '@testing-library/user-event';
 
-const MockGallery = ({ images }: { images: string[] }) => {
+const MockGallery = ({ images }: { images: Image[] }) => {
   return withTestRouter(
     <ThemeProvider theme={themeJump}>
       <Gallery images={images} />
     </ThemeProvider>,
     {
-      asPath: '/item/',
+      asPath: '/item/rerum-qui-doloremque-sit',
     },
   );
 };
 
-describe('MockGallery', () => {
-  it('should render images from props and change main image on click', async () => {
-    render(<MockGallery images={mockProductImages} />);
+test('Gallery should have images with src and alt', async () => {
+  render(<MockGallery images={mockGalleryImages} />);
+  const images = screen.getAllByRole('img');
+  images.map((image) => {
+    expect(image).toBeTruthy();
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute('src');
+    expect(image).toHaveAttribute('alt');
+  });
+  expect(screen.queryAllByRole('img' as any)).toHaveLength(4);
+});
 
-    const mainImageElement = screen.getByRole('img', { name: 'main asset image' });
+test('Gallery image switches on click', async () => {
+  render(<MockGallery images={mockGalleryImages} />);
+  const images = screen.getAllByRole('img') as HTMLImageElement[];
 
-    expect(mainImageElement).toBeVisible();
-
-    expect(screen.queryAllByRole('img' as any)).toHaveLength(4);
-
-    const secondThumbnailElement = screen.queryAllByRole('img', { name: 'product thumbnail' })[1];
-
-    fireEvent.click(secondThumbnailElement);
-    waitFor(() => expect(mainImageElement).toHaveAttribute('src', mockProductImages[1]));
+  await images.map(async (image) => {
+    await user.click(image);
+    const mainImage = document.getElementById('main-gallery-image') as HTMLImageElement;
+    expect(mainImage).toBeVisible();
+    expect(mainImage.src).toBe(image.src);
   });
 });

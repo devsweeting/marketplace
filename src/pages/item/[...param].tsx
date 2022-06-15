@@ -24,14 +24,17 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
   useEffect(() => {
     setTraits(nftData?.attributes);
   }, [nftData]);
-
   return (
     <>
       <OpenGraph
         title={nftData.name}
         description={nftData.description}
-        image={nftData.media[0].file}
-        image_alt={nftData.media[0].description}
+        image={
+          nftData.media
+            ? nftData.media[0].file
+            : 'https://upload.wikimedia.org/wikipedia/commons/5/5a/No_image_available_500_x_500.svg'
+        }
+        image_alt={nftData.media ? nftData.media[0].description : 'No image available'}
       />
       {nftData ? (
         <Box
@@ -65,7 +68,23 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             >
               <Box className={classes.paddingOnMobile}>
                 <Grid item xs={12}>
-                  {nftData && <Gallery images={nftData.media} />}
+                  {nftData.media ? (
+                    <Gallery images={nftData.media} />
+                  ) : (
+                    <Gallery
+                      images={[
+                        {
+                          title: 'No image',
+                          file: '/images/No_image_available_500_x_500.svg',
+                          description: 'No image available',
+                          url: '/images/No_image_available_500_x_500.svg',
+                          sortOrder: 0,
+                          assetId: '',
+                          fileId: '',
+                        },
+                      ]}
+                    />
+                  )}
                 </Grid>
                 <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
                   <ProductCard name={nftData.name} />
@@ -84,13 +103,27 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 <DescriptionText text={nftData.description} />
                 <Box sx={{ position: 'relative' }}>
                   <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
-                    <Image
-                      src={nftData.media[0].file}
-                      alt={nftData.media[0].title}
-                      layout="fill"
-                      objectFit="contain"
-                      style={{ borderRadius: '8px' }}
-                    />
+                    {nftData.media ? (
+                      <Image
+                        src={nftData.media[0].file}
+                        alt={nftData.media[0].description}
+                        layout="fill"
+                        objectFit="contain"
+                        style={{ borderRadius: '8px' }}
+                      />
+                    ) : (
+                      <Image
+                        src="/images/No_image_available_500_x_500.svg"
+                        layout="fill"
+                        alt="No image available"
+                        objectFit="contain"
+                        style={{
+                          borderRadius: '8px',
+                          backdropFilter: 'blur(10px)',
+                          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                        }}
+                      />
+                    )}
                   </Box>
                   {traits && <Properties attributes={traits} />}
                 </Box>

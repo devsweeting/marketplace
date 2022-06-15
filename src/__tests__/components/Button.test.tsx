@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Button } from '@/components/Button/index';
 import { themeJump } from '@/styles/themeJump';
 import '@testing-library/jest-dom/extend-expect';
+import user from '@testing-library/user-event';
 
 const handleClick = jest.fn();
 const mockVariant = 'outlined';
@@ -25,9 +26,7 @@ describe('Button', () => {
     expect(buttonElement).toHaveClass('MuiButtonBase-root');
     expect(screen.getByText('Click me!')).toBeTruthy();
 
-    await act(async () => {
-      await fireEvent.click(buttonElement);
-      await waitFor(() => expect(handleClick).toHaveBeenCalledTimes(1));
-    });
+    await user.click(buttonElement);
+    await waitFor(async () => await expect(handleClick).toHaveBeenCalledTimes(1));
   });
 });

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { useGalleryStyles } from './Gallery.styles';
 
-type Image = {
+export type Image = {
   title: string;
   description?: string;
   url: string;
@@ -45,7 +45,6 @@ export const Gallery = ({ images }: { images: Image[] }) => {
                   <img
                     className={classes.thumbnail}
                     src={image.file}
-                    name={'product-thumbnail'}
                     alt={image.title}
                     width={80}
                     height={114}
@@ -63,6 +62,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
           <Grid item pt={0} md={12} className={classes.imageContainer}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+              id="main-gallery-image"
               className={classes.image}
               src={mainImage}
               alt={'main asset image'}

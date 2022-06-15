@@ -8,24 +8,43 @@ export const mockTraits = {
 };
 
 export const mockProductData = {
-  title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
-  watchNumber: 2,
-  price: {
-    icon: 'etherum',
-    cryptoValue: '2.1',
-    dolarValue: '6234.33',
-  },
-  brand: {
-    logo: 'brand_a',
-    verified: true,
-    name: 'Comix',
-  },
+  name: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
 };
 
 export const mockProductImages = [
   '/images/nftDetail/gallery/product1b.svg',
   '/images/nftDetail/gallery/product1a.svg',
   '/images/nftDetail/gallery/product1b.svg',
+];
+
+export const mockGalleryImages = [
+  {
+    title: 'Robbert van Dijk - The Dutch',
+    image: '/images/nftDetail/gallery/product1b.svg',
+    url: '/images/nftDetail/gallery/product1b.svg',
+    sortOrder: 1,
+    assetId: '19292',
+    fileId: '19292',
+    file: '/images/nftDetail/gallery/product1b.svg',
+  },
+  {
+    title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
+    image: '/images/nftDetail/gallery/product1a.svg',
+    url: '/images/nftDetail/gallery/product1a.svg',
+    sortOrder: 2,
+    assetId: '19292',
+    fileId: '19292',
+    file: '/images/nftDetail/gallery/product1a.svg',
+  },
+  {
+    title: 'Gary Oldman - The American',
+    image: '/images/nftDetail/gallery/product1b.svg',
+    url: '/images/nftDetail/gallery/product1b.svg',
+    sortOrder: 3,
+    assetId: '19292',
+    fileId: '19292',
+    file: '/images/nftDetail/gallery/product1b.svg',
+  },
 ];
 
 export const mockNavLinks = [
