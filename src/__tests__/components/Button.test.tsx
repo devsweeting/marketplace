@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Button } from '@/components/Button/index';
 import { themeJump } from '@/styles/themeJump';

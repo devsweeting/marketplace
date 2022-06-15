@@ -1,13 +1,22 @@
 import React from 'react';
-import { getByAltText, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Gallery } from '@/components/Gallery';
-import type Image from '@/components/Gallery';
 import { themeJump } from '@/styles/themeJump';
 import { mockGalleryImages } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 import { withTestRouter } from '../helpers/TestRouter';
 import user from '@testing-library/user-event';
+
+type Image = {
+  title: string;
+  description?: string;
+  url: string;
+  sortOrder: number;
+  assetId: string;
+  fileId: string;
+  file: string;
+};
 
 const MockGallery = ({ images }: { images: Image[] }) => {
   return withTestRouter(
