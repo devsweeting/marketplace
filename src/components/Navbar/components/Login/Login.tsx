@@ -6,8 +6,6 @@ import { CustomModal } from '@/components/Modals/CustomModal';
 import { useModal } from '@/helpers/hooks/useModal';
 
 export const Login = () => {
-  const modalBox = useRef<HTMLDivElement>(null);
-
   const { isOpen, setIsOpen } = useModal();
 
   const classes = useNavLinkStyles();
