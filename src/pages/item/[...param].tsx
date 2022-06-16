@@ -89,7 +89,7 @@ const DetailPage = ({ nftData, user }: { nftData: any; user: IUser }) => {
                   )}
                 </Grid>
                 <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
-                  <ProductCard name={nftData.name} user={user} />
+                  <ProductCard name={nftData.name} id={nftData.id} user={user} />
                 </Grid>
               </Box>
 
@@ -142,7 +142,7 @@ const DetailPage = ({ nftData, user }: { nftData: any; user: IUser }) => {
                 display: { xs: 'none', md: 'block' },
               }}
             >
-              {nftData && <ProductCard name={nftData.name} user={user} />}
+              {nftData && <ProductCard name={nftData.name} id={nftData.id} user={user} />}
             </Grid>
 
             <Grid
