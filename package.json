@@ -9,12 +9,8 @@
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
     "test": "jest --watch",
-<<<<<<< HEAD
     "test:all": "jest",
     "test:cov": "jest --coverage"
-=======
-    "testall": "jest" 
->>>>>>> c69a090 (update workflow to run all tests)
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",

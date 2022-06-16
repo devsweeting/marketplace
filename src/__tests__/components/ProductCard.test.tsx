@@ -1,13 +1,9 @@
-// eslint-disable-next-line import/default
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
-// eslint-disable-next-line import/no-unresolved
 import { ProductCard } from '@/components/ProductCard';
 import type { ProductDataProps } from '@/components/ProductCard/ProductCard';
-// eslint-disable-next-line import/no-unresolved
 import { themeJump } from '@/styles/themeJump';
-// eslint-disable-next-line import/no-unresolved
 import { mockProductData } from '@/__mocks__/mockApiData';
 import { withTestRouter } from '../utils/TestRouter';
 import user from '@testing-library/user-event';
