@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Typography, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -17,7 +17,7 @@ export const ProductCard: React.FC<{ name: ProductDataProps; user: IUser }> = ({
   const handleClick = () => {
     if (!user) {
       console.log('not logged in');
-      setIsOpen((isOpen: boolean) => !isOpen);
+      setIsOpen(!isOpen);
     }
   };
   const classes = useProductStyles();
