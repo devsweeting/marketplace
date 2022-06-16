@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import type { Dispatch } from 'react';
 import React, { createContext, useCallback, useEffect, useState, useMemo } from 'react';
 
@@ -24,9 +25,23 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
 
 =======
 import React, { createContext, useCallback, useEffect, useState, useMemo, Dispatch } from 'react';
+=======
+import type { Dispatch } from 'react';
+import React, { createContext, useCallback, useEffect, useState, useMemo } from 'react';
+>>>>>>> 390a7dc (fixed lint errors)
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export const ModalContext = createContext([{}, () => {}]);
+export interface IModalContext {
+  isOpen: boolean;
+  setIsOpen: Dispatch<boolean>;
+}
+
+const defaultState = {
+  isOpen: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  setIsOpen: () => {},
+};
+
+export const ModalContext = createContext<IModalContext>(defaultState);
 
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
