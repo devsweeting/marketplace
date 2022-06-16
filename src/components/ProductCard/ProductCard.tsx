@@ -7,18 +7,17 @@ import { Button } from '@/components/Button';
 import { useProductStyles } from './ProductCard.styles';
 import { ShareButton } from '@/components/ShareButton';
 import type { IUser } from 'src/types/user';
+import { useModal } from '@/helpers/hooks/useModal';
 
 export interface ProductDataProps {
   name: string;
 }
 export const ProductCard: React.FC<{ name: ProductDataProps; user: IUser }> = ({ name, user }) => {
-  const [shouldLoginDisplay, setShouldLoginDisplay] = useState(false);
+  const { isOpen, setIsOpen } = useModal();
   const handleClick = () => {
-    if (user) {
-      setShouldLoginDisplay(false);
-    }
     if (!user) {
-      setShouldLoginDisplay(true);
+      console.log('not logged in');
+      setIsOpen((isOpen: boolean) => !isOpen);
     }
   };
   const classes = useProductStyles();
