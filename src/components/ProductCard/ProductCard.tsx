@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import React, { useState } from 'react';
+>>>>>>> 567aa7f (Modal Context and provider)
 import { Grid, Typography, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';

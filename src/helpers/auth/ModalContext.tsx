@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { Dispatch } from 'react';
 import { createContext, useCallback, useEffect, useState, useMemo } from 'react';
 
@@ -31,6 +32,27 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
       setIsOpen,
     }),
     [isOpen, setIsOpen],
+=======
+import React, { createContext, useCallback, useEffect, useState, useMemo } from 'react';
+
+export interface IModalContext {
+  toggle: () => void;
+}
+export const ModalContext = createContext<IModalContext>({
+  toggle: () => false,
+});
+
+export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+  const [open, setOpen] = useState(false);
+
+  const toggle = useCallback(() => setOpen(!open), [open]);
+
+  const contextValue = useMemo(
+    () => ({
+      toggle,
+    }),
+    [toggle],
+>>>>>>> 583b0a9 (Modal Context and provider)
   );
 
   return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>;
