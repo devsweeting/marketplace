@@ -3,6 +3,16 @@ import type { Config } from '@jest/types';
 const config: Config.InitialOptions = {
   verbose: true,
   collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/*.d.ts', '!**/node_modules/**'],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/test/',
+    '/src/config/',
+    '.styles.ts',
+    'config.(js|ts)',
+    '/.next/',
+    'coverage/',
+  ],
+  coverageDirectory: './coverage',
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/styles/(.*)$': '<rootDir>/styles/$1',
