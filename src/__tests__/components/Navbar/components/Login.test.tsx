@@ -75,10 +75,7 @@ test('User should be able to submit a valid email', async () => {
   const originalFetch = global.fetch;
   global.fetch = jest.fn(() =>
     Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          status: 200,
-        }),
+      status: 200,
     }),
   ) as jest.Mock;
   const input = screen.getByRole('textbox', { name: /email/i });
@@ -89,5 +86,23 @@ test('User should be able to submit a valid email', async () => {
   expect(global.fetch).toHaveBeenCalledTimes(1);
   expect(alert).toHaveTextContent(/Check your email for a link to sign in/i);
   expect(button).toBeDisabled();
+  global.fetch = originalFetch;
+});
+
+test('User should get too many requests error.', async () => {
+  await openModal();
+  const originalFetch = global.fetch;
+  global.fetch = jest.fn(() =>
+    Promise.resolve({
+      status: 429,
+    }),
+  ) as jest.Mock;
+  const input = screen.getByRole('textbox', { name: /email/i });
+  const button = screen.getByRole('button', { name: /login/i });
+  const alert = screen.getByRole('alert');
+  expect(alert).toHaveTextContent('');
+  await user.type(input, 'test@test.com');
+  await user.click(button);
+  expect(alert).toHaveTextContent(/too many requests/i);
   global.fetch = originalFetch;
 });

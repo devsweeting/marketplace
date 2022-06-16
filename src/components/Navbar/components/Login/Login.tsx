@@ -29,7 +29,12 @@ export const Login = () => {
     setEmailState(event.target.value);
     setButtonState(false);
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setEmailState('');
+    setButtonState(false);
+    setAlertMessage('');
+  };
 
   useEffect(() => {
     //
@@ -47,6 +52,7 @@ export const Login = () => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    setButtonState(true);
     validate(emailState);
     if (!validate(emailState)) {
       setAlertMessage('Please enter a valid email address');
@@ -63,29 +69,29 @@ export const Login = () => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: formBody,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === 200) {
+    }).then((res) => {
+      switch (res.status) {
+        case 200:
           setAlertMessage('Check your email for a link to sign in.');
           if (modalBox.current) {
             modalBox.current.style.color = '#4caf50';
           }
           setButtonState(true);
           return;
-        }
-        if (data.status === 429) {
+        case 429:
           setAlertMessage('Too many requests. Please try again later.');
           if (modalBox.current) {
             modalBox.current.style.color = '#f44336';
           }
+          setButtonState(true);
           return;
-        }
-        if (modalBox.current) {
-          setAlertMessage('Something went wrong. Please try again later.');
-          modalBox.current.style.color = '#ffae00';
-        }
-      });
+        default:
+          if (modalBox.current) {
+            setAlertMessage('Something went wrong. Please try again later.');
+            modalBox.current.style.color = '#ffae00';
+          }
+      }
+    });
   };
 
   return (
