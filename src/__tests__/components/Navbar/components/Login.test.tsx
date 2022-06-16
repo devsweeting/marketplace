@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor, queries } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import 'jest-axe/extend-expect';
@@ -35,12 +35,12 @@ describe('Login', () => {
   test('Modal should be contain a valid form, input, and button', async () => {
     const modal = await openModal();
     const input = screen.getByRole('textbox', { name: /email/i });
-    const inputLabel = queries.getByText(modal, /email/i);
+    const inputLabel = within(modal).getByText(/email/i);
     const button = screen.getByRole('button', { name: /login/i });
-    const form = modal.querySelector('form');
+    const form = within(modal).getByRole('form');
     const formViolations = await axe(form ?? '');
     const alert = screen.getByRole('alert');
-    expect(modal.querySelector('form')).toBeTruthy();
+    expect(form).toBeTruthy();
     expect(input).toBeInTheDocument();
     expect(input).toBeTruthy();
     expect(input).toHaveAttribute('type', 'email');

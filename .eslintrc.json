@@ -6,7 +6,7 @@
     "jest": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["import", "@typescript-eslint", "react-hooks", "prettier"],
+  "plugins": ["import", "@typescript-eslint", "react-hooks", "prettier", "testing-library"],
   "extends": [
     "eslint:recommended",
     "plugin:import/errors",
@@ -15,7 +15,8 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "next/core-web-vitals",
-    "prettier"
+    "prettier",
+    "plugin:testing-library/react"
   ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",
@@ -43,7 +44,8 @@
     "react/hook-use-state": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "prettier/prettier": "warn"
+    "prettier/prettier": "warn",
+    "no-console": "warn"
   },
   "settings": {
     "import/parsers": {
