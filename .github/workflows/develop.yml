@@ -39,7 +39,7 @@ jobs:
 
       # Uncomment this when tests work :)
       - name: 'Run Tests'
-        run: yarn test
+        run: yarn testall
 
       ######################################
       # Deploy to Elastic Beanstalk

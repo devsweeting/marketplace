@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "testall": "jest" 
   },
   "dependencies": {
     "@emotion/cache": "^11.7.1",
