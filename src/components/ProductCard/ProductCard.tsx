@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Grid, Typography, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -5,6 +6,10 @@ import CardContent from '@mui/material/CardContent';
 import { Button } from '@/components/Button';
 import { useProductStyles } from './ProductCard.styles';
 import { ShareButton } from '@/components/ShareButton';
+import { useModal } from '@/helpers/hooks/useModal';
+import { addToWatchlist, removeFromWatchlist } from '@/api/endpoints/watchlist';
+import { StatusCodes } from 'http-status-codes';
+import { useUser } from '@/helpers/hooks/useUser';
 
 export interface ProductDataProps {
   name: string;
@@ -12,7 +17,66 @@ export interface ProductDataProps {
 }
 export const ProductCard: React.FC<{
   name: ProductDataProps;
-}> = ({ name }) => {
+  id: ProductDataProps;
+}> = ({ name, id }) => {
+  const { isOpen, setIsOpen } = useModal();
+  const [hasBeenAdded, setHasBeenAdded] = useState(false);
+  const user = useUser();
+  let originalWatchlist;
+
+  useEffect(() => {
+    if (localStorage.getItem('watchList')) {
+      const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
+      if (originalWatchlist.some((watchItem: { id: ProductDataProps }) => watchItem.id === id)) {
+        setHasBeenAdded(true);
+        return;
+      }
+    }
+  }, [id, originalWatchlist]);
+
+  const handleClick = () => {
+    if (!user) {
+      if (localStorage.getItem('watchList')) {
+        originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
+        originalWatchlist.push({ id: id });
+      } else {
+        originalWatchlist = [{ id: id }];
+      }
+      localStorage.setItem('watchList', JSON.stringify(originalWatchlist));
+      setIsOpen(!isOpen);
+      setHasBeenAdded(true);
+      return;
+    }
+
+    addToWatchlist({ id }).then((status) => {
+      switch (status) {
+        case StatusCodes.CREATED:
+          setHasBeenAdded(true);
+          return;
+        case StatusCodes.CONFLICT:
+          setHasBeenAdded(true);
+          return;
+      }
+    });
+  };
+
+  const handleRemoveClick = () => {
+    if (!user) {
+      const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
+      const watchlist = originalWatchlist.filter(
+        (watchlist: { id: ProductDataProps }) => watchlist.id !== id,
+      );
+      localStorage.setItem('watchList', JSON.stringify(watchlist));
+      setHasBeenAdded(false);
+      return;
+    }
+
+    removeFromWatchlist({ id }).then(() => {
+      setHasBeenAdded(false);
+      return;
+    });
+  };
+
   const classes = useProductStyles();
   return (
     <Card className={classes.productContainer}>
@@ -27,9 +91,25 @@ export const ProductCard: React.FC<{
         <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
           <Grid item md={12} xs={12}>
             <CardActions className={classes.cardActions}>
-              <Button variant="contained" size="small" className={classes.button}>
-                Add to Watchlist
-              </Button>
+              {!hasBeenAdded ? (
+                <Button
+                  variant="contained"
+                  size="small"
+                  className={classes.button}
+                  onClick={handleClick}
+                >
+                  Add to Watchlist
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  size="small"
+                  className={classes.button}
+                  onClick={handleRemoveClick}
+                >
+                  Remove to Watchlist
+                </Button>
+              )}
             </CardActions>
           </Grid>
         </Grid>

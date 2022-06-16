@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Grid, Box } from '@mui/material';
@@ -88,7 +88,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                   )}
                 </Grid>
                 <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
-                  <ProductCard name={nftData.name} />
+                  <ProductCard name={nftData.name} id={nftData.id} />
                 </Grid>
               </Box>
 
@@ -141,7 +141,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 display: { xs: 'none', md: 'block' },
               }}
             >
-              {nftData && <ProductCard name={nftData.name} />}
+              {nftData && <ProductCard name={nftData.name} id={nftData.id} />}
             </Grid>
 
             <Grid
