@@ -11,8 +11,13 @@ import { useModal } from '@/helpers/hooks/useModal';
 
 export interface ProductDataProps {
   name: string;
+  id: string;
 }
-export const ProductCard: React.FC<{ name: ProductDataProps; user: IUser }> = ({ name, user }) => {
+export const ProductCard: React.FC<{
+  name: ProductDataProps;
+  id: ProductDataProps;
+  user: IUser;
+}> = ({ name, id, user }) => {
   const { isOpen, setIsOpen } = useModal();
   const handleClick = () => {
     if (!user) {
