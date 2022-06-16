@@ -47,7 +47,7 @@ describe('Gallery', () => {
 
     await images.map(async (image) => {
       await user.click(image);
-      const mainImage = document.getElementById('main-gallery-image') as HTMLImageElement;
+      const mainImage = screen.getByRole('img', { name: 'main-gallery-image' }) as HTMLImageElement;
       expect(mainImage).toBeVisible();
       expect(mainImage.src).toBe(image.src);
     });
