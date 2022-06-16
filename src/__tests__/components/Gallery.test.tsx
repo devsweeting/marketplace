@@ -5,7 +5,7 @@ import { Gallery } from '@/components/Gallery';
 import { themeJump } from '@/styles/themeJump';
 import { mockGalleryImages } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
-import { withTestRouter } from '../helpers/TestRouter';
+import { withTestRouter } from '../utils/TestRouter';
 import user from '@testing-library/user-event';
 
 type Image = {
