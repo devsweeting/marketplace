@@ -33,9 +33,12 @@ export const Login = () => {
     setButtonState(false);
   };
   const handleClose = () => {
+<<<<<<< HEAD
     setEmailState('');
     setButtonState(false);
     setAlertMessage('');
+=======
+>>>>>>> 390a7dc (fixed lint errors)
     setIsOpen(!isOpen);
   };
 
