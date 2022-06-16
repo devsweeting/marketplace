@@ -75,10 +75,7 @@ test('User should be able to submit a valid email', async () => {
   const originalFetch = global.fetch;
   global.fetch = jest.fn(() =>
     Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          status: 200,
-        }),
+      status: 200,
     }),
   ) as jest.Mock;
   const input = screen.getByRole('textbox', { name: /email/i });
@@ -97,10 +94,7 @@ test('User should get too many requests error.', async () => {
   const originalFetch = global.fetch;
   global.fetch = jest.fn(() =>
     Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          statusCode: 429,
-        }),
+      status: 429,
     }),
   ) as jest.Mock;
   const input = screen.getByRole('textbox', { name: /email/i });
