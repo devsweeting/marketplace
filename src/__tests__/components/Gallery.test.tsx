@@ -6,7 +6,7 @@ import { themeJump } from '@/styles/themeJump';
 import { mockGalleryImages } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 import { withTestRouter } from '../helpers/TestRouter';
-import user from '@testing-library/user-event';
+// import user from '@testing-library/user-event';
 
 type Image = {
   title: string;
