@@ -38,8 +38,8 @@ jobs:
         run: yarn build
 
       # Uncomment this when tests work :)
-      # - name: 'Run Tests'
-      #   run: yarn test
+      - name: 'Run Tests'
+        run: yarn test
 
       ######################################
       # Deploy to Elastic Beanstalk
