@@ -15,8 +15,10 @@ import type { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Routes } from '@/domain/Routes';
+import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
+import type { IUser } from '../../types/user';
 
-const DetailPage = ({ nftData }: { nftData: any }) => {
+const DetailPage = ({ nftData, user }: { nftData: any; user: IUser }) => {
   const theme = useTheme();
   const classes = useDetailPageStyles();
   const [traits, setTraits] = useState<TraitType[] | null>(null);
@@ -87,7 +89,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                   )}
                 </Grid>
                 <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
-                  <ProductCard name={nftData.name} />
+                  <ProductCard name={nftData.name} user={user} />
                 </Grid>
               </Box>
 
@@ -140,7 +142,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 display: { xs: 'none', md: 'block' },
               }}
             >
-              {nftData && <ProductCard name={nftData.name} />}
+              {nftData && <ProductCard name={nftData.name} user={user} />}
             </Grid>
 
             <Grid
@@ -182,8 +184,11 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
 export default DetailPage;
 
-export async function getServerSideProps(context: any) {
-  const { param } = context.query;
+export const getServerSideProps = getServerSidePropsWithUser(async ({ query }) => {
+  const { param } = query;
+  if (!param) {
+    return { props: { nftData: null } };
+  }
   const asset_slug = param[0];
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_slug}`);
@@ -198,4 +203,4 @@ export async function getServerSideProps(context: any) {
   return {
     props: { nftData: data },
   };
-}
+});

@@ -7,11 +7,12 @@ import Modal from '@mui/material/Modal';
 import { useLoginStyles, modal, title } from './Login.styles';
 import classNames from 'classnames';
 import { Button } from '@/components/Button';
+import { useModal } from '@/helpers/hooks/useModal';
 
 export const Login = () => {
-  const modalBox = useRef<HTMLDivElement>(null);
+  const { isOpen, setIsOpen } = useModal();
 
-  const [open, setOpen] = useState(false);
+  const modalBox = useRef<HTMLDivElement>(null);
 
   const [emailState, setEmailState] = useState('');
 
@@ -23,17 +24,19 @@ export const Login = () => {
 
   const loginClasses = useLoginStyles();
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailState(event.target.value);
     setButtonState(false);
   };
   const handleClose = () => {
-    setOpen(false);
     setEmailState('');
     setButtonState(false);
     setAlertMessage('');
+    setIsOpen(!isOpen);
   };
 
   useEffect(() => {
@@ -102,7 +105,7 @@ export const Login = () => {
         </Typography>
       </a>
       <Modal
-        open={open}
+        open={isOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
