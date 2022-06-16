@@ -15,8 +15,7 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "next/core-web-vitals",
-    "prettier",
-    "plugin:testing-library/react"
+    "prettier"
   ],
   "rules": {
     "@typescript-eslint/no-unused-vars": "error",

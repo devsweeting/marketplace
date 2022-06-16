@@ -18,14 +18,14 @@ const MockSearchBox = () => {
 describe('SearchBox', () => {
   it('should render searchBox component and perform search', async () => {
     // Arrange
-    const { container } = render(<MockSearchBox />);
+    render(<MockSearchBox />);
     const button = screen.getByRole('button');
-    const form = container.querySelector('form');
-    const formViolations = await axe(form ?? '');
+    const searchBar = screen.getByRole('search');
+    const formViolations = await axe(searchBar ?? '');
     const onSubmit = jest.fn((e) => {
       e.preventDefault();
     });
-    form && form.addEventListener('submit', onSubmit);
+    searchBar && searchBar.addEventListener('submit', onSubmit);
 
     // Act
     await user.type(screen.getByPlaceholderText('Search'), 'test');
@@ -34,7 +34,7 @@ describe('SearchBox', () => {
     // Assertions
     expect(onSubmit).toHaveBeenCalled();
     expect(screen.getAllByPlaceholderText('Search')[0]).toHaveValue('test');
-    expect(container).toBeInTheDocument();
+    expect(searchBar).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'search' })).toHaveAttribute('aria-label', 'search');
     expect(formViolations).toHaveNoViolations();
   });

@@ -31,7 +31,7 @@ describe('DetailPage', () => {
   it('should render with the fetched content ', async () => {
     render(<MockDetailPage nftData={mockedApiData} />);
     // waitFor(() => expect(screen.getByText(mockedApiData.name)).toBeInTheDocument());
-    await waitFor(() => expect(screen.getByText(mockedApiData.description)).toBeInTheDocument());
+    expect(await screen.findByText(mockedApiData.description)).toBeInTheDocument();
     // await waitFor(() => expect(screen.findByText('Contact ID')).toBeInTheDocument());
     // await waitFor(() => expect(screen.findByText('Token ID')).toBeInTheDocument());
     // await waitFor(() => expect(screen.findByText('Token Type')).toBeInTheDocument());
