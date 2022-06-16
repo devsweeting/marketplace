@@ -1,9 +1,7 @@
 import React from 'react';
-import { render, screen, waitFor, queries } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
-import 'jest-axe/extend-expect';
-import { axe } from 'jest-axe';
 import { ThemeProvider } from '@mui/material';
 import { Logout } from '@/components/Navbar/components/Logout';
 import { themeJump } from '@/styles/themeJump';
