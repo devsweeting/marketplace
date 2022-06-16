@@ -43,7 +43,6 @@ describe('ProductCard', () => {
     expect(twitter).toBeInTheDocument();
     expect(linkedin).toBeInTheDocument();
     expect(whatsapp).toBeInTheDocument();
-    await user.click(facebook);
   });
 
   test('Add to watchlist button should be able to be clicked', async () => {
