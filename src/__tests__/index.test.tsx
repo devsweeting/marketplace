@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import HomePage from '../pages';
-import { withTestRouter } from './helpers/TestRouter';
+import { withTestRouter } from './utils/TestRouter';
 const push = jest.fn();
 const MockHomePage = () => {
   return withTestRouter(<HomePage />, { push, asPath: '/' });

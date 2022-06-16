@@ -6,7 +6,7 @@ import type { NavLinksProps } from '@/components/Navbar/Navbar';
 import { themeJump } from '@/styles/themeJump';
 import { mockNavLinks } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
-import { withTestRouter } from '../../helpers/TestRouter';
+import { withTestRouter } from '../../utils/TestRouter';
 import user from '@testing-library/user-event';
 //TODO - account for when the user is logged in and when they are not logged in
 jest.mock('next/router', () => ({

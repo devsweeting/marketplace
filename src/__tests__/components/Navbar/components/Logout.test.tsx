@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { ThemeProvider } from '@mui/material';
 import { Logout } from '@/components/Navbar/components/Logout';
 import { themeJump } from '@/styles/themeJump';
-import { withTestRouter } from '../../../helpers/TestRouter';
+import { withTestRouter } from '../../../utils/TestRouter';
 const push = jest.fn();
 const MockLogout = () => {
   return withTestRouter(
