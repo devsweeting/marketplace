@@ -14,26 +14,13 @@ export interface ProductDataProps {
   name: string;
   id: string;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> be68219 (making requests to /watchlist)
+
 export const ProductCard: React.FC<{
   name: ProductDataProps;
   id: ProductDataProps;
   user: IUser;
 }> = ({ name, id, user }) => {
-<<<<<<< HEAD
-=======
-export const ProductCard: React.FC<{ name: ProductDataProps; user: IUser }> = ({ name, user }) => {
-<<<<<<< HEAD
-  const { wishList, setWishList } = useWishList();
->>>>>>> f6dc59b (added Item to local storage if not logged in on add to wishlist)
-=======
-=======
->>>>>>> be68219 (making requests to /watchlist)
   const { setWishListState } = useWishList();
->>>>>>> 06cff9e (fixed typescript errors)
   const { isOpen, setIsOpen } = useModal();
   const handleClick = () => {
     if (!user) {
