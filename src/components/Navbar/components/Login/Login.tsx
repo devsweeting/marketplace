@@ -10,7 +10,9 @@ export const Login = () => {
 
   const classes = useNavLinkStyles();
 
-  const handleOpen = () => setIsOpen(!isOpen);
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div>
