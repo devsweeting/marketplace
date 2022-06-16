@@ -66,7 +66,6 @@ export const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.status === 200) {
           setAlertMessage('Check your email for a link to sign in.');
           if (modalBox.current) {

@@ -92,7 +92,7 @@ test('User should be able to submit a valid email', async () => {
   global.fetch = originalFetch;
 });
 
-test('User should get a too many requests error after 6 login attempts', async () => {
+test('User should get too many requests error.', async () => {
   await openModal();
   const originalFetch = global.fetch;
   global.fetch = jest.fn(() =>
