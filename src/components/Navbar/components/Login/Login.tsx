@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useNavLinkStyles } from '../NavLink/NavLink.styles';
 import Typography from '@mui/material/Typography';
 import classNames from 'classnames';
@@ -21,7 +20,7 @@ export const Login = () => {
           Login
         </Typography>
       </a>
-      <CustomModal open={isOpen} modalBox={modalBox} />
+      <CustomModal open={isOpen} />
     </div>
   );
 };

@@ -7,18 +7,13 @@ import { Button } from '@/components/Button';
 import { useModal } from '@/helpers/hooks/useModal';
 import LoginIcon from '@mui/icons-material/Login';
 
-export const CustomModal = ({
-  open: isOpen,
-  modalBox,
-}: {
-  open: boolean;
-  modalBox: React.RefObject<HTMLDivElement>;
-}) => {
+export const CustomModal = ({ open: isOpen }: { open: boolean }) => {
   const customModalClasses = useCustomModalStyles();
   const [emailState, setEmailState] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [buttonState, setButtonState] = useState(false);
   const { setIsOpen } = useModal();
+  const modalBox = useRef<HTMLDivElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailState(event.target.value);
