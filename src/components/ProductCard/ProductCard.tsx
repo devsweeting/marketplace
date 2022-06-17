@@ -8,21 +8,28 @@ import { useProductStyles } from './ProductCard.styles';
 import { ShareButton } from '@/components/ShareButton';
 import type { IUser } from 'src/types/user';
 import { useModal } from '@/helpers/hooks/useModal';
+import { useWishList } from '@/helpers/WishListContext/WishListContext';
 
 export interface ProductDataProps {
   name: string;
   id: string;
 }
+<<<<<<< HEAD
 export const ProductCard: React.FC<{
   name: ProductDataProps;
   id: ProductDataProps;
   user: IUser;
 }> = ({ name, id, user }) => {
+=======
+export const ProductCard: React.FC<{ name: ProductDataProps; user: IUser }> = ({ name, user }) => {
+  const { wishList, setWishList } = useWishList();
+>>>>>>> f6dc59b (added Item to local storage if not logged in on add to wishlist)
   const { isOpen, setIsOpen } = useModal();
   const handleClick = () => {
     if (!user) {
-      console.log('not logged in');
+      setWishList({ type: 'ADD_TO_WISHLIST', payload: name });
       setIsOpen(!isOpen);
+      console.log('wishlist', wishList);
     }
   };
   const classes = useProductStyles();
