@@ -28,6 +28,7 @@ export const ProductCard: React.FC<{
     if (!user) {
       setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
       setIsOpen(!isOpen);
+      console.log('wishlist', wishList);
     }
     setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
   };
