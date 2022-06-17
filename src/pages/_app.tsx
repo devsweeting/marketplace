@@ -12,6 +12,7 @@ import { createEmotionCache } from '@/styles/createEmotionCache';
 import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
 import type { HeaderPosition } from '@/layout/components/Header/Header';
+import { UserProvider } from '@/helpers/auth/UserContext';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -45,10 +46,12 @@ export default function MyApp(props: MyAppProps) {
       </Head>
       <ThemeProvider theme={choosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
-          <CssBaseline />
-          <Layout headerPosition={headerStyle}>
-            <Component {...pageProps} />
-          </Layout>
+          <UserProvider>
+            <CssBaseline />
+            <Layout headerPosition={headerStyle}>
+              <Component {...pageProps} />
+            </Layout>
+          </UserProvider>
         </SkinContext.Provider>
       </ThemeProvider>
     </CacheProvider>

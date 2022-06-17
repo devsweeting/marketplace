@@ -1,10 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import SearchIcon from '@mui/icons-material/Search';
 import { NavLink } from './components/NavLink';
 import { useNavbarStyles } from './Navbar.styles';
+import { Login } from './components/Login';
+import { useUser } from '@/helpers/hooks/useUser';
+import { Logout } from '@/components/Navbar/components/Logout';
 
 type NavLink = {
   title: string;
@@ -15,6 +18,8 @@ export type NavLinksProps = NavLink[];
 
 export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
   const classes = useNavbarStyles();
+  const user = useUser();
+
   return (
     <Toolbar component="nav" sx={{ display: { xs: `flex` } }}>
       <Stack direction="row">
@@ -26,6 +31,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
         <Typography variant="h4" component="span" className={classes.searchIcon} ml={3}>
           <SearchIcon />
         </Typography>
+        {!user ? <Login /> : <Logout />}
       </Stack>
     </Toolbar>
   );
