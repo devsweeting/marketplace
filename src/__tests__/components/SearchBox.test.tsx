@@ -4,8 +4,6 @@ import user from '@testing-library/user-event';
 import { ThemeProvider } from '@mui/material';
 import { SearchBox } from '@/components/SearchBox';
 import { themeJump } from '@/styles/themeJump';
-import '@testing-library/jest-dom/extend-expect';
-import 'jest-axe/extend-expect';
 import { axe } from 'jest-axe';
 const MockSearchBox = () => {
   return (

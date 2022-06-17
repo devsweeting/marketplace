@@ -1,8 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import user from '@testing-library/user-event';
-import '@testing-library/jest-dom/extend-expect';
-import 'jest-axe/extend-expect';
 import { axe } from 'jest-axe';
 import { ThemeProvider } from '@mui/material';
 import { Login } from '@/components/Navbar/components/Login';

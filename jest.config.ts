@@ -11,6 +11,7 @@ const config: Config.InitialOptions = {
     'config.(js|ts)',
     '/.next/',
     'coverage/',
+    'helpers/constants.ts',
   ],
   coverageDirectory: './coverage',
   moduleNameMapper: {

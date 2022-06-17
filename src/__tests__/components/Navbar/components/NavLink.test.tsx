@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { NavLink } from '@/components/Navbar/components/NavLink';
 import { themeJump } from '@/styles/themeJump';
-import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('next/router', () => ({
   useRouter() {

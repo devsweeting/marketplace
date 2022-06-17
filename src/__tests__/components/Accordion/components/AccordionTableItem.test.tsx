@@ -5,7 +5,6 @@ import { AccordionTableItem } from '@/components/Accordion/components/AccordionT
 import type { BlockChainInfoProps } from '@/components/Accordion/components/AccordionTableItem/AccordionTableItem';
 import { themeJump } from '@/styles/themeJump';
 import { mockTraits } from '@/__mocks__/mockApiData';
-import '@testing-library/jest-dom/extend-expect';
 
 interface AccordionTableItemProps {
   title: string;

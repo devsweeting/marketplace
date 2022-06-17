@@ -5,7 +5,6 @@ import { ProductCard } from '@/components/ProductCard';
 import type { ProductDataProps } from '@/components/ProductCard/ProductCard';
 import { themeJump } from '@/styles/themeJump';
 import { mockProductData } from '@/__mocks__/mockApiData';
-import '@testing-library/jest-dom/extend-expect';
 import { withTestRouter } from '../utils/TestRouter';
 import user from '@testing-library/user-event';
 

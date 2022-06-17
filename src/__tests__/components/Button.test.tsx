@@ -3,7 +3,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Button } from '@/components/Button/index';
 import { themeJump } from '@/styles/themeJump';
-import '@testing-library/jest-dom/extend-expect';
 import user from '@testing-library/user-event';
 
 const handleClick = jest.fn();
