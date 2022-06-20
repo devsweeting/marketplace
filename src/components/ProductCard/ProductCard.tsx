@@ -14,7 +14,6 @@ export interface ProductDataProps {
   name: string;
   id: string;
 }
-
 export const ProductCard: React.FC<{
   name: ProductDataProps;
   id: ProductDataProps;
