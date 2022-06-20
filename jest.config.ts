@@ -1,4 +1,5 @@
 import type { Config } from '@jest/types';
+require('@next/env').loadEnvConfig(process.cwd(), process.env.NODE_ENV === 'development');
 
 const config: Config.InitialOptions = {
   verbose: true,

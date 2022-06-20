@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import { encrypt, decrypt } from '@/helpers/crypto';
 import * as constant from '../../helpers/constants';
 
