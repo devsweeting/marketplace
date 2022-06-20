@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-import React from 'react';
->>>>>>> 390a7dc (fixed lint errors)
 import { Grid, Typography, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -28,7 +24,6 @@ export const ProductCard: React.FC<{
     if (!user) {
       setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
       setIsOpen(!isOpen);
-      console.log('wishlist', wishList);
     }
     setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
   };
