@@ -7,6 +7,7 @@ interface IWishList {
     },
   ];
 }
+
 interface IAction {
   type: string;
   payload: any;
@@ -63,9 +64,17 @@ export const WishListWrapper = ({ children }: { children: React.ReactNode }) => 
 
   useEffect(() => {
     if (wishList !== initialWishList) {
-      let localStorageWishList = [];
+      let localStorageWishList: IWishList = [];
       if (localStorage.getItem('wishList')) {
         localStorageWishList = JSON.parse(localStorage.getItem('wishList') as string);
+
+        localStorageWishList.forEach((item: any) => {
+          if (item.id === wishList.wishList.id) {
+            localStorageWishList.splice(localStorageWishList.indexOf(item), 1);
+
+            console.log('localStorageWishList', localStorageWishList);
+          }
+        });
       }
       localStorageWishList.push(wishList.wishList);
       localStorage.setItem('wishList', JSON.stringify(localStorageWishList));
