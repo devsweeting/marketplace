@@ -1,9 +1,11 @@
 import React, { createContext, useEffect, useMemo, useReducer, useContext } from 'react';
 
 interface IWishList {
-  wishList: {
-    id: string;
-  };
+  wishList: [
+    {
+      id: string;
+    },
+  ];
 }
 interface IAction {
   type: string;
@@ -11,9 +13,11 @@ interface IAction {
 }
 
 const initialWishList = {
-  wishList: {
-    id: '',
-  },
+  wishList: [
+    {
+      id: '',
+    },
+  ],
 };
 
 export const wishListReducer = (state: IWishList, action: IAction) => {
@@ -22,7 +26,9 @@ export const wishListReducer = (state: IWishList, action: IAction) => {
     case 'ADD_TO_WISHLIST':
       return {
         ...state,
-        wishList: { id: payload },
+        wishList: {
+          id: payload,
+        },
       };
     case 'REMOVE_FROM_WISHLIST':
       return {
@@ -56,15 +62,13 @@ export const WishListWrapper = ({ children }: { children: React.ReactNode }) => 
   );
 
   useEffect(() => {
-    const userWishlist = localStorage.getItem('wishlist') || '[]';
-    if (JSON.parse(userWishlist)) {
-      setWishList({ type: 'ADD_TO_WISHLIST', payload: JSON.parse(userWishlist) });
-    }
-  }, []);
-
-  useEffect(() => {
     if (wishList !== initialWishList) {
-      localStorage.setItem('wishlist', JSON.stringify(wishList));
+      let localStorageWishList = [];
+      if (localStorage.getItem('wishList')) {
+        localStorageWishList = JSON.parse(localStorage.getItem('wishList') as string);
+      }
+      localStorageWishList.push(wishList.wishList);
+      localStorage.setItem('wishList', JSON.stringify(localStorageWishList));
     }
   }, [wishList]);
 

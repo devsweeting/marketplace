@@ -31,6 +31,8 @@ export const ProductCard: React.FC<{ name: ProductDataProps; user: IUser }> = ({
       setIsOpen(!isOpen);
       console.log('wishlist', wishList);
     }
+
+    setWishList({ type: 'ADD_TO_WISHLIST', payload: name });
   };
   const classes = useProductStyles();
   return (
