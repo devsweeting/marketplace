@@ -25,12 +25,7 @@ export const ProductCard: React.FC<{
       setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
       setIsOpen(!isOpen);
     }
-
-<<<<<<< HEAD
     setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
-=======
-    setWishList({ type: 'ADD_TO_WISHLIST', payload: name });
->>>>>>> 5bf801a (add multiple items to the local storage wishlist)
   };
   const classes = useProductStyles();
   return (
