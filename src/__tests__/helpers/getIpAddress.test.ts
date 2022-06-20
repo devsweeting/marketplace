@@ -18,3 +18,4 @@ describe('getIpAddress', () => {
     expect(result).toBe('127.0.0.1');
   });
 });
+socket.destroy();
