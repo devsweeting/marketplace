@@ -22,17 +22,20 @@ export const ProductCard: React.FC<{
 }> = ({ name, id, user }) => {
 =======
 export const ProductCard: React.FC<{ name: ProductDataProps; user: IUser }> = ({ name, user }) => {
+<<<<<<< HEAD
   const { wishList, setWishList } = useWishList();
 >>>>>>> f6dc59b (added Item to local storage if not logged in on add to wishlist)
+=======
+  const { setWishListState } = useWishList();
+>>>>>>> 06cff9e (fixed typescript errors)
   const { isOpen, setIsOpen } = useModal();
   const handleClick = () => {
     if (!user) {
-      setWishList({ type: 'ADD_TO_WISHLIST', payload: name });
+      setWishListState({ type: 'ADD_TO_WISHLIST', payload: name.toString() });
       setIsOpen(!isOpen);
-      console.log('wishlist', wishList);
     }
 
-    setWishList({ type: 'ADD_TO_WISHLIST', payload: name });
+    setWishListState({ type: 'ADD_TO_WISHLIST', payload: name.toString() });
   };
   const classes = useProductStyles();
   return (

@@ -1,85 +1,82 @@
-import React, { createContext, useEffect, useMemo, useReducer, useContext } from 'react';
+import { createContext, useEffect, useMemo, useReducer, useContext } from 'react';
 
-interface IWishList {
-  wishList: [
-    {
-      id: string;
-    },
-  ];
+interface IWishListState {
+  wishListObj: { [key: string]: string };
 }
 
-interface IAction {
+interface IWishListAction {
   type: string;
-  payload: any;
+  payload: string;
 }
 
-const initialWishList = {
-  wishList: [
-    {
-      id: '',
-    },
-  ],
+interface IWishListContext {
+  wishListState: IWishListState;
+  setWishListState: (payload: { type: string; payload: string }) => void;
+}
+
+type Props = {
+  children: React.ReactNode;
 };
 
-export const wishListReducer = (state: IWishList, action: IAction) => {
-  const { type, payload } = action;
-  switch (type) {
+type ILocalStorageInitialValue = [ILocalStorageItem] | any[];
+type ILocalStorageItem = { id: string };
+
+const initialWishListState = {
+  wishListObj: {
+    id: '',
+  },
+};
+
+export const reducer = (state: IWishListState, action: IWishListAction) => {
+  switch (action.type) {
     case 'ADD_TO_WISHLIST':
       return {
         ...state,
-        wishList: {
-          id: payload,
+        wishListObj: {
+          ...state.wishListObj,
+          id: action.payload,
         },
-      };
-    case 'REMOVE_FROM_WISHLIST':
-      return {
-        ...state,
-        wishlist: [
-          {
-            id: '',
-          },
-        ],
       };
     default:
       return state;
   }
 };
 
-const WishListContext = createContext<{ wishList: any; setWishList: any }>({
-  wishList: [],
+const WishListContext = createContext<IWishListContext>({
+  wishListState: initialWishListState,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setWishList: () => [{}],
+  setWishListState: () => {},
 });
 
-export const WishListWrapper = ({ children }: { children: React.ReactNode }) => {
-  const [wishList, setWishList] = useReducer(wishListReducer, initialWishList);
+export const WishListWrapper = ({ children }: Props) => {
+  const [wishListState, setWishListState] = useReducer(reducer, initialWishListState);
 
   const contextValue = useMemo(
     () => ({
-      wishList,
-      setWishList,
+      setWishListState,
+      wishListState,
     }),
-    [wishList, setWishList],
+    [wishListState, setWishListState],
   );
 
   useEffect(() => {
-    if (wishList !== initialWishList) {
-      let localStorageWishList: IWishList = [];
+    if (wishListState.wishListObj !== initialWishListState.wishListObj) {
+      let localStorageInitialValue: ILocalStorageInitialValue = [];
       if (localStorage.getItem('wishList')) {
-        localStorageWishList = JSON.parse(localStorage.getItem('wishList') as string);
+        localStorageInitialValue = JSON.parse(localStorage.getItem('wishList') as string);
 
-        localStorageWishList.forEach((item: any) => {
-          if (item.id === wishList.wishList.id) {
-            localStorageWishList.splice(localStorageWishList.indexOf(item), 1);
+        localStorageInitialValue.forEach((item: ILocalStorageItem) => {
+          if (item.id === wishListState.wishListObj.id) {
+            localStorageInitialValue.splice(localStorageInitialValue.indexOf(item), 1);
 
-            console.log('localStorageWishList', localStorageWishList);
+            console.log('localStorageWishList', localStorageInitialValue);
           }
         });
       }
-      localStorageWishList.push(wishList.wishList);
-      localStorage.setItem('wishList', JSON.stringify(localStorageWishList));
+      localStorageInitialValue.push(wishListState.wishListObj as ILocalStorageItem);
+      localStorage.setItem('wishList', JSON.stringify(localStorageInitialValue));
     }
-  }, [wishList]);
+  }, [wishListState.wishListObj]);
 
   return <WishListContext.Provider value={contextValue}>{children}</WishListContext.Provider>;
 };
