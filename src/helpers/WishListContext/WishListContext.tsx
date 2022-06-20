@@ -68,8 +68,6 @@ export const WishListWrapper = ({ children }: Props) => {
         localStorageInitialValue.forEach((item: ILocalStorageItem) => {
           if (item.id === wishListState.wishListObj.id) {
             localStorageInitialValue.splice(localStorageInitialValue.indexOf(item), 1);
-
-            console.log('localStorageWishList', localStorageInitialValue);
           }
         });
       }
