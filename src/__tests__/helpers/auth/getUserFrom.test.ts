@@ -1,17 +1,16 @@
-import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
-import { IncomingMessage } from 'http';
-import { Socket } from 'net';
+import { getUserFromJwt, getUserFromRequest } from '@/helpers/auth/getUserFrom';
+import { getUserCookie } from '@/helpers/auth/userCookie';
+import type { IncomingMessage } from 'http';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
+
+jest.mock('@/helpers/auth/userCookie');
+const mockGetUserCookie = getUserCookie as unknown as jest.Mock;
 
 type Request = IncomingMessage & {
   cookies: NextApiRequestCookies;
 };
 
-const socket = new Socket();
-const req = new IncomingMessage(socket) as Request;
-Object.defineProperty(req, 'cookies', {
-  value: 'USER_TOKEN="asdfasdfasdfasdf"',
-});
+const mockReq = {} as unknown as Request;
 
 const mockValidJWT =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWF0IjoxNjU1NzYwNzY0LCJleHAiOjE2NTU4Njg3NjR9.jT_lLXBBTqaAOaSesfsASQNhYuBwY2osw8aYAMT2khs';
@@ -28,5 +27,8 @@ describe('getUserFromJWT', () => {
 });
 
 describe('getUserFromRequest', () => {
-  jest.mock();
+  test('should get user id from a request', () => {
+    mockGetUserCookie.mockReturnValue(mockValidJWT);
+    expect(getUserFromRequest(mockReq)).toEqual({ id: 1337 });
+  });
 });

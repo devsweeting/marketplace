@@ -1,6 +1,6 @@
 import type { Config } from '@jest/types';
-require('@next/env').loadEnvConfig(process.cwd(), process.env.NODE_ENV === 'development');
-
+import * as dotenv from '@next/env';
+dotenv.loadEnvConfig(process.cwd(), process.env.NODE_ENV === 'development');
 const config: Config.InitialOptions = {
   verbose: true,
   collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/*.d.ts', '!**/node_modules/**'],
