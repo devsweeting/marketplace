@@ -2,8 +2,9 @@ import type { IncomingMessage } from 'http';
 import { getStringFromQuery } from '@/helpers/getStringFromQuery';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
+import { apiClient } from '@/api/client';
 
-export const loginWithToken = async ({
+export const loginConfirm = async ({
   req,
   token,
 }: {
@@ -16,26 +17,24 @@ export const loginWithToken = async ({
     return;
   }
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login/confirm`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  const response = await apiClient.post('/users/login/confirm', {
+    body: {
       token: parsedToken,
       metadata: {
         ipAddress: getIpAddress(req),
         browserUserAgent: req.headers['user-agent'],
         localeInformation: parseLocale(req),
       },
-    }),
+    },
   });
-
-  console.log(response.headers);
 
   if (!response.ok) {
     return;
   }
 
-  return await response.text();
+  if (response.isJson) {
+    return;
+  }
+
+  return response.data;
 };

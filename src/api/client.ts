@@ -1,5 +1,7 @@
 import type { NextServerRequest } from '@/types/next';
 import { getUserCookie } from '@/helpers/auth/userCookie';
+import { logger } from '@/helpers/logger';
+import { StatusCodes } from 'http-status-codes';
 
 export interface IApiRequest {
   req?: NextServerRequest;
@@ -7,11 +9,11 @@ export interface IApiRequest {
 }
 
 export interface IApiRequestWithBody extends IApiRequest {
-  body: Record<string, unknown>;
+  body?: Record<string, unknown> | URLSearchParams;
 }
 
-export interface IBaseApiResponse {
-  status: number;
+interface IBaseApiResponse {
+  status: StatusCodes;
   ok: boolean;
   headers: Record<string, string>;
 }
@@ -21,17 +23,23 @@ export interface IApiJsonResponse extends IBaseApiResponse {
   isJson: true;
 }
 
-export interface IApiTextReesponse extends IBaseApiResponse {
+export interface IApiTextResponse extends IBaseApiResponse {
   data?: string;
   isJson: false;
 }
 
-export type IApiResponse = IApiJsonResponse | IApiTextReesponse;
+export type IApiResponse = IApiJsonResponse | IApiTextResponse;
 
 export type IApiUrl = `/${string}`;
 
 export class ApiClient {
-  static _baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  static getBaseUrl() {
+    if (typeof window === 'undefined') {
+      return process.env.NEXT_PUBLIC_BACKEND_URL;
+    }
+
+    return '/api/jump';
+  }
 
   get(url: IApiUrl, request: IApiRequest = {}) {
     return this._send(url, 'GET', request);
@@ -54,7 +62,7 @@ export class ApiClient {
   }
 
   private async _send(
-    url: IApiUrl,
+    path: IApiUrl,
     method: string,
     request: IApiRequest | IApiRequestWithBody,
   ): Promise<IApiResponse> {
@@ -65,9 +73,13 @@ export class ApiClient {
     let body: string | undefined;
 
     if ('body' in request && request.body) {
-      body = JSON.stringify(request.body);
-
-      request.headers['Content-Type'] = 'application/json';
+      if (request.body instanceof URLSearchParams) {
+        body = request.body.toString();
+        request.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+      } else {
+        body = JSON.stringify(request.body);
+        request.headers['Content-Type'] = 'application/json';
+      }
     }
 
     if ('req' in request && request.req) {
@@ -80,12 +92,20 @@ export class ApiClient {
 
     const responseHeaders: Record<string, string> = {};
 
+    const url = `${ApiClient.getBaseUrl()}${path}`;
+
     try {
-      const response = await fetch(`${ApiClient._baseUrl}${url}`, {
+      const response = await fetch(url, {
         method,
         headers: request.headers,
         body,
       });
+
+      if (response.ok) {
+        logger.info(`${method} ${response.url} ${response.status}`);
+      } else {
+        logger.error(`${method} ${response.url} ${response.status} ${response.statusText}`);
+      }
 
       response.headers.forEach((value, key) => {
         responseHeaders[key] = value;
@@ -103,8 +123,9 @@ export class ApiClient {
         isJson: responseIsJson,
       };
     } catch (err) {
+      logger.error(`${method} ${url} ${err}`);
       return {
-        status: 500,
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
         ok: false,
         headers: responseHeaders,
         isJson: false,
@@ -113,4 +134,4 @@ export class ApiClient {
   }
 }
 
-export const client = new ApiClient();
+export const apiClient = new ApiClient();

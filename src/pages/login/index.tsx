@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { loginWithToken } from '@/api/endpoints/login';
+import { loginConfirm } from '@/api/endpoints/loginConfirm';
 import { setUserCookie } from '@/helpers/auth/userCookie';
 import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
@@ -40,7 +40,7 @@ const Login: NextPage = () => {
 export default Login;
 
 export const getServerSideProps = getServerSidePropsWithUser(async ({ req, res, query, user }) => {
-  const jwt = await loginWithToken({ req, token: query.token });
+  const jwt = await loginConfirm({ req, token: query.token });
 
   if (!jwt && !user) {
     res.statusCode = 400;
