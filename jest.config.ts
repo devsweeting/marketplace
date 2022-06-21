@@ -13,6 +13,7 @@ const config: Config.InitialOptions = {
     '/.next/',
     'coverage/',
     'helpers/constants.ts',
+    '/src/__tests__/',
   ],
   coverageDirectory: './coverage',
   moduleNameMapper: {
