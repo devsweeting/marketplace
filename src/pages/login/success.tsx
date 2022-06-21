@@ -27,21 +27,39 @@ const Login: NextPage = (jwt) => {
         if (!wishList || wishList === undefined || wishList.length <= 0) return;
         for (let i = 0; i < wishList.length; i++) {
           const item = wishList[i];
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/watchlist`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwt.jwt}`,
+
+          const checkWishListResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/watchlist/check/${item.id}`,
+            {
+              method: 'POST',
+
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${jwt.jwt}` },
+
+              body: JSON.stringify({ assetId: item.id }),
             },
-            body: JSON.stringify({
-              assetId: item.id,
-              userId: jwt.user.id,
-            }),
-          });
+          );
 
-          const data = await response.json();
+          const checkedData = await checkWishListResponse.json();
 
-          return data;
+          if (!checkedData.in_watchlist) {
+            const sendingWishListResponse = await fetch(
+              `${process.env.NEXT_PUBLIC_BACKEND_URL}/watchlist`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwt.jwt}`,
+                },
+                body: JSON.stringify({
+                  assetId: item.id,
+                }),
+              },
+            );
+
+            const sentWishListData = await sendingWishListResponse.json();
+
+            return sentWishListData;
+          }
         }
       };
 
