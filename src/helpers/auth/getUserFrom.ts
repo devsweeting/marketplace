@@ -1,14 +1,9 @@
 import jwtDecode from 'jwt-decode';
-import type { IncomingMessage } from 'http';
-import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
-import type { IUser } from '../../types/user';
+import type { IUser } from '@/types/user';
+import type { NextServerRequest } from '@/types/next';
 import { getUserCookie } from '@/helpers/auth/userCookie';
 
-type Request = IncomingMessage & {
-  cookies: NextApiRequestCookies;
-};
-
-export const getUserFromRequest = (req: Request): IUser | undefined => {
+export const getUserFromRequest = (req: NextServerRequest): IUser | undefined => {
   const token = getUserCookie(req);
 
   return getUserFromJwt(token);

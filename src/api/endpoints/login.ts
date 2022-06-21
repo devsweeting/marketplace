@@ -31,6 +31,8 @@ export const loginWithToken = async ({
     }),
   });
 
+  console.log(response.headers);
+
   if (!response.ok) {
     return;
   }
