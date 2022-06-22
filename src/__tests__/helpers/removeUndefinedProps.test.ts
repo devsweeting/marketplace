@@ -3,33 +3,20 @@ import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 const mocKContext = {} as GetServerSidePropsContext;
 
-const mockHandler: GetServerSideProps = async () => {
-  return {
-    props: {
-      undefinedKey: undefined,
-      stringKey: 'string',
-      nestedKey: {
-        undefinedKey: undefined,
-        stringKey: 'string',
-      },
-    },
-  };
-};
-
-const mockHandlerWithAsyncProps: GetServerSideProps = async () => {
-  return {
-    props: Promise.resolve({
-      undefinedKey: undefined,
-      stringKey: 'string',
-      nestedKey: {
-        undefinedKey: undefined,
-        stringKey: 'string',
-      },
-    }),
-  };
-};
 describe('removeUndefinedProps', () => {
   test('should remove undefined keys', async () => {
+    const mockHandler: GetServerSideProps = async () => {
+      return {
+        props: {
+          undefinedKey: undefined,
+          stringKey: 'string',
+          nestedKey: {
+            undefinedKey: undefined,
+            stringKey: 'string',
+          },
+        },
+      };
+    };
     const result = await removeUndefinedProps(mockHandler)(mocKContext);
 
     if (!('props' in result)) {
@@ -44,6 +31,18 @@ describe('removeUndefinedProps', () => {
   });
 
   test('should remove undefined keys in async props', async () => {
+    const mockHandlerWithAsyncProps: GetServerSideProps = async () => {
+      return {
+        props: Promise.resolve({
+          undefinedKey: undefined,
+          stringKey: 'string',
+          nestedKey: {
+            undefinedKey: undefined,
+            stringKey: 'string',
+          },
+        }),
+      };
+    };
     const result = await removeUndefinedProps(mockHandlerWithAsyncProps)(mocKContext);
 
     if (!('props' in result)) {

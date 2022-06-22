@@ -51,19 +51,3 @@ describe('ProductCard', () => {
     //TODO add tests for add to watchlist button
   });
 });
-
-// describe('ProductCard', () => {
-//   it('should render component from props', () => {
-//     render(<MockProductCard cardData={mockGalleryData} />);
-//     expect(screen.getByText(mockGalleryData.title)).toBeVisible();
-//     const watchNumberElement = screen.getByTestId('watchNumberId').textContent;
-//     expect(watchNumberElement).toMatch(/2 watching/i);
-//     expect(screen.getByRole('img', { name: 'etherum icon' })).toBeVisible();
-//     expect(screen.getByText(mockGalleryData.price.cryptoValue)).toBeVisible();
-//     const dollarValueElement = screen.getByTestId('dollarValueId').textContent;
-//     expect(dollarValueElement).toMatch(/6234.33/i);
-//     expect(screen.getByRole('img', { name: 'brand brand_a' })).toBeVisible();
-//     expect(screen.getByRole('img', { name: 'verified icon' })).toBeVisible();
-//     expect(screen.getByText(mockGalleryData.brand.name)).toBeVisible();
-//   });
-// });

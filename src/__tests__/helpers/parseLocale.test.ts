@@ -13,7 +13,6 @@ describe('parseLocale', () => {
 
   test('returns undefined if the locale is not defined', () => {
     const request = new IncomingMessage(socket);
-    request.headers['accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8';
     const result = parseLocale(request);
     expect(result).toBe(undefined);
   });

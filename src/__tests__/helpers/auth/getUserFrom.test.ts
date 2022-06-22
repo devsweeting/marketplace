@@ -18,7 +18,6 @@ const mockValidJWT =
 describe('getUserFromJWT', () => {
   test('Should return undefined if no JWT is supplied', () => {
     expect(getUserFromJwt()).toBe(undefined);
-    getUserFromJwt();
   });
 
   test('Should return id if a valid jwt is supplied', () => {
