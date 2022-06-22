@@ -37,7 +37,10 @@ export const Gallery = ({ images }: { images: Image[] }) => {
           {images.map((image, index) => {
             return (
               <Box
-                className={classNames(classes.thumbnailWrapper, index === 0 ? classes.faded : null)}
+                className={classNames(
+                  classes.thumbnailWrapper,
+                  image.file === mainImage ? classes.faded : null,
+                )}
                 key={`${index}${image.title}`}
               >
                 <Box className={classes.thumbnailItem}>
