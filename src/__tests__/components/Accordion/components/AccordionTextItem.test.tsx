@@ -4,7 +4,6 @@ import { ThemeProvider } from '@mui/material';
 import { AccordionTextItem } from '@/components/Accordion/components/AccordionTextItem';
 import type { AccordionTextItemProps } from '@/components/Accordion/components/AccordionTextItem/AccordionTextItem';
 import { themeJump } from '@/styles/themeJump';
-import '@testing-library/jest-dom/extend-expect';
 
 const mockTitle = 'mockedTitle';
 const mockIsExpanded = true;

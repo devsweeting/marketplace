@@ -39,7 +39,14 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   };
 
   return (
-    <form action="/explore" method="get" onSubmit={handleSubmit} autoComplete="off" id="searchBar">
+    <form
+      action="/explore"
+      method="get"
+      onSubmit={handleSubmit}
+      autoComplete="off"
+      id="searchBar"
+      role="search"
+    >
       <FormControl variant="outlined" className={classes.wrapper}>
         <OutlinedInput
           role={'textbox'}
