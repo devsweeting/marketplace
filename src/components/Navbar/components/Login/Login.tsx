@@ -1,18 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import LoginIcon from '@mui/icons-material/Login';
 import { useNavLinkStyles } from '../NavLink/NavLink.styles';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import { useLoginStyles, modal, title } from './Login.styles';
 import classNames from 'classnames';
-import { Button } from '@/components/Button';
+import { CustomModal } from '@/components/Modals/CustomModal';
 import { useModal } from '@/helpers/hooks/useModal';
 
 export const Login = () => {
-  const { isOpen, setIsOpen } = useModal();
-
   const modalBox = useRef<HTMLDivElement>(null);
+
+  const { isOpen, setIsOpen } = useModal();
 
   const [emailState, setEmailState] = useState('');
 
@@ -22,21 +18,17 @@ export const Login = () => {
 
   const classes = useNavLinkStyles();
 
-  const loginClasses = useLoginStyles();
-
-  const handleOpen = () => {
-    setIsOpen(!isOpen);
-  };
+  const handleOpen = () => setIsOpen(!isOpen);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailState(event.target.value);
     setButtonState(false);
   };
   const handleClose = () => {
+    setIsOpen(!isOpen);
     setEmailState('');
     setButtonState(false);
     setAlertMessage('');
-    setIsOpen(!isOpen);
   };
 
   useEffect(() => {
@@ -104,48 +96,16 @@ export const Login = () => {
           Login
         </Typography>
       </a>
-      <Modal
+      <CustomModal
         open={isOpen}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={modal} className={`${loginClasses.modal}`} id="modal">
-          <Typography id="modal-modal-title" variant="h6" component="h2" sx={title}>
-            Login
-          </Typography>
-
-          <span className={loginClasses.message} role="alert" ref={modalBox}>
-            {alertMessage}
-          </span>
-          <form onSubmit={handleSubmit} aria-label="form">
-            <div style={{ display: 'flex', marginBottom: '5px', justifyContent: 'flex-start' }}>
-              <label htmlFor="email" aria-label="email" className={loginClasses.srOnly}>
-                email
-              </label>
-              <input
-                id="email"
-                name="email"
-                className={loginClasses.wrapper}
-                type="email"
-                placeholder="Email Address"
-                onChange={handleChange}
-                value={emailState}
-              />
-
-              <Button
-                id="submit"
-                disabled={buttonState}
-                className={loginClasses.button}
-                name="Login"
-                type="submit"
-              >
-                Login <LoginIcon />
-              </Button>
-            </div>
-          </form>
-        </Box>
-      </Modal>
+        handleChange={handleChange}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit}
+        alertMessage={alertMessage}
+        emailState={emailState}
+        buttonState={buttonState}
+        modalBox={modalBox}
+      />
     </div>
   );
 };
