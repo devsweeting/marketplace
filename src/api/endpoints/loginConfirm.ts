@@ -1,5 +1,5 @@
 import type { IncomingMessage } from 'http';
-import { getStringFromQuery } from '@/helpers/getStringFromQuery';
+import { unwrapString } from '@/helpers/unwrapString';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
 import { apiClient } from '@/api/client';
@@ -11,7 +11,7 @@ export const loginConfirm = async ({
   req: IncomingMessage;
   token?: string | string[];
 }): Promise<string | undefined> => {
-  const parsedToken = getStringFromQuery(token);
+  const parsedToken = unwrapString(token);
 
   if (!parsedToken) {
     return;

@@ -3,7 +3,7 @@ import { getArrayFromQuery } from '@/helpers/getArrayFromQuery';
 import { StatusCodes } from 'http-status-codes';
 import type { IApiRequest, IApiRequestWithBody } from '@/api/client';
 import type { IncomingHttpHeaders } from 'http';
-import { getStringFromQuery } from '@/helpers/getStringFromQuery';
+import { unwrapString } from '@/helpers/unwrapString';
 import { apiClient } from '@/api/client';
 
 const methods = {
@@ -56,7 +56,7 @@ const parseHeaders = (headers: IncomingHttpHeaders): Record<string, string> => {
   const updatedHeaders: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(headers)) {
-    const updatedValue = getStringFromQuery(value);
+    const updatedValue = unwrapString(value);
 
     if (updatedValue) {
       updatedHeaders[key] = updatedValue;

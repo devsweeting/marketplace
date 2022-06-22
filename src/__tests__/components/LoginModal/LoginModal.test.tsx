@@ -4,6 +4,13 @@ import { axe } from 'jest-axe';
 import user from '@testing-library/user-event';
 import { ThemeProvider } from '@mui/material';
 import { themeJump } from '@/styles/themeJump';
+import { loginRequest } from '@/api/endpoints/loginRequest';
+import { StatusCodes } from 'http-status-codes';
+
+jest.mock('@/api/endpoints/loginRequest');
+
+const mockLoginRequest = loginRequest as unknown as jest.MockedFn<typeof loginRequest>;
+
 const MockLoginModal = () => {
   return (
     <ThemeProvider theme={themeJump}>
@@ -13,6 +20,10 @@ const MockLoginModal = () => {
 };
 
 describe('Login modal flow', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   test('Modal should be contain a valid form, input, and button', async () => {
     render(<MockLoginModal />);
     const modal = screen.getByRole('presentation');
@@ -53,39 +64,28 @@ describe('Login modal flow', () => {
   });
 
   test('User should be able to submit a valid email', async () => {
+    mockLoginRequest.mockImplementation(async () => StatusCodes.OK);
     render(<MockLoginModal />);
-    const originalFetch = global.fetch;
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        status: 200,
-      }),
-    ) as jest.Mock;
     const input = screen.getByRole('textbox', { name: /email/i });
     const button = screen.getByRole('button', { name: /login/i });
     const alert = screen.getByRole('alert');
     await user.type(input, 'test@test.com');
     await user.click(button);
-    expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(mockLoginRequest).toHaveBeenCalledTimes(1);
     expect(alert).toHaveTextContent(/Check your email for a link to sign in/i);
     expect(button).toBeDisabled();
-    global.fetch = originalFetch;
   });
 
   test('User should get too many requests error.', async () => {
+    mockLoginRequest.mockImplementation(async () => StatusCodes.TOO_MANY_REQUESTS);
     render(<MockLoginModal />);
-    const originalFetch = global.fetch;
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        status: 429,
-      }),
-    ) as jest.Mock;
     const input = screen.getByRole('textbox', { name: /email/i });
     const button = screen.getByRole('button', { name: /login/i });
     const alert = screen.getByRole('alert');
     expect(alert).toHaveTextContent('');
     await user.type(input, 'test@test.com');
     await user.click(button);
+    expect(mockLoginRequest).toHaveBeenCalledTimes(1);
     expect(alert).toHaveTextContent(/too many requests/i);
-    global.fetch = originalFetch;
   });
 });
