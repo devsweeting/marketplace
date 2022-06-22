@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavLinkStyles } from '../NavLink/NavLink.styles';
 import Typography from '@mui/material/Typography';
 import classNames from 'classnames';

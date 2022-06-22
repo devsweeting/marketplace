@@ -1,5 +1,5 @@
 import type { Dispatch } from 'react';
-import React, { createContext, useCallback, useEffect, useState, useMemo } from 'react';
+import { createContext, useCallback, useEffect, useState, useMemo } from 'react';
 
 export interface IModalContext {
   isOpen: boolean;
