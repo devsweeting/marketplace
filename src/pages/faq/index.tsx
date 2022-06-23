@@ -123,11 +123,11 @@ const FaqPage = ({
 
 export default FaqPage;
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   // mocked fetching to be replaced with cms source
   const [articlesRes, featureQuestionsRes] = await Promise.all([
-    fetch('http://localhost:3000/api/faq/topics'),
-    fetch('http://localhost:3000/api/faq/featureQuestions'),
+    fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/faq/topics`),
+    fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/faq/featureQuestions`),
   ]);
 
   const [articles, featureQuestions] = await Promise.all([
