@@ -6,7 +6,6 @@ import { Accordion } from '@/components/Accordion';
 import { AccordionTextItem } from '@/components/Accordion/components/AccordionTextItem';
 import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
-import { FaqCta } from '@/components/FaqCta';
 import { SelectInput } from '@/components/SelectInput';
 
 export interface Article {
@@ -177,8 +176,6 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
                               })}
                             </>
                           </Accordion>
-
-                          <FaqCta />
                         </Box>
                       </div>
                     );
@@ -210,10 +207,6 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
                 )}
               </Box>
             </Grid>
-
-            <Box className={classes.showOnDesktop}>
-              <FaqCta />
-            </Box>
           </Grid>
         </Grid>
       </Box>
