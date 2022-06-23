@@ -45,6 +45,7 @@ export const loadListAssetByPage = async ({
     }
     return await res.json();
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.log(err);
 
     return {

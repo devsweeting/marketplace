@@ -228,6 +228,7 @@ export async function getServerSideProps() {
       },
     };
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.error(err);
   }
 }
