@@ -20,10 +20,10 @@ export const AccordionTextItem: React.FC<AccordionTextItemProps> = ({
 
   return (
     <MaterialAccordion disableGutters defaultExpanded={isExpanded}>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} className={classes.accordionSummary}>
         <Typography className={classes.textItemTitle}>{title}</Typography>
       </AccordionSummary>
-      <AccordionDetails>{children}</AccordionDetails>
+      <AccordionDetails className={classes.accordionDetails}>{children}</AccordionDetails>
     </MaterialAccordion>
   );
 };

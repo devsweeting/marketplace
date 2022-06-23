@@ -11,6 +11,7 @@ import { themePWCC } from '@/styles/themePWCC';
 import { createEmotionCache } from '@/styles/createEmotionCache';
 import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
+import type { HeaderPosition } from '@/layout/components/Header/Header';
 import { UserProvider } from '@/helpers/auth/UserContext';
 import { ModalProvider } from '@/helpers/auth/ModalContext';
 import { WishListWrapper } from '@/helpers/WishListContext/WishListContext';
@@ -28,14 +29,18 @@ interface MyAppProps extends AppProps {
 }
 
 export default function MyApp(props: MyAppProps) {
-  const [skin, setSkin] = React.useState(skins.pwcc);
-
-  const choosenTheme = skin === skins.pwcc ? themePWCC : themeJump;
-
   const Component: any = props.Component;
   // Known issue change when https://github.com/vercel/next.js/issues/36019 fixed
-
   const { emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  const [skin, setSkin] = React.useState(skins.pwcc);
+  const choosenTheme = skin === skins.pwcc ? themePWCC : themeJump;
+
+  const headerType: Record<string, any> = {
+    faqPages: 'relative',
+  };
+  const headerStyle: HeaderPosition = headerType[Component.layout] || 'fixed';
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
