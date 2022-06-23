@@ -234,7 +234,7 @@ export async function getStaticPaths() {
 export async function getStaticProps() {
   // mocked fetching to be replaced with cms source
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/faq/topics`);
+    const res = await fetch(`http://localhost:3000/api/faq/topics`);
     const data: Articles = await res.json();
     return {
       props: {
