@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Modal from '@mui/material/Modal';
 import { useCustomModalStyles, modal, title } from './CustomModal.styles';
 import { Box } from '@mui/system';
