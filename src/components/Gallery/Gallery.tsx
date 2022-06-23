@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { useGalleryStyles } from './Gallery.styles';
 
-type Image = {
+export type Image = {
   title: string;
   description?: string;
   url: string;
@@ -37,7 +37,10 @@ export const Gallery = ({ images }: { images: Image[] }) => {
           {images.map((image, index) => {
             return (
               <Box
-                className={classNames(classes.thumbnailWrapper, index === 0 ? classes.faded : null)}
+                className={classNames(
+                  classes.thumbnailWrapper,
+                  image.file === mainImage ? classes.faded : null,
+                )}
                 key={`${index}${image.title}`}
               >
                 <Box className={classes.thumbnailItem}>
@@ -62,9 +65,10 @@ export const Gallery = ({ images }: { images: Image[] }) => {
           <Grid item pt={0} md={12} className={classes.imageContainer}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+              id="main-gallery-image"
               className={classes.image}
               src={mainImage}
-              alt={' main asset image'}
+              alt={'main asset image'}
               width={337}
               height={568}
             />

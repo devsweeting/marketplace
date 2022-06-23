@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { ThemeProvider } from '@mui/material';
 import { Hero } from '@/components/Hero';
 import type { HeroProps } from '@/components/Hero/Hero';

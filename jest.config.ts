@@ -1,8 +1,21 @@
 import type { Config } from '@jest/types';
-
+import * as dotenv from '@next/env';
+dotenv.loadEnvConfig(process.cwd(), process.env.NODE_ENV === 'development');
 const config: Config.InitialOptions = {
   verbose: true,
   collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/*.d.ts', '!**/node_modules/**'],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/test/',
+    '/src/config/',
+    '.styles.ts',
+    'config.(js|ts)',
+    '/.next/',
+    'coverage/',
+    'helpers/constants.ts',
+    '/src/__tests__/',
+  ],
+  coverageDirectory: './coverage',
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/src/components/$1',
     '^@/styles/(.*)$': '<rootDir>/styles/$1',
@@ -27,7 +40,7 @@ const config: Config.InitialOptions = {
   },
   //  Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '__tests__/utils/'],
   testEnvironment: 'jsdom',
   transform: {
     // Use babel-jest to transpile tests with the next/babel preset

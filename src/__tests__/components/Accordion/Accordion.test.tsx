@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Accordion } from '@/components/Accordion';
 import { themeJump } from '@/styles/themeJump';
-import '@testing-library/jest-dom/extend-expect';
 
 const MockAccordionChildren = () => {
   return <p>children component</p>;
