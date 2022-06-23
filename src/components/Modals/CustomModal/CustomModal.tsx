@@ -94,6 +94,7 @@ export const CustomModal = ({
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      className={customModalClasses.container}
     >
       <Box sx={modal} className={`${customModalClasses.modal}`} id="modal">
         <Typography id="modal-modal-title" variant="h6" component="h2" sx={title}>
