@@ -1,0 +1,1 @@
+export { FaqSearchContainer } from './FaqSearchContainer';
