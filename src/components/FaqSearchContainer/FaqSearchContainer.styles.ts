@@ -35,6 +35,9 @@ export const useFaqSearchContainerStyles = makeStyles((theme) => ({
     alignItems: 'center',
     flexWrap: 'wrap',
   },
+  chipWrapper: {
+    textDecoration: 'none',
+  },
   chip: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.main,
