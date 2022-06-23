@@ -41,6 +41,11 @@ export const useCustomModalStyles = makeStyles(() => ({
     height: '1px',
     overflow: 'hidden',
   },
+  formBox: {
+    display: 'flex',
+    marginBottom: '5px',
+    justifyContent: 'flex-start',
+  },
 }));
 
 export const modal = {
