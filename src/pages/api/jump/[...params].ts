@@ -1,5 +1,5 @@
 import type { NextApiHandler } from 'next';
-import { getArrayFromQuery } from '@/helpers/getArrayFromQuery';
+import { unwrapArray } from '@/helpers/unwrapArray';
 import { StatusCodes } from 'http-status-codes';
 import type { IApiRequest, IApiRequestWithBody } from '@/api/client';
 import type { IncomingHttpHeaders } from 'http';
@@ -22,7 +22,7 @@ const jumpApiProxy: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const urlParts = getArrayFromQuery(req.query.params);
+  const urlParts = unwrapArray(req.query.params);
 
   const headers = parseHeaders(req.headers);
   const body = parseBody(headers, req.body);

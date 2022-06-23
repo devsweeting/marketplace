@@ -1,4 +1,4 @@
-export const getArrayFromQuery = (query: string | string[] | undefined): string[] => {
+export const unwrapArray = (query: string | string[] | undefined): string[] => {
   if (Array.isArray(query)) {
     return query;
   }
