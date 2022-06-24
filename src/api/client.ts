@@ -108,10 +108,10 @@ export class ApiClient {
       }
 
       response.headers.forEach((value, key) => {
-        responseHeaders[key] = value;
+        responseHeaders[key] = value.toLowerCase();
       });
 
-      const responseIsJson = responseHeaders['Content-Type']?.includes('application/json') ?? false;
+      const responseIsJson = responseHeaders['content-type']?.includes('application/json') ?? false;
 
       const data = await (responseIsJson ? response.json() : response.text());
 

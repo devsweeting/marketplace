@@ -4,7 +4,7 @@ import type { IncomingMessage } from 'http';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 
 jest.mock('@/helpers/auth/userCookie');
-const mockGetUserCookie = getUserCookie as unknown as jest.Mock;
+const mockGetUserCookie = getUserCookie as unknown as jest.MockedFn<typeof getUserCookie>;
 
 type Request = IncomingMessage & {
   cookies: NextApiRequestCookies;
@@ -12,7 +12,7 @@ type Request = IncomingMessage & {
 
 const mockReq = {} as unknown as Request;
 
-const mockValidJWT =
+const mockValidJwt =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWF0IjoxNjU1NzYwNzY0LCJleHAiOjE2NTU4Njg3NjR9.jT_lLXBBTqaAOaSesfsASQNhYuBwY2osw8aYAMT2khs';
 
 describe('getUserFromJWT', () => {
@@ -21,13 +21,13 @@ describe('getUserFromJWT', () => {
   });
 
   test('Should return id if a valid jwt is supplied', () => {
-    expect(getUserFromJwt(mockValidJWT)).toEqual({ id: 1337 });
+    expect(getUserFromJwt(mockValidJwt)).toEqual({ id: 1337 });
   });
 });
 
 describe('getUserFromRequest', () => {
   test('should get user id from a request', () => {
-    mockGetUserCookie.mockReturnValue(mockValidJWT);
+    mockGetUserCookie.mockReturnValue(mockValidJwt);
     expect(getUserFromRequest(mockReq)).toEqual({ id: 1337 });
   });
 });

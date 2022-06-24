@@ -1,9 +1,9 @@
 export const LOG_LEVELS = {
-  off: 0,
   error: 1,
   warn: 2,
   info: 3,
   debug: 4,
+  off: 5,
 } as const;
 
 type LogLevel = typeof LOG_LEVELS[keyof typeof LOG_LEVELS];
@@ -47,7 +47,11 @@ export class Logger {
   }
 
   log(level: LogLevel, message: unknown) {
-    if (level === LOG_LEVELS.off || level > this._currentLevel) {
+    if (level === LOG_LEVELS.off) {
+      return;
+    }
+
+    if (level < this._currentLevel) {
       return;
     }
 
