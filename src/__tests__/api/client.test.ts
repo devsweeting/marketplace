@@ -6,10 +6,13 @@ import { StatusCodes } from 'http-status-codes';
 import { Headers } from 'next/dist/server/web/spec-compliant/headers';
 import { getUserCookie } from '@/helpers/auth/userCookie';
 import type { NextServerRequest } from '@/types/next';
+import { logger } from '@/helpers/logger';
 
 jest.mock('@/helpers/auth/userCookie');
+jest.mock('@/helpers/logger');
 
 const mockGetUserCookie = getUserCookie as unknown as jest.MockedFn<typeof getUserCookie>;
+const mockLogger = logger as unknown as jest.Mocked<typeof logger>;
 
 describe('ApiClient', () => {
   const client = new ApiClient();
@@ -153,7 +156,7 @@ describe('ApiClient', () => {
     });
   });
 
-  test('it turns runtime errors into invalid response', async () => {
+  test('it turns runtime errors into invalid response and logs the failure', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         headers: new Headers({
@@ -167,8 +170,27 @@ describe('ApiClient', () => {
 
     const res = await client.get('/test');
 
+    expect(mockLogger.error).toHaveBeenCalledTimes(1);
+
     expect(res.ok).toBe(false);
     expect(res.status).toBe(StatusCodes.INTERNAL_SERVER_ERROR);
     expect(res.isJson).toBe(false);
+  });
+
+  test('it properly logs requests', async () => {
+    await client.get('/test');
+
+    expect(mockLogger.info).toHaveBeenCalledTimes(1);
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        headers: new Headers(),
+        text: () => Promise.resolve('some text'),
+      }),
+    ) as jest.Mock;
+
+    expect(mockLogger.info).toHaveBeenCalledTimes(1);
   });
 });

@@ -57,6 +57,7 @@ export class Logger {
 
     const method = methods[level];
 
+    // eslint-disable-next-line no-console
     console[method](message);
   }
 }
