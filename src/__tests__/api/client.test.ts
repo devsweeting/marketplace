@@ -107,6 +107,22 @@ describe('ApiClient', () => {
     });
   });
 
+  test('it handles custom headers', async () => {
+    await client.get('/test', {
+      headers: {
+        'X-Custom-Header': 'test',
+      },
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test`, {
+      body: undefined,
+      method: 'GET',
+      headers: {
+        'X-Custom-Header': 'test',
+      },
+    });
+  });
+
   test('it handles return data as text or json', async () => {
     const jsonRes = await client.get('/test');
 
@@ -135,16 +151,25 @@ describe('ApiClient', () => {
   });
 
   test('it attaches jwt if available', async () => {
+    const expectedUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/test`;
     const mockValidJwt =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWF0IjoxNjU1NzYwNzY0LCJleHAiOjE2NTU4Njg3NjR9.jT_lLXBBTqaAOaSesfsASQNhYuBwY2osw8aYAMT2khs';
 
     const mockRequest = {} as NextServerRequest;
 
+    await client.post('/test', { req: mockRequest, body: { test: 'test' } });
+
+    expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
+      body: JSON.stringify({ test: 'test' }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
     mockGetUserCookie.mockReturnValue(mockValidJwt);
 
     await client.post('/test', { req: mockRequest, body: { test: 'test' } });
-
-    const expectedUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/test`;
 
     expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
       body: JSON.stringify({ test: 'test' }),
