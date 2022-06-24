@@ -191,6 +191,8 @@ describe('ApiClient', () => {
       }),
     ) as jest.Mock;
 
-    expect(mockLogger.info).toHaveBeenCalledTimes(1);
+    await client.get('/test');
+
+    expect(mockLogger.error).toHaveBeenCalledTimes(1);
   });
 });
