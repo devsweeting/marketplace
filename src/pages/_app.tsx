@@ -13,8 +13,6 @@ import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
 import type { HeaderPosition } from '@/layout/components/Header/Header';
 import { UserProvider } from '@/helpers/auth/UserContext';
-import { ModalProvider } from '@/helpers/auth/ModalContext';
-import { WishListWrapper } from '@/helpers/WishListContext/WishListContext';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -39,7 +37,6 @@ export default function MyApp(props: MyAppProps) {
   const headerType: Record<string, any> = {
     faqPages: 'relative',
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const headerStyle: HeaderPosition = headerType[Component.layout] || 'fixed';
 
   return (
@@ -50,14 +47,10 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={choosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
           <UserProvider>
-            <WishListWrapper>
-              <ModalProvider>
-                <CssBaseline />
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </ModalProvider>
-            </WishListWrapper>
+            <CssBaseline />
+            <Layout headerPosition={headerStyle}>
+              <Component {...pageProps} />
+            </Layout>
           </UserProvider>
         </SkinContext.Provider>
       </ThemeProvider>
