@@ -21,10 +21,11 @@ export const ProductCard: React.FC<{
   const { setWishListState } = useWishList();
   const { isOpen, setIsOpen } = useModal();
   const handleClick = () => {
-    if (!user) {
+    if (!user && id) {
       setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
       setIsOpen(!isOpen);
     }
+    if (!id) return;
     setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
   };
   const classes = useProductStyles();
