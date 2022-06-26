@@ -6,7 +6,7 @@ export const useCustomModalStyles = makeStyles((theme) => ({
     margin: '15px 15px 15px 0',
     height: '43px',
     width: '80%',
-    '@media (max-width:900px)': {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
@@ -17,7 +17,7 @@ export const useCustomModalStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     lineHeight: '0 !important',
 
-    '@media (max-width:900px)': {
+    [theme.breakpoints.down('md')]: {
       marginTop: '5px',
       marginLeft: '0',
       width: '100%',
@@ -47,7 +47,7 @@ export const useCustomModalStyles = makeStyles((theme) => ({
     )}`,
     p: 4,
     outline: 'none !important',
-    '@media (max-width:900px)': {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
       flexDirection: 'column',
       maxWidth: 500,
@@ -67,14 +67,14 @@ export const useCustomModalStyles = makeStyles((theme) => ({
     display: 'flex',
     marginBottom: '5px',
     justifyContent: 'center',
-    '@media (max-width:900px)': {
+    [theme.breakpoints.down('md')]: {
       display: 'flex',
       flexDirection: 'column',
     },
   },
   container: {
     margin: '20px',
-    '@media (max-width:900px)': {
+    [theme.breakpoints.down('md')]: {
       margin: '10px',
     },
   },
