@@ -1,6 +1,7 @@
+import { lighten } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-export const useCustomModalStyles = makeStyles(() => ({
+export const useCustomModalStyles = makeStyles((theme) => ({
   wrapper: {
     margin: '10px 0',
     height: '43px',
@@ -39,9 +40,14 @@ export const useCustomModalStyles = makeStyles(() => ({
     height: 180,
     bgcolor: 'background.paper',
     borderRadius: 4,
-    boxShadow:
-      '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
-    p: 4,
+    boxShadow: `0px 2px 4px -1px ${lighten(
+      theme.palette.primary.main,
+      0.2,
+    )}, 0px 4px 5px 0px ${lighten(theme.palette.primary.main, 0.14)}, 0px 1px 10px 0px ${lighten(
+      theme.palette.primary.main,
+      0.12,
+    )}`,
+    p: 2,
     outline: 'none !important',
 
     '@media (max-width:900px)': {
@@ -77,30 +83,35 @@ export const useCustomModalStyles = makeStyles(() => ({
   },
 }));
 
-export const modal = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  right: '50%',
-  bottom: '50%',
+export const modal = makeStyles((theme) => ({
+  modal: {
+    position: 'absolute' as const,
+    top: '50%',
+    left: '50%',
 
-  transform: 'translate(-50%, -50%)',
-  width: 600,
-  height: 180,
-  bgcolor: 'background.paper',
-  borderRadius: 5,
-  boxShadow:
-    '0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)',
-  p: 2,
-  outline: 'none !important',
-  '@media (max-width:900px)': {
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: 500,
-    width: '100%',
-    height: 220,
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    height: 180,
+    bgcolor: 'background.paper',
+    borderRadius: 5,
+    boxShadow: `0px 2px 4px -1px ${lighten(
+      theme.palette.primary.main,
+      0.2,
+    )}, 0px 4px 5px 0px ${lighten(theme.palette.primary.main, 0.14)}, 0px 1px 10px 0px ${lighten(
+      theme.palette.primary.main,
+      0.12,
+    )}`,
+    p: 2,
+    outline: 'none !important',
+    '@media (max-width:900px)': {
+      display: 'flex',
+      flexDirection: 'column',
+      maxWidth: 500,
+      width: '100%',
+      height: 220,
+    },
   },
-};
+}));
 
 export const title = {
   color: 'black',
