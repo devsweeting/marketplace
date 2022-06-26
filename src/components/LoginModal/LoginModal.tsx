@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import Modal from '@mui/material/Modal';
-import { useCustomModalStyles, modal, title } from './CustomModal.styles';
+import { useCustomModalStyles, modal, title } from './LoginModal.styles';
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useModal } from '@/helpers/hooks/useModal';
 import LoginIcon from '@mui/icons-material/Login';
 
-export const CustomModal = ({ open: isOpen }: { open: boolean }) => {
+export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
   const customModalClasses = useCustomModalStyles();
   const [emailState, setEmailState] = useState('');
   const [alertMessage, setAlertMessage] = useState('');

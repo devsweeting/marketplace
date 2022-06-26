@@ -1,7 +1,7 @@
 import { useNavLinkStyles } from '../NavLink/NavLink.styles';
 import Typography from '@mui/material/Typography';
 import classNames from 'classnames';
-import { CustomModal } from '@/components/Modals/CustomModal';
+import { LoginModal } from '@/components/LoginModal';
 import { useModal } from '@/helpers/hooks/useModal';
 
 export const Login = () => {
@@ -20,7 +20,7 @@ export const Login = () => {
           Login
         </Typography>
       </a>
-      <CustomModal open={isOpen} />
+      <LoginModal open={isOpen} />
     </div>
   );
 };
