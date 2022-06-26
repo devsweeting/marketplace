@@ -42,7 +42,7 @@ export const CustomModal = ({ open: isOpen }: { open: boolean }) => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setButtonState(true);
+
     validate(emailState);
     if (!validate(emailState)) {
       setAlertMessage('Please enter a valid email address');
