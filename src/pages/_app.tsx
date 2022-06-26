@@ -39,6 +39,7 @@ export default function MyApp(props: MyAppProps) {
   const headerType: Record<string, any> = {
     faqPages: 'relative',
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const headerStyle: HeaderPosition = headerType[Component.layout] || 'fixed';
 
   return (
