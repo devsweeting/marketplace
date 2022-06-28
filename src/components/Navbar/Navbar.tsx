@@ -7,7 +7,8 @@ import { NavLink } from './components/NavLink';
 import { useNavbarStyles } from './Navbar.styles';
 import { Login } from './components/Login';
 import { useUser } from '@/helpers/hooks/useUser';
-import { Logout } from '@/components/Navbar/components/Logout';
+// import { Logout } from '@/components/Navbar/components/Logout';
+import { UserPane } from './components/UserPane';
 
 type NavLink = {
   title: string;
@@ -22,7 +23,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
 
   return (
     <Toolbar component="nav" sx={{ display: { xs: `flex` } }}>
-      <Stack direction="row">
+      <Stack direction="row" sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         {navLinks.map(({ title, path }: { title: string; path: string }, i: any) => (
           <NavLink key={`${title}${i}`} href={path}>
             {title}
@@ -31,7 +32,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
         <Typography variant="h4" component="span" className={classes.searchIcon} ml={3}>
           <SearchIcon />
         </Typography>
-        {!user ? <Login /> : <Logout />}
+        {!user ? <Login /> : <UserPane />}
       </Stack>
     </Toolbar>
   );
