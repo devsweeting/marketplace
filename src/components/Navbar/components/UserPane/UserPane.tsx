@@ -11,7 +11,7 @@ import Link from 'next/link';
 import Logout from '@mui/icons-material/Logout';
 
 import { Divider, ListItemIcon, Typography } from '@mui/material';
-import { userPanelLinks } from '@/domain/userPanelLink';
+import { userPanelLinks } from '@/domain/userPaneLink';
 
 export const UserPane = () => {
   const classes = useUserPaneStyles();
