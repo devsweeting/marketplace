@@ -6,8 +6,6 @@ import { Button } from '@/components/Button';
 import { useProductStyles } from './ProductCard.styles';
 import { ShareButton } from '@/components/ShareButton';
 import type { IUser } from 'src/types/user';
-import { useModal } from '@/helpers/hooks/useModal';
-import { useWishList } from '@/helpers/WishListContext/WishListContext';
 
 export interface ProductDataProps {
   name: string;
@@ -17,17 +15,7 @@ export const ProductCard: React.FC<{
   name: ProductDataProps;
   id: ProductDataProps;
   user: IUser;
-}> = ({ name, id, user }) => {
-  const { setWishListState } = useWishList();
-  const { isOpen, setIsOpen } = useModal();
-  const handleClick = () => {
-    if (!user && id) {
-      setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
-      setIsOpen(!isOpen);
-    }
-    if (!id) return;
-    setWishListState({ type: 'ADD_TO_WISHLIST', payload: id.toString() });
-  };
+}> = ({ name }) => {
   const classes = useProductStyles();
   return (
     <Card className={classes.productContainer}>
@@ -42,12 +30,7 @@ export const ProductCard: React.FC<{
         <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
           <Grid item md={12} xs={12}>
             <CardActions className={classes.cardActions}>
-              <Button
-                variant="contained"
-                size="small"
-                className={classes.button}
-                onClick={handleClick}
-              >
+              <Button variant="contained" size="small" className={classes.button}>
                 Add to Watchlist
               </Button>
             </CardActions>

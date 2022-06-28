@@ -16,9 +16,8 @@ import { useDetailPageStyles } from '@/styles/DetailPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Routes } from '@/domain/Routes';
 import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
-import type { IUser } from '../../types/user';
 
-const DetailPage = ({ nftData, user }: { nftData: any; user: IUser }) => {
+const DetailPage = ({ nftData }: { nftData: any }) => {
   const theme = useTheme();
   const classes = useDetailPageStyles();
   const [traits, setTraits] = useState<TraitType[] | null>(null);
@@ -89,7 +88,7 @@ const DetailPage = ({ nftData, user }: { nftData: any; user: IUser }) => {
                   )}
                 </Grid>
                 <Grid item xs={12} sx={{ display: { xs: 'block', md: 'none' } }}>
-                  <ProductCard name={nftData.name} id={nftData.id} user={user} />
+                  <ProductCard name={nftData.name} />
                 </Grid>
               </Box>
 
@@ -142,7 +141,7 @@ const DetailPage = ({ nftData, user }: { nftData: any; user: IUser }) => {
                 display: { xs: 'none', md: 'block' },
               }}
             >
-              {nftData && <ProductCard name={nftData.name} id={nftData.id} user={user} />}
+              {nftData && <ProductCard name={nftData.name} />}
             </Grid>
 
             <Grid

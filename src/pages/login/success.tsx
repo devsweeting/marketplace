@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import { useEffect } from 'react';
 import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, Container, Typography } from '@mui/material';
@@ -7,69 +6,9 @@ import classNames from 'classnames';
 import { Button } from '@/components/Button';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
-import { getUserCookie } from '@/helpers/auth/userCookie';
 
-const Login: NextPage = (jwt) => {
+const Login: NextPage = () => {
   const classes = useLoginPageStyles();
-  const getWishList = async () => {
-    if (localStorage.getItem('wishList') && localStorage.getItem('wishList') !== 'undefined') {
-      const wishList = JSON.parse(localStorage.getItem('wishList') as string);
-      return wishList;
-    } else {
-      return [];
-    }
-  };
-
-  useEffect(() => {
-    if (jwt) {
-      const fetchingWatchListToAPI = async (jwt: any) => {
-        const wishList = await getWishList();
-        if (!wishList || wishList === undefined || wishList.length <= 0) return;
-        for (let i = 0; i < wishList.length; i++) {
-          const item = wishList[i];
-
-          const checkWishListResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/watchlist/check/${item.id}`,
-            {
-              method: 'POST',
-
-              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${jwt.jwt}` },
-
-              body: JSON.stringify({ assetId: item.id }),
-            },
-          );
-
-          const checkedData = await checkWishListResponse.json();
-
-          if (!checkedData.in_watchlist) {
-            const sendingWishListResponse = await fetch(
-              `${process.env.NEXT_PUBLIC_BACKEND_URL}/watchlist`,
-              {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${jwt.jwt}`,
-                },
-                body: JSON.stringify({
-                  assetId: item.id,
-                }),
-              },
-            );
-
-            const sentWishListData = await sendingWishListResponse.json();
-
-            return sentWishListData;
-          }
-        }
-      };
-
-      fetchingWatchListToAPI(jwt).then((data) => {
-        if (data) {
-          localStorage.removeItem('wishList');
-        }
-      });
-    }
-  }, [jwt]);
 
   return (
     <>
@@ -102,7 +41,7 @@ const Login: NextPage = (jwt) => {
 
 export default Login;
 
-export const getServerSideProps = getServerSidePropsWithUser(async ({ req, user }) => {
+export const getServerSideProps = getServerSidePropsWithUser(async ({ user }) => {
   if (!user) {
     return {
       redirect: {
@@ -111,11 +50,8 @@ export const getServerSideProps = getServerSidePropsWithUser(async ({ req, user 
       },
     };
   }
-  const jwt = getUserCookie(req);
 
   return {
-    props: {
-      jwt,
-    },
+    props: {},
   };
 });
