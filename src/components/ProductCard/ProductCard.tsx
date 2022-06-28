@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import { Button } from '@/components/Button';
 import { useProductStyles } from './ProductCard.styles';
 import { ShareButton } from '@/components/ShareButton';
-import type { IUser } from 'src/types/user';
 
 export interface ProductDataProps {
   name: string;
