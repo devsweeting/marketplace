@@ -13,8 +13,6 @@ export interface ProductDataProps {
 }
 export const ProductCard: React.FC<{
   name: ProductDataProps;
-  id: ProductDataProps;
-  user: IUser;
 }> = ({ name }) => {
   const classes = useProductStyles();
   return (
