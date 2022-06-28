@@ -6,9 +6,11 @@ import MenuItem from '@mui/material/MenuItem';
 
 import Avatar from '@mui/material/Avatar';
 import React, { useState } from 'react';
-import { Logout } from '../Logout';
+import { Logout as LogoutButton } from '../Logout';
 import Link from 'next/link';
-import { Divider } from '@mui/material';
+import Logout from '@mui/icons-material/Logout';
+
+import { Divider, ListItemIcon, Typography } from '@mui/material';
 import { userPanelLinks } from '@/domain/userPanelLink';
 
 export const UserPane = () => {
@@ -33,12 +35,7 @@ export const UserPane = () => {
         aria-haspopup="true"
         aria-expanded={isOpen ? 'true' : undefined}
       >
-        <Avatar sx={{ width: 32, height: 32 }}>
-          <img
-            src="https://avatars.dicebear.com/api/miniavs/your-custom-seed.svg"
-            className={classes.image}
-          />
-        </Avatar>
+        <Avatar sx={{ width: 32, height: 32 }}></Avatar>
       </IconButton>
       <Menu
         open={isOpen}
@@ -74,17 +71,26 @@ export const UserPane = () => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {userPanelLinks.map(({ title, path }: { title: string; path: string }, index: any) => (
-          <MenuItem key={`${title}-${index}`}>
-            <Link href={path} className={classes.userPanelText}>
-              <a style={{ textDecoration: 'none' }}>{title}</a>
-            </Link>
-          </MenuItem>
+          <Link href={path} className={classes.userPanelText} key={`${title}-${index}`}>
+            <a style={{ textDecoration: 'none' }}>
+              <MenuItem>
+                <Typography variant="h4" component="span" className={classes.userPanelText}>
+                  {title}
+                </Typography>
+              </MenuItem>
+            </a>
+          </Link>
         ))}
 
         <Divider />
-        <MenuItem>
-          <Logout className={classes.userPanelText} />
-        </MenuItem>
+        <LogoutButton className={classes.userPanelText}>
+          <MenuItem>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </LogoutButton>
       </Menu>
     </>
   );
