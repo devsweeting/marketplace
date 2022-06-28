@@ -100,7 +100,7 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
           {alertMessage}
         </span>
         <form onSubmit={handleSubmit}>
-          <div className={customModalClasses.formBox}>
+          <div className={customModalClasses.formBox} role={'form'}>
             <label htmlFor="email" aria-label="email" className={customModalClasses.srOnly}>
               email
             </label>
