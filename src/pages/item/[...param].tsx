@@ -15,7 +15,7 @@ import type { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Routes } from '@/domain/Routes';
-import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
+import { ParsedUrlQuery } from 'querystring';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
   const theme = useTheme();
@@ -183,7 +183,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
 export default DetailPage;
 
-export const getServerSideProps = getServerSidePropsWithUser(async ({ query }) => {
+export const getServerSideProps = async ({ query }: { query: ParsedUrlQuery }) => {
   const { param } = query;
   if (!param) {
     return { props: { nftData: null } };
@@ -202,4 +202,4 @@ export const getServerSideProps = getServerSidePropsWithUser(async ({ query }) =
   return {
     props: { nftData: data },
   };
-});
+};
