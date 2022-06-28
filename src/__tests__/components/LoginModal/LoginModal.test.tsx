@@ -1,11 +1,9 @@
 import { LoginModal } from '@/components/LoginModal';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import user from '@testing-library/user-event';
-import React from 'react';
 import { ThemeProvider } from '@mui/material';
 import { themeJump } from '@/styles/themeJump';
-const handleClose = jest.fn();
 const MockLoginModal = () => {
   return (
     <ThemeProvider theme={themeJump}>

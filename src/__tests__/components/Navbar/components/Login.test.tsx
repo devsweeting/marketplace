@@ -1,7 +1,4 @@
-import React from 'react';
-import { render, screen, waitFor, within } from '@testing-library/react';
-import user from '@testing-library/user-event';
-import { axe } from 'jest-axe';
+import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { Login } from '@/components/Navbar/components/Login';
 import { themeJump } from '@/styles/themeJump';
