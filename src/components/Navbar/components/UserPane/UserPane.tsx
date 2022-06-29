@@ -26,7 +26,6 @@ export const UserPane = () => {
   };
   return (
     <>
-      {/* TODO: switch img to next/image */}
       <IconButton
         onClick={handleClick}
         size="small"
