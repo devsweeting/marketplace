@@ -1,14 +1,13 @@
-import type { IncomingMessage, ServerResponse } from 'http';
-import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import { getCookie, removeCookies, setCookies } from 'cookies-next';
 import { USER_TOKEN_COOKIE } from '@/helpers/constants';
 import { decrypt, encrypt } from '@/helpers/crypto';
+import type { NextServerRequest, NextServerResponse } from '@/types/next';
 
-type Request = IncomingMessage & {
-  cookies: NextApiRequestCookies;
-};
-
-export const setUserCookie = (token: string, req: Request, res: ServerResponse): void => {
+export const setUserCookie = (
+  token: string,
+  req: NextServerRequest,
+  res: NextServerResponse,
+): void => {
   const ecryptedToken = encrypt(token);
   setCookies(USER_TOKEN_COOKIE, ecryptedToken, {
     req,
@@ -18,7 +17,7 @@ export const setUserCookie = (token: string, req: Request, res: ServerResponse):
   });
 };
 
-export const getUserCookie = (req: Request): string | undefined => {
+export const getUserCookie = (req: NextServerRequest): string | undefined => {
   const token = getCookie(USER_TOKEN_COOKIE, { req });
 
   if (typeof token !== 'string') {
@@ -28,6 +27,6 @@ export const getUserCookie = (req: Request): string | undefined => {
   return decrypt(token);
 };
 
-export const removeUserCookie = (req: Request, res: ServerResponse) => {
+export const removeUserCookie = (req: NextServerRequest, res: NextServerResponse) => {
   removeCookies(USER_TOKEN_COOKIE, { req, res });
 };

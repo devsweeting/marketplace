@@ -24,6 +24,7 @@ const config: Config.InitialOptions = {
     '^@/domain/(.*)$': '<rootDir>/src/domain/$1',
     '^@/helpers/(.*)$': '<rootDir>/src/helpers/$1',
     '^@/layout/(.*)$': '<rootDir>/src/layout/$1',
+    '^@/api/(.*)$': '<rootDir>/src/api/$1',
     '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
     '^@/containers/(.*)$': '<rootDir>/src/containers/$1',
 

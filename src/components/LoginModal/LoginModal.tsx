@@ -1,11 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '@mui/material/Modal';
-import { useCustomModalStyles, modal, title } from './LoginModal.styles';
+import { modal, title, useCustomModalStyles } from './LoginModal.styles';
 import { Box } from '@mui/system';
 import { Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useModal } from '@/helpers/hooks/useModal';
 import LoginIcon from '@mui/icons-material/Login';
+import { loginRequest } from '@/api/endpoints/loginRequest';
+import { StatusCodes } from 'http-status-codes';
 
 export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
   const customModalClasses = useCustomModalStyles();
@@ -52,23 +54,16 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
       return;
     }
 
-    const formBody = encodeURIComponent('email') + '=' + encodeURIComponent(emailState);
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login/request`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formBody,
-    }).then((res) => {
-      switch (res.status) {
-        case 200:
+    loginRequest(emailState).then((status) => {
+      switch (status) {
+        case StatusCodes.OK:
           setAlertMessage('Check your email for a link to sign in.');
           if (modalBox.current) {
             modalBox.current.style.color = '#4caf50';
           }
           setButtonState(true);
           return;
-        case 429:
+        case StatusCodes.TOO_MANY_REQUESTS:
           setAlertMessage('Too many requests. Please try again later.');
           if (modalBox.current) {
             modalBox.current.style.color = '#f44336';

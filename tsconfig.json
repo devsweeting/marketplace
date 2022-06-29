@@ -25,7 +25,8 @@
       "@/layout/*": ["src/layout/*"],
       "@/api/*": ["src/api/*"],
       "@/pages/*": ["src/pages/*"],
-      "@/containers/*": ["src/containers/*"]
+      "@/containers/*": ["src/containers/*"],
+      "@/types/*": ["src/types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.ts"],
