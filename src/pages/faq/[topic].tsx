@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createRef, useCallback } from 'react';
+import { useState, useEffect, useRef, createRef, useCallback } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useFaqPageStyles } from '@/styles/FaqTopicPage.styles';

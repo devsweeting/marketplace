@@ -13,6 +13,7 @@ import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
 import type { HeaderPosition } from '@/layout/components/Header/Header';
 import { UserProvider } from '@/helpers/auth/UserContext';
+import { ModalProvider } from '@/helpers/auth/ModalContext';
 
 declare module '@mui/styles/defaultTheme' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -47,10 +48,12 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={choosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
           <UserProvider>
-            <CssBaseline />
-            <Layout headerPosition={headerStyle}>
-              <Component {...pageProps} />
-            </Layout>
+            <ModalProvider>
+              <CssBaseline />
+              <Layout headerPosition={headerStyle}>
+                <Component {...pageProps} />
+              </Layout>
+            </ModalProvider>
           </UserProvider>
         </SkinContext.Provider>
       </ThemeProvider>

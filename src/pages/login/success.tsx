@@ -9,6 +9,7 @@ import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
 
 const Login: NextPage = () => {
   const classes = useLoginPageStyles();
+
   return (
     <>
       <OpenGraph title={'Login'} description={'Login page description'} />

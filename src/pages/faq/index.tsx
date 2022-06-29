@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 import { useFaqPageStyles } from '@/styles/FaqTopicPage.styles';
 import { FaqBox } from '@/components/FaqBox';

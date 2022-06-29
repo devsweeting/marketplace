@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid, Typography, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,9 +8,11 @@ import { ShareButton } from '@/components/ShareButton';
 
 export interface ProductDataProps {
   name: string;
+  id: string;
 }
-
-export const ProductCard: React.FC<{ name: ProductDataProps }> = ({ name }) => {
+export const ProductCard: React.FC<{
+  name: ProductDataProps;
+}> = ({ name }) => {
   const classes = useProductStyles();
   return (
     <Card className={classes.productContainer}>

@@ -15,6 +15,7 @@ import type { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Routes } from '@/domain/Routes';
+import type { ParsedUrlQuery } from 'querystring';
 
 const DetailPage = ({ nftData }: { nftData: any }) => {
   const theme = useTheme();
@@ -182,8 +183,11 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
 
 export default DetailPage;
 
-export async function getServerSideProps(context: any) {
-  const { param } = context.query;
+export const getServerSideProps = async ({ query }: { query: ParsedUrlQuery }) => {
+  const { param } = query;
+  if (!param) {
+    return { props: { nftData: null } };
+  }
   const asset_slug = param[0];
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets/${asset_slug}`);
@@ -198,4 +202,4 @@ export async function getServerSideProps(context: any) {
   return {
     props: { nftData: data },
   };
-}
+};
