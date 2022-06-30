@@ -1,4 +1,5 @@
 import makeStyles from '@mui/styles/makeStyles';
+import { lighten } from '@mui/material';
 
 export const useUserPaneStyles = makeStyles(
   (theme) => ({
@@ -9,6 +10,9 @@ export const useUserPaneStyles = makeStyles(
 
     userPanelText: {
       color: theme.palette.primary.main,
+      '&:hover': {
+        color: lighten(theme.palette.primary.main, 0.3),
+      },
     },
   }),
   { name: 'userPane' },

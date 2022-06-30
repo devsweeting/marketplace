@@ -24,10 +24,12 @@ export const UserPane = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <>
       <IconButton
         onClick={handleClick}
+        onMouseEnter={handleClick}
         size="small"
         sx={{ ml: 2 }}
         aria-controls={isOpen ? 'account-menu' : undefined}
@@ -69,27 +71,36 @@ export const UserPane = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {userPanelLinks.map(({ title, path }: { title: string; path: string }, index: any) => (
-          <Link href={path} className={classes.userPanelText} key={`${title}-${index}`}>
-            <a style={{ textDecoration: 'none' }}>
-              <MenuItem>
-                <Typography variant="h4" component="span" className={classes.userPanelText}>
-                  {title}
-                </Typography>
-              </MenuItem>
-            </a>
-          </Link>
-        ))}
-
-        <Divider />
-        <LogoutButton className={classes.userPanelText}>
+        <div onMouseLeave={handleClose}>
           <MenuItem>
-            <ListItemIcon>
-              <Logout fontSize="small" />
-            </ListItemIcon>
-            Logout
+            <Typography variant="h4" component="span" className={classes.userPanelText}>
+              Signed in as foo@bar.com
+            </Typography>
           </MenuItem>
-        </LogoutButton>
+
+          <Divider />
+          {userPanelLinks.map(({ title, path }: { title: string; path: string }, index: any) => (
+            <Link href={path} className={classes.userPanelText} key={`${title}-${index}`}>
+              <a style={{ textDecoration: 'none' }}>
+                <MenuItem>
+                  <Typography variant="h4" component="span" className={classes.userPanelText}>
+                    {title}
+                  </Typography>
+                </MenuItem>
+              </a>
+            </Link>
+          ))}
+
+          <Divider />
+          <LogoutButton className={classes.userPanelText}>
+            <MenuItem>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </LogoutButton>
+        </div>
       </Menu>
     </>
   );
