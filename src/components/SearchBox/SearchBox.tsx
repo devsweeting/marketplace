@@ -12,6 +12,7 @@ interface SearchBoxProps {
   iconColor?: string;
   borderRadius?: any;
   reverseTextColor?: any;
+  className?: string;
 }
 
 export const SearchBox: React.FC<SearchBoxProps> = ({
@@ -19,6 +20,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   iconColor = 'rgba(0, 0, 0, 0.6)',
   borderRadius = false,
   reverseTextColor = false,
+  className,
 }) => {
   const classes = useSearchboxStyles();
   const [value, setValue] = useState('');
@@ -47,7 +49,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
       id="searchBar"
       role="search"
     >
-      <FormControl variant="outlined" className={classes.wrapper}>
+      <FormControl variant="outlined" className={className ? className : classes.wrapper}>
         <OutlinedInput
           role={'textbox'}
           aria-label={'search'}
@@ -68,9 +70,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
                     height: 0,
                     width: 0,
                   }}
-                >
-                  Search Button
-                </span>
+                ></span>
                 <SearchIcon aria-label="search icon" sx={{ color: iconColor, opacity: '40%' }} />
               </IconButton>
             </InputAdornment>

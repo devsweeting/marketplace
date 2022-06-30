@@ -7,8 +7,9 @@ import { NavLink } from './components/NavLink';
 import { useNavbarStyles } from './Navbar.styles';
 import { Login } from './components/Login';
 import { useUser } from '@/helpers/hooks/useUser';
-// import { Logout } from '@/components/Navbar/components/Logout';
 import { UserPane } from './components/UserPane';
+import { SearchModal } from '../SearchModal';
+import { useState } from 'react';
 
 type NavLink = {
   title: string;
@@ -18,9 +19,17 @@ type NavLink = {
 export type NavLinksProps = NavLink[];
 
 export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const classes = useNavbarStyles();
   const user = useUser();
 
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClose = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <Toolbar component="nav" sx={{ display: { xs: `flex` } }}>
       <Stack direction="row" sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -29,11 +38,13 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
             {title}
           </NavLink>
         ))}
+
         <Typography variant="h4" component="span" className={classes.searchIcon} ml={3}>
-          <SearchIcon />
+          <SearchIcon onClick={handleClick} />
         </Typography>
         {!user ? <Login /> : <UserPane user={user} />}
       </Stack>
+      <SearchModal isOpen={isOpen} onClose={handleClose} />
     </Toolbar>
   );
 };
