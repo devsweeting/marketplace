@@ -6,7 +6,8 @@ import { Accordion } from '@/components/Accordion';
 import { AccordionTextItem } from '@/components/Accordion/components/AccordionTextItem';
 import { v4 as uuidv4 } from 'uuid';
 import { FaqSearchContainer } from '@/components/FaqSearchContainer';
-import type { Article } from './[topic]';
+// import type { Article } from './[topic]';
+import { articles, featureQuestions } from '@/__mocks__/mockApiData';
 
 export type FeatureQuestion = {
   question: string;
@@ -18,19 +19,13 @@ export interface Faq {
   rightFaq?: FeatureQuestion[];
 }
 
-const FaqPage = ({
-  articles,
-  featureQuestions,
-}: {
-  articles: Article[];
-  featureQuestions: FeatureQuestion[];
-}) => {
+const FaqPage = () => {
   const classes = useFaqPageStyles();
   const [faq, setFaq] = useState<Faq>({ leftFaq: undefined, rightFaq: undefined });
 
   useEffect(() => {
     setFaq({ leftFaq: featureQuestions.slice(0, 6), rightFaq: featureQuestions.slice(6, 12) });
-  }, [featureQuestions]);
+  }, []);
 
   return (
     <>
@@ -122,18 +117,3 @@ const FaqPage = ({
 };
 
 export default FaqPage;
-
-export async function getServerSideProps() {
-  // mocked fetching to be replaced with cms source
-  const [articlesRes, featureQuestionsRes] = await Promise.all([
-    fetch('http://localhost:3000/api/faq/topics'),
-    fetch('http://localhost:3000/api/faq/featureQuestions'),
-  ]);
-
-  const [articles, featureQuestions] = await Promise.all([
-    articlesRes.json(),
-    featureQuestionsRes.json(),
-  ]);
-
-  return { props: { articles: articles.items, featureQuestions } };
-}

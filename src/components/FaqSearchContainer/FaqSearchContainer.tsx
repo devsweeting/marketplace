@@ -3,6 +3,7 @@ import { Typography, Box, Stack, Chip } from '@mui/material';
 import { useFaqSearchContainerStyles } from './FaqSearchContainer.styles';
 import { SearchBox } from './components/SearchBox';
 import type { Article } from '@/pages/faq/[topic]';
+import Link from 'next/link';
 
 export const FaqSearchContainer = ({ articles }: { articles: Article[] }) => {
   const classes = useFaqSearchContainerStyles();
@@ -25,14 +26,17 @@ export const FaqSearchContainer = ({ articles }: { articles: Article[] }) => {
             articles.map((t) => {
               return (
                 <Box key={t.category}>
-                  <Chip
-                    className={classes.chip}
-                    label={t.name}
-                    component="a"
-                    href={`/faq/${t.category}`}
-                    variant="filled"
-                    clickable
-                  />
+                  <Link href={`/faq/${t.category}`}>
+                    <a className={classes.chipWrapper}>
+                      <Chip
+                        className={classes.chip}
+                        label={t.name}
+                        component="a"
+                        variant="filled"
+                        clickable
+                      />
+                    </a>
+                  </Link>
                 </Box>
               );
             })}

@@ -7,6 +7,7 @@ import { AccordionTextItem } from '@/components/Accordion/components/AccordionTe
 import { v4 as uuidv4 } from 'uuid';
 import classNames from 'classnames';
 import { SelectInput } from '@/components/SelectInput';
+import { articles } from '@/__mocks__/mockApiData';
 
 export interface Article {
   category: string;
@@ -20,12 +21,13 @@ export interface Articles {
   items: Article[];
 }
 
-const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
+const FaqTopicPage = () => {
   const [activeTopic, setActiveTopic] = useState<Article>(articles[0]);
   const [mobileAnchor, setMobileAnchor] = useState<number>(0);
   const [showFixedDropdown, setShowFixedDropdown] = useState<boolean>(false);
   const router = useRouter();
   const urlParam = router.query.topic;
+
   const classes = useFaqPageStyles();
   const myRefs = useRef<any>([]);
 
@@ -52,13 +54,10 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
     setRouterPath(id);
   };
 
-  const findTopicOnDesktop = useCallback(
-    (urlParam: string | string[]) => {
-      const topic = articles.filter((t) => t.category === urlParam);
-      return topic[0];
-    },
-    [articles],
-  );
+  const findTopicOnDesktop = useCallback((urlParam: string | string[]) => {
+    const topic = articles.filter((t) => t.category === urlParam);
+    return topic[0];
+  }, []);
 
   useEffect(() => {
     const newAnchorIndex = findAnchorIndexMobile(urlParam as string);
@@ -216,19 +215,3 @@ const FaqTopicPage = ({ articles }: { articles: Article[] }) => {
 
 FaqTopicPage.layout = 'faqPages';
 export default FaqTopicPage;
-
-export async function getServerSideProps() {
-  // mocked fetching to be replaced with cms source
-  try {
-    const res = await fetch(`http://localhost:3000/api/faq/topics`);
-    const data: Articles = await res.json();
-    return {
-      props: {
-        articles: data.items,
-      },
-    };
-  } catch (err) {
-    /* eslint-disable-next-line no-console */
-    console.error(err);
-  }
-}
