@@ -6,7 +6,6 @@ import { ThemeProvider } from '@mui/styles';
 import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import React from 'react';
-
 const mockLinks = userPanelLinks;
 const mockUser = {
   id: '123321123',
@@ -42,6 +41,7 @@ describe('UserPane', () => {
     render(<MockUserPane />);
     const userPanelBtn = screen.getByRole('button');
     await user.click(userPanelBtn);
+    expect(screen.getByText(mockUser.email, { exact: false })).toHaveTextContent(mockUser.email);
     mockLinks.map((link) => {
       expect(screen.getByRole('link', { name: link.title })).toHaveAttribute('href', link.path);
     });

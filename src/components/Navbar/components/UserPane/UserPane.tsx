@@ -72,7 +72,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <div onMouseLeave={handleClose}>
-          <MenuItem>
+          <MenuItem sx={{ pointerEvents: 'none' }}>
             <Typography variant="h4" component="span" className={classes.userPanelText}>
               Signed in as {user.email ?? 'foo@bar.com'}
             </Typography>
