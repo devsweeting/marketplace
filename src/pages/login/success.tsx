@@ -8,35 +8,29 @@ import { Button } from '@/components/Button';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
 import { addToWatchlist } from '@/api/endpoints/watchlist';
+import type { ProductDataProps } from '@/components/ProductCard';
 
 const Login: NextPage = (user) => {
   const classes = useLoginPageStyles();
 
-  const getWatchList = async () => {
-    if (localStorage.getItem('watchList') && localStorage.getItem('watchList') !== 'undefined') {
-      const watchList = JSON.parse(localStorage.getItem('watchList') as string);
-      return watchList;
-    } else {
-      return [];
-    }
+  const getWatchList = () => {
+    return JSON.parse(localStorage.getItem('watchList') as string) ?? [];
   };
 
   useEffect(() => {
-    if (user) {
-      const fetchingWatchListToAPI = async () => {
-        const watchList = await getWatchList();
-        if (!watchList || watchList === undefined || watchList.length <= 0) return;
-        for (let i = 0; i < watchList.length; i++) {
-          const id = watchList[i];
-          addToWatchlist(id);
-        }
-        return watchList;
-      };
-
-      fetchingWatchListToAPI().then(() => {
-        localStorage.removeItem('watchList');
-      });
+    if (!user) {
+      return;
     }
+
+    const addWatchListItems = async () => {
+      const watchList = getWatchList();
+
+      await Promise.all(watchList.map((item: ProductDataProps) => addToWatchlist(item)));
+    };
+
+    addWatchListItems().then(() => {
+      localStorage.removeItem('watchList');
+    });
   }, [user]);
 
   return (

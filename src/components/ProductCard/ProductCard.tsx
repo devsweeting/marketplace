@@ -15,10 +15,8 @@ export interface ProductDataProps {
   name: string;
   id: string;
 }
-export const ProductCard: React.FC<{
-  name: ProductDataProps;
-  id: ProductDataProps;
-}> = ({ name, id }) => {
+
+export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
   const { isOpen, setIsOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
   const user = useUser();
@@ -27,7 +25,7 @@ export const ProductCard: React.FC<{
   useEffect(() => {
     if (localStorage.getItem('watchList')) {
       const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-      if (originalWatchlist.some((watchItem: { id: ProductDataProps }) => watchItem.id === id)) {
+      if (originalWatchlist.some((watchItem: ProductDataProps) => watchItem.id === id)) {
         setHasBeenAdded(true);
         return;
       }
@@ -38,9 +36,9 @@ export const ProductCard: React.FC<{
     if (!user) {
       if (localStorage.getItem('watchList')) {
         originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-        originalWatchlist.push({ id: id });
+        originalWatchlist.push({ id: id, name: name });
       } else {
-        originalWatchlist = [{ id: id }];
+        originalWatchlist = [{ id: id, name: name }];
       }
       localStorage.setItem('watchList', JSON.stringify(originalWatchlist));
       setIsOpen(!isOpen);
@@ -48,7 +46,7 @@ export const ProductCard: React.FC<{
       return;
     }
 
-    addToWatchlist({ id }).then((status) => {
+    addToWatchlist({ id, name }).then((status) => {
       switch (status) {
         case StatusCodes.CREATED:
           setHasBeenAdded(true);
@@ -64,14 +62,14 @@ export const ProductCard: React.FC<{
     if (!user) {
       const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
       const watchlist = originalWatchlist.filter(
-        (watchlist: { id: ProductDataProps }) => watchlist.id !== id,
+        (watchlist: ProductDataProps) => watchlist.id !== id,
       );
       localStorage.setItem('watchList', JSON.stringify(watchlist));
       setHasBeenAdded(false);
       return;
     }
 
-    removeFromWatchlist({ id }).then(() => {
+    removeFromWatchlist({ id, name }).then(() => {
       setHasBeenAdded(false);
       return;
     });

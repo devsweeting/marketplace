@@ -6,14 +6,14 @@ export const getWatchlist = async () => {
   return addToWatchListResponse.data;
 };
 
-export const addToWatchlist = async ({ id }: { id: ProductDataProps }) => {
+export const addToWatchlist = async (item: ProductDataProps) => {
   const addToWatchListResponse = await apiClient.post(`/watchlist/`, {
-    body: { assetId: id },
+    body: { assetId: item.id },
   });
   return addToWatchListResponse.status;
 };
 
-export const removeFromWatchlist = async ({ id }: { id: ProductDataProps }) => {
-  const deleteWatchListResponse = await apiClient.delete(`/watchlist/${id}`);
+export const removeFromWatchlist = async (item: ProductDataProps) => {
+  const deleteWatchListResponse = await apiClient.delete(`/watchlist/${item.id}`);
   return deleteWatchListResponse.status;
 };
