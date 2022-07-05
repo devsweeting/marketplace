@@ -32,7 +32,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
         <Typography variant="h4" component="span" className={classes.searchIcon} ml={3}>
           <SearchIcon />
         </Typography>
-        {!user ? <Login /> : <UserPane />}
+        {!user ? <Login /> : <UserPane user={user} />}
       </Stack>
     </Toolbar>
   );

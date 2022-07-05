@@ -12,14 +12,14 @@ import Logout from '@mui/icons-material/Logout';
 
 import { Divider, ListItemIcon, Typography } from '@mui/material';
 import { userPanelLinks } from '@/domain/userPaneLink';
+import type { IUser } from '@/types/user';
 
-export const UserPane = () => {
+export const UserPane = ({ user }: { user: IUser }) => {
   const classes = useUserPaneStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-    //TODO
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -74,7 +74,7 @@ export const UserPane = () => {
         <div onMouseLeave={handleClose}>
           <MenuItem>
             <Typography variant="h4" component="span" className={classes.userPanelText}>
-              Signed in as foo@bar.com
+              Signed in as {user.email ?? 'foo@bar.com'}
             </Typography>
           </MenuItem>
 
