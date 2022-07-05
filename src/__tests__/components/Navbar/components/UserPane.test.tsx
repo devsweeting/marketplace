@@ -8,6 +8,10 @@ import user from '@testing-library/user-event';
 import React from 'react';
 
 const mockLinks = userPanelLinks;
+const mockUser = {
+  id: '123321123',
+  email: 'email@email.com',
+};
 jest.mock('next/router', () => ({
   useRouter() {
     return {
@@ -21,7 +25,7 @@ const push = jest.fn();
 const MockUserPane = () => {
   return withTestRouter(
     <ThemeProvider theme={themeJump}>
-      <UserPane />
+      <UserPane user={mockUser} />
     </ThemeProvider>,
     { push, asPath: '/' },
   );
