@@ -12,8 +12,16 @@ type Request = IncomingMessage & {
 
 const mockReq = {} as unknown as Request;
 
+// JWT Payload
+// {
+//   "subId": 1337,
+//   "id":1337,
+//   "email":"test@test.com",
+//   "iat": 1655760764,
+//   "exp": 1655868764
+// }
 const mockValidJwt =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWF0IjoxNjU1NzYwNzY0LCJleHAiOjE2NTU4Njg3NjR9.jT_lLXBBTqaAOaSesfsASQNhYuBwY2osw8aYAMT2khs';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWQiOjEzMzcsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1NTc2MDc2NCwiZXhwIjoxNjU1ODY4NzY0fQ.sbsnnXF4pygn92GeJ5FMmQjy4HHEFkWZGdldjSxvdQ0';
 
 describe('getUserFromJWT', () => {
   test('Should return undefined if no JWT is supplied', () => {
@@ -21,13 +29,16 @@ describe('getUserFromJWT', () => {
   });
 
   test('Should return id if a valid jwt is supplied', () => {
-    expect(getUserFromJwt(mockValidJwt)).toEqual({ id: 1337 });
+    expect(getUserFromJwt(mockValidJwt)).toEqual({
+      id: 1337,
+      email: 'test@test.com',
+    });
   });
 });
 
 describe('getUserFromRequest', () => {
   test('should get user id from a request', () => {
     mockGetUserCookie.mockReturnValue(mockValidJwt);
-    expect(getUserFromRequest(mockReq)).toEqual({ id: 1337 });
+    expect(getUserFromRequest(mockReq)).toEqual({ id: 1337, email: 'test@test.com' });
   });
 });

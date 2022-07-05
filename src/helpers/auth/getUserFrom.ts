@@ -13,6 +13,7 @@ export const getUserFromJwt = (jwt?: string): IUser | undefined => {
   if (!jwt) {
     return;
   }
-  const parsedJwt = jwtDecode<{ subId: string; address: string }>(jwt);
-  return { id: parsedJwt.subId, email: parsedJwt.address };
+  const parsedJwt = jwtDecode<{ id: string; email: string }>(jwt);
+
+  return { id: parsedJwt.id, email: parsedJwt.email };
 };
