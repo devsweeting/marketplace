@@ -9,7 +9,7 @@ const push = jest.fn();
 const MockLogout = () => {
   return withTestRouter(
     <ThemeProvider theme={themeJump}>
-      <Logout />
+      <Logout>Logout </Logout>
     </ThemeProvider>,
     { push, asPath: '/' },
   );
