@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { useEffect } from 'react';
 import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, Container, Typography } from '@mui/material';
@@ -6,9 +7,31 @@ import classNames from 'classnames';
 import { Button } from '@/components/Button';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
+import { addToWatchlist } from '@/api/endpoints/watchlist';
+import type { ProductDataProps } from '@/components/ProductCard';
 
-const Login: NextPage = () => {
+const Login: NextPage = (user) => {
   const classes = useLoginPageStyles();
+
+  const getWatchList = () => {
+    return JSON.parse(localStorage.getItem('watchList') as string) ?? [];
+  };
+
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+
+    const addWatchListItems = async () => {
+      const watchList = getWatchList();
+
+      await Promise.all(watchList.map((item: ProductDataProps) => addToWatchlist(item)));
+    };
+
+    addWatchListItems().then(() => {
+      localStorage.removeItem('watchList');
+    });
+  }, [user]);
 
   return (
     <>
