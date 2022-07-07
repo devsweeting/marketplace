@@ -1,5 +1,5 @@
-import type { IFilter, RangeFilters } from 'src/types';
-
+import type { IFilter, RangeFilters, IAsset, IMeta } from 'src/types';
+import { apiClient } from '@/api/client';
 interface ListAssetParams {
   page: number;
   limit?: number;
@@ -15,7 +15,7 @@ export const loadListAssetByPage = async ({
   filter,
   filterRanges,
   search,
-}: ListAssetParams) => {
+}: ListAssetParams): Promise<{ items: IAsset[]; meta: IMeta }> => {
   let query = `page=${page}&limit=${limit}`;
   if (sort) {
     query += `&sort=asset.createdAt&order=${sort}`;
@@ -35,15 +35,14 @@ export const loadListAssetByPage = async ({
   }
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/assets?${query}`);
-
-    if (res.status !== 200) {
+    const res = await apiClient.get(`/assets?${query}`);
+    if (res.status !== 200 || !res.data) {
       return {
         meta: { currentPage: 1, itemCount: 0, itemsPerPage: 0, totalItems: 0, totalPages: 1 },
         items: [],
       };
     }
-    return await res.json();
+    return res.data as unknown as Promise<{ items: IAsset[]; meta: IMeta }>;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);

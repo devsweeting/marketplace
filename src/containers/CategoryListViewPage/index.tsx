@@ -51,7 +51,7 @@ export const CategoryListViewPage = () => {
   }, [matchesDesktop]);
 
   const loadListAssets = async (page = 1) => {
-    const { meta, items } = await loadListAssetByPage({
+    const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
       page,
       sort: sortType,
       filter: checkedFilters,
@@ -61,7 +61,7 @@ export const CategoryListViewPage = () => {
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
     /* eslint-disable-next-line no-console */
-    console.log(meta, items);
+    // console.log(meta, items);
   };
 
   useEffect(() => {
