@@ -1,5 +1,4 @@
 import type { NextApiHandler } from 'next';
-import { unwrapArray } from '@/helpers/unwrapArray';
 import { StatusCodes } from 'http-status-codes';
 import type { IApiRequest, IApiRequestWithBody } from '@/api/client';
 import type { IncomingHttpHeaders } from 'http';
@@ -22,8 +21,6 @@ const jumpApiProxy: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const urlParts = unwrapArray(req.query.params);
-
   const headers = parseHeaders(req.headers);
   const body = parseBody(headers, req.body);
 
@@ -33,7 +30,16 @@ const jumpApiProxy: NextApiHandler = async (req, res) => {
     headers,
   };
 
-  const apiResponse = await apiClient[method](`/${urlParts.join('/')}`, apiRequest);
+  const url = (req.url?.startsWith('/')
+    ? req.url.replace('/api/jump/', '/')
+    : undefined) as unknown as `/${string}` | undefined;
+
+  if (!url) {
+    res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');
+    return;
+  }
+
+  const apiResponse = await apiClient[method](url, apiRequest);
 
   res.status(apiResponse.status);
 
