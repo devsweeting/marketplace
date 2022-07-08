@@ -4,6 +4,12 @@ const nextConfig = {
   images: {
     domains: ['dilxwvfkfup17.cloudfront.net', 's3.us-west-2.amazonaws.com'],
   },
+  compiler: {
+    styledComponents: {
+      ssr: true,
+      displayName: true,
+    },
+  },
 };
 
 if (process.env.NODE_ENV === 'development') {

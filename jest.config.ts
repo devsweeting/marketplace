@@ -1,6 +1,8 @@
 import type { Config } from '@jest/types';
-import * as dotenv from '@next/env';
-dotenv.loadEnvConfig(process.cwd(), process.env.NODE_ENV === 'development');
+import nextJest from 'next/jest';
+
+const createJestConfig = nextJest({ dir: './' });
+
 const config: Config.InitialOptions = {
   verbose: true,
   collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/*.d.ts', '!**/node_modules/**'],
@@ -51,4 +53,4 @@ const config: Config.InitialOptions = {
   transformIgnorePatterns: ['/node_modules/', '^.+\\.module\\.(css|sass|scss)$'],
 };
 // eslint-disable-next-line import/no-default-export
-export default config;
+export default createJestConfig(config);
