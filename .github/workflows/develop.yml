@@ -35,6 +35,7 @@ jobs:
       - name: 'Build'
         env:
           NEXT_PUBLIC_BACKEND_URL: https://api.staging.jump.co/v1
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
         run: yarn build
 
       # Uncomment this when tests work :)
