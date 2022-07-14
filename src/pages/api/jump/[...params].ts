@@ -4,6 +4,7 @@ import type { IApiRequest, IApiRequestWithBody } from '@/api/client';
 import type { IncomingHttpHeaders } from 'http';
 import { unwrapString } from '@/helpers/unwrapString';
 import { apiClient } from '@/api/client';
+import { withSentry } from '@sentry/nextjs';
 
 const methods = {
   GET: 'get',
@@ -88,5 +89,11 @@ const parseBody = (
 
   return;
 };
+// Fix for https://github.com/getsentry/sentry-javascript/issues/3852
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
 
-export default jumpApiProxy;
+export default withSentry(jumpApiProxy);

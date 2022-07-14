@@ -21,6 +21,7 @@
     "@mui/lab": "^5.0.0-alpha.75",
     "@mui/material": "^5.0.0-rc.1",
     "@mui/styles": "^5.5.1",
+    "@sentry/nextjs": "^7.6.0",
     "@testing-library/user-event": "^14.2.0",
     "@types/uuid": "^8.3.4",
     "accept-language-parser": "^1.5.0",
