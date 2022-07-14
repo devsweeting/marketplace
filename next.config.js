@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withSentryConfig } = require('@sentry/nextjs');
+const uploadReleaseToSentry = process.env.SENTRY_CREATE_RELEASE === 'true';
 
 const nextConfig = {
   reactStrictMode: true,
@@ -12,6 +13,10 @@ const nextConfig = {
       ssr: true,
       displayName: true,
     },
+  },
+  sentry: {
+    disableServerWebpackPlugin: !uploadReleaseToSentry,
+    disableClientWebpackPlugin: !uploadReleaseToSentry,
   },
 };
 
