@@ -35,9 +35,10 @@ export type IApiUrl = `/${string}`;
 export class ApiClient {
   static getBaseUrl() {
     if (typeof window === 'undefined') {
+      console.log('ApiClient: Using Backend URl');
       return process.env.NEXT_PUBLIC_BACKEND_URL;
     }
-
+    console.log('ApiClient: Using /api/jump url');
     return '/api/jump';
   }
 
@@ -93,14 +94,15 @@ export class ApiClient {
     const responseHeaders: Record<string, string> = {};
 
     const url = `${ApiClient.getBaseUrl()}${path}`;
-
+    console.log('ApiClass url', url);
     try {
+      console.log('ApiClass fetch');
       const response = await fetch(url, {
         method,
         headers: request.headers,
         body,
       });
-
+      console.log('ApiClass-fetch response.ok', response.ok);
       if (response.ok) {
         logger.info(`${method} ${response.url} ${response.status}`);
       } else {
@@ -112,9 +114,9 @@ export class ApiClient {
       });
 
       const responseIsJson = responseHeaders['content-type']?.includes('application/json') ?? false;
-
+      console.log('isJson? ', responseIsJson);
       const data = await (responseIsJson ? response.json() : response.text());
-
+      console.log('response data', data);
       return {
         status: response.status,
         ok: response.ok,
@@ -123,6 +125,7 @@ export class ApiClient {
         isJson: responseIsJson,
       };
     } catch (err) {
+      console.log('error', err);
       logger.error(`${method} ${url} ${err}`);
       return {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
