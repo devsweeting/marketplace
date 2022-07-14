@@ -16,14 +16,15 @@ const methods = {
 
 const jumpApiProxy: NextApiHandler = async (req, res) => {
   const method = parseMethod(req.method);
-
+  console.log('jumpAPIProxy() Checking to see if method is supported');
   if (!method) {
     res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');
     return;
   }
-
   const headers = parseHeaders(req.headers);
   const body = parseBody(headers, req.body);
+  console.log('jumpAPIProxy() Parse headers ', headers);
+  console.log('jumpAPIProxy() Parse body', body);
 
   const apiRequest: IApiRequestWithBody | IApiRequest = {
     req,
@@ -34,16 +35,18 @@ const jumpApiProxy: NextApiHandler = async (req, res) => {
   const url = (req.url?.startsWith('/')
     ? req.url.replace('/api/jump/', '/')
     : undefined) as unknown as `/${string}` | undefined;
-
+  console.log('jumpAPIProxy() request URL ', url);
   if (!url) {
+    console.log('jumpAPIProxy() URL undefined');
     res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');
     return;
   }
 
+  console.log('jumpAPIProxy() awaiting Api Response');
   const apiResponse = await apiClient[method](url, apiRequest);
-
+  console.log('jumpAPIProxy() apiResponse ', apiResponse);
   res.status(apiResponse.status);
-
+  console.log('jumpAPIProxy() status', apiResponse.status);
   if (apiResponse.isJson) {
     res.json(apiResponse.data);
   } else {
@@ -52,6 +55,7 @@ const jumpApiProxy: NextApiHandler = async (req, res) => {
 };
 
 const parseMethod = (str?: string): typeof methods[keyof typeof methods] | undefined => {
+  console.log('ParseMethod(): str ', str);
   if (!str || !(str.toUpperCase() in methods)) {
     return;
   }
@@ -60,6 +64,7 @@ const parseMethod = (str?: string): typeof methods[keyof typeof methods] | undef
 };
 
 const parseHeaders = (headers: IncomingHttpHeaders): Record<string, string> => {
+  console.log('ParseHeaders(): headers', headers);
   const updatedHeaders: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(headers)) {
@@ -77,6 +82,7 @@ const parseBody = (
   headers: Record<string, string>,
   body: any,
 ): Record<string, unknown> | URLSearchParams | undefined => {
+  console.log('parseBody() body', body);
   const contentType = headers['content-type'];
 
   if (contentType === 'application/json') {
