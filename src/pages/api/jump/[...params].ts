@@ -63,6 +63,9 @@ const parseHeaders = (headers: IncomingHttpHeaders): Record<string, string> => {
   const updatedHeaders: Record<string, string> = {};
 
   for (const [key, value] of Object.entries(headers)) {
+    if (key === 'Host') {
+      continue;
+    }
     const updatedValue = unwrapString(value);
 
     if (updatedValue) {
