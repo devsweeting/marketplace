@@ -20,3 +20,7 @@ To compile, run `yarn` to install dependencies, and `yarn build` to confirm it c
    * `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`
  * Run `NEXT_PUBLIC_BACKEND_URL=http://localhost:3001/v1 yarn dev` to run the development server
  * Navigate to `http://localhost:3000/` in your browser to view the app
+
+
+### Setting up sentry
+* set the `NEXT_PUBLIC_SENTRY_DSN` to be your dsn, this info can be found here [docs.sentry.io](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)
