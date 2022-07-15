@@ -32,19 +32,4 @@ describe('ApiClient browser', () => {
       headers: {},
     });
   });
-
-  test('it should remove host from header', async () => {
-    //
-    await client.get('/test', {
-      headers: {
-        host: 'test',
-      },
-    });
-
-    // expect(global.fetch).toHaveBeenCalledWith('/api/jump/test', {
-    //   body: undefined,
-    //   method: 'GET',
-    //   headers: {},
-    // });
-  });
 });

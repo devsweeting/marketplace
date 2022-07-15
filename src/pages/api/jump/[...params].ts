@@ -61,6 +61,9 @@ const parseHeaders = (headers: IncomingHttpHeaders): Record<string, string> => {
     if (key.toLowerCase() === 'host') {
       continue;
     }
+    if (key.toLowerCase() === 'content-type') {
+      continue;
+    }
     const updatedValue = unwrapString(value);
 
     if (updatedValue) {

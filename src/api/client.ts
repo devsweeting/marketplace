@@ -119,7 +119,7 @@ export class ApiClient {
       };
     } catch (err) {
       logger.error(`${method} ${url} ${err}`);
-      Sentry.captureException(err, method, url);
+      Sentry.captureException(err);
       return {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
         ok: false,
