@@ -13,5 +13,4 @@ describe('api/me', () => {
       },
     });
   });
-  // TODO add test for user data
 });
