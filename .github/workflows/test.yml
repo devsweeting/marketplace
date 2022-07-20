@@ -1,0 +1,83 @@
+name: 'Test'
+on:
+  push:
+    tags:
+      - test
+jobs:
+  test-and-deploy:
+    name: 'Test & Deploy'
+    runs-on: ubuntu-latest
+    steps:
+      ######################################
+      # Build, Install and Test
+      ######################################
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+
+      - name: 'Setup NodeJS 14'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'yarn'
+          cache-dependency-path: yarn.lock
+
+      - name: 'Install Dependencies'
+        run: yarn install
+
+      - name: 'Lint'
+        run: yarn lint
+
+      - name: 'Build'
+        env:
+          NEXT_PUBLIC_BACKEND_URL: https://api.staging.jump.co/v1
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+        run: yarn build
+
+      - name: 'Run Tests'
+        id: tests
+        run: yarn test:cov
+
+     - name: Configure AWS credentials
+        id: aws_creds
+        if: |
+          github.ref == 'refs/heads/test' &&
+          github.event_name == 'push' &&
+          steps.tests.outcome == 'success'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.TEST_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.TEST_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.TEST_AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: ecr_login
+        if: |
+          github.ref == 'refs/heads/test' &&
+          github.event_name == 'push' &&
+          steps.aws_creds.outcome == 'success'
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: ecr
+        if: |
+          github.ref == 'refs/heads/test' &&
+          github.event_name == 'push' &&
+          steps.ecr_login.outcome == 'success'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: web-test
+          IMAGE_TAG: latest
+          DOCKER_FILE: Dockerfile.ecs
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f $DOCKERFILE
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Restart WEB ECS services to enfore pulling latest/newest ECR image
+        if: |
+          github.ref == 'refs/heads/test' &&
+          github.event_name == 'push' &&
+          steps.ecr.outcome == 'success'
+        env:
+          CLUSTER_NAME: jumpco-cluster-test
+        run: |
+          aws ecs update-service --cluster $CLUSTER_NAME --service web-test --force-new-deployment
