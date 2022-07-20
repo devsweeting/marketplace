@@ -11,7 +11,7 @@ jobs:
       - name: 'Checkout source code'
         uses: actions/checkout@v2
 
-     - name: Configure AWS credentials
+      - name: Configure AWS credentials
         id: aws_creds
         if: |
           github.ref == 'refs/tags/test' &&
