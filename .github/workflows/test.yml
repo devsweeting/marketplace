@@ -61,7 +61,7 @@ jobs:
           SLACK_CHANNEL: jump-dev
           SLACK_COLOR: ${{ job.status }}
           SLACK_MESSAGE: |
-            Deploy ${{ fromJSON(''["FAILED", "SUCCEEDED"]'')[job.status == ''success''] }}
+            Deploy ${{ job.status }}
 
             Details: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
 
