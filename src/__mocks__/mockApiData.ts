@@ -21,29 +21,26 @@ export const mockGalleryImages = [
   {
     title: 'Robbert van Dijk - The Dutch',
     image: '/images/nftDetail/gallery/product1b.svg',
-    url: '/images/nftDetail/gallery/product1b.svg',
     sortOrder: 1,
     assetId: '19292',
     fileId: '19292',
-    file: '/images/nftDetail/gallery/product1b.svg',
+    absoluteUrl: 'http://example.com/images/nftDetail/gallery/product1b.svg',
   },
   {
     title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
     image: '/images/nftDetail/gallery/product1a.svg',
-    url: '/images/nftDetail/gallery/product1a.svg',
     sortOrder: 2,
     assetId: '19292',
     fileId: '19292',
-    file: '/images/nftDetail/gallery/product1a.svg',
+    absoluteUrl: 'http://example.com/images/nftDetail/gallery/product1a.svg',
   },
   {
     title: 'Gary Oldman - The American',
     image: '/images/nftDetail/gallery/product1b.svg',
-    url: '/images/nftDetail/gallery/product1b.svg',
     sortOrder: 3,
     assetId: '19292',
     fileId: '19292',
-    file: '/images/nftDetail/gallery/product1b.svg',
+    absoluteUrl: 'http://example.com/images/nftDetail/gallery/product1b.svg',
   },
 ];
 

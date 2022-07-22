@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { Typography, Box, Divider } from '@mui/material';
 import { SkinContext } from '@/styles/skin-context';
 import { useCardStyles } from './Card.styles';
-import Image from 'next/image';
 import Link from 'next/link';
 import type { IAsset } from 'src/types';
+import Image from 'next/image';
 
 interface CardProps {
   item: IAsset;
@@ -29,7 +29,7 @@ export const Card = ({ item }: CardProps) => {
               {item?.media && item?.media.length > 0 && (
                 <Image
                   className={classes.mainImage}
-                  src={item.media[0].file}
+                  src={item.media[0].absoluteUrl}
                   alt={item.media[0].title}
                   layout="fill"
                   objectFit="contain"

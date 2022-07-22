@@ -10,11 +10,10 @@ import user from '@testing-library/user-event';
 type Image = {
   title: string;
   description?: string;
-  url: string;
   sortOrder: number;
   assetId: string;
   fileId: string;
-  file: string;
+  absoluteUrl: string;
 };
 
 const MockGallery = ({ images }: { images: Image[] }) => {

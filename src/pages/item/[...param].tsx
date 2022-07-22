@@ -76,9 +76,9 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                       images={[
                         {
                           title: 'No image',
-                          file: '/images/No_image_available_500_x_500.svg',
+                          // TODO: Fix default image
+                          absoluteUrl: '/images/No_image_available_500_x_500.svg',
                           description: 'No image available',
-                          url: '/images/No_image_available_500_x_500.svg',
                           sortOrder: 0,
                           assetId: '',
                           fileId: '',

@@ -3,25 +3,25 @@ import { Grid, Box, Typography } from '@mui/material';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { useGalleryStyles } from './Gallery.styles';
+import Image from 'next/image';
 
 export type Image = {
   title: string;
   description?: string;
-  url: string;
   sortOrder: number;
   assetId: string;
   fileId: string;
-  file: string;
+  absoluteUrl: string;
 };
 
 export const Gallery = ({ images }: { images: Image[] }) => {
   const router = useRouter();
   const classes = useGalleryStyles();
 
-  const [mainImage, setMainImage] = useState(images[0].file);
+  const [mainImage, setMainImage] = useState(images[0].absoluteUrl);
 
   useEffect(() => {
-    setMainImage(images[0].file);
+    setMainImage(images[0].absoluteUrl);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
@@ -39,15 +39,14 @@ export const Gallery = ({ images }: { images: Image[] }) => {
               <Box
                 className={classNames(
                   classes.thumbnailWrapper,
-                  image.file === mainImage ? classes.faded : null,
+                  image.absoluteUrl === mainImage ? classes.faded : null,
                 )}
                 key={`${index}${image.title}`}
               >
                 <Box className={classes.thumbnailItem}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     className={classes.thumbnail}
-                    src={image.file}
+                    src={image.absoluteUrl}
                     alt={image.title}
                     width={80}
                     height={114}
@@ -63,8 +62,7 @@ export const Gallery = ({ images }: { images: Image[] }) => {
         </Grid>
         <Grid container pt={0} item md={8} xs={12}>
           <Grid item pt={0} md={12} className={classes.imageContainer}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               id="main-gallery-image"
               className={classes.image}
               src={mainImage}

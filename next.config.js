@@ -6,7 +6,12 @@ const uploadReleaseToSentry = process.env.SENTRY_CREATE_RELEASE === 'true';
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['dilxwvfkfup17.cloudfront.net', 's3.us-west-2.amazonaws.com'],
+    domains: [
+      // This list is required at compile time, so we can't configure this properly.
+      'jumpco-assets-test.s3.us-west-2.amazonaws.com', // Test environment
+      'fractionalist-nfts.s3.us-west-2.amazonaws.com', // Staging environment
+      // None for production yet
+    ],
   },
   compiler: {
     styledComponents: {

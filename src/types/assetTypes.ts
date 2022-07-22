@@ -19,11 +19,10 @@ export interface IAttribute {
 export interface IMedia {
   assetId: string;
   title: string;
-  url: string;
   description: string | null;
-  file: string;
   fileId: string;
   sortOrder: number;
+  absoluteUrl: string;
 }
 
 export interface IMeta {
