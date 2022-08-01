@@ -2,21 +2,22 @@
  * @jest-environment node
  */
 import { encrypt, decrypt } from '@/helpers/crypto';
-import * as constant from '../../helpers/constants';
+import * as constants from '../../helpers/constants';
+
+const mockConstants = constants as { ENCRYPTION_KEY: Buffer | undefined };
 
 const mockEncryptionKey = (value?: string | null) => {
   if (value !== '' && !value) {
-    //mock undefined window behavior
-    Object.defineProperty(constant, 'ENCRYPTION_KEY', {
-      value: undefined,
-    });
+    mockConstants.ENCRYPTION_KEY = undefined;
   } else {
-    Object.defineProperty(constant, 'ENCRYPTION_KEY', {
-      value: Buffer.from(value, 'base64'),
-    });
+    mockConstants.ENCRYPTION_KEY = Buffer.from(value, 'base64');
   }
 };
 
+jest.mock('../../helpers/constants', () => ({
+  __esModule: true,
+  ENCRYPTION_KEY: null,
+}));
 describe('encrypt', () => {
   test('encryption should fail if window is undefined', () => {
     mockEncryptionKey();

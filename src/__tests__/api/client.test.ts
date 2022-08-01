@@ -3,7 +3,6 @@
  */
 import { ApiClient } from '@/api/client';
 import { StatusCodes } from 'http-status-codes';
-import { Headers } from 'next/dist/server/web/spec-compliant/headers';
 import { getUserCookie } from '@/helpers/auth/userCookie';
 import type { NextServerRequest } from '@/types/next';
 import { logger } from '@/helpers/logger';
