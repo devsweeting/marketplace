@@ -1,5 +1,4 @@
 import { ApiClient } from '@/api/client';
-import { Headers } from 'next/dist/server/web/spec-compliant/headers';
 import { StatusCodes } from 'http-status-codes';
 
 describe('ApiClient browser', () => {
