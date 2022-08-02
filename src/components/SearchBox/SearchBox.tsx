@@ -64,13 +64,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
           placeholder={placeholder}
           endAdornment={
             <InputAdornment position="end">
-              <IconButton type="submit" role={'button'}>
-                <span
-                  style={{
-                    height: 0,
-                    width: 0,
-                  }}
-                ></span>
+              <IconButton type="submit" role={'button'} aria-label="search">
                 <SearchIcon aria-label="search icon" sx={{ color: iconColor, opacity: '40%' }} />
               </IconButton>
             </InputAdornment>

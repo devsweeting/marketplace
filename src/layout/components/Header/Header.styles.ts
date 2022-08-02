@@ -37,6 +37,9 @@ export const useHeaderStyles = makeStyles(
     searchBoxContainer: {
       width: '100%',
       margin: `0 ${theme.spacing(9)}`,
+      '@media (max-width: 1200px)': {
+        margin: `0 0 0 ${theme.spacing(3)}`,
+      },
       '@media (max-width: 900px)': {
         display: 'none',
       },
