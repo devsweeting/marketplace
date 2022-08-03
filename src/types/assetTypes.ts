@@ -33,6 +33,14 @@ export interface IMeta {
   totalPages: number;
 }
 
+export interface IAssetDetails {
+  year: string;
+  categories: string[];
+  set: string;
+  grading: string;
+  grading_service: string;
+}
+
 export interface IFilter {
   categoryId: string;
   filterId: string;
@@ -50,3 +58,11 @@ export type DisabledRanges = {
 export type DisabledRangesKey = keyof DisabledRanges;
 
 export type RangeFilters = Record<string, IRange> | null;
+
+export interface ISellorder {
+  assetId: string;
+  fraction_qty: number;
+  fraction_price_cents: number;
+  expire_time: number;
+  deleted_time: number;
+}

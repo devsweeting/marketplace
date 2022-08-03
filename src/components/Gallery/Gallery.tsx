@@ -6,6 +6,7 @@ import { useGalleryStyles } from './Gallery.styles';
 import Image from 'next/image';
 
 export type Image = {
+  url: string;
   title: string;
   description?: string;
   sortOrder: number;
@@ -18,7 +19,9 @@ export const Gallery = ({ images }: { images: Image[] }) => {
   const router = useRouter();
   const classes = useGalleryStyles();
 
-  const [mainImage, setMainImage] = useState(images[0].absoluteUrl);
+  const [mainImage, setMainImage] = useState(
+    images[0].absoluteUrl ? images[0].absoluteUrl : images[0].url,
+  );
 
   useEffect(() => {
     setMainImage(images[0].absoluteUrl);
@@ -44,14 +47,16 @@ export const Gallery = ({ images }: { images: Image[] }) => {
                 key={`${index}${image.title}`}
               >
                 <Box className={classes.thumbnailItem}>
-                  <Image
-                    className={classes.thumbnail}
-                    src={image.absoluteUrl}
-                    alt={image.title}
-                    width={80}
-                    height={114}
-                    onClick={handleImage}
-                  />
+                  {image.absoluteUrl && (
+                    <Image
+                      className={classes.thumbnail}
+                      src={image.absoluteUrl}
+                      alt={image.title}
+                      width={80}
+                      height={114}
+                      onClick={handleImage}
+                    />
+                  )}
                 </Box>
                 <Typography variant="body2" component="p" className={classes.thumbnailText}>
                   {image.title}

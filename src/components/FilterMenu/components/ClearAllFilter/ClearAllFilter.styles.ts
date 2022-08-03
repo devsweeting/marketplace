@@ -3,14 +3,15 @@ import { makeStyles } from '@mui/styles';
 export const useClearAllFilter = makeStyles(
   (theme) => ({
     container: {
-      height: '88px',
+      width: '180px',
       paddingLeft: 0,
       paddingRight: theme.spacing(2.5),
       display: 'flex',
+      flexWrap: 'nowrap',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      flexWrap: 'wrap',
+
       ['@media (max-width:900px)']: {
         paddingRight: 0,
       },

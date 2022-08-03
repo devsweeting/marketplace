@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { Typography, Box } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '@/components/Button';
 import { BorderBox } from '@/components/BorderBox/BorderBox';
@@ -15,22 +14,14 @@ interface ClearAllFiltersProps {
 
 export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
   clearSelectedFilters,
-  toggleVisibility,
   isFilterButtonVisible,
 }) => {
   const { skin } = useContext(SkinContext);
   const classes = useClearAllFilter();
 
   return (
-    <BorderBox bottom={4} right={skin.sidebar.borderRight}>
-      <Box className={classes.container} sx={{ background: skin.listItem.filterBackgroundColor }}>
-        <Box className={classes.closeButton}>
-          <ArrowBackIcon className={classes.arrowIcon} onClick={() => toggleVisibility(false)} />
-          <Typography variant="h3" component="h3" sx={{ fontSize: '34px' }}>
-            Filter
-          </Typography>
-        </Box>
-
+    <BorderBox right={skin.sidebar.borderRight}>
+      <Box className={classes.container}>
         {isFilterButtonVisible ? (
           <Button
             variant="outlined"

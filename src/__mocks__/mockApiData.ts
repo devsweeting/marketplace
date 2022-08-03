@@ -24,7 +24,7 @@ export const mockGalleryImages = [
     sortOrder: 1,
     assetId: '19292',
     fileId: '19292',
-    absoluteUrl: 'http://example.com/images/nftDetail/gallery/product1b.svg',
+    absoluteUrl: 'https://example.com/images/nftDetail/gallery/product1b.svg',
   },
   {
     title: 'Overstreet Comic Book 50th Anniversary 10 GEM MINT',
@@ -32,7 +32,7 @@ export const mockGalleryImages = [
     sortOrder: 2,
     assetId: '19292',
     fileId: '19292',
-    absoluteUrl: 'http://example.com/images/nftDetail/gallery/product1a.svg',
+    absoluteUrl: 'https://example.com/images/nftDetail/gallery/product1a.svg',
   },
   {
     title: 'Gary Oldman - The American',
@@ -40,7 +40,7 @@ export const mockGalleryImages = [
     sortOrder: 3,
     assetId: '19292',
     fileId: '19292',
-    absoluteUrl: 'http://example.com/images/nftDetail/gallery/product1b.svg',
+    absoluteUrl: 'https://example.com/images/nftDetail/gallery/product1b.svg',
   },
 ];
 

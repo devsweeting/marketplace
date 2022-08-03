@@ -53,3 +53,31 @@ export const loadListAssetByPage = async ({
     };
   }
 };
+
+interface LatestDropParams {
+  page: number;
+  limit?: number;
+}
+export const latestDropAssets = async ({
+  page,
+  limit = 12,
+}: LatestDropParams): Promise<{ items: IAsset[] }> => {
+  const query = `page=${page}&limit=${limit}`;
+
+  try {
+    const res = await apiClient.get(`/assets?${query}`);
+    if (res.status !== 200 || !res.data) {
+      return {
+        items: [],
+      };
+    }
+    return res.data as unknown as Promise<{ items: IAsset[] }>;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+
+    return {
+      items: [],
+    };
+  }
+};

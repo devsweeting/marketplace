@@ -1,0 +1,1 @@
+export { IsolatedMenu } from './IsolatedMenu';

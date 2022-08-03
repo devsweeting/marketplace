@@ -60,8 +60,6 @@ export const CategoryListViewPage = () => {
     });
     setListAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
-    /* eslint-disable-next-line no-console */
-    // console.log(meta, items);
   };
 
   useEffect(() => {

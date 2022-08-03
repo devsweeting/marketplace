@@ -26,7 +26,7 @@ export const Card = ({ item }: CardProps) => {
             }}
           >
             <Box className={classes.imageInnerContainer}>
-              {item?.media && item?.media.length > 0 && (
+              {item?.media && item?.media.length > 0 && item.media[0].absoluteUrl && (
                 <Image
                   className={classes.mainImage}
                   src={item.media[0].absoluteUrl}

@@ -7,7 +7,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { SkinContext } from '@/styles/skin-context';
 import { BorderBox } from '../BorderBox/BorderBox';
-import { FilterGroup } from './components/FilterGroup';
+import { FilterGroup } from '../Filters/components/FilterGroup';
 import { Slider } from './components/Slider';
 import type { IFilter, RangeFilters, DisabledRanges, DisabledRangesKey } from 'src/types';
 

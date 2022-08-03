@@ -32,7 +32,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
         description={nftData.description}
         image={
           nftData.media
-            ? nftData.media[0].file
+            ? nftData.media[0].absoluteUrl
             : 'https://upload.wikimedia.org/wikipedia/commons/5/5a/No_image_available_500_x_500.svg'
         }
         image_alt={nftData.media ? nftData.media[0].description : 'No image available'}
@@ -78,6 +78,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                           title: 'No image',
                           // TODO: Fix default image
                           absoluteUrl: '/images/No_image_available_500_x_500.svg',
+                          url: '/images/No_image_available_500_x_500.svg',
                           description: 'No image available',
                           sortOrder: 0,
                           assetId: '',
@@ -104,9 +105,9 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 <DescriptionText text={nftData.description} />
                 <Box sx={{ position: 'relative' }}>
                   <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
-                    {nftData.media ? (
+                    {nftData.media && nftData.media[0].absoluteURL ? (
                       <Image
-                        src={nftData.media[0].file}
+                        src={nftData.media[0].absoluteUrl}
                         alt={nftData.media[0].description}
                         layout="fill"
                         objectFit="contain"

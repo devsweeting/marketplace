@@ -8,10 +8,6 @@ import { themeJump } from '@/styles/themeJump';
 import { mockedApiData } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
 
-const user = {
-  id: '3r3dd3r34r-t5t5fgf5t-43tf345rr345-werwer445',
-};
-
 jest.mock('next/router', () => ({
   useRouter() {
     return {
@@ -23,17 +19,17 @@ jest.mock('next/router', () => ({
   },
 }));
 
-const MockDetailPage = ({ nftData, user }: { nftData: any; user: any }) => {
+const MockDetailPage = ({ nftData }: { nftData: any }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <DetailPage nftData={nftData} user={user} />
+      <DetailPage nftData={nftData} />
     </ThemeProvider>
   );
 };
 
 describe('DetailPage', () => {
   it('should render with the fetched content ', async () => {
-    render(<MockDetailPage nftData={mockedApiData} user={user} />);
+    render(<MockDetailPage nftData={mockedApiData} />);
     // waitFor(() => expect(screen.getByText(mockedApiData.name)).toBeInTheDocument());
     expect(await screen.findByText(mockedApiData.description)).toBeInTheDocument();
     // await waitFor(() => expect(screen.findByText('Contact ID')).toBeInTheDocument());

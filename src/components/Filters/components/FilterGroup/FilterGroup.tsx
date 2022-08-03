@@ -18,7 +18,8 @@ export const FilterGroup: React.FC<any> = ({
   const { categoryId, filters } = category;
 
   return (
-    <Box>
+    <Box style={{ padding: 20 }}>
+      {categoryId}
       {filters &&
         filters.map((filter: any, index: any) => {
           return (
