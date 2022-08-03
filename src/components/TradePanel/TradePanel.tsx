@@ -32,8 +32,8 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
       label: '0',
     },
     {
-      value: sellorder.fraction_qty,
-      label: sellorder.fraction_qty,
+      value: sellorder.fractionQty,
+      label: sellorder.fractionQty,
     },
   ];
 
@@ -52,7 +52,7 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
     if (activeThumb === 0) {
       setSliderValue(newValue as number);
 
-      setTotalPrice(Math.ceil((newValue as number) * sellorder.fraction_price_cents * 100) / 100);
+      setTotalPrice(Math.ceil((newValue as number) * sellorder.fractionPriceCents) / 100);
     }
   };
 
@@ -107,12 +107,12 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
         <Box className={classes.assetClaimedWrapper}>
           <LinearProgress variant="determinate" value={25} className={classes.progressBar} />
           <Box className={classes.detailsInfo}>
-            <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>xx% Claimed</Typography>
+            <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>25% Claimed</Typography>
             <Typography sx={{ fontSize: '10px' }}>Buy more shares in HH:MM:SS</Typography>
           </Box>
         </Box>
         <Typography className={classes.available_instances}>
-          {sellorder.fraction_qty} Shares Available (x.x%)
+          {sellorder.fractionQty} Shares Available (75%)
         </Typography>
         <Box sx={{ display: 'flex', marginTop: '20px' }}>
           <Typography>Order Book</Typography>
@@ -120,7 +120,7 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
         <Slider
           defaultValue={0}
           value={sliderValue}
-          max={sellorder.fraction_qty}
+          max={sellorder.fractionQty}
           step={1}
           valueLabelDisplay="auto"
           onChange={handleSliderChange}

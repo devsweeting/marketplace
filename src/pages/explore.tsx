@@ -32,7 +32,6 @@ const ExplorePage: NextPage = () => {
   const [data, setData] = useState<IAsset | undefined>();
   const searchQuery = useRouter().query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
-  const sellorderData: ISellorder[] = mockSellorderResponse.items;
   const [checkedFilters, setCheckedFilters] = useState<any[]>([]);
   const [filterRanges, setFilterRanges] = useState<RangeFilters>(null);
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
@@ -231,7 +230,7 @@ const ExplorePage: NextPage = () => {
             handleClose={() => {
               setIsOpen(!isOpen);
             }}
-            sellorder={sellorderData[0]}
+            sellorder={data.sellOrders[0]}
           />
         )}
       </Grid>

@@ -54,7 +54,9 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
                     </Box>
                     <Box className={classes.CardPriceItem}>
                       <Typography>Share Price</Typography>
-                      <Typography className={classes.price}>$x</Typography>
+                      <Typography className={classes.price}>
+                        ${assetData.sellOrders[0].fractionPriceCents / 100}
+                      </Typography>
                     </Box>
                   </Box>
                 </Box>
