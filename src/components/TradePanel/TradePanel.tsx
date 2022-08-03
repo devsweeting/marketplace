@@ -107,12 +107,12 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
         <Box className={classes.assetClaimedWrapper}>
           <LinearProgress variant="determinate" value={25} className={classes.progressBar} />
           <Box className={classes.detailsInfo}>
-            <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>25% Claimed</Typography>
-            <Typography sx={{ fontSize: '10px' }}>Buy more shares in HH:MM:SS</Typography>
+            <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>XX% Claimed</Typography>
+            <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
           </Box>
         </Box>
         <Typography className={classes.available_instances}>
-          {sellorder.fractionQty} Shares Available (75%)
+          {sellorder.fractionQty} Fractions Available (XX%)
         </Typography>
         <Box sx={{ display: 'flex', marginTop: '20px' }}>
           <Typography>Order Book</Typography>
@@ -130,7 +130,7 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
         <Box sx={{ margin: '40px 0' }}>
           <Typography>Order Summary</Typography>
           <Box sx={{ display: 'flex', marginTop: '10px' }}>
-            <Typography>{sliderValue} shares</Typography>
+            <Typography>{sliderValue} fractions</Typography>
             <Typography sx={{ marginLeft: 'auto' }}>${totalPrice}</Typography>
           </Box>
 

@@ -49,7 +49,13 @@ export const MarketCard = ({
               {asset.name}
             </Typography>
           )}
+
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+            {asset.sellOrders[0] && (
+              <Typography variant="subtitle2" className={classes.cardSubTitle}>
+                FP ${asset.sellOrders[0].fractionPriceCents / 100}
+              </Typography>
+            )}
             {details.year && (
               <Typography variant="subtitle2" className={classes.cardSubTitle}>
                 Year: {details.year}

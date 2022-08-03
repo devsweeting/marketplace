@@ -19,7 +19,6 @@ export interface IAttribute {
 
 export interface IMedia {
   assetId: string;
-  partnerId: string;
   title: string;
   description: string | null;
   fileId: string;
