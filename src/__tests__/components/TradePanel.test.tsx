@@ -28,7 +28,6 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
 describe('TradePanel', () => {
   test('should contain all the content', () => {
     render(<MockTradePanel asset={data} />);
-    screen.debug();
     const cardTitle = screen.getByText(/research drawer/i);
     const closeBtn = screen.getByRole('button', { name: /close/i });
     const name = screen.getByText(data.name);

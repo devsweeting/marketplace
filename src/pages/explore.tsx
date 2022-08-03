@@ -4,7 +4,6 @@ import type { NextPage } from 'next';
 import type {
   IAsset,
   IMeta,
-  ISellorder,
   IFilter,
   RangeFilters,
   DisabledRanges,
@@ -18,7 +17,6 @@ import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { TradePanel } from '@/components/TradePanel';
-import { mockSellorderResponse } from '@/__mocks__/mockAssetResponse';
 import { AssetListView } from '@/containers/AssetListView';
 import { Filters } from '@/components/Filters';
 import type { FilterSidebarProps } from '@/containers/CategoryListViewPage/FilterSidebar';
