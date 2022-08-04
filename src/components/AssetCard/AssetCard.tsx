@@ -26,13 +26,15 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       <CardActionArea>
         <Box onClick={onClick} className={classes.cardBody}>
           <Box className={classes.ImageWrapper}>
-            <Image
-              src={assetData.media[0].absoluteUrl}
-              alt={assetData.media[0].title}
-              width={200}
-              height={340}
-              className={classes.cardImage}
-            ></Image>
+            {assetData.media && assetData.media[0].absoluteUrl && (
+              <Image
+                src={assetData.media[0].absoluteUrl}
+                alt={assetData.media[0].title}
+                width={200}
+                height={340}
+                className={classes.cardImage}
+              ></Image>
+            )}
           </Box>
           <Box sx={{ width: '100%' }}>
             <Box className={classes.cardDetailsWrapper}>
@@ -55,7 +57,9 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
                     <Box className={classes.CardPriceItem}>
                       <Typography>Fraction Price</Typography>
                       <Typography className={classes.price}>
-                        ${assetData.sellOrders[0].fractionPriceCents / 100}
+                        {assetData.sellOrders
+                          ? `$${assetData.sellOrders[0].fractionPriceCents / 100}`
+                          : 'Not Available'}
                       </Typography>
                     </Box>
                   </Box>

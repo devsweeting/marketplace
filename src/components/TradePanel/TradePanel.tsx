@@ -17,8 +17,7 @@ import { useTradePanelStyles } from './TradePanel.styles';
 import { CardGallery } from './Components/CardGallery';
 import type { ITradePanel } from './ITradePanel';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
-
-export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel) => {
+export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   const classes = useTradePanelStyles();
 
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -32,8 +31,8 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
       label: '0',
     },
     {
-      value: sellorder.fractionQty,
-      label: sellorder.fractionQty,
+      value: asset.sellOrders ? asset.sellOrders[0].fractionQty : 0,
+      label: asset.sellOrders ? asset.sellOrders[0].fractionQty : 0,
     },
   ];
 
@@ -52,7 +51,7 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
     if (activeThumb === 0) {
       setSliderValue(newValue as number);
 
-      setTotalPrice(Math.ceil((newValue as number) * sellorder.fractionPriceCents) / 100);
+      setTotalPrice(Math.ceil((newValue as number) * asset.sellOrders[0].fractionPriceCents) / 100);
     }
   };
 
@@ -112,43 +111,51 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
           </Box>
         </Box>
         <Typography className={classes.available_instances}>
-          {sellorder.fractionQty} Fractions Available (XX%)
+          {asset.sellOrders ? asset.sellOrders[0].fractionQty : 'No '} Fractions Available (XX%)
         </Typography>
-        <Box sx={{ display: 'flex', marginTop: '20px' }}>
-          <Typography>Order Book</Typography>
-        </Box>
-        <Slider
-          defaultValue={0}
-          value={sliderValue}
-          max={sellorder.fractionQty}
-          step={1}
-          valueLabelDisplay="auto"
-          onChange={handleSliderChange}
-          className={classes.slider_styles}
-          marks={marks}
-        />
-        <Box sx={{ margin: '40px 0' }}>
-          <Typography>Order Summary</Typography>
-          <Box sx={{ display: 'flex', marginTop: '10px' }}>
-            <Typography>{sliderValue} fractions</Typography>
-            <Typography sx={{ marginLeft: 'auto' }}>${totalPrice}</Typography>
+        {asset.sellOrders && (
+          <Box>
+            <Box sx={{ display: 'flex', marginTop: '20px' }}>
+              <Typography>Order Book</Typography>
+            </Box>
+            <Slider
+              defaultValue={0}
+              value={sliderValue}
+              max={asset.sellOrders[0].fractionQty}
+              step={1}
+              valueLabelDisplay="auto"
+              onChange={handleSliderChange}
+              className={classes.slider_styles}
+              marks={marks}
+            />
           </Box>
+        )}
+        <Box sx={{ margin: '40px 0' }}>
+          {asset.sellOrders && (
+            <Box>
+              <Typography>Order Summary</Typography>
+              <Box sx={{ display: 'flex', marginTop: '10px' }}>
+                <Typography>{sliderValue} fractions</Typography>
+                <Typography sx={{ marginLeft: 'auto' }}>${totalPrice}</Typography>
+              </Box>
 
-          <Button
-            onClick={handleOpenBuyModal}
-            disabled={disableBuyBTN}
-            variant="contained"
-            className={classes.fullWidthButton}
-          >
-            Buy Now
-          </Button>
+              <Button
+                onClick={handleOpenBuyModal}
+                disabled={disableBuyBTN}
+                variant="contained"
+                className={classes.fullWidthButton}
+              >
+                Buy Now
+              </Button>
 
-          <BuyModal
-            isOpen={buyModalOpen}
-            onClose={handleOpenBuyModal}
-            fractions={sliderValue}
-            totalPrice={totalPrice}
-          />
+              <BuyModal
+                isOpen={buyModalOpen}
+                onClose={handleOpenBuyModal}
+                fractions={sliderValue}
+                totalPrice={totalPrice}
+              />
+            </Box>
+          )}
           <Typography sx={{ padding: '10px 0', marginTop: '20px' }}>Card details</Typography>
           <Box className={classes.detailsInfo}>
             <Typography>Date minted</Typography>
