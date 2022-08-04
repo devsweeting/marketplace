@@ -53,7 +53,9 @@ export const MarketCard = ({
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             {asset.sellOrders[0] && (
               <Typography variant="subtitle2" className={classes.cardSubTitle}>
-                FP ${asset.sellOrders[0].fractionPriceCents / 100}
+                {asset.sellOrders
+                  ? `FP $${asset.sellOrders[0].fractionPriceCents / 100}`
+                  : 'Not Available'}
               </Typography>
             )}
             {details.year && (
