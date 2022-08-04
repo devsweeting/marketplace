@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  DialogContent,
   Divider,
   Drawer,
   Grid,
@@ -73,116 +74,123 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   const details = parseAssetAttributes(asset.attributes);
 
   return (
-    <TrapFocus open={open}>
-      <Box>
-        <Drawer
-          variant="persistent"
-          anchor="right"
-          open={open}
-          transitionDuration={300}
-          className={classes.Drawer}
-        >
-          <Box className={classes.card_header}>
-            <Typography className={classes.card_header_text}>Research Drawer</Typography>
-
-            <IconButton onClick={handleClose} aria-label="Close" sx={{ marginLeft: 'auto' }}>
-              {<CloseIcon />}
-            </IconButton>
-          </Box>
-          <Divider className={classes.fullWidthDivider} />
-
-          <Box className={classes.galleryWrapper}>
-            {asset.media && asset.media[0] && <AssetGallery images={asset.media} />}
-          </Box>
-
-          <Grid container sx={{ marginTop: '20px' }}>
-            <Grid item xs={7}>
-              <Typography className={classes.title}>{asset.name}</Typography>
-              <Typography variant="subtitle2">
-                {details.year} #xxx {details.set} {details.grading_service} {details.grading}
-              </Typography>
-            </Grid>
-            <Grid item xs={5} sx={{ textAlign: 'right' }}>
-              <Typography className={classes.card_valuation}>Card Valuation</Typography>
-              <Typography variant="h3">$XX,XXX</Typography>
-            </Grid>
-          </Grid>
-
-          <Box className={classes.assetClaimedWrapper}>
-            <LinearProgress variant="determinate" value={25} className={classes.progressBar} />
-            <Box className={classes.detailsInfo}>
-              <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>XX% Claimed</Typography>
-              <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
-            </Box>
-          </Box>
-          <Typography className={classes.available_instances}>
-            {sellOrderData[0].fractionQty} Fractions Available (XX%)
-          </Typography>
-          {!!sellOrderData[0].fractionQty && (
+    <Box>
+      <DialogContent>
+        <TrapFocus open={open}>
+          <Drawer
+            tabIndex={-1}
+            variant="persistent"
+            anchor="right"
+            open={open}
+            transitionDuration={300}
+            className={classes.Drawer}
+          >
             <Box>
-              <Box sx={{ display: 'flex', marginTop: '20px' }}>
-                <Typography>Order Book</Typography>
+              <Box className={classes.card_header}>
+                <Typography className={classes.card_header_text}>Research Drawer</Typography>
+
+                <IconButton onClick={handleClose} aria-label="Close" sx={{ marginLeft: 'auto' }}>
+                  {<CloseIcon />}
+                </IconButton>
               </Box>
-              <Slider
-                defaultValue={0}
-                value={sliderValue}
-                max={sellOrderData[0].fractionQty}
-                step={1}
-                valueLabelDisplay="auto"
-                onChange={handleSliderChange}
-                className={classes.slider_styles}
-                marks={marks}
-              />
-            </Box>
-          )}
-          <Box sx={{ margin: '40px 0' }}>
-            {!!sellOrderData[0].fractionQty && (
-              <Box>
-                <Typography>Order Summary</Typography>
-                <Box sx={{ display: 'flex', marginTop: '10px' }}>
-                  <Typography>{sliderValue} fractions</Typography>
-                  <Typography sx={{ marginLeft: 'auto' }}>${totalPrice}</Typography>
+              <Divider className={classes.fullWidthDivider} />
+
+              <Box className={classes.galleryWrapper}>
+                {asset.media && asset.media[0] && <AssetGallery images={asset.media} />}
+              </Box>
+
+              <Grid container sx={{ marginTop: '20px' }}>
+                <Grid item xs={7}>
+                  <Typography className={classes.title}>{asset.name}</Typography>
+                  <Typography variant="subtitle2">
+                    {details.year} #xxx {details.set} {details.grading_service} {details.grading}
+                  </Typography>
+                </Grid>
+                <Grid item xs={5} sx={{ textAlign: 'right' }}>
+                  <Typography className={classes.card_valuation}>Card Valuation</Typography>
+                  <Typography variant="h3">$XX,XXX</Typography>
+                </Grid>
+              </Grid>
+
+              <Box className={classes.assetClaimedWrapper}>
+                <LinearProgress variant="determinate" value={25} className={classes.progressBar} />
+                <Box className={classes.detailsInfo}>
+                  <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
+                    XX% Claimed
+                  </Typography>
+                  <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
+                </Box>
+              </Box>
+              <Typography className={classes.available_instances}>
+                {sellOrderData[0].fractionQty} Fractions Available (XX%)
+              </Typography>
+              {!!sellOrderData[0].fractionQty && (
+                <Box>
+                  <Box sx={{ display: 'flex', marginTop: '20px' }}>
+                    <Typography>Order Book</Typography>
+                  </Box>
+                  <Slider
+                    defaultValue={0}
+                    value={sliderValue}
+                    max={sellOrderData[0].fractionQty}
+                    step={1}
+                    valueLabelDisplay="auto"
+                    onChange={handleSliderChange}
+                    className={classes.slider_styles}
+                    marks={marks}
+                  />
+                </Box>
+              )}
+              <Box sx={{ margin: '40px 0' }}>
+                {!!sellOrderData[0].fractionQty && (
+                  <Box>
+                    <Typography>Order Summary</Typography>
+                    <Box sx={{ display: 'flex', marginTop: '10px' }}>
+                      <Typography>{sliderValue} fractions</Typography>
+                      <Typography sx={{ marginLeft: 'auto' }}>${totalPrice}</Typography>
+                    </Box>
+
+                    <Button
+                      onClick={handleOpenBuyModal}
+                      disabled={disableBuyBTN}
+                      variant="contained"
+                      className={classes.fullWidthButton}
+                    >
+                      Buy Now
+                    </Button>
+
+                    <BuyModal
+                      isOpen={buyModalOpen}
+                      onClose={handleOpenBuyModal}
+                      fractions={sliderValue}
+                      totalPrice={totalPrice}
+                    />
+                  </Box>
+                )}
+                <Typography sx={{ padding: '10px 0', marginTop: '20px' }}>Card details</Typography>
+                <Box className={classes.detailsInfo}>
+                  <Typography>Date minted</Typography>
+                  <Typography>Oct 1 2022</Typography>
                 </Box>
 
-                <Button
-                  onClick={handleOpenBuyModal}
-                  disabled={disableBuyBTN}
-                  variant="contained"
-                  className={classes.fullWidthButton}
-                >
-                  Buy Now
-                </Button>
+                <Divider className={classes.fullWidthDivider} />
+                <Box className={classes.detailsInfo}>
+                  <Typography>Number of Cards of same grade in PWCCNFT</Typography>
+                  <Typography>#</Typography>
+                </Box>
 
-                <BuyModal
-                  isOpen={buyModalOpen}
-                  onClose={handleOpenBuyModal}
-                  fractions={sliderValue}
-                  totalPrice={totalPrice}
-                />
+                <Divider className={classes.fullWidthDivider} />
+                <Box className={classes.detailsInfo}>
+                  <Typography>Number of people who co-own this card</Typography>
+                  <Typography>#</Typography>
+                </Box>
+
+                <Divider className={classes.fullWidthDivider} />
               </Box>
-            )}
-            <Typography sx={{ padding: '10px 0', marginTop: '20px' }}>Card details</Typography>
-            <Box className={classes.detailsInfo}>
-              <Typography>Date minted</Typography>
-              <Typography>Oct 1 2022</Typography>
             </Box>
-
-            <Divider className={classes.fullWidthDivider} />
-            <Box className={classes.detailsInfo}>
-              <Typography>Number of Cards of same grade in PWCCNFT</Typography>
-              <Typography>#</Typography>
-            </Box>
-
-            <Divider className={classes.fullWidthDivider} />
-            <Box className={classes.detailsInfo}>
-              <Typography>Number of people who co-own this card</Typography>
-              <Typography>#</Typography>
-            </Box>
-
-            <Divider className={classes.fullWidthDivider} />
-          </Box>
-        </Drawer>
-      </Box>
-    </TrapFocus>
+          </Drawer>
+        </TrapFocus>
+      </DialogContent>
+    </Box>
   );
 };
