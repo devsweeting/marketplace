@@ -105,6 +105,7 @@ export class ApiClient {
     let authuser;
     const time = formatDate(new Date());
     const timeZone = getTimezoneOffset();
+    let returnedByteSize;
 
     if ('body' in request && request.body) {
       if (request.body instanceof URLSearchParams) {
@@ -120,6 +121,10 @@ export class ApiClient {
       const token = getUserCookie(request.req);
 
       host = getIpAddress(request.req);
+
+      if (request.headers['content-length']) {
+        returnedByteSize = request.headers['content-length'];
+      }
 
       if (token) {
         request.headers['Authorization'] = `Bearer ${token}`;
@@ -140,10 +145,14 @@ export class ApiClient {
         logger.info(
           `${host ?? '-'} ${authuser ?? '-'} [${time} ${timeZone}] ${method} ${response.url} ${
             response.status
-          }`,
+          } ${returnedByteSize ?? '-'}`,
         );
       } else {
-        logger.error(`${method} ${response.url} ${response.status} ${response.statusText}`);
+        logger.error(
+          `${host ?? '-'} ${authuser ?? '-'} [${time} ${timeZone}]  ${method} ${response.url} ${
+            response.status
+          } ${response.statusText} ${returnedByteSize ?? '-'}`,
+        );
       }
 
       response.headers.forEach((value, key) => {
