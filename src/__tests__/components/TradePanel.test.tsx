@@ -4,19 +4,23 @@ import { ThemeProvider } from '@mui/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import user from '@testing-library/user-event';
-import { mockAssetResponse, mockSellorderResponse } from '@/__mocks__/mockAssetResponse';
+import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
 
 const handleClose = jest.fn();
 
 const data = mockAssetResponse.items[0];
-const mockSellorder = mockSellorderResponse.items[0];
 const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <TradePanel asset={asset} open={true} handleClose={handleClose} sellorder={mockSellorder} />
+      <TradePanel
+        asset={asset}
+        open={true}
+        handleClose={handleClose}
+        sellorder={asset.sellOrders[0]}
+      />
     </ThemeProvider>
   );
 };
@@ -24,7 +28,6 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
 describe('TradePanel', () => {
   test('should contain all the content', () => {
     render(<MockTradePanel asset={data} />);
-    screen.debug;
     const cardTitle = screen.getByText(/research drawer/i);
     const closeBtn = screen.getByRole('button', { name: /close/i });
     const name = screen.getByText(data.name);
@@ -65,7 +68,7 @@ describe('TradePanel', () => {
 
     await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
     const totalPrice = screen.getByText(
-      `$${mockSellorder.fraction_price_cents * mockSellorder.fraction_qty}`,
+      `$${(data.sellOrders[0].fractionPriceCents * data.sellOrders[0].fractionQty) / 100}`,
     );
     expect(totalPrice).toBeInTheDocument();
   });

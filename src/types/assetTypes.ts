@@ -3,11 +3,12 @@ export interface IAsset {
   refId: string;
   name: string;
   description: string;
-  media: Array<IMedia>;
-  attributes: Array<IAttribute>;
+  media: IMedia[];
+  attributes: IAttribute[];
   slug: string;
   createdAt: string;
   updatedAt: string;
+  sellOrders: ISellorder[];
 }
 
 export interface IAttribute {
@@ -60,9 +61,12 @@ export type DisabledRangesKey = keyof DisabledRanges;
 export type RangeFilters = Record<string, IRange> | null;
 
 export interface ISellorder {
+  id: string;
   assetId: string;
-  fraction_qty: number;
-  fraction_price_cents: number;
-  expire_time: number;
-  deleted_time: number;
+  userId: string;
+  partnerId: string;
+  fractionQty: number;
+  fractionPriceCents: number;
+  expireTime: number;
+  deletedTime: number;
 }

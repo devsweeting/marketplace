@@ -4,7 +4,6 @@ import type { NextPage } from 'next';
 import type {
   IAsset,
   IMeta,
-  ISellorder,
   IFilter,
   RangeFilters,
   DisabledRanges,
@@ -18,7 +17,6 @@ import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { TradePanel } from '@/components/TradePanel';
-import { mockSellorderResponse } from '@/__mocks__/mockAssetResponse';
 import { AssetListView } from '@/containers/AssetListView';
 import { Filters } from '@/components/Filters';
 import type { FilterSidebarProps } from '@/containers/CategoryListViewPage/FilterSidebar';
@@ -32,7 +30,6 @@ const ExplorePage: NextPage = () => {
   const [data, setData] = useState<IAsset | undefined>();
   const searchQuery = useRouter().query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
-  const sellorderData: ISellorder[] = mockSellorderResponse.items;
   const [checkedFilters, setCheckedFilters] = useState<any[]>([]);
   const [filterRanges, setFilterRanges] = useState<RangeFilters>(null);
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
@@ -231,7 +228,7 @@ const ExplorePage: NextPage = () => {
             handleClose={() => {
               setIsOpen(!isOpen);
             }}
-            sellorder={sellorderData[0]}
+            sellorder={data.sellOrders[0]}
           />
         )}
       </Grid>
