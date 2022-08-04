@@ -12,7 +12,7 @@ import type {
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useEffect, useState } from 'react';
-import { loadListAssetByPage } from '@/api/endpoints/list';
+import { loadListAssetByPage, latestDropAssets } from '@/api/endpoints/list';
 import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
@@ -39,6 +39,18 @@ const ExplorePage: NextPage = () => {
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
   const classes = useExplorePageStyles();
+  const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
+
+  const loadLatestDropAssets = async (page = 1) => {
+    const { items }: { items: IAsset[] } = await latestDropAssets({
+      page,
+    });
+    setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+  };
+
+  useEffect(() => {
+    loadLatestDropAssets(1);
+  }, []);
 
   const loadAssets = async (page = 1) => {
     const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
@@ -135,7 +147,12 @@ const ExplorePage: NextPage = () => {
 
       <Grid sx={{ marginTop: 10, backgroundColor: '#f0f0f0' }} container>
         <Grid container item>
-          <FeaturedMarketCarousel handleDrawer={handleDrawer} />
+          <FeaturedMarketCarousel
+            assets={dropAssets}
+            title={'Latest Drop'}
+            handleDrawer={handleDrawer}
+          />
+          <FeaturedMarketCarousel assets={dropAssets} title={'Trending Markets'} />
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
             <Grid
               container

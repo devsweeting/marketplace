@@ -1,11 +1,11 @@
 import { makeStyles } from '@mui/styles';
 
-export const useMarketCardStyles = makeStyles((theme) => ({
+export const useTrendingMarketCardStyles = makeStyles((theme) => ({
   marketCardContainer: {
     'scroll-snap-align': 'start',
   },
   card: {
-    height: '430px',
+    height: '330px',
     width: '310px',
     flexDirection: 'column',
     display: 'flex',
@@ -48,9 +48,9 @@ export const useMarketCardStyles = makeStyles((theme) => ({
   },
   assetImageInnerContainer: {
     filter: 'drop-shadow(0 6px 14px #8F959988)',
-    width: '140px',
+    width: '260px',
     height: '220px',
-    margin: '10px auto',
+    margin: '0px auto',
     position: 'relative',
   },
   assetImageOutterContainer: {
@@ -59,7 +59,6 @@ export const useMarketCardStyles = makeStyles((theme) => ({
     width: '100%',
     height: '60%',
     padding: '0px',
-    background: 'linear-gradient(90deg,#fff 24.48%,#f2f3f4 101.77%)',
     position: 'relative',
   },
 }));
