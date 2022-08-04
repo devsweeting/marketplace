@@ -18,6 +18,7 @@ import { AssetGallery } from './Components/CardGallery';
 import type { ITradePanel } from './ITradePanel';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import TrapFocus from '@mui/material/Unstable_TrapFocus';
+import { getSellOrdersFromAsset } from '@/helpers/getSellOrdersFromAsset';
 export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   const classes = useTradePanelStyles();
 
@@ -26,14 +27,16 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [assetId, setAssetId] = useState(asset.id);
+  const sellOrderData = getSellOrdersFromAsset(asset);
+
   const marks = [
     {
       value: 0,
       label: '0',
     },
     {
-      value: asset.sellOrders && asset.sellOrders[0] ? asset.sellOrders[0].fractionQty : 0,
-      label: asset.sellOrders && asset.sellOrders[0] ? asset.sellOrders[0].fractionQty : 0,
+      value: sellOrderData[0].fractionQty,
+      label: sellOrderData[0].fractionQty,
     },
   ];
 
@@ -52,7 +55,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
     if (activeThumb === 0) {
       setSliderValue(newValue as number);
 
-      setTotalPrice(Math.ceil((newValue as number) * asset.sellOrders[0].fractionPriceCents) / 100);
+      setTotalPrice(Math.ceil((newValue as number) * sellOrderData[0].fractionPriceCents) / 100);
     }
   };
 
@@ -113,10 +116,9 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
             </Box>
           </Box>
           <Typography className={classes.available_instances}>
-            {asset.sellOrders && asset.sellOrders[0] ? asset.sellOrders[0].fractionQty : 'No '}{' '}
-            Fractions Available (XX%)
+            {sellOrderData[0].fractionQty} Fractions Available (XX%)
           </Typography>
-          {asset.sellOrders && asset.sellOrders[0] && (
+          {!!sellOrderData[0].fractionQty && (
             <Box>
               <Box sx={{ display: 'flex', marginTop: '20px' }}>
                 <Typography>Order Book</Typography>
@@ -124,7 +126,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
               <Slider
                 defaultValue={0}
                 value={sliderValue}
-                max={asset.sellOrders[0].fractionQty}
+                max={sellOrderData[0].fractionQty}
                 step={1}
                 valueLabelDisplay="auto"
                 onChange={handleSliderChange}
@@ -134,7 +136,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
             </Box>
           )}
           <Box sx={{ margin: '40px 0' }}>
-            {asset.sellOrders && asset.sellOrders[0] && (
+            {!!sellOrderData[0].fractionQty && (
               <Box>
                 <Typography>Order Summary</Typography>
                 <Box sx={{ display: 'flex', marginTop: '10px' }}>

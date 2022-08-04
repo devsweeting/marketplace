@@ -202,5 +202,18 @@ export const mockAssetResponse = {
       partner: 'AzK8MZbM69H9ZzkYX7xptQ6YRk4',
       sellOrders: [],
     },
+    {
+      id: '8122da58-5950-4858-a257-877def93f571',
+      name: 'Test Asset',
+      description: null,
+      media: null,
+      refId: '1111111111111111',
+      slug: 'test-asset',
+      createdAt: '2022-04-19T18:04:20.903Z',
+      updatedAt: '2022-04-19T18:04:20.903Z',
+      attributes: [],
+      partner: 'aYRaMbNdm4Sq2rLApGkMidro5kW',
+      sellOrders: null,
+    },
   ],
 };

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useMarketCardStyles } from './MarketCard.styles';
 import type { IAsset } from '@/types/assetTypes';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
+import { getSellOrdersFromAsset } from '@/helpers/getSellOrdersFromAsset';
 
 export const MarketCard = ({
   asset,
@@ -15,7 +16,7 @@ export const MarketCard = ({
   tabIndex?: number;
 }) => {
   const classes = useMarketCardStyles();
-
+  const sellOrderData = getSellOrdersFromAsset(asset);
   const details = parseAssetAttributes(asset.attributes);
 
   if (!handleDrawer) {
@@ -52,8 +53,8 @@ export const MarketCard = ({
 
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
             <Typography variant="subtitle2" className={classes.cardSubTitle}>
-              {asset.sellOrders && asset.sellOrders[0]
-                ? `FP $${asset.sellOrders[0].fractionPriceCents / 100}`
+              {sellOrderData[0].fractionPriceCents
+                ? `FP $${sellOrderData[0].fractionPriceCents / 100}`
                 : 'Not Available'}
             </Typography>
 
