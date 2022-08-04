@@ -133,7 +133,7 @@ const ExplorePage: NextPage = () => {
     <>
       <OpenGraph title={'List view'} description={'List view page description'} />
 
-      <Grid sx={{ marginTop: { xs: 10, md: 15 }, backgroundColor: '#f0f0f0' }} container>
+      <Grid sx={{ marginTop: 10, backgroundColor: '#f0f0f0' }} container>
         <Grid container item>
           <FeaturedMarketCarousel handleDrawer={handleDrawer} />
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>

@@ -4,13 +4,12 @@ export const useTradePanelStyles = makeStyles(
   (theme) => ({
     Drawer: {
       '& .MuiDrawer-paper': {
-        width: '700px',
-        marginTop: '120px',
+        width: '500px',
+        marginTop: '80px',
         padding: '10px 30px 130px 30px',
         backgroundColor: '#f9fafb',
         [theme.breakpoints.down('md')]: {
           width: '90%',
-          marginTop: '80px',
         },
       },
     },

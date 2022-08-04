@@ -1,5 +1,5 @@
 import type { IMedia } from '@/types/assetTypes';
 
-export interface ICardGallery {
+export interface IAssetGallery {
   images: IMedia[];
 }
