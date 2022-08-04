@@ -228,7 +228,6 @@ const ExplorePage: NextPage = () => {
             handleClose={() => {
               setIsOpen(!isOpen);
             }}
-            sellorder={data.sellOrders[0]}
           />
         )}
       </Grid>

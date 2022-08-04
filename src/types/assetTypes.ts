@@ -8,7 +8,7 @@ export interface IAsset {
   slug: string;
   createdAt: string;
   updatedAt: string;
-  sellOrders: ISellorder[];
+  sellOrders: ISellOrder[] | [];
 }
 
 export interface IAttribute {
@@ -60,7 +60,7 @@ export type DisabledRangesKey = keyof DisabledRanges;
 
 export type RangeFilters = Record<string, IRange> | null;
 
-export interface ISellorder {
+export interface ISellOrder {
   id: string;
   assetId: string;
   userId: string;

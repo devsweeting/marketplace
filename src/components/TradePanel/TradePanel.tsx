@@ -17,8 +17,7 @@ import { useTradePanelStyles } from './TradePanel.styles';
 import { CardGallery } from './Components/CardGallery';
 import type { ITradePanel } from './ITradePanel';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
-
-export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel) => {
+export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   const classes = useTradePanelStyles();
 
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -32,8 +31,8 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
       label: '0',
     },
     {
-      value: sellorder.fractionQty,
-      label: sellorder.fractionQty,
+      value: asset?.sellOrders[0].fractionQty ?? 0,
+      label: asset?.sellOrders[0].fractionQty ?? 0,
     },
   ];
 
@@ -52,7 +51,7 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
     if (activeThumb === 0) {
       setSliderValue(newValue as number);
 
-      setTotalPrice(Math.ceil((newValue as number) * sellorder.fractionPriceCents) / 100);
+      setTotalPrice(Math.ceil((newValue as number) * asset.sellOrders[0].fractionPriceCents) / 100);
     }
   };
 
@@ -112,7 +111,7 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
           </Box>
         </Box>
         <Typography className={classes.available_instances}>
-          {sellorder.fractionQty} Fractions Available (XX%)
+          {asset.sellOrders[0].fractionQty} Fractions Available (XX%)
         </Typography>
         <Box sx={{ display: 'flex', marginTop: '20px' }}>
           <Typography>Order Book</Typography>
@@ -120,7 +119,7 @@ export const TradePanel = ({ asset, sellorder, open, handleClose }: ITradePanel)
         <Slider
           defaultValue={0}
           value={sliderValue}
-          max={sellorder.fractionQty}
+          max={asset.sellOrders[0].fractionQty}
           step={1}
           valueLabelDisplay="auto"
           onChange={handleSliderChange}
