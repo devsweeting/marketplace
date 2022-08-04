@@ -1,5 +1,7 @@
 import type { NextServerRequest } from '@/types/next';
 import { getUserCookie } from '@/helpers/auth/userCookie';
+import { getIpAddress } from '@/helpers/getIpAddress';
+import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
 import { logger } from '@/helpers/logger';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
@@ -32,6 +34,35 @@ export type IApiResponse = IApiJsonResponse | IApiTextResponse;
 
 export type IApiUrl = `/${string}`;
 
+function padTo2Digits(num: number) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDate(date: Date) {
+  return (
+    [
+      padTo2Digits(date.getDate()),
+      date.toLocaleString('default', { month: 'short' }),
+      date.getFullYear(),
+    ].join('/') +
+    ':' +
+    [
+      padTo2Digits(date.getHours()),
+      padTo2Digits(date.getMinutes()),
+      padTo2Digits(date.getSeconds()),
+    ].join(':')
+  );
+}
+
+function getTimezoneOffset() {
+  function daylight(n: number) {
+    return (n < 10 ? '0' : '') + n;
+  }
+  let offset = new Date().getTimezoneOffset();
+  const sign = offset < 0 ? '+' : '-';
+  offset = Math.abs(offset);
+  return sign + daylight((offset / 60) | 0) + daylight(offset % 60);
+}
 export class ApiClient {
   static getBaseUrl() {
     if (typeof window === 'undefined') {
@@ -70,6 +101,11 @@ export class ApiClient {
     }
 
     let body: string | undefined;
+    let host: string | undefined = '-';
+    let authuser;
+    const time = formatDate(new Date());
+    const timeZone = getTimezoneOffset();
+    let returnedByteSize;
 
     if ('body' in request && request.body) {
       if (request.body instanceof URLSearchParams) {
@@ -84,8 +120,15 @@ export class ApiClient {
     if ('req' in request && request.req) {
       const token = getUserCookie(request.req);
 
+      host = getIpAddress(request.req);
+
+      if (request.headers['content-length']) {
+        returnedByteSize = request.headers['content-length'];
+      }
+
       if (token) {
         request.headers['Authorization'] = `Bearer ${token}`;
+        authuser = getUserFromJwt(token);
       }
     }
 
@@ -99,9 +142,17 @@ export class ApiClient {
         body,
       });
       if (response.ok) {
-        logger.info(`${method} ${response.url} ${response.status}`);
+        logger.info(
+          `${host ?? '-'} ${authuser ?? '-'} [${time} ${timeZone}] ${method} ${response.url} ${
+            response.status
+          } ${returnedByteSize ?? '-'}`,
+        );
       } else {
-        logger.error(`${method} ${response.url} ${response.status} ${response.statusText}`);
+        logger.error(
+          `${host ?? '-'} ${authuser ?? '-'} [${time} ${timeZone}]  ${method} ${response.url} ${
+            response.status
+          } ${response.statusText} ${returnedByteSize ?? '-'}`,
+        );
       }
 
       response.headers.forEach((value, key) => {
