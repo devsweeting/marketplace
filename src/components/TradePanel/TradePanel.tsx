@@ -177,7 +177,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
               <Typography>#</Typography>
             </Box>
 
-            <Divider className={classes.fullWidthDivider} tabIndex={1} />
+            <Divider className={classes.fullWidthDivider} />
           </Box>
         </Drawer>
       </Box>

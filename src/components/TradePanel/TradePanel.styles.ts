@@ -4,6 +4,8 @@ export const useTradePanelStyles = makeStyles(
   (theme) => ({
     Drawer: {
       '& .MuiDrawer-paper': {
+        scrollSnapType: 'y mandatory',
+        scrollMarginBottom: '80px',
         width: '500px',
         marginTop: '80px',
         padding: '10px 30px 130px 30px',
@@ -60,6 +62,8 @@ export const useTradePanelStyles = makeStyles(
       marginTop: '10px',
     },
     fullWidthButton: {
+      scrollMarginBottom: '200px',
+
       width: '100%',
       marginTop: '10px',
       justifyContent: 'center',
