@@ -15,12 +15,7 @@ const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <TradePanel
-        asset={asset}
-        open={true}
-        handleClose={handleClose}
-        sellorder={asset.sellOrders[0]}
-      />
+      <TradePanel asset={asset} open={true} handleClose={handleClose} />
     </ThemeProvider>
   );
 };
