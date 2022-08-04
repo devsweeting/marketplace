@@ -5,13 +5,20 @@
 import * as Sentry from '@sentry/nextjs';
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+const SENTRY_ENV = process.env.SENTRY_ENV || process.env.NEXT_PUBLIC_SENTRY_ENV || 'development';
 
-Sentry.init({
-  dsn: SENTRY_DSN || 'https://cb06fde608e64879a1df78bdf696bff9@o1318846.ingest.sentry.io/6573988',
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 1.0,
-  // ...
-  // Note: if you want to override the automatic release value, do not set a
-  // `release` value here - use the environment variable `SENTRY_RELEASE`, so
-  // that it will also get attached to your source maps
-});
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    // Adjust this value in production, or use tracesSampler for greater control
+    tracesSampleRate: 1.0,
+    // ...
+    // Note: if you want to override the automatic release value, do not set a
+    // `release` value here - use the environment variable `SENTRY_RELEASE`, so
+    // that it will also get attached to your source maps
+    environment: SENTRY_ENV,
+  });
+} else {
+  // eslint-disable-next-line no-console
+  console.log('Sentry is disabled');
+}
