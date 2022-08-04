@@ -8,7 +8,7 @@ export interface IAsset {
   slug: string;
   createdAt: string;
   updatedAt: string;
-  sellOrders: ISellOrder[] | [];
+  sellOrders: ISellOrder[];
 }
 
 export interface IAttribute {
