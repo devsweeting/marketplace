@@ -200,18 +200,7 @@ export const mockAssetResponse = {
       updatedAt: '2022-08-03T14:28:30.103Z',
       attributes: [],
       partner: 'AzK8MZbM69H9ZzkYX7xptQ6YRk4',
-      sellOrders: [
-        {
-          id: '0f49d066-cdfd-41ca-8760-2754558deafd',
-          assetId: 'c187ecb3-9427-450c-a060-d7d1faa1484b',
-          userId: '6738afac-3c59-47d9-96a5-25fab622645c',
-          partnerId: '58e96913-b662-42e7-a62b-c2910a03b76c',
-          fractionQty: 83088,
-          fractionPriceCents: 441,
-          expireTime: 2145945600,
-          deletedTime: 0,
-        },
-      ],
+      sellOrders: [],
     },
   ],
 };

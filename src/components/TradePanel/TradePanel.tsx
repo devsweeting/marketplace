@@ -31,8 +31,8 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
       label: '0',
     },
     {
-      value: asset.sellOrders ? asset.sellOrders[0].fractionQty : 0,
-      label: asset.sellOrders ? asset.sellOrders[0].fractionQty : 0,
+      value: asset.sellOrders && asset.sellOrders[0] ? asset.sellOrders[0].fractionQty : 0,
+      label: asset.sellOrders && asset.sellOrders[0] ? asset.sellOrders[0].fractionQty : 0,
     },
   ];
 
@@ -111,9 +111,10 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
           </Box>
         </Box>
         <Typography className={classes.available_instances}>
-          {asset.sellOrders ? asset.sellOrders[0].fractionQty : 'No '} Fractions Available (XX%)
+          {asset.sellOrders && asset.sellOrders[0] ? asset.sellOrders[0].fractionQty : 'No '}{' '}
+          Fractions Available (XX%)
         </Typography>
-        {asset.sellOrders && (
+        {asset.sellOrders && asset.sellOrders[0] && (
           <Box>
             <Box sx={{ display: 'flex', marginTop: '20px' }}>
               <Typography>Order Book</Typography>
@@ -131,7 +132,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
           </Box>
         )}
         <Box sx={{ margin: '40px 0' }}>
-          {asset.sellOrders && (
+          {asset.sellOrders && asset.sellOrders[0] && (
             <Box>
               <Typography>Order Summary</Typography>
               <Box sx={{ display: 'flex', marginTop: '10px' }}>
