@@ -81,6 +81,9 @@ export const useTradePanelStyles = makeStyles(
       marginTop: '40px',
     },
     slider_styles: {
+      '& input': {
+        scrollMarginBottom: '200px',
+      },
       '& .MuiSlider-thumb': {
         height: 24,
         width: 24,

@@ -26,7 +26,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       <CardActionArea>
         <Box onClick={onClick} className={classes.cardBody}>
           <Box className={classes.ImageWrapper}>
-            {assetData.media && assetData.media[0].absoluteUrl && (
+            {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
               <Image
                 src={assetData.media[0].absoluteUrl}
                 alt={assetData.media[0].title}

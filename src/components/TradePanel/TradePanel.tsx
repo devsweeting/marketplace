@@ -89,7 +89,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
           <Divider className={classes.fullWidthDivider} />
 
           <Box className={classes.galleryWrapper}>
-            <AssetGallery images={asset.media} />
+            {asset.media && asset.media[0] && <AssetGallery images={asset.media} />}
           </Box>
 
           <Grid container sx={{ marginTop: '20px' }}>
