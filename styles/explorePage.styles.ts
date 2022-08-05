@@ -18,7 +18,7 @@ export const useExplorePageStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    margin: '10px 700px 10px 10px',
+    margin: '10px 500px 10px 10px',
     width: '500px',
   },
 }));

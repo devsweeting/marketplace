@@ -34,7 +34,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
           disableGutters
           sx={{
             backgroundColor: skin.header.headerBackground,
-            height: { md: '120px', xs: '80px' },
+            height: '80px',
           }}
         >
           <Container

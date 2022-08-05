@@ -4,13 +4,14 @@ export const useTradePanelStyles = makeStyles(
   (theme) => ({
     Drawer: {
       '& .MuiDrawer-paper': {
-        width: '700px',
-        marginTop: '120px',
+        // scrollSnapType: 'y mandatory',
+        scrollMarginBottom: '80px',
+        width: '500px',
+        marginTop: '80px',
         padding: '10px 30px 130px 30px',
         backgroundColor: '#f9fafb',
         [theme.breakpoints.down('md')]: {
           width: '90%',
-          marginTop: '80px',
         },
       },
     },
@@ -61,6 +62,8 @@ export const useTradePanelStyles = makeStyles(
       marginTop: '10px',
     },
     fullWidthButton: {
+      scrollMarginBottom: '200px',
+
       width: '100%',
       marginTop: '10px',
       justifyContent: 'center',
@@ -78,6 +81,9 @@ export const useTradePanelStyles = makeStyles(
       marginTop: '40px',
     },
     slider_styles: {
+      '& input': {
+        scrollMarginBottom: '200px',
+      },
       '& .MuiSlider-thumb': {
         height: 24,
         width: 24,

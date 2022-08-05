@@ -6,8 +6,10 @@ import Image from 'next/image';
 import { useAssetCardStyles } from './AssetCard.styles';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import type { IAssetCard } from './IAssetCard';
+import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 
 export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
+  const sellOrderData = getMainSellOrder(assetData);
   const classes = useAssetCardStyles();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -26,7 +28,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       <CardActionArea>
         <Box onClick={onClick} className={classes.cardBody}>
           <Box className={classes.ImageWrapper}>
-            {assetData.media && assetData.media[0].absoluteUrl && (
+            {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
               <Image
                 src={assetData.media[0].absoluteUrl}
                 alt={assetData.media[0].title}
@@ -57,8 +59,8 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
                     <Box className={classes.CardPriceItem}>
                       <Typography>Fraction Price</Typography>
                       <Typography className={classes.price}>
-                        {assetData.sellOrders && assetData.sellOrders[0]
-                          ? `$${assetData.sellOrders[0].fractionPriceCents / 100}`
+                        {sellOrderData
+                          ? `$${sellOrderData.fractionPriceCents / 100}`
                           : 'Not Available'}
                       </Typography>
                     </Box>
