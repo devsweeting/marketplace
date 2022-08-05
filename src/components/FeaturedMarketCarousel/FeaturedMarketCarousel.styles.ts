@@ -1,13 +1,13 @@
 import { makeStyles } from '@mui/styles';
 export const useFeaturedMarketCarouselStyles = makeStyles((theme) => ({
   wrapper: {
-    padding: `${theme.spacing(2)} ${theme.spacing(10)}`,
+    backgroundColor: 'white',
   },
 
   title: {
     fontSize: '24px',
 
-    marginBottom: `${theme.spacing(3)}`,
+    margin: `${theme.spacing(3)}`,
     [theme.breakpoints.down('md')]: {
       fontSize: '18px',
       marginBottom: `${theme.spacing(1)}`,
@@ -66,10 +66,19 @@ export const useFeaturedMarketCarouselStyles = makeStyles((theme) => ({
     },
   },
   prev: {
-    right: '5px',
+    right: '70px',
   },
   next: {
-    right: '-55px',
+    right: '10px',
+  },
+  disabledButton: {
+    opacity: '0.05',
+    backgroundColor: theme.palette.secondary.main,
+    '&:hover': {
+      transform: 'scale(1.10)',
+      opacity: '0.05',
+      backgroundColor: theme.palette.secondary.main,
+    },
   },
   viewMore: {
     display: 'flex',
