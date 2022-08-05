@@ -7,6 +7,10 @@ export interface IUserContext {
   logout: () => void;
 }
 
+export interface IUserProvider {
+  children?: React.ReactNode;
+}
+
 export const UserContext = createContext<IUserContext>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   refreshUser: async () => {},
@@ -18,7 +22,9 @@ export const UserContext = createContext<IUserContext>({
  * Custom provider for {@link UserContext} that loads the user from the `/api/me`
  * endpoint on initial mount and then provides the loaded value to all consumers
  */
-export const UserProvider: React.FC = ({ children }) => {
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}: IUserProvider) => {
   const [user, setUser] = useState<IUser | undefined>();
 
   const refreshUser = useCallback(async () => {
