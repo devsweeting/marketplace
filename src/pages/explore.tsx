@@ -23,6 +23,7 @@ import type { FilterSidebarProps } from '@/containers/CategoryListViewPage/Filte
 import type { SortListProps } from '@/containers/CategoryListViewPage/SortList';
 import { SortMenu } from '@/components/Filters/components/SortMenu';
 import { useExplorePageStyles } from '@/styles/explorePage.styles';
+import { market } from '@/__mocks__/mockBrands';
 const ExplorePage: NextPage = () => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
@@ -152,7 +153,7 @@ const ExplorePage: NextPage = () => {
             title={'Latest Drop'}
             handleDrawer={handleDrawer}
           />
-          <FeaturedMarketCarousel assets={dropAssets} title={'Trending Markets'} />
+          <FeaturedMarketCarousel assets={market} title={'Trending Markets'} />
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
             <Grid
               container

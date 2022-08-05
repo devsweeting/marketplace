@@ -2,15 +2,15 @@ import React from 'react';
 import { Box, Typography, Card } from '@mui/material';
 import Image from 'next/image';
 import { useTrendingMarketCardStyles } from './TrendingMarketCard.styles';
-import type { IAsset } from '@/types/assetTypes';
+import type { IMarket } from '@/types/assetTypes';
 
 export const TrendingMarketCard = ({
-  asset,
+  brand,
   handleDrawer,
   tabIndex,
 }: {
-  asset: IAsset;
-  handleDrawer?: (asset: IAsset) => void;
+  brand: IMarket;
+  handleDrawer?: (asset: IMarket) => void;
   tabIndex?: number;
 }) => {
   const classes = useTrendingMarketCardStyles();
@@ -19,29 +19,21 @@ export const TrendingMarketCard = ({
     return null;
   }
   return (
-    <Box
-      className={classes.marketCardContainer}
-      id={'marketCard'}
-      onClick={() => {
-        handleDrawer(asset);
-      }}
-      tabIndex={tabIndex}
-    >
+    <Box className={classes.marketCardContainer} id={'marketCard'} tabIndex={tabIndex}>
       <Card variant="outlined" className={classes.card}>
         <Box className={classes.assetImageInnerContainer}>
-          {asset?.media && asset?.media.length > 0 && (
-            <Image
-              src={'/images/No_image_available_500_x_500.svg'}
-              alt={asset.media[0].title}
-              layout="fill"
-            />
-          )}
+          {/* TODO: Update this when data is available */}
+          <Image
+            src={'/images/No_image_available_500_x_500.svg'}
+            alt={'No Image Available'}
+            layout="fill"
+          />
         </Box>
 
         <Box className={classes.assetTextContainer}>
-          {asset.name && (
+          {brand.brand && (
             <Typography variant="h2" component="h4" className={classes.cardTitle} id="cardTitle">
-              {asset.name}
+              {brand.brand}
             </Typography>
           )}
 
@@ -53,9 +45,9 @@ export const TrendingMarketCard = ({
               marginTop: '20px',
             }}
           >
-            {asset.sellOrders[0] && (
+            {brand.value_dollars && (
               <Typography variant="h2" component="h4" className={classes.cardSubTitle}>
-                Valuation $XXXXXX
+                Valuation: {brand.value_dollars}
               </Typography>
             )}
           </div>

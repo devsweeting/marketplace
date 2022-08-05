@@ -6,7 +6,7 @@ import { Loader } from '../Loader';
 import { MarketCard } from './components/MarketCard';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset, IMarket } from '@/types/assetTypes';
 import { TrendingMarketCard } from './components/TrendingMarketCard';
 
 export const FeaturedMarketCarousel = ({
@@ -14,7 +14,7 @@ export const FeaturedMarketCarousel = ({
   title,
   handleDrawer,
 }: {
-  assets: IAsset[];
+  assets: IAsset[] | IMarket[];
   title: string;
   handleDrawer?: (asset: IAsset) => void;
 }) => {
@@ -121,7 +121,7 @@ export const FeaturedMarketCarousel = ({
                   handleDrawer={() => {
                     return undefined;
                   }}
-                  asset={card}
+                  brand={card}
                   key={index}
                   tabIndex={index}
                 />
