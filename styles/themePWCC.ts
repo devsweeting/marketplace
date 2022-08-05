@@ -209,7 +209,6 @@ export const themePWCC = createTheme({
           fontStyle: 'normal',
           fontWeight: 800,
           fontSize: 20,
-          lineHeight: 24,
           '&:hover': {
             backgroundColor: 'rgba(255, 221, 0, 0.8)',
             borderColor: 'rgba(255, 221, 0, 0.8)',
