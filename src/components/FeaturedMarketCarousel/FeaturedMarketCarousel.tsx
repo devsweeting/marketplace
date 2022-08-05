@@ -68,10 +68,11 @@ export const FeaturedMarketCarousel = ({
       >
         {
           <button
+            aria-label="previous"
             role="button"
             className={`${classes.button} ${classes.prev}  ${
               scrollX < 1 ? classes.disabledButton : ''
-            } prev`}
+            }`}
             onClick={() => {
               if (scrollX === 0) {
                 return;
@@ -93,10 +94,11 @@ export const FeaturedMarketCarousel = ({
         }
         {
           <button
+            aria-label="next"
             role="button"
             className={`${classes.button} ${classes.next} ${
               scrollEnd ? classes.disabledButton : ''
-            }  next`}
+            }`}
             onClick={() => {
               if (scrollEnd) {
                 return;
