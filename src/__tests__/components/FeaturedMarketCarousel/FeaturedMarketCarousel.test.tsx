@@ -9,7 +9,7 @@ const handleDrawer = jest.fn();
 const MockFeaturedMarketCarousel = () => {
   return (
     <ThemeProvider theme={themeJump}>
-      <FeaturedMarketCarousel handleDrawer={handleDrawer} />
+      <FeaturedMarketCarousel handleDrawer={handleDrawer} assets={[]} title={''} />
     </ThemeProvider>
   );
 };

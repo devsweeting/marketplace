@@ -30,7 +30,11 @@ export const TrendingMarketCard = ({
       <Card variant="outlined" className={classes.card}>
         <Box className={classes.assetImageInnerContainer}>
           {asset?.media && asset?.media.length > 0 && (
-            <Image src={asset.media[0].absoluteUrl} alt={asset.media[0].title} layout="fill" />
+            <Image
+              src={'/images/No_image_available_500_x_500.svg'}
+              alt={asset.media[0].title}
+              layout="fill"
+            />
           )}
         </Box>
 
