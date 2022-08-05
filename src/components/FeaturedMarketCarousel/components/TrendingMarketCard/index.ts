@@ -1,0 +1,1 @@
+export { TrendingMarketCard } from './TrendingMarketCard';

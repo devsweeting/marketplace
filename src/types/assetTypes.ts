@@ -11,6 +11,13 @@ export interface IAsset {
   sellOrders: ISellOrder[];
 }
 
+// TODO: Update this when data is available
+export interface IMarket {
+  brand: string;
+  filter: string;
+  value_dollars: number;
+}
+
 export interface IAttribute {
   display: string | null;
   trait: string;

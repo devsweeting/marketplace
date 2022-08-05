@@ -1,9 +1,7 @@
 import { makeStyles } from '@mui/styles';
-import { lighten } from '@mui/material';
 export const useFeaturedMarketCarouselStyles = makeStyles((theme) => ({
   wrapper: {
-    padding: `${theme.spacing(6)} ${theme.spacing(8.75)}`,
-    backgroundColor: lighten(theme.palette.primary.main, 0.9),
+    padding: `${theme.spacing(2)} ${theme.spacing(10)}`,
   },
 
   title: {
@@ -22,11 +20,11 @@ export const useFeaturedMarketCarouselStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     overflowX: 'scroll',
-    'scroll-padding-right': '20vw',
-    'scroll-padding-left': '1vw',
+    'scroll-padding-right': '1vw',
+    'scroll-padding-left': '0.1vw',
     scrollBehavior: 'smooth',
 
-    padding: `0 ${theme.spacing(1.5)}`,
+    padding: `0`,
     [theme.breakpoints.down('md')]: {
       padding: `${theme.spacing(1)} ${theme.spacing(1)}`,
     },
