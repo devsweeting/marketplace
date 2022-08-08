@@ -28,7 +28,9 @@ export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
             size="small"
             sx={{ lineHeight: 1 }}
             endIcon={<CloseIcon />}
-            onClick={clearSelectedFilters}
+            onClick={() => {
+              clearSelectedFilters();
+            }}
           >
             CLEAR ALL
           </Button>

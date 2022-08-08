@@ -95,6 +95,7 @@ const ExplorePage: NextPage = () => {
 
   const clearAllSelectedFilters = () => {
     clearQueryFilters();
+    setDisabledRanges({ Grade: true, Year: true });
   };
 
   const handleDisabled = (key: DisabledRangesKey) => {

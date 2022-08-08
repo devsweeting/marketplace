@@ -52,13 +52,14 @@ export const IsolatedMenu: React.FC<FilterMenuProps> = ({
         MenuListProps={{
           'aria-labelledby': `Menu for ${categoriesList.categoryName}`,
         }}
+        elevation={0}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: 'right',
         }}
         open={open}
