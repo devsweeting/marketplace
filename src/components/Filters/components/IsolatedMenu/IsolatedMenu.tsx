@@ -22,9 +22,15 @@ export const IsolatedMenu: React.FC<FilterMenuProps> = ({
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+    sessionStorage.setItem('scrollPosition', window.scrollY as unknown as string);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    const scrollPosition = sessionStorage.getItem('scrollPosition');
+    if (scrollPosition) {
+      window.scrollTo(0, parseInt(scrollPosition, 10));
+      sessionStorage.removeItem('scrollPosition');
+    }
   };
   return (
     <>
@@ -52,7 +58,7 @@ export const IsolatedMenu: React.FC<FilterMenuProps> = ({
           horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'right',
         }}
         open={open}

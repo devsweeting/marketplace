@@ -54,11 +54,14 @@ export const useFilters = () => {
 
   const checkedFiltersMemo = useMemo(
     () => checkedFilters,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [checkedFilters.map((item) => `${item.categoryId}-${item.filterId}`).join('')],
   );
   const rangeFiltersMemo = useMemo(
     () => rangeFiltersObj,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       Object.entries(rangeFiltersObj)
         .map(([key, value]) => `${key}-${value.min}-${value.max}`)
         .join(''),
