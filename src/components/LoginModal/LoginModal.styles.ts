@@ -36,7 +36,7 @@ export const useCustomModalStyles = makeStyles((theme) => ({
     transform: 'translate(-50%, -50%)',
     width: 600,
     height: 180,
-    bgcolor: 'background.paper',
+    backgroundColor: 'white',
     borderRadius: 2,
     boxShadow: `0px 2px 4px -1px ${lighten(
       theme.palette.primary.main,
