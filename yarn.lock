@@ -1296,6 +1296,13 @@
   dependencies:
     "@sentry/cli" "^1.74.4"
 
+"@sentry/webpack-plugin@^1.19.0":
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/@sentry/webpack-plugin/-/webpack-plugin-1.19.0.tgz#2b134318f1552ba7f3e3f9c83c71a202095f7a44"
+  integrity sha512-qSpdgdGMtdzagGveSWgo2b+t8PdPUscuOjbOyWCsJme9jlTFnNk0rX7JEA55OUozikKHM/+vVh08USLBnPboZw==
+  dependencies:
+    "@sentry/cli" "^1.74.4"
+
 "@sinclair/typebox@^0.24.1":
   version "0.24.23"
   resolved "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.24.23.tgz"

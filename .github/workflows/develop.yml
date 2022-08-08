@@ -42,7 +42,6 @@ jobs:
       # Uncomment this when tests work :)
       - name: 'Run Tests'
         run: yarn test:cov
-
       ######################################
       # Deploy to Elastic Beanstalk
       ######################################
@@ -66,3 +65,15 @@ jobs:
           version_description: ${{ env.VERSION_LABEL }}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy.zip
+      # ######################################
+      # # Sentry Release
+      # ######################################
+      - name: Sentry Release
+        if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+        uses: getsentry/action-release@v1.0.0
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
