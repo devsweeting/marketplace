@@ -1,14 +1,7 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import type {
-  IAsset,
-  IMeta,
-  IFilter,
-  RangeFilters,
-  DisabledRanges,
-  DisabledRangesKey,
-} from 'src/types';
+import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey } from 'src/types';
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useEffect, useState } from 'react';
@@ -24,6 +17,7 @@ import type { SortListProps } from '@/containers/CategoryListViewPage/SortList';
 import { SortMenu } from '@/components/Filters/components/SortMenu';
 import { useExplorePageStyles } from '@/styles/explorePage.styles';
 import { market } from '@/__mocks__/mockBrands';
+import { useFilters } from '@/helpers/hooks/useFilters';
 const ExplorePage: NextPage = () => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
@@ -31,8 +25,7 @@ const ExplorePage: NextPage = () => {
   const [data, setData] = useState<IAsset | undefined>();
   const searchQuery = useRouter().query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
-  const [checkedFilters, setCheckedFilters] = useState<any[]>([]);
-  const [filterRanges, setFilterRanges] = useState<RangeFilters>(null);
+  const { checkedFilters, rangeFilters, updateCheckedFilters, updateRangeFilters } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: true,
     Year: true,
@@ -58,7 +51,7 @@ const ExplorePage: NextPage = () => {
       page,
       sort: sortType,
       filter: checkedFilters,
-      filterRanges: filterRanges,
+      filterRanges: rangeFilters,
       search,
     });
     setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
@@ -68,7 +61,7 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     loadAssets(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType, checkedFilters, filterRanges, disabledRanges, search]);
+  }, [sortType, checkedFilters, rangeFilters, disabledRanges, search]);
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -88,15 +81,15 @@ const ExplorePage: NextPage = () => {
       const newcheckedFilters = checkedFilters.filter(
         (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
       );
-      setCheckedFilters(newcheckedFilters);
+      updateCheckedFilters(newcheckedFilters);
       return;
     }
-    setCheckedFilters([...checkedFilters, { filterId, categoryId }]);
+    updateCheckedFilters([...checkedFilters, { filterId, categoryId }]);
   };
 
   const clearAllSelectedFilters = () => {
-    setCheckedFilters([]);
-    setFilterRanges({});
+    updateCheckedFilters([]);
+    updateRangeFilters({});
     setDisabledRanges({ Grade: true, Year: true });
   };
 
@@ -105,14 +98,15 @@ const ExplorePage: NextPage = () => {
   };
 
   const handleRange = (id: string, val: any) => {
-    setFilterRanges((filterRanges) => ({
-      ...filterRanges,
+    updateRangeFilters({
+      ...rangeFilters,
       [id]: { min: val[0], max: val[1] },
-    }));
+    });
   };
 
   const removeFilterRange = (id: string) => {
-    filterRanges && delete filterRanges[id];
+    rangeFilters && delete rangeFilters[id];
+    updateRangeFilters({});
   };
 
   const handleDrawer = (asset: IAsset) => {
@@ -131,7 +125,7 @@ const ExplorePage: NextPage = () => {
     handleRange,
     removeFilterRange,
     checkedFilters,
-    filterRanges,
+    filterRanges: rangeFilters,
     disabledRanges,
     handleDisabled,
   };
