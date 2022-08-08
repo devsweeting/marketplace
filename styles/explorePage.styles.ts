@@ -8,7 +8,7 @@ export const useExplorePageStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    margin: '10px 10px 10px 10px',
+    margin: '0 10px 10px 10px',
     width: '800px',
   },
   assetListOpen: {
@@ -18,7 +18,7 @@ export const useExplorePageStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    margin: '10px 500px 10px 10px',
+    margin: '0 500px 10px 10px',
     width: '500px',
   },
 }));

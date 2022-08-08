@@ -66,11 +66,17 @@ export const FeaturedMarketCarousel = ({
           position: 'relative',
         }}
       >
-        {scrollX !== 0 && (
+        {
           <button
+            aria-label="previous"
             role="button"
-            className={`${classes.button} ${classes.prev} prev`}
+            className={`${classes.button} ${classes.prev}  ${
+              scrollX < 1 ? classes.disabledButton : ''
+            }`}
             onClick={() => {
+              if (scrollX === 0) {
+                return;
+              }
               switch (true) {
                 case width <= 599.95:
                   return slide(-300);
@@ -85,12 +91,18 @@ export const FeaturedMarketCarousel = ({
               <ArrowBackIosNewIcon />
             </>
           </button>
-        )}
-        {!scrollEnd && (
+        }
+        {
           <button
+            aria-label="next"
             role="button"
-            className={`${classes.button} ${classes.next} next`}
+            className={`${classes.button} ${classes.next} ${
+              scrollEnd ? classes.disabledButton : ''
+            }`}
             onClick={() => {
+              if (scrollEnd) {
+                return;
+              }
               switch (true) {
                 case width <= 599.95:
                   return slide(300);
@@ -105,7 +117,7 @@ export const FeaturedMarketCarousel = ({
               <ArrowForwardIosIcon />
             </>
           </button>
-        )}
+        }
         <Box className={`${classes.slider} ${classes.snap}`} ref={scroll} onScroll={scrollCheck}>
           {assets && handleDrawer
             ? assets.map((card: any, index: number) => (
