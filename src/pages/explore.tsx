@@ -25,7 +25,13 @@ const ExplorePage: NextPage = () => {
   const [data, setData] = useState<IAsset | undefined>();
   const searchQuery = useRouter().query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
-  const { checkedFilters, rangeFilters, updateCheckedFilters, updateRangeFilters } = useFilters();
+  const {
+    checkedFilters,
+    rangeFilters,
+    updateCheckedFilters,
+    updateRangeFilters,
+    clearQueryFilters,
+  } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: true,
     Year: true,
@@ -88,9 +94,7 @@ const ExplorePage: NextPage = () => {
   };
 
   const clearAllSelectedFilters = () => {
-    updateCheckedFilters([]);
-    updateRangeFilters({});
-    setDisabledRanges({ Grade: true, Year: true });
+    clearQueryFilters();
   };
 
   const handleDisabled = (key: DisabledRangesKey) => {

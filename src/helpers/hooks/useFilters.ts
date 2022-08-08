@@ -123,10 +123,20 @@ export const useFilters = () => {
     });
   };
 
+  const clearQueryFilters = () => {
+    updateCheckedFilters([]);
+    updateRangeFilters({});
+    router.replace({
+      pathname: router.pathname,
+      query: '',
+    });
+  };
+
   return {
     checkedFilters: checkedFiltersMemo,
     rangeFilters,
     updateCheckedFilters,
     updateRangeFilters,
+    clearQueryFilters,
   };
 };
