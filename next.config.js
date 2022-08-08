@@ -22,6 +22,7 @@ const nextConfig = {
   sentry: {
     disableServerWebpackPlugin: !uploadReleaseToSentry,
     disableClientWebpackPlugin: !uploadReleaseToSentry,
+    hideSourceMaps: true,
   },
 };
 
@@ -31,7 +32,9 @@ const sentryWebpackPluginOptions = {
   // recommended:
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
-
+  include: '.next',
+  ignore: ['node_modules', 'cypress', 'test'],
+  urlPrefix: '~/_next',
   silent: true, // Suppresses all logs
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
