@@ -23,6 +23,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
     <Box>
       <Box style={{ width: 'auto', height: 325, position: 'relative' }}>
         <Image
+          priority={true}
           src={currentImage.absoluteUrl}
           layout={'fill'}
           objectFit={'contain'}
@@ -40,6 +41,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
                 sx={{ cursor: 'pointer', padding: '10px' }}
               >
                 <Image
+                  priority={true}
                   src={image.absoluteUrl}
                   width={45}
                   height={70}
