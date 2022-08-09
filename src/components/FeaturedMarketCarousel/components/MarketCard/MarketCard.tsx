@@ -36,6 +36,8 @@ export const MarketCard = ({
           <Box className={classes.assetImageInnerContainer}>
             {asset?.media && asset?.media.length > 0 && (
               <Image
+                placeholder="blur"
+                blurDataURL={`/_next/image?url=${asset.media[0].absoluteUrl}&w=16&q=1`}
                 src={asset.media[0].absoluteUrl}
                 alt={asset.media[0].title}
                 style={{ borderRadius: '5px' }}

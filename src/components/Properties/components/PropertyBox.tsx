@@ -4,14 +4,9 @@ import { Box } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import { truncateName } from '@/helpers/truncate';
 import { usePropertyBoxStyle } from './PropertyBox.styles';
+import type { IAttribute } from '@/types/assetTypes';
 
-export type TraitType = {
-  trait: string;
-  value: string;
-  display: string | null;
-};
-
-export const PropertyBox = ({ attribute }: { attribute: TraitType }) => {
+export const PropertyBox = ({ attribute }: { attribute: IAttribute }) => {
   const { trait, value } = attribute;
   const classes = usePropertyBoxStyle();
   return (
@@ -21,9 +16,9 @@ export const PropertyBox = ({ attribute }: { attribute: TraitType }) => {
           {truncateName(trait, 14)}
         </Typography>
       </Tooltip>
-      <Tooltip title={value}>
+      <Tooltip title={value ?? ''}>
         <Typography variant="h5" component="p" className={classes.propertyValue}>
-          {truncateName(value, 8)}
+          {truncateName(value ?? '', 8)}
         </Typography>
       </Tooltip>
     </Box>

@@ -4,33 +4,21 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import { useGalleryStyles } from './Gallery.styles';
 import Image from 'next/image';
+import type { IMedia } from '@/types/assetTypes';
 
-export type Image = {
-  url: string;
-  title: string;
-  description?: string;
-  sortOrder: number;
-  assetId: string;
-  fileId: string;
-  absoluteUrl: string;
-};
-
-export const Gallery = ({ images }: { images: Image[] }) => {
+export const Gallery = ({ images }: { images: IMedia[] }) => {
   const router = useRouter();
   const classes = useGalleryStyles();
 
-  const [mainImage, setMainImage] = useState(
-    images[0].absoluteUrl ? images[0].absoluteUrl : images[0].url,
-  );
+  const [mainImage, setMainImage] = useState(images[0].absoluteUrl);
 
   useEffect(() => {
     setMainImage(images[0].absoluteUrl);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath]);
 
-  const handleImage = (e: React.SyntheticEvent) => {
-    const { src } = e.target as HTMLInputElement;
-    setMainImage(src);
+  const handleImage = (url: string) => {
+    setMainImage(url);
   };
 
   return (
@@ -42,19 +30,23 @@ export const Gallery = ({ images }: { images: Image[] }) => {
               <Box
                 className={classNames(
                   classes.thumbnailWrapper,
-                  image.absoluteUrl === mainImage ? classes.faded : null,
+                  image.absoluteUrl === mainImage ? null : classes.faded,
                 )}
                 key={`${index}${image.title}`}
               >
                 <Box className={classes.thumbnailItem}>
                   {image.absoluteUrl && (
                     <Image
+                      placeholder="blur"
+                      blurDataURL={`/_next/image?url=${image.absoluteUrl}&w=16&q=1`}
                       className={classes.thumbnail}
                       src={image.absoluteUrl}
                       alt={image.title}
                       width={80}
                       height={114}
-                      onClick={handleImage}
+                      onClick={() => {
+                        handleImage(image.absoluteUrl);
+                      }}
                     />
                   )}
                 </Box>
@@ -68,6 +60,8 @@ export const Gallery = ({ images }: { images: Image[] }) => {
         <Grid container pt={0} item md={8} xs={12}>
           <Grid item pt={0} md={12} className={classes.imageContainer}>
             <Image
+              placeholder="blur"
+              blurDataURL={`/_next/image?url=${mainImage}&w=16&q=1`}
               id="main-gallery-image"
               className={classes.image}
               src={mainImage}
