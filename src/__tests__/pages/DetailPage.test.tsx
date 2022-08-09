@@ -1,12 +1,13 @@
 /* eslint-disable import/no-unresolved */
 // eslint-disable-next-line import/default
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import DetailPage from '@/pages/item/[...param]';
 import { themeJump } from '@/styles/themeJump';
-import { mockedApiData } from '@/__mocks__/mockApiData';
 import '@testing-library/jest-dom/extend-expect';
+import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
+import type { IAsset } from '@/types/assetTypes';
 
 jest.mock('next/router', () => ({
   useRouter() {
@@ -19,7 +20,7 @@ jest.mock('next/router', () => ({
   },
 }));
 
-const MockDetailPage = ({ nftData }: { nftData: any }) => {
+const MockDetailPage = ({ nftData }: { nftData: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
       <DetailPage nftData={nftData} />
@@ -29,17 +30,7 @@ const MockDetailPage = ({ nftData }: { nftData: any }) => {
 
 describe('DetailPage', () => {
   it('should render with the fetched content ', async () => {
-    render(<MockDetailPage nftData={mockedApiData} />);
-    // waitFor(() => expect(screen.getByText(mockedApiData.name)).toBeInTheDocument());
-    expect(await screen.findByText(mockedApiData.description)).toBeInTheDocument();
-    // await waitFor(() => expect(screen.findByText('Contact ID')).toBeInTheDocument());
-    // await waitFor(() => expect(screen.findByText('Token ID')).toBeInTheDocument());
-    // await waitFor(() => expect(screen.findByText('Token Type')).toBeInTheDocument());
-    // await waitFor(() => expect(screen.findByText('Supply')).toBeInTheDocument());
-    // await waitFor(() => expect(screen.findByText('Blockchain')).toBeInTheDocument());
-
-    // mockedApiData.traits.map((trait: Record<string, string>) =>
-    //   expect(screen.getByText(trait.value)).toBeInTheDocument(),
-    // );
+    render(<MockDetailPage nftData={mockAssetResponse.items[0]} />);
+    test.todo;
   });
 });

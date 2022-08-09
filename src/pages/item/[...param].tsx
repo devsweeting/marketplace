@@ -11,16 +11,16 @@ import { DescriptionText } from '@/components/DescriptionText';
 import { Gallery } from '@/components/Gallery';
 import { Button } from '@/components/Button';
 import { Carousel } from '@/components/Carousel';
-import type { TraitType } from '@/components/Properties/components/PropertyBox';
 import { useDetailPageStyles } from '@/styles/DetailPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Routes } from '@/domain/Routes';
 import type { ParsedUrlQuery } from 'querystring';
+import type { IAsset, IAttribute } from '@/types/assetTypes';
 
-const DetailPage = ({ nftData }: { nftData: any }) => {
+const DetailPage = ({ nftData }: { nftData: IAsset }) => {
   const theme = useTheme();
   const classes = useDetailPageStyles();
-  const [traits, setTraits] = useState<TraitType[] | null>(null);
+  const [traits, setTraits] = useState<IAttribute[] | null>(null);
 
   useEffect(() => {
     setTraits(nftData?.attributes);
@@ -35,7 +35,7 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
             ? nftData.media[0].absoluteUrl
             : 'https://upload.wikimedia.org/wikipedia/commons/5/5a/No_image_available_500_x_500.svg'
         }
-        image_alt={nftData.media ? nftData.media[0].description : 'No image available'}
+        image_alt={nftData.media && (nftData.media[0].description ?? 'No image available')}
       />
       {nftData ? (
         <Box
@@ -78,7 +78,6 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                           title: 'No image',
                           // TODO: Fix default image
                           absoluteUrl: '/images/No_image_available_500_x_500.svg',
-                          url: '/images/No_image_available_500_x_500.svg',
                           description: 'No image available',
                           sortOrder: 0,
                           assetId: '',
@@ -105,29 +104,15 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                 <DescriptionText text={nftData.description} />
                 <Box sx={{ position: 'relative' }}>
                   <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
-                    {nftData.media && nftData.media[0].absoluteURL ? (
+                    {nftData.media && nftData.media[0] && nftData.media[0].absoluteUrl && (
                       <Image
                         placeholder="blur"
                         blurDataURL={`/_next/image?url=${nftData.media[0].absoluteUrl}&w=16&q=1`}
                         src={nftData.media[0].absoluteUrl}
-                        alt={nftData.media[0].description}
+                        alt={nftData.media[0].description ?? 'No image'}
                         layout="fill"
                         objectFit="contain"
                         style={{ borderRadius: '8px' }}
-                      />
-                    ) : (
-                      <Image
-                        placeholder="blur"
-                        blurDataURL={`/_next/image?url=${nftData.media[0].absoluteUrl}&w=16&q=1`}
-                        src="/images/No_image_available_500_x_500.svg"
-                        layout="fill"
-                        alt="No image available"
-                        objectFit="contain"
-                        style={{
-                          borderRadius: '8px',
-                          backdropFilter: 'blur(10px)',
-                          backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                        }}
                       />
                     )}
                   </Box>

@@ -3,10 +3,10 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { Box, Grid } from '@mui/material';
 import { PropertyBox } from './components';
-import type { TraitType } from './components/PropertyBox';
 import { usePropertiesStyle } from './Properties.styles';
+import type { IAttribute } from '@/types/assetTypes';
 
-type AttributeProps = TraitType[];
+type AttributeProps = IAttribute[];
 
 export const Properties = ({ attributes }: { attributes: AttributeProps }) => {
   const classes = usePropertiesStyle();
