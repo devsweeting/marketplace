@@ -23,6 +23,8 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
     <Box>
       <Box style={{ width: 'auto', height: 325, position: 'relative' }}>
         <Image
+          placeholder="blur"
+          blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}
           priority={true}
           src={currentImage.absoluteUrl}
           layout={'fill'}
@@ -41,6 +43,8 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
                 sx={{ cursor: 'pointer', padding: '10px' }}
               >
                 <Image
+                  placeholder="blur"
+                  blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}
                   priority={true}
                   src={image.absoluteUrl}
                   width={45}

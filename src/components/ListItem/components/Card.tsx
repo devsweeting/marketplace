@@ -28,6 +28,8 @@ export const Card = ({ item }: CardProps) => {
             <Box className={classes.imageInnerContainer}>
               {item?.media && item?.media.length > 0 && item.media[0].absoluteUrl && (
                 <Image
+                  placeholder="blur"
+                  blurDataURL={`/_next/image?url=${item.media[0].absoluteUrl}&w=16&q=1`}
                   className={classes.mainImage}
                   src={item.media[0].absoluteUrl}
                   alt={item.media[0].title}

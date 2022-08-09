@@ -107,6 +107,8 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                   <Box className={classes.fixedImage} sx={{ display: { xs: 'none', md: 'block' } }}>
                     {nftData.media && nftData.media[0].absoluteURL ? (
                       <Image
+                        placeholder="blur"
+                        blurDataURL={`/_next/image?url=${nftData.media[0].absoluteUrl}&w=16&q=1`}
                         src={nftData.media[0].absoluteUrl}
                         alt={nftData.media[0].description}
                         layout="fill"
@@ -115,6 +117,8 @@ const DetailPage = ({ nftData }: { nftData: any }) => {
                       />
                     ) : (
                       <Image
+                        placeholder="blur"
+                        blurDataURL={`/_next/image?url=${nftData.media[0].absoluteUrl}&w=16&q=1`}
                         src="/images/No_image_available_500_x_500.svg"
                         layout="fill"
                         alt="No image available"

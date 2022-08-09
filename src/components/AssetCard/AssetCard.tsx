@@ -30,6 +30,8 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           <Box className={classes.ImageWrapper}>
             {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
               <Image
+                placeholder="blur"
+                blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
                 src={assetData.media[0].absoluteUrl}
                 alt={assetData.media[0].title}
                 width={200}

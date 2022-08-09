@@ -49,6 +49,8 @@ export const Gallery = ({ images }: { images: Image[] }) => {
                 <Box className={classes.thumbnailItem}>
                   {image.absoluteUrl && (
                     <Image
+                      placeholder="blur"
+                      blurDataURL={`/_next/image?url=${image.absoluteUrl}&w=16&q=1`}
                       className={classes.thumbnail}
                       src={image.absoluteUrl}
                       alt={image.title}
@@ -68,6 +70,8 @@ export const Gallery = ({ images }: { images: Image[] }) => {
         <Grid container pt={0} item md={8} xs={12}>
           <Grid item pt={0} md={12} className={classes.imageContainer}>
             <Image
+              placeholder="blur"
+              blurDataURL={`/_next/image?url=${mainImage}&w=16&q=1`}
               id="main-gallery-image"
               className={classes.image}
               src={mainImage}
