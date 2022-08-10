@@ -1,5 +1,4 @@
 import makeStyles from '@mui/styles/makeStyles';
-import { lighten } from '@mui/material';
 
 export const useRangeStyles = makeStyles((theme) => ({
   popoverButton: {
@@ -9,9 +8,6 @@ export const useRangeStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    '&:hover': {
-      backgroundColor: lighten(theme.palette.primary.main, 0.9),
-    },
   },
   open: {
     boxShadow: 'none',

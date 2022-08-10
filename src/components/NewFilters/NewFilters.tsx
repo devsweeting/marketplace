@@ -14,6 +14,21 @@ export interface FilterProps {
   filterType: string;
 }
 
+interface IRangeFilter {
+  categoryName: string;
+  filterType: string;
+  categoryId: keyof DisabledRanges;
+  range: string[];
+}
+interface ICheckboxFilter {
+  categoryName: string;
+  filterType: string;
+  categoryId: string;
+  filters: string[];
+  range?: undefined;
+}
+type IFilters = ICheckboxFilter | IRangeFilter;
+
 export const NewFilters = ({
   handleFiltersChange,
   handleRange,
@@ -24,6 +39,13 @@ export const NewFilters = ({
   handleDisabled,
   filterType,
   filter,
+}: {
+  filter: IFilters;
+  filterType: string;
+  handleDisabled: (key: DisabledRangesKey) => void;
+  checkedFilters: IFilter[];
+  filterRanges: RangeFilters;
+  disabledRanges: DisabledRanges;
 }) => {
   const checkboxFilterProps = {
     handleFiltersChange,

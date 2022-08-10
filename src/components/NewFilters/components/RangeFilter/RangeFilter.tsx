@@ -3,8 +3,17 @@ import Popover from '@mui/material/Popover';
 import { Button } from '@/components/Button';
 import React, { useState, useEffect } from 'react';
 import { useRangeStyles } from './RangeFilter.styles';
+import type { DisabledRanges, DisabledRangesKey, RangeFilters } from '@/types/assetTypes';
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+
+interface IRangeFilter {
+  categoryName: string;
+  filterType: string;
+  categoryId: keyof DisabledRanges;
+  range: string[];
+}
 
 export const RangeFilter = ({
   handleRange,
@@ -13,6 +22,13 @@ export const RangeFilter = ({
   disabledRanges,
   handleDisabled,
   filter,
+}: {
+  filter: IRangeFilter;
+  handleRange: (id: string, val: number[]) => void;
+  removeFilterRange: (id: string) => void;
+  filterRanges: RangeFilters;
+  disabledRanges: DisabledRanges;
+  handleDisabled: (key: DisabledRangesKey) => void;
 }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const { categoryId, range } = filter;
@@ -58,11 +74,16 @@ export const RangeFilter = ({
       <Button
         className={open ? classes.open : classes.popoverButton}
         aria-describedby={id}
-        variant="contained"
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        variant="text"
+        disableElevation
         onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon />}
+        endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
       >
-        {filter.categoryId}
+        <Typography variant="h3" component="h3" className={classes.MenuTitle}>
+          {filter.categoryId}
+        </Typography>
       </Button>
       <Popover
         id={id}
@@ -110,7 +131,7 @@ export const RangeFilter = ({
           }}
           style={{ margin: 20 }}
         />
-        <Button onClick={handleApplyClick} style={{ padding: 20 }}>
+        <Button onClick={handleApplyClick} style={{ padding: 20 }} variant="text">
           <Typography>{disabledRanges[categoryId] ? 'Apply' : 'Remove'}</Typography>
         </Button>
       </Popover>
