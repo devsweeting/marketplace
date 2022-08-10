@@ -11,13 +11,12 @@ import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { TradePanel } from '@/components/TradePanel';
 import { AssetListView } from '@/containers/AssetListView';
-import { Filters } from '@/components/Filters';
-import type { FilterSidebarProps } from '@/containers/CategoryListViewPage/FilterSidebar';
-import type { SortListProps } from '@/containers/CategoryListViewPage/SortList';
 import { SortMenu } from '@/components/Filters/components/SortMenu';
 import { useExplorePageStyles } from '@/styles/explorePage.styles';
 import { market } from '@/__mocks__/mockBrands';
 import { useFilters } from '@/helpers/hooks/useFilters';
+import { NewFilters } from '@/components/NewFilters';
+import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 const ExplorePage: NextPage = () => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
@@ -37,7 +36,6 @@ const ExplorePage: NextPage = () => {
     Year: true,
   });
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
-  const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true);
   const classes = useExplorePageStyles();
   const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
 
@@ -73,9 +71,6 @@ const ExplorePage: NextPage = () => {
     setSortType(sortBy);
   };
 
-  const toggleVisibility = (isVisible: boolean) => {
-    setIsSidebarVisible(isVisible);
-  };
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
 
@@ -123,8 +118,7 @@ const ExplorePage: NextPage = () => {
     setData(asset);
   };
 
-  const filterSidebarProps: FilterSidebarProps = {
-    toggleVisibility,
+  const filterProps = {
     handleFiltersChange,
     clearAllSelectedFilters,
     handleRange,
@@ -135,8 +129,7 @@ const ExplorePage: NextPage = () => {
     handleDisabled,
   };
 
-  const sortListProps: SortListProps = {
-    toggleVisibility,
+  const sortListProps = {
     handleSortType,
     sortType,
   };
@@ -190,7 +183,14 @@ const ExplorePage: NextPage = () => {
                   >
                     Explore Drops
                   </Typography>
-                  {isSidebarVisible && <Filters {...filterSidebarProps} />}
+                  {mockCategoryFilters.map((filter, index) => (
+                    <NewFilters
+                      filterType={filter.filterType}
+                      filter={filter}
+                      {...filterProps}
+                      key={index}
+                    />
+                  ))}
                   <SortMenu {...sortListProps} />
                 </Box>
                 <Divider />

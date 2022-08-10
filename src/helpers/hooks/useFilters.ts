@@ -89,10 +89,17 @@ export const useFilters = () => {
 
       updatedQuery[key] = filters;
     }
-    router.replace({
-      pathname: router.pathname,
-      query: updatedQuery,
-    });
+
+    // window.history.replaceState({ ...window.history.state, as: router.asPath, url: router.asPath }, '', router.asPath);
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
   };
 
   const updateRangeFilters = (newRangeFilters: RangeFilters) => {
@@ -117,19 +124,27 @@ export const useFilters = () => {
       updatedQuery[`attr_lte[${key}]`] = range.max;
     }
 
-    router.replace({
-      pathname: router.pathname,
-      query: updatedQuery,
-    });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
   };
 
   const clearQueryFilters = () => {
     updateCheckedFilters([]);
     updateRangeFilters({});
-    router.replace({
-      pathname: router.pathname,
-      query: '',
-    });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: '',
+      },
+      undefined,
+      { shallow: true },
+    );
   };
 
   return {
