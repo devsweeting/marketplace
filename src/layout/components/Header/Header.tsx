@@ -10,6 +10,7 @@ import { SearchBox } from '@/components/SearchBox';
 import { SkinContext } from '@/styles/skin-context';
 import { useHeaderStyles } from './Header.styles';
 import { Routes } from '@/domain/Routes';
+import { Divider, Typography } from '@mui/material';
 // import { skins } from '../../../styles/skin-context';
 
 export type HeaderPosition = 'fixed' | 'absolute' | 'relative' | 'static' | 'sticky' | undefined;
@@ -37,27 +38,51 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
             height: '80px',
           }}
         >
-          <Container
-            className={classes.container}
-            sx={{ color: '#000', borderImageSource: `url(${skin.borderBoxBackground})` }}
-          >
+          <Container className={classes.container} sx={{ color: '#000' }}>
             <Link href="/">
-              <a>
+              <a
+                style={{
+                  display: 'flex',
+                  color: 'black',
+                  alignItems: 'center',
+                  textDecoration: 'none',
+                }}
+              >
                 <Box
                   className={classes.logoWrapper}
                   sx={{ position: 'relative', width: 134, height: 33 }}
                 >
-                  {' '}
                   <Image src={skin.logo.image} alt={'logo'} layout="fill" objectFit="contain" />
                 </Box>
+                <Typography
+                  sx={{
+                    fontSize: 40,
+                    textAlign: 'center',
+                    marginLeft: '5px',
+                    fontWeight: 900,
+                  }}
+                >
+                  {' '}
+                  NFT
+                </Typography>
               </a>
             </Link>
+            <Divider
+              orientation="vertical"
+              sx={{
+                paddingLeft: '20px',
+                '@media (max-width: 900px)': {
+                  display: 'none',
+                },
+              }}
+            />
 
-            <Box className={classes.searchBoxContainer} ml={3}>
+            <Box className={classes.searchBoxContainer}>
               <SearchBox
                 iconColor={skin.header.searchIconColor}
-                borderRadius={true}
-                reverseTextColor={true}
+                borderRadius={false}
+                placeholder={'Sport, player, set...'}
+                reverseTextColor={false}
               />
             </Box>
 

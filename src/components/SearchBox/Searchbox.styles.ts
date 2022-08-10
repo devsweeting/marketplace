@@ -4,12 +4,12 @@ export const useSearchboxStyles = makeStyles((theme) => ({
   wrapper: {
     width: '100%',
     '& .MuiInputBase-root': {
-      border: '1px solid rgba(255, 255, 255, 0.23)',
+      // border: '1px solid rgba(255, 255, 255, 0.23)',
       paddingLeft: '10px',
-      borderRadius: '4px',
+      // borderRadius: '4px',
       height: '56px',
       fontFamily: 'Montserrat',
-      color: theme.palette.primary,
+      color: theme.palette.primary.main,
       fontSize: 'calc(10px + 0.4vw) !important',
       fontWeight: '400 !important',
       lineHeight: '150 !important',

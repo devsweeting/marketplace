@@ -12,10 +12,10 @@ export const useHeaderStyles = makeStyles(
       margin: '0 auto',
       width: '100%',
       padding: `0 100px`,
-      borderBottom: '4px solid',
+      // borderBottom: '1px solid',
       boxSizing: 'border-box',
       borderImageSlice: 1,
-      color: theme.palette.primary.main,
+      color: theme.palette.primary.light,
       '@media (max-width: 900px)': {
         padding: `0 41px`,
       },
@@ -36,7 +36,7 @@ export const useHeaderStyles = makeStyles(
     },
     searchBoxContainer: {
       width: '100%',
-      margin: `0 ${theme.spacing(9)}`,
+      margin: `0 ${theme.spacing(1)}`,
       '@media (max-width: 1200px)': {
         margin: `0 0 0 ${theme.spacing(3)}`,
       },

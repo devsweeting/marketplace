@@ -4,6 +4,7 @@ import makeStyles from '@mui/styles/makeStyles';
 export const useNavLinkStyles = makeStyles(
   (theme) => ({
     navLink: {
+      color: theme.palette.primary.main,
       cursor: 'pointer',
       marginLeft: theme.spacing(4),
       '@media (max-width:900px)': {
