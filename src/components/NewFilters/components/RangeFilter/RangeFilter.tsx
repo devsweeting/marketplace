@@ -8,13 +8,6 @@ import type { DisabledRanges, DisabledRangesKey, RangeFilters } from '@/types/as
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-interface IRangeFilter {
-  categoryName: string;
-  filterType: string;
-  categoryId: keyof DisabledRanges;
-  range: string[];
-}
-
 export const RangeFilter = ({
   handleRange,
   removeFilterRange,
@@ -23,7 +16,21 @@ export const RangeFilter = ({
   handleDisabled,
   filter,
 }: {
-  filter: IRangeFilter;
+  filter:
+    | {
+        categoryName: string;
+        filterType: string;
+        categoryId: string;
+        filters: string[];
+        range?: undefined;
+      }
+    | {
+        categoryName: string;
+        filterType: string;
+        categoryId: string;
+        range: string[];
+        filters?: undefined;
+      };
   handleRange: (id: string, val: number[]) => void;
   removeFilterRange: (id: string) => void;
   filterRanges: RangeFilters;
@@ -31,34 +38,35 @@ export const RangeFilter = ({
   handleDisabled: (key: DisabledRangesKey) => void;
 }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const { categoryId, range } = filter;
   const classes = useRangeStyles();
 
-  const [rangeValueOne, setRangeValueOne] = useState<number>(Number(range?.[0]));
-  const [rangeValueTwo, setRangeValueTwo] = useState<number>(Number(range?.[range?.length - 1]));
+  const [rangeValueOne, setRangeValueOne] = useState<number>(Number(filter.range?.[0]));
+  const [rangeValueTwo, setRangeValueTwo] = useState<number>(
+    Number(filter.range?.[filter.range?.length - 1]),
+  );
   const [value, setValue] = useState<number[]>([
-    Number(range?.[0]),
-    Number(range?.[range?.length - 1]),
+    Number(filter.range?.[0]),
+    Number(filter.range?.[filter.range?.length - 1]),
   ]);
 
   const handleApplyClick = () => {
     setValue([rangeValueOne, rangeValueTwo]);
-    handleRange(categoryId, value);
-    handleDisabled(categoryId);
+    handleRange(filter.categoryId, value);
+    handleDisabled(filter.categoryId as DisabledRangesKey);
   };
 
   useEffect(() => {
     if (!filterRanges) {
-      setValue([Number(range?.[0]), Number(range?.[range?.length - 1])]);
+      setValue([Number(filter.range?.[0]), Number(filter.range?.[filter.range?.length - 1])]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterRanges]);
 
   useEffect(() => {
-    !disabledRanges[categoryId] && handleRange(categoryId, value);
-    disabledRanges[categoryId] && removeFilterRange(categoryId);
+    !disabledRanges[filter.categoryId] && handleRange(filter.categoryId, value);
+    disabledRanges[filter.categoryId] && removeFilterRange(filter.categoryId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabledRanges[categoryId]]);
+  }, [disabledRanges[filter.categoryId]]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -95,8 +103,7 @@ export const RangeFilter = ({
           horizontal: 'left',
         }}
       >
-        {' '}
-        {categoryId}
+        {filter.categoryId}
         <TextField
           type="number"
           value={rangeValueOne}
@@ -107,8 +114,8 @@ export const RangeFilter = ({
           size="small"
           InputProps={{
             inputProps: {
-              min: Number(range?.[0]),
-              max: Number(range?.[range?.length - 2]),
+              min: Number(filter.range?.[0]),
+              max: Number(filter.range?.[filter.range?.length - 2]),
               step: 1,
             },
           }}
@@ -124,15 +131,15 @@ export const RangeFilter = ({
           size="small"
           InputProps={{
             inputProps: {
-              min: Number(range?.[0]),
-              max: Number(range?.[range?.length - 1]),
+              min: Number(filter.range?.[0]),
+              max: Number(filter.range?.[filter.range?.length - 1]),
               step: 1,
             },
           }}
           style={{ margin: 20 }}
         />
         <Button onClick={handleApplyClick} style={{ padding: 20 }} variant="text">
-          <Typography>{disabledRanges[categoryId] ? 'Apply' : 'Remove'}</Typography>
+          <Typography>{disabledRanges[filter.categoryId] ? 'Apply' : 'Remove'}</Typography>
         </Button>
       </Popover>
     </Box>

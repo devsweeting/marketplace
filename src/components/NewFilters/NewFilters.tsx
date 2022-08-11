@@ -3,32 +3,6 @@ import React from 'react';
 import { CheckboxFilter } from './components/CheckboxFilter';
 import { RangeFilter } from './components/RangeFilter';
 
-export interface FilterProps {
-  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
-  handleRange: (id: string, val: number[]) => void;
-  disabledRanges: DisabledRanges;
-  handleDisabled: (key: DisabledRangesKey) => void;
-  removeFilterRange: (id: string) => void;
-  checkedFilters: IFilter[];
-  filterRanges: RangeFilters;
-  filterType: string;
-}
-
-interface IRangeFilter {
-  categoryName: string;
-  filterType: string;
-  categoryId: keyof DisabledRanges;
-  range: string[];
-}
-interface ICheckboxFilter {
-  categoryName: string;
-  filterType: string;
-  categoryId: string;
-  filters: string[];
-  range?: undefined;
-}
-type IFilters = ICheckboxFilter | IRangeFilter;
-
 export const NewFilters = ({
   handleFiltersChange,
   handleRange,
@@ -40,12 +14,29 @@ export const NewFilters = ({
   filterType,
   filter,
 }: {
-  filter: IFilters;
+  filter:
+    | {
+        categoryName: string;
+        filterType: string;
+        categoryId: string;
+        filters: string[];
+        range?: undefined;
+      }
+    | {
+        categoryName: string;
+        filterType: string;
+        categoryId: string;
+        range: string[];
+        filters?: undefined;
+      };
   filterType: string;
   handleDisabled: (key: DisabledRangesKey) => void;
   checkedFilters: IFilter[];
   filterRanges: RangeFilters;
   disabledRanges: DisabledRanges;
+  handleFiltersChange: (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => void;
+  removeFilterRange: (id: string) => void;
+  handleRange: (id: string, val: number[]) => void;
 }) => {
   const checkboxFilterProps = {
     handleFiltersChange,
