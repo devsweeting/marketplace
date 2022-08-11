@@ -17,7 +17,7 @@ export interface ProductDataProps {
 }
 
 export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
-  const { isOpen, setIsOpen } = useModal();
+  const { isModalOpen, setIsModalOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
   const user = useUser();
   let originalWatchlist;
@@ -41,7 +41,7 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
         originalWatchlist = [{ id: id, name: name }];
       }
       localStorage.setItem('watchList', JSON.stringify(originalWatchlist));
-      setIsOpen(!isOpen);
+      setIsModalOpen(!isModalOpen);
       setHasBeenAdded(true);
       return;
     }

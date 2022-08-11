@@ -7,18 +7,24 @@ import { useAssetCardStyles } from './AssetCard.styles';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import type { IAssetCard } from './IAssetCard';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
-import { addToWatchlist, removeFromWatchlist } from '@/api/endpoints/watchlist';
-import type { IAsset } from '@/types/assetTypes';
+import {
+  addToWatchlist,
+  addWatchlistToLocalStorage,
+  hasBeenAddedWatchlist,
+  removeFromWatchlist,
+  removeWatchlistFromLocalStorage,
+} from '@/api/endpoints/watchlist';
 import { useEffect, useState } from 'react';
 import { useModal } from '@/helpers/hooks/useModal';
 import { useUser } from '@/helpers/hooks/useUser';
-import { StatusCodes } from 'http-status-codes';
 import { Star } from '@mui/icons-material';
+import type { ProductDataProps } from '../ProductCard';
 
 export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   const sellOrderData = getMainSellOrder(assetData);
   const classes = useAssetCardStyles();
-  const { isOpen, setIsOpen } = useModal();
+  const { isModalOpen, setIsModalOpen } = useModal();
+  const [hasBeenAdded, setHasBeenAdded] = useState(false);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
@@ -26,55 +32,34 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     }
   };
 
-  //add to watchlist
-  const [hasBeenAdded, setHasBeenAdded] = useState(false);
   const user = useUser();
   let originalWatchlist;
   useEffect(() => {
     if (localStorage.getItem('watchList')) {
       const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-      if (originalWatchlist.some((watchItem: IAsset) => watchItem.id === assetData.id)) {
+      if (originalWatchlist.some((watchItem: ProductDataProps) => watchItem.id === assetData.id)) {
         setHasBeenAdded(true);
         return;
       }
     }
   }, [assetData.id, originalWatchlist]);
 
-  const handleClick = (id: string, name: string) => {
+  const handleAdd = (id: string, name: string) => {
     if (!user) {
-      if (localStorage.getItem('watchList')) {
-        originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-        originalWatchlist.push({ id: id, name: name });
-      } else {
-        originalWatchlist = [{ id: id, name: name }];
-      }
-      localStorage.setItem('watchList', JSON.stringify(originalWatchlist));
-      setIsOpen(!isOpen);
+      addWatchlistToLocalStorage(id, name);
+      setIsModalOpen(!isModalOpen);
       setHasBeenAdded(true);
       return;
     }
 
     addToWatchlist({ id, name }).then((status) => {
-      switch (status) {
-        case StatusCodes.CREATED:
-          setHasBeenAdded(true);
-          return;
-        case StatusCodes.CONFLICT:
-          setHasBeenAdded(true);
-          return;
-      }
+      setHasBeenAdded(hasBeenAddedWatchlist(status));
     });
   };
 
-  const handleRemoveClick = () => {
-    const id = assetData.id;
-    const name = assetData.name;
+  const handleRemove = (id: string, name: string) => {
     if (!user) {
-      const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-      const watchlist = originalWatchlist.filter(
-        (watchlist: IAsset) => watchlist.id !== assetData.id,
-      );
-      localStorage.setItem('watchList', JSON.stringify(watchlist));
+      removeWatchlistFromLocalStorage(id);
       setHasBeenAdded(false);
       return;
     }
@@ -143,13 +128,17 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           {!hasBeenAdded ? (
             <IconButton
               onClick={() => {
-                handleClick(assetData.id, assetData.name);
+                handleAdd(assetData.id, assetData.name);
               }}
             >
               <StarBorderIcon />
             </IconButton>
           ) : (
-            <IconButton onClick={handleRemoveClick}>
+            <IconButton
+              onClick={() => {
+                handleRemove(assetData.id, assetData.name);
+              }}
+            >
               <Star />
             </IconButton>
           )}

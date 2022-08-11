@@ -5,12 +5,12 @@ import { LoginModal } from '@/components/LoginModal';
 import { useModal } from '@/helpers/hooks/useModal';
 
 export const Login = () => {
-  const { isOpen, setIsOpen } = useModal();
+  const { isModalOpen, setIsModalOpen } = useModal();
 
   const classes = useNavLinkStyles();
 
   const handleOpen = () => {
-    setIsOpen(!isOpen);
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -20,7 +20,7 @@ export const Login = () => {
           Login
         </Typography>
       </a>
-      <LoginModal open={isOpen} />
+      <LoginModal open={isModalOpen} />
     </div>
   );
 };

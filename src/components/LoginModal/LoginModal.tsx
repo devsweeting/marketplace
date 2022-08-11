@@ -14,7 +14,7 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
   const [emailState, setEmailState] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [buttonState, setButtonState] = useState(false);
-  const { setIsOpen } = useModal();
+  const { setIsModalOpen } = useModal();
   const modalBox = useRef<HTMLDivElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,7 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
     setButtonState(false);
   };
   const handleClose = () => {
-    setIsOpen(!isOpen);
+    setIsModalOpen(!isOpen);
     setEmailState('');
     setButtonState(false);
     setAlertMessage('');
