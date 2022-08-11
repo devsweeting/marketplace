@@ -8,7 +8,6 @@ import { useClearAllFilter } from './ClearAllFilter.styles';
 
 interface ClearAllFiltersProps {
   clearSelectedFilters: () => void;
-  toggleVisibility: (item: boolean) => void;
   isFilterButtonVisible: number | boolean;
 }
 

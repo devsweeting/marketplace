@@ -1,10 +1,11 @@
-import { Box, Checkbox, FormControl, FormControlLabel, FormGroup } from '@mui/material';
+import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import type { IFilter } from '@/types/assetTypes';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import React, { useState } from 'react';
+import { useCheckboxStyles } from './CheckboxFilter.styles';
 
 interface ICheckBoxStuff {
   categoryId: string;
@@ -36,7 +37,7 @@ export const CheckboxFilter = ({
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [checkedBoxes, setCheckedBoxes] = useState<ICheckBoxStuff[]>([]);
-
+  const classes = useCheckboxStyles();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -64,13 +65,15 @@ export const CheckboxFilter = ({
   return (
     <Box>
       <Button
-        className="filterButton"
+        className={open ? classes.open : classes.popoverButton}
         aria-describedby={id}
-        variant="contained"
+        variant="text"
         onClick={handleClick}
         endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
       >
-        {filter.categoryId}
+        <Typography variant="h3" component="h3" className={classes.MenuTitle}>
+          {filter.categoryId}
+        </Typography>
       </Button>
 
       <Popover
@@ -82,27 +85,30 @@ export const CheckboxFilter = ({
           vertical: 'bottom',
           horizontal: 'left',
         }}
+        className={classes.MenuBackground}
       >
-        {filter.filters &&
-          filter.filters.map((checkBoxName: string, index: number) => (
-            <FormControl component="fieldset" variant="standard" key={index}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checkedFilters.some(
-                        (item) =>
-                          item.categoryId === filter.categoryId && item.filterId === checkBoxName,
-                      )}
-                      onChange={(event) => handleCheckboxClick(event, filter.categoryId)}
-                      name={checkBoxName}
-                    />
-                  }
-                  label={checkBoxName}
-                />
-              </FormGroup>
-            </FormControl>
-          ))}
+        <Box sx={{ display: 'flex', flexDirection: 'column', p: 2 }}>
+          {filter.filters &&
+            filter.filters.map((checkBoxName: string, index: number) => (
+              <FormControl component="fieldset" variant="standard" key={index}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checkedFilters.some(
+                          (item) =>
+                            item.categoryId === filter.categoryId && item.filterId === checkBoxName,
+                        )}
+                        onChange={(event) => handleCheckboxClick(event, filter.categoryId)}
+                        name={checkBoxName}
+                      />
+                    }
+                    label={checkBoxName}
+                  />
+                </FormGroup>
+              </FormControl>
+            ))}
+        </Box>
       </Popover>
     </Box>
   );

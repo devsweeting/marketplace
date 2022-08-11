@@ -20,7 +20,6 @@ export interface FilterSidebarProps {
 }
 
 export const FilterSidebar = ({
-  toggleVisibility,
   handleFiltersChange,
   clearAllSelectedFilters,
   handleRange,
@@ -49,7 +48,6 @@ export const FilterSidebar = ({
       <Grid item xs={12}>
         <ClearAllFilter
           clearSelectedFilters={clearAllSelectedFilters}
-          toggleVisibility={toggleVisibility}
           isFilterButtonVisible={
             checkedFilters.length || !disabledRanges.Grade || !disabledRanges.Year
           }

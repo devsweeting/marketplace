@@ -102,45 +102,52 @@ export const RangeFilter = ({
           vertical: 'bottom',
           horizontal: 'left',
         }}
+        className={classes.MenuBackground}
       >
-        {filter.categoryId}
-        <TextField
-          type="number"
-          value={rangeValueOne}
-          onChange={(newValue) => setRangeValueOne(parseInt(newValue.target.value))}
-          defaultValue="Small"
-          label="From"
-          variant="outlined"
-          size="small"
-          InputProps={{
-            inputProps: {
-              min: Number(filter.range?.[0]),
-              max: Number(filter.range?.[filter.range?.length - 2]),
-              step: 1,
-            },
-          }}
-          style={{ margin: 20 }}
-        />
-        <TextField
-          type="number"
-          value={rangeValueTwo}
-          onChange={(newValue) => setRangeValueTwo(parseInt(newValue.target.value))}
-          defaultValue="Small"
-          label="To"
-          variant="outlined"
-          size="small"
-          InputProps={{
-            inputProps: {
-              min: Number(filter.range?.[0]),
-              max: Number(filter.range?.[filter.range?.length - 1]),
-              step: 1,
-            },
-          }}
-          style={{ margin: 20 }}
-        />
-        <Button onClick={handleApplyClick} style={{ padding: 20 }} variant="text">
-          <Typography>{disabledRanges[filter.categoryId] ? 'Apply' : 'Remove'}</Typography>
-        </Button>
+        <Box sx={{ p: 1 }}>
+          <Typography variant="h3" component="h4" sx={{ fontSize: '14px', marginLeft: 2 }}>
+            {filter.categoryId}
+          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <TextField
+              type="number"
+              value={rangeValueOne}
+              onChange={(newValue) => setRangeValueOne(parseInt(newValue.target.value))}
+              defaultValue="Small"
+              label="From"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                inputProps: {
+                  min: Number(filter.range?.[0]),
+                  max: Number(filter.range?.[filter.range?.length - 2]),
+                  step: 1,
+                },
+              }}
+              style={{ margin: 20 }}
+            />
+            <TextField
+              type="number"
+              value={rangeValueTwo}
+              onChange={(newValue) => setRangeValueTwo(parseInt(newValue.target.value))}
+              defaultValue="Small"
+              label="To"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                inputProps: {
+                  min: Number(filter.range?.[0]),
+                  max: Number(filter.range?.[filter.range?.length - 1]),
+                  step: 1,
+                },
+              }}
+              style={{ margin: 20 }}
+            />
+            <Button onClick={handleApplyClick} style={{ padding: 20 }} variant="text">
+              <Typography>{disabledRanges[filter.categoryId] ? 'Apply' : 'Remove'}</Typography>
+            </Button>
+          </Box>
+        </Box>
       </Popover>
     </Box>
   );

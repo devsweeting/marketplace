@@ -21,7 +21,8 @@ export const Slider: React.FC<any> = ({
   handleDisabled: (key: keyof DisabledRanges) => void;
   disabledRanges: DisabledRanges;
 }) => {
-  const { categoryId, range } = category;
+  const { categoryId, range }: { categoryId: string | number; range: string[] } = category;
+  categoryId as string;
   const classes = useSliderStyles();
 
   const [value, setValue] = React.useState<number[]>([
@@ -37,7 +38,7 @@ export const Slider: React.FC<any> = ({
   }, [filterRanges]);
 
   const handleChange = (event: any, newValue: number | number[]) => {
-    handleRange(categoryId, newValue);
+    handleRange(categoryId as string, newValue);
   };
 
   const handleRangeLocally = (event: Event, newValue: number | number[]) => {
@@ -45,8 +46,8 @@ export const Slider: React.FC<any> = ({
   };
 
   React.useEffect(() => {
-    !disabledRanges[categoryId] && handleRange(categoryId, value);
-    disabledRanges[categoryId] && removeFilterRange(categoryId);
+    !disabledRanges[categoryId] && handleRange(categoryId as string, value);
+    disabledRanges[categoryId] && removeFilterRange(categoryId as string);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabledRanges[categoryId]]);
 

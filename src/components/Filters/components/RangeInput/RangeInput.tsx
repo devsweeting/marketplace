@@ -31,7 +31,7 @@ export const RangeInput: React.FC<any> = ({
 
   const handleClick = () => {
     setValue([rangeValueOne, rangeValueTwo]);
-    handleRange(categoryId, value);
+    handleRange(categoryId as string, value);
     handleDisabled(categoryId);
   };
 
@@ -43,8 +43,8 @@ export const RangeInput: React.FC<any> = ({
   }, [filterRanges]);
 
   React.useEffect(() => {
-    !disabledRanges[categoryId] && handleRange(categoryId, value);
-    disabledRanges[categoryId] && removeFilterRange(categoryId);
+    !disabledRanges[categoryId] && handleRange(categoryId as string, value);
+    disabledRanges[categoryId] && removeFilterRange(categoryId as string);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabledRanges[categoryId]]);
 

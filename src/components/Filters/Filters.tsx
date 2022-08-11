@@ -17,7 +17,6 @@ export interface FilterProps {
 }
 
 export const Filters = ({
-  toggleVisibility,
   handleFiltersChange,
   clearAllSelectedFilters,
   handleRange,
@@ -47,7 +46,6 @@ export const Filters = ({
         ))}
         <ClearAllFilter
           clearSelectedFilters={clearAllSelectedFilters}
-          toggleVisibility={toggleVisibility}
           isFilterButtonVisible={
             checkedFilters.length || !disabledRanges.Grade || !disabledRanges.Year
           }
