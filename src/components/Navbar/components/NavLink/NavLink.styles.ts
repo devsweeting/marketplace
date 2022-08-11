@@ -6,9 +6,9 @@ export const useNavLinkStyles = makeStyles(
     navLink: {
       color: theme.palette.primary.main,
       cursor: 'pointer',
-      marginLeft: theme.spacing(4),
+      marginRight: theme.spacing(2),
       '@media (max-width:900px)': {
-        color: theme.palette.accent.main,
+        // color: theme.palette.accent.main,
         marginLeft: theme.spacing(1),
       },
       '&:hover': {

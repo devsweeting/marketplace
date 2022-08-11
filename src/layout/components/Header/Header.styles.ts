@@ -11,7 +11,7 @@ export const useHeaderStyles = makeStyles(
       alignItems: 'center',
       margin: '0 auto',
       width: '100%',
-      padding: `0 100px`,
+      padding: `0 15px`,
       // borderBottom: '1px solid',
       boxSizing: 'border-box',
       borderImageSlice: 1,
@@ -20,6 +20,7 @@ export const useHeaderStyles = makeStyles(
         padding: `0 41px`,
       },
       '& .MuiToolbar-root': {
+        boxShadow: '0px rgba(0, 0, 0, 0)',
         '@media (min-width: 600px)': {
           paddingRight: 0,
         },

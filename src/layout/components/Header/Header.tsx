@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import AppBar from '@mui/material/AppBar';
@@ -11,12 +11,12 @@ import { SkinContext } from '@/styles/skin-context';
 import { useHeaderStyles } from './Header.styles';
 import { Routes } from '@/domain/Routes';
 import { Divider, Typography } from '@mui/material';
-// import { skins } from '../../../styles/skin-context';
 
 export type HeaderPosition = 'fixed' | 'absolute' | 'relative' | 'static' | 'sticky' | undefined;
 
 export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) => {
   const classes = useHeaderStyles();
+  const [clientWindowHeight, setClientWindowHeight] = useState(0);
   const { skin /*, setSkin */ } = useContext(SkinContext);
 
   // disabled theme toggling
@@ -28,11 +28,20 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
   //   }
   // };
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
+
+  const handleScroll = () => {
+    setClientWindowHeight(window.scrollY);
+  };
+
   return (
     <>
-      <AppBar position={headerPosition}>
+      <AppBar position={headerPosition} elevation={clientWindowHeight > 10 ? 6 : 0}>
         <Toolbar
-          disableGutters
+          disableGutters={false}
           sx={{
             backgroundColor: skin.header.headerBackground,
             height: '80px',
@@ -48,10 +57,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                   textDecoration: 'none',
                 }}
               >
-                <Box
-                  className={classes.logoWrapper}
-                  sx={{ position: 'relative', width: 134, height: 33 }}
-                >
+                <Box className={classes.logoWrapper}>
                   <Image src={skin.logo.image} alt={'logo'} layout="fill" objectFit="contain" />
                 </Box>
                 <Typography
@@ -60,9 +66,11 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                     textAlign: 'center',
                     marginLeft: '5px',
                     fontWeight: 900,
+                    '@media (max-width: 900px)': {
+                      fontSize: 30,
+                    },
                   }}
                 >
-                  {' '}
                   NFT
                 </Typography>
               </a>
@@ -73,6 +81,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                 paddingLeft: '20px',
                 '@media (max-width: 900px)': {
                   display: 'none',
+                  marginRight: 'auto',
                 },
               }}
             />
@@ -89,6 +98,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
             <Navbar navLinks={Routes} />
           </Container>
         </Toolbar>
+        <Divider sx={{ borderColor: 'rgb(229, 229, 229)' }} />
       </AppBar>
     </>
   );
