@@ -1,4 +1,5 @@
 import type { DisabledRanges, DisabledRangesKey, IFilter, RangeFilters } from '@/types/assetTypes';
+import { Box } from '@mui/material';
 import React from 'react';
 import { CheckboxFilter } from './components/CheckboxFilter';
 import { RangeFilter } from './components/RangeFilter';
@@ -53,9 +54,17 @@ export const NewFilters = ({
   };
   switch (filterType) {
     case 'slider':
-      return <RangeFilter filter={filter} {...rangeFilterProps} />;
+      return (
+        <Box sx={{ m: 0.5 }}>
+          <RangeFilter filter={filter} {...rangeFilterProps} />
+        </Box>
+      );
     case 'checkbox':
-      return <CheckboxFilter filter={filter} {...checkboxFilterProps} />;
+      return (
+        <Box sx={{ m: 0.5 }}>
+          <CheckboxFilter filter={filter} {...checkboxFilterProps} />
+        </Box>
+      );
     default:
       return <></>;
   }
