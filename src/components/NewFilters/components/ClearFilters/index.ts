@@ -1,1 +1,0 @@
-export { ClearFilters } from './ClearFilters';

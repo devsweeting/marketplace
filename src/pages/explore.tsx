@@ -11,13 +11,13 @@ import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { TradePanel } from '@/components/TradePanel';
 import { AssetListView } from '@/containers/AssetListView';
-import { SortMenu } from '@/components/NewFilters/SortMenu';
+import { SortMenu } from '@/components/NewFilters/components/SortMenu';
 import { useExplorePageStyles } from '@/styles/explorePage.styles';
 import { market } from '@/__mocks__/mockBrands';
 import { useFilters } from '@/helpers/hooks/useFilters';
 import { NewFilters } from '@/components/NewFilters';
 import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
-import { ClearAllFilter } from '@/components/FilterMenu/components/ClearAllFilter';
+import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 const ExplorePage: NextPage = () => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
