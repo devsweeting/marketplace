@@ -47,44 +47,16 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
             height: '80px',
           }}
         >
-          <Container className={classes.container} sx={{ color: '#000' }}>
+          <Container className={classes.container}>
             <Link href="/">
-              <a
-                style={{
-                  display: 'flex',
-                  color: 'black',
-                  alignItems: 'center',
-                  textDecoration: 'none',
-                }}
-              >
+              <a className={classes.anchorWrapper}>
                 <Box className={classes.logoWrapper}>
                   <Image src={skin.logo.image} alt={'logo'} layout="fill" objectFit="contain" />
                 </Box>
-                <Typography
-                  sx={{
-                    fontSize: 40,
-                    textAlign: 'center',
-                    marginLeft: '5px',
-                    fontWeight: 900,
-                    '@media (max-width: 900px)': {
-                      fontSize: 30,
-                    },
-                  }}
-                >
-                  NFT
-                </Typography>
+                <Typography className={classes.nftTextWrapper}>NFT</Typography>
               </a>
             </Link>
-            <Divider
-              orientation="vertical"
-              sx={{
-                paddingLeft: '20px',
-                '@media (max-width: 900px)': {
-                  display: 'none',
-                  marginRight: 'auto',
-                },
-              }}
-            />
+            <Divider orientation="vertical" className={classes.vertivalDivider} />
 
             <Box className={classes.searchBoxContainer}>
               <SearchBox

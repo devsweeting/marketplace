@@ -12,7 +12,6 @@ export const useHeaderStyles = makeStyles(
       margin: '0 auto',
       width: '100%',
       padding: `0 15px`,
-      // borderBottom: '1px solid',
       boxSizing: 'border-box',
       borderImageSlice: 1,
       color: theme.palette.primary.light,
@@ -33,6 +32,28 @@ export const useHeaderStyles = makeStyles(
       [theme.breakpoints.down('md')]: {
         width: 97,
         height: 23,
+      },
+    },
+    nftTextWrapper: {
+      fontSize: 40,
+      textAlign: 'center',
+      marginLeft: '5px',
+      fontWeight: 900,
+      '@media (max-width: 900px)': {
+        fontSize: 30,
+      },
+    },
+    anchorWrapper: {
+      display: 'flex',
+      color: 'black',
+      alignItems: 'center',
+      textDecoration: 'none',
+    },
+    vertivalDivider: {
+      paddingLeft: '20px',
+      '@media (max-width: 900px)': {
+        display: 'none',
+        marginRight: 'auto',
       },
     },
     searchBoxContainer: {
