@@ -90,8 +90,6 @@ export const useFilters = () => {
       updatedQuery[key] = filters;
     }
 
-    // window.history.replaceState({ ...window.history.state, as: router.asPath, url: router.asPath }, '', router.asPath);
-
     router.push(
       {
         pathname: router.pathname,
