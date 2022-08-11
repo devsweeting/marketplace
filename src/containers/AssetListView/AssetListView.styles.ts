@@ -10,5 +10,11 @@ export const useAssetListViewStyles = makeStyles((theme) => ({
       justifyContent: 'center',
       width: 'auto',
     },
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      maxWidth: '600px',
+    },
   },
 }));

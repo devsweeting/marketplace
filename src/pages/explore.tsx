@@ -286,6 +286,9 @@ const ExplorePage: NextPage = () => {
                     width: '100%',
                     maxWidth: '1200px',
                     margin: 'auto',
+                    '@media (max-width:900px)': {
+                      display: 'none',
+                    },
                   }}
                 >
                   <Typography
