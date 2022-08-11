@@ -84,6 +84,7 @@ export const useAssetCardStyles = makeStyles((theme) => ({
     top: '10px',
     right: '10px',
     display: 'flex',
+    alignItems: 'center',
     [theme.breakpoints.down('md')]: {},
   },
 }));
