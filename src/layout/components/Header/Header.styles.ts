@@ -11,15 +11,15 @@ export const useHeaderStyles = makeStyles(
       alignItems: 'center',
       margin: '0 auto',
       width: '100%',
-      padding: `0 100px`,
-      borderBottom: '4px solid',
+      padding: `0 15px`,
       boxSizing: 'border-box',
       borderImageSlice: 1,
-      color: theme.palette.primary.main,
+      color: theme.palette.primary.light,
       '@media (max-width: 900px)': {
         padding: `0 41px`,
       },
       '& .MuiToolbar-root': {
+        boxShadow: '0px rgba(0, 0, 0, 0)',
         '@media (min-width: 600px)': {
           paddingRight: 0,
         },
@@ -34,9 +34,34 @@ export const useHeaderStyles = makeStyles(
         height: 23,
       },
     },
+    nftTextWrapper: {
+      fontSize: 40,
+      textAlign: 'center',
+      marginLeft: '5px',
+      fontWeight: 900,
+      '@media (max-width: 900px)': {
+        fontSize: 30,
+      },
+    },
+    anchorWrapper: {
+      display: 'flex',
+      color: 'black',
+      alignItems: 'center',
+      textDecoration: 'none',
+    },
+    vertivalDivider: {
+      paddingLeft: '20px',
+      '@media (max-width: 900px)': {
+        display: 'none',
+        marginRight: 'auto',
+      },
+    },
     searchBoxContainer: {
       width: '100%',
-      margin: `0 ${theme.spacing(9)}`,
+      margin: `0 ${theme.spacing(1)}`,
+      '@media (max-width: 1200px)': {
+        margin: `0 0 0 ${theme.spacing(3)}`,
+      },
       '@media (max-width: 900px)': {
         display: 'none',
       },

@@ -5,7 +5,7 @@ export const Routes = [
     path: '/item/2019-panini-mosaic-pink-camo-rj-barrett-rookie-270-psa-10-gem-mint',
   },
   {
-    title: 'Help',
+    title: 'Learn',
     path: '/faq',
   },
 ];

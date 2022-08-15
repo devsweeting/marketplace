@@ -1,24 +1,26 @@
 import React, { useState, useContext } from 'react';
 import { SkinContext } from '../../../styles/skin-context';
 import SearchIcon from '@mui/icons-material/Search';
-import OutlinedInput from '@mui/material/OutlinedInput';
+// import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import { IconButton } from '@mui/material';
+import { IconButton, Input } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { useSearchboxStyles } from './Searchbox.styles';
 
 interface SearchBoxProps {
   placeholder?: string;
   iconColor?: string;
-  borderRadius?: any;
-  reverseTextColor?: any;
+  borderRadius?: boolean;
+  reverseTextColor?: boolean;
+  className?: string;
 }
 
 export const SearchBox: React.FC<SearchBoxProps> = ({
   placeholder = 'Search',
-  iconColor = 'rgba(0, 0, 0, 0.6)',
-  borderRadius = false,
+  iconColor = 'rgba(255, 255, 255, 0.6)',
+  borderRadius = true,
   reverseTextColor = false,
+  className,
 }) => {
   const classes = useSearchboxStyles();
   const [value, setValue] = useState('');
@@ -47,31 +49,25 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
       id="searchBar"
       role="search"
     >
-      <FormControl variant="outlined" className={classes.wrapper}>
-        <OutlinedInput
+      <FormControl className={className ? className : classes.wrapper}>
+        <Input
           role={'textbox'}
           aria-label={'search'}
+          disableUnderline={true}
           sx={{
-            borderRadius: borderRadius && skin.header.searchIconBorderRadius,
-            color: reverseTextColor && skin.header.searchTextColor,
+            borderRadius: borderRadius ? skin.header.searchIconBorderRadius : null,
+            color: reverseTextColor ? skin.header.searchTextColor : null,
+            border: '0',
           }}
           name="q"
           value={value}
           onChange={handleChange}
           onKeyDown={handleKeyPress}
           placeholder={placeholder}
-          endAdornment={
+          startAdornment={
             <InputAdornment position="end">
-              <IconButton type="submit" role={'button'}>
-                <span
-                  style={{
-                    height: 0,
-                    width: 0,
-                  }}
-                >
-                  Search Button
-                </span>
-                <SearchIcon aria-label="search icon" sx={{ color: iconColor, opacity: '40%' }} />
+              <IconButton type="submit" role={'button'} aria-label="search">
+                <SearchIcon aria-label="search icon" sx={{ iconColor }} />
               </IconButton>
             </InputAdornment>
           }

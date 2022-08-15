@@ -49,7 +49,7 @@ export const skins = {
       searchTextColor: '#fff !important',
       searchIconColor: '#fff',
       searchIconBorderRadius: '50px !important',
-      headerBackground: '#000',
+      headerBackground: '#FFF',
       navLink: {
         fontSize: '16px',
         fontWeight: '700',
