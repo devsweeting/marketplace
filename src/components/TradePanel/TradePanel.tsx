@@ -19,9 +19,13 @@ import { AssetGallery } from './Components/CardGallery';
 import type { ITradePanel } from './ITradePanel';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
+import { useUser } from '@/helpers/hooks/useUser';
+import { useModal } from '@/helpers/hooks/useModal';
+
 export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   const classes = useTradePanelStyles();
-
+  const user = useUser();
+  const { isOpen, setIsOpen } = useModal();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -48,6 +52,10 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   };
 
   const handleOpenBuyModal = () => {
+    if (!user) {
+      setIsOpen(!isOpen);
+      return;
+    }
     setBuyModalOpen(!buyModalOpen);
   };
 
@@ -120,7 +128,16 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
               </Box>
             </Box>
             <Typography className={classes.available_instances}>
-              {sellOrderData?.fractionQty ?? 'No '} Fractions Available (XX%)
+              {sellOrderData?.fractionQtyAvailable
+                ? `Fractions Available ( ${
+                    Math.round(
+                      (sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000,
+                    ) /
+                      100 +
+                    '%'
+                  }
+              )`
+                : 'No Fractions Available'}
             </Typography>
             {sellOrderData && (
               <Box>
@@ -130,7 +147,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
                 <Slider
                   defaultValue={0}
                   value={sliderValue}
-                  max={sellOrderData.fractionQty}
+                  max={sellOrderData.fractionQtyAvailable}
                   step={1}
                   valueLabelDisplay="auto"
                   onChange={handleSliderChange}
@@ -162,6 +179,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
                     onClose={handleOpenBuyModal}
                     fractions={sliderValue}
                     totalPrice={totalPrice}
+                    id={assetId}
                   />
                 </Box>
               )}

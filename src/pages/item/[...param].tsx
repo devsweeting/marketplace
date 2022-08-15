@@ -75,6 +75,7 @@ const DetailPage = ({ nftData }: { nftData: IAsset }) => {
                     <Gallery
                       images={[
                         {
+                          id: 'asdfasd',
                           title: 'No image',
                           // TODO: Fix default image
                           absoluteUrl: '/images/No_image_available_500_x_500.svg',
@@ -82,6 +83,7 @@ const DetailPage = ({ nftData }: { nftData: IAsset }) => {
                           sortOrder: 0,
                           assetId: '',
                           fileId: '',
+                          file: '',
                         },
                       ]}
                     />

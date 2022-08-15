@@ -11,8 +11,9 @@ export interface IBuyModal {
   onClose: () => void;
   fractions: number;
   totalPrice: number;
+  id: string;
 }
-
+//TODO write out a function that actually checks to see if sellorder was succesful, display the appropriate dialog at that event.
 export const BuyModal = ({ isOpen, fractions, totalPrice, onClose }: IBuyModal) => {
   const modalClasses = useBuyModalStyles();
   const [value, setValue] = useState(0);
