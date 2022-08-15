@@ -8,7 +8,6 @@ import { useClearAllFilter } from './ClearAllFilter.styles';
 
 interface ClearAllFiltersProps {
   clearSelectedFilters: () => void;
-  toggleVisibility: (item: boolean) => void;
   isFilterButtonVisible: number | boolean;
 }
 
@@ -28,7 +27,9 @@ export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
             size="small"
             sx={{ lineHeight: 1 }}
             endIcon={<CloseIcon />}
-            onClick={clearSelectedFilters}
+            onClick={() => {
+              clearSelectedFilters();
+            }}
           >
             CLEAR ALL
           </Button>

@@ -59,8 +59,7 @@ export interface IRange {
 }
 
 export type DisabledRanges = {
-  Grade: boolean;
-  Year: boolean;
+  [key: string]: boolean;
 };
 
 export type DisabledRangesKey = keyof DisabledRanges;
