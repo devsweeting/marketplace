@@ -7,6 +7,11 @@ export const getWatchlist = async () => {
   return addToWatchListResponse.data;
 };
 
+export const checkForAssetOnWatchlist = async (id: string) => {
+  const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`);
+  return isOnWatchlist.data?.inWatchlist ?? false;
+};
+
 export const addToWatchlist = async (item: ProductDataProps) => {
   const addToWatchListResponse = await apiClient.post(`/watchlist/`, {
     body: { assetId: item.id },

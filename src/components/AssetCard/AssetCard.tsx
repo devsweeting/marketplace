@@ -10,6 +10,7 @@ import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import {
   addToWatchlist,
   addWatchlistToLocalStorage,
+  checkForAssetOnWatchlist,
   hasBeenAddedWatchlist,
   removeFromWatchlist,
   removeWatchlistFromLocalStorage,
@@ -42,7 +43,13 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
         return;
       }
     }
-  }, [assetData.id, originalWatchlist]);
+
+    if (user) {
+      checkForAssetOnWatchlist(assetData.id).then((isOnWatchlist: boolean) => {
+        setHasBeenAdded(isOnWatchlist ?? false);
+      });
+    }
+  }, [assetData.id, originalWatchlist, user]);
 
   const handleAdd = (id: string, name: string) => {
     if (!user) {
