@@ -84,74 +84,78 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
-      <CardActionArea>
-        <Box onClick={onClick} className={classes.cardBody}>
-          <Box className={classes.ImageWrapper}>
-            {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
-              <Image
-                placeholder="blur"
-                blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
-                src={assetData.media[0].absoluteUrl}
-                alt={assetData.media[0].title}
-                width={200}
-                height={340}
-                className={classes.cardImage}
-              ></Image>
-            )}
-          </Box>
-          <Box sx={{ width: '100%' }}>
-            <Box className={classes.cardDetailsWrapper}>
-              <Box className={classes.essanceInfo}>
-                <Typography className={classes.essanceTitle}>{assetData.name}</Typography>
-                <Box sx={{ display: 'flex', width: '100%' }}>
-                  <Box>
-                    <Typography>{details.year}</Typography>
-                    <Typography>#xxx</Typography>
-                    <Typography>Set Topps</Typography>
-                    <Typography>
-                      {details.grading} {details.grading_service}
-                    </Typography>
-                  </Box>
-                  <Box className={classes.cardPriceSection}>
-                    <Box className={classes.CardPriceItem}>
-                      <Typography>Valuation</Typography>
-                      <Typography className={classes.price}>$xxxx</Typography>
-                    </Box>
-                    <Box className={classes.CardPriceItem}>
-                      <Typography>Fraction Price</Typography>
-                      <Typography className={classes.price}>
-                        {sellOrderData
-                          ? `$${sellOrderData.fractionPriceCents / 100}`
-                          : 'Not Available'}
+      <Box sx={{ width: '100%', height: '100%', display: 'flex' }}>
+        <CardActionArea>
+          <Box onClick={onClick} className={classes.cardBody}>
+            <Box className={classes.ImageWrapper}>
+              {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
+                <Image
+                  placeholder="blur"
+                  blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
+                  src={assetData.media[0].absoluteUrl}
+                  alt={assetData.media[0].title}
+                  width={200}
+                  height={340}
+                  className={classes.cardImage}
+                ></Image>
+              )}
+            </Box>
+            <Box sx={{ width: '100%' }}>
+              <Box className={classes.cardDetailsWrapper}>
+                <Box className={classes.essanceInfo}>
+                  <Typography className={classes.essanceTitle}>{assetData.name}</Typography>
+                  <Box sx={{ display: 'flex', width: '100%' }}>
+                    <Box>
+                      <Typography>{details.year}</Typography>
+                      <Typography>#xxx</Typography>
+                      <Typography>Set Topps</Typography>
+                      <Typography>
+                        {details.grading} {details.grading_service}
                       </Typography>
+                    </Box>
+                    <Box className={classes.cardPriceSection}>
+                      <Box className={classes.CardPriceItem}>
+                        <Typography>Valuation</Typography>
+                        <Typography className={classes.price}>$xxxx</Typography>
+                      </Box>
+                      <Box className={classes.CardPriceItem}>
+                        <Typography>Fraction Price</Typography>
+                        <Typography className={classes.price}>
+                          {sellOrderData
+                            ? `$${sellOrderData.fractionPriceCents / 100}`
+                            : 'Not Available'}
+                        </Typography>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
               </Box>
             </Box>
           </Box>
+        </CardActionArea>
+        <Box className={classes.starWrapper}>
+          <Typography className={classes.star}>
+            {!hasBeenAdded ? (
+              <IconButton
+                onClick={() => {
+                  handleAdd(assetData.id, assetData.name);
+                }}
+              >
+                <StarBorderIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => {
+                  handleRemove(assetData.id, assetData.name);
+                }}
+              >
+                <Star />
+              </IconButton>
+            )}
+            {hasBeenAdded ? 1 : 0}
+          </Typography>
         </Box>
-        <Typography className={classes.star}>
-          {!hasBeenAdded ? (
-            <IconButton
-              onClick={() => {
-                handleAdd(assetData.id, assetData.name);
-              }}
-            >
-              <StarBorderIcon />
-            </IconButton>
-          ) : (
-            <IconButton
-              onClick={() => {
-                handleRemove(assetData.id, assetData.name);
-              }}
-            >
-              <Star />
-            </IconButton>
-          )}
-          {hasBeenAdded ? 1 : 0}
-        </Typography>
-      </CardActionArea>
+      </Box>
     </Card>
   );
 };

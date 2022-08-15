@@ -79,10 +79,12 @@ export const useAssetCardStyles = makeStyles((theme) => ({
     fontSize: '18px',
     overflowWrap: 'break-word',
   },
-  star: {
-    position: 'absolute',
+  starWrapper: {
+    position: 'relative',
     top: '10px',
     right: '10px',
+  },
+  star: {
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {},
