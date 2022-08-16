@@ -42,6 +42,7 @@ const sentryWebpackPluginOptions = {
 
 if (process.env.NODE_ENV === 'development') {
   nextConfig.images.domains.push('localhost');
+  nextConfig.images.domains.push('localstack');
   nextConfig.images.domains.push('example.com');
   nextConfig.images.domains.push('placeimg.com');
 }

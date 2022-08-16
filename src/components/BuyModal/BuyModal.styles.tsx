@@ -99,15 +99,16 @@ export const useBuyModalStyles = makeStyles((theme) => ({
       margin: '10px',
     },
   },
+
+  title: {
+    color: 'black',
+    marginTop: '32px',
+    // textAlign: 'center',
+  },
 }));
 
 export const modal = {
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   p: 4,
-};
-
-export const title = {
-  color: 'black',
-  marginTop: '32px',
 };

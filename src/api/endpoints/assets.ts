@@ -53,3 +53,8 @@ export const latestDropAssets = async ({
     };
   }
 };
+
+export const getAssetById = async (id: string) => {
+  const response = await apiClient.get(`/assets/${id}`);
+  return response;
+};

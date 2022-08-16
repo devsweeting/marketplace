@@ -22,7 +22,6 @@ import { useUser } from '@/helpers/hooks/useUser';
 import { Star } from '@mui/icons-material';
 
 export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
-  console.log(assetData);
   const sellOrderData = getMainSellOrder(assetData);
   const classes = useAssetCardStyles();
   const { setIsModalOpen } = useModal();

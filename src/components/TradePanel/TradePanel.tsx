@@ -33,6 +33,10 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
 
+  const percentClaimed = sellOrderData
+    ? Math.round((sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000) / 100
+    : 0;
+
   const marks = [
     {
       value: 0,
@@ -121,20 +125,22 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
             </Grid>
 
             <Box className={classes.assetClaimedWrapper}>
-              <LinearProgress variant="determinate" value={25} className={classes.progressBar} />
+              <LinearProgress
+                variant="determinate"
+                value={100 - percentClaimed}
+                className={classes.progressBar}
+              />
               <Box className={classes.detailsInfo}>
-                <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>XX% Claimed</Typography>
+                <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
+                  {100 - percentClaimed}% Claimed
+                </Typography>
                 <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
               </Box>
             </Box>
             <Typography className={classes.available_instances}>
               {sellOrderData?.fractionQtyAvailable
-                ? `Fractions Available ( ${
-                    Math.round(
-                      (sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000,
-                    ) /
-                      100 +
-                    '%'
+                ? `${sellOrderData.fractionQtyAvailable} Fractions Available ( ${
+                    percentClaimed + '%'
                   }
               )`
                 : 'No Fractions Available'}
@@ -177,9 +183,9 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
                   <BuyModal
                     isOpen={buyModalOpen}
                     onClose={handleOpenBuyModal}
-                    fractions={sliderValue}
+                    sellOrder={sellOrderData}
+                    totalFractions={sliderValue}
                     totalPrice={totalPrice}
-                    id={assetId}
                   />
                 </Box>
               )}
