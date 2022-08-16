@@ -10,7 +10,7 @@ import type { IAsset } from '@/types/assetTypes';
 
 const handleClose = jest.fn();
 
-const data = mockAssetResponse.items[0];
+const data: IAsset = mockAssetResponse.items[0];
 const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
@@ -63,7 +63,7 @@ describe('TradePanel', () => {
 
     await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
     const totalPrice = screen.getByText(
-      `$${(data.sellOrders[0].fractionPriceCents * data.sellOrders[0].fractionQty) / 100}`,
+      `$${(data.sellOrders[0].fractionPriceCents * data.sellOrders[0].fractionQtyAvailable) / 100}`,
     );
     expect(totalPrice).toBeInTheDocument();
   });
@@ -88,9 +88,6 @@ describe('TradePanel', () => {
     }) as unknown as () => DOMRect;
     await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
     expect(buyBtn).not.toBeDisabled();
-    await user.click(buyBtn);
-    const buyModal = screen.getByRole('tabpanel');
-    expect(buyModal).toBeInTheDocument();
   });
 });
 
