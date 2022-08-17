@@ -12,6 +12,7 @@ import {
   addWatchlistToLocalStorage,
   checkForAssetOnWatchlist,
   hasBeenAddedWatchlist,
+  isAssetInLocalStorage,
   removeFromWatchlist,
   removeWatchlistFromLocalStorage,
 } from '@/api/endpoints/watchlist';
@@ -19,12 +20,11 @@ import { useEffect, useState } from 'react';
 import { useModal } from '@/helpers/hooks/useModal';
 import { useUser } from '@/helpers/hooks/useUser';
 import { Star } from '@mui/icons-material';
-import type { ProductDataProps } from '../ProductCard';
 
 export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   const sellOrderData = getMainSellOrder(assetData);
   const classes = useAssetCardStyles();
-  const { isModalOpen, setIsModalOpen } = useModal();
+  const { setIsModalOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -34,27 +34,20 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   };
 
   const user = useUser();
-  let originalWatchlist;
   useEffect(() => {
-    if (localStorage.getItem('watchList')) {
-      const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-      if (originalWatchlist.some((watchItem: ProductDataProps) => watchItem.id === assetData.id)) {
-        setHasBeenAdded(true);
-        return;
-      }
-    }
+    setHasBeenAdded(isAssetInLocalStorage(assetData.id));
 
     if (user) {
       checkForAssetOnWatchlist(assetData.id).then((isOnWatchlist: boolean) => {
         setHasBeenAdded(isOnWatchlist ?? false);
       });
     }
-  }, [assetData.id, originalWatchlist, user]);
+  }, [assetData.id, user]);
 
-  const handleAdd = (id: string, name: string) => {
+  const handleAddToWatchlist = (id: string, name: string) => {
     if (!user) {
       addWatchlistToLocalStorage(id, name);
-      setIsModalOpen(!isModalOpen);
+      setIsModalOpen(true);
       setHasBeenAdded(true);
       return;
     }
@@ -64,7 +57,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     });
   };
 
-  const handleRemove = (id: string, name: string) => {
+  const handleRemoveFromWatchlist = (id: string, name: string) => {
     if (!user) {
       removeWatchlistFromLocalStorage(id);
       setHasBeenAdded(false);
@@ -138,7 +131,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
             {!hasBeenAdded ? (
               <IconButton
                 onClick={() => {
-                  handleAdd(assetData.id, assetData.name);
+                  handleAddToWatchlist(assetData.id, assetData.name);
                 }}
               >
                 <StarBorderIcon />
@@ -146,7 +139,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
             ) : (
               <IconButton
                 onClick={() => {
-                  handleRemove(assetData.id, assetData.name);
+                  handleRemoveFromWatchlist(assetData.id, assetData.name);
                 }}
               >
                 <Star />

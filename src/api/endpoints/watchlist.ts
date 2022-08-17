@@ -1,7 +1,7 @@
 import { apiClient } from '@/api/client';
 import type { ProductDataProps } from '@/components/ProductCard';
 import { StatusCodes } from 'http-status-codes';
-
+const WATCHLIST = 'watchList' as string;
 export const getWatchlist = async () => {
   const addToWatchListResponse = await apiClient.get(`/watchlist/`);
   return addToWatchListResponse.data;
@@ -25,29 +25,36 @@ export const removeFromWatchlist = async (item: ProductDataProps) => {
 };
 
 export const hasBeenAddedWatchlist = (status: StatusCodes): boolean => {
-  switch (status) {
-    case StatusCodes.CREATED:
+  return status == StatusCodes.CREATED || status == StatusCodes.CONFLICT;
+};
+
+export const isAssetInLocalStorage = (assetId: string): boolean => {
+  if (localStorage.getItem(WATCHLIST)) {
+    const localWatchlist = getLocalWatchlist();
+    if (localWatchlist.some((watchItem: ProductDataProps) => watchItem.id === assetId)) {
       return true;
-    case StatusCodes.CONFLICT:
-      return true;
-    default:
-      return false;
+    }
   }
+  return false;
 };
 
 export const addWatchlistToLocalStorage = async (id: string, name: string) => {
-  let localWatchlist: ProductDataProps[];
-  if (localStorage.getItem('watchList')) {
-    localWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
+  let localWatchlist: ProductDataProps[] = getLocalWatchlist();
+  if (localWatchlist) {
     localWatchlist.push({ id: id, name: name });
   } else {
     localWatchlist = [{ id: id, name: name }];
   }
-  localStorage.setItem('watchList', JSON.stringify(localWatchlist));
+  localStorage.setItem(WATCHLIST, JSON.stringify(localWatchlist));
 };
 
 export const removeWatchlistFromLocalStorage = async (id: string) => {
-  const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-  const watchlist = originalWatchlist.filter((watchlist: ProductDataProps) => watchlist.id !== id);
-  localStorage.setItem('watchList', JSON.stringify(watchlist));
+  const localWatchlist = getLocalWatchlist();
+  const watchlist = localWatchlist.filter((watchlist: ProductDataProps) => watchlist.id !== id);
+  localStorage.setItem(WATCHLIST, JSON.stringify(watchlist));
+};
+
+export const getLocalWatchlist = () => {
+  const localWatchlist = JSON.parse(localStorage.getItem(WATCHLIST) as string);
+  return localWatchlist;
 };
