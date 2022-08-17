@@ -60,9 +60,7 @@ export const RangeFilter = ({
 
   useEffect(() => {
     !disabledRanges[filter.categoryId] && handleRange(filter.categoryId, value);
-    // disabledRanges[filter.categoryId] && removeFilterRange(filter.categoryId);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disabledRanges[filter.categoryId]]);
+  }, []);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

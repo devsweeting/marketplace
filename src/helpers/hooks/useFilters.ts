@@ -68,7 +68,7 @@ export const useFilters = () => {
     ],
   );
 
-  const updateCheckedFilters = (newCheckedFilters: IFilter[]) => {
+  const updateCheckedFilters = async (newCheckedFilters: IFilter[]) => {
     const updatedQuery = { ...query };
     for (const key of Object.keys(updatedQuery)) {
       if (key.startsWith('attr_eq')) {
@@ -88,7 +88,7 @@ export const useFilters = () => {
       updatedQuery[key] = filters;
     }
 
-    router.push(
+    return router.push(
       {
         pathname: router.pathname,
         query: updatedQuery,
@@ -98,14 +98,14 @@ export const useFilters = () => {
     );
   };
 
-  const clearRangeFilters = () => {
+  const clearRangeFilters = (filterId: any) => {
     const updatedQuery = { ...query };
     for (const key of Object.keys(updatedQuery)) {
-      if (key.startsWith('attr_gte')) {
+      if (key.startsWith('attr_gte') && key.indexOf(filterId) !== -1) {
         delete updatedQuery[key];
       }
 
-      if (key.startsWith('attr_lte')) {
+      if (key.startsWith('attr_lte') && key.indexOf(filterId) !== -1) {
         delete updatedQuery[key];
       }
     }
@@ -120,7 +120,7 @@ export const useFilters = () => {
     );
   };
 
-  const updateRangeFilters = (newRangeFilters: RangeFilters) => {
+  const updateRangeFilters = async (newRangeFilters: RangeFilters) => {
     const updatedQuery = { ...query };
 
     if (newRangeFilters === null) {
@@ -132,7 +132,7 @@ export const useFilters = () => {
       updatedQuery[`attr_lte[${key}]`] = range.max;
     }
 
-    router.push(
+    return router.push(
       {
         pathname: router.pathname,
         query: updatedQuery,

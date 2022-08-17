@@ -31,7 +31,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  });
+  }, []);
 
   const handleScroll = () => {
     setClientWindowHeight(window.scrollY);

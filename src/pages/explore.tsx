@@ -5,7 +5,7 @@ import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey } from '
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useEffect, useState } from 'react';
-import { loadListAssetByPage, latestDropAssets } from '@/api/endpoints/list';
+import { loadListAssetByPage, latestDropAssets } from '@/api/endpoints/assets';
 import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
@@ -19,6 +19,7 @@ import { NewFilters } from '@/components/NewFilters';
 import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
+import { queryBuilder } from '@/helpers/queryBuilder';
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
@@ -45,38 +46,38 @@ const ExplorePage: NextPage = () => {
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const classes = useExplorePageStyles();
   const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
+  // const loadLatestDropAssets = async (page = 1) => {
+  //   const { items }: { items: IAsset[] } = await latestDropAssets({
+  //     page,
+  //   });
+  //   setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+  // };
 
-  const loadLatestDropAssets = async (page = 1) => {
-    const { items }: { items: IAsset[] } = await latestDropAssets({
-      page,
-    });
-    setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-  };
-
-  useEffect(() => {
-    loadLatestDropAssets(1);
-  }, []);
+  // useEffect(() => {
+  //   loadLatestDropAssets(1);
+  // }, []);
 
   const loadAssets = async (page = 1) => {
-    const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+    const queryString = await queryBuilder({
       page,
-      sort: sortType,
-      filter: checkedFilters,
-      filterRanges: rangeFilters,
+      sortType,
+      checkedFilters,
+      rangeFilters,
       search,
+    });
+
+    const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+      queryString,
     });
     setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
     setCurrentMeta(meta);
   };
 
   useEffect(() => {
+    isReady ? setReady(true) : setReady(false);
     loadAssets(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType, checkedFilters, rangeFilters, disabledRanges, search]);
-
-  useEffect(() => {
-    isReady ? setReady(true) : setReady(false);
-  }, [isReady]);
+  }, [sortType, checkedFilters, rangeFilters, disabledRanges, search, isReady]);
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -104,6 +105,7 @@ const ExplorePage: NextPage = () => {
     setDisabledRanges({ Grade: true, Year: true });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDisabled = (key: DisabledRangesKey) => {
     setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key] });
   };
@@ -116,8 +118,8 @@ const ExplorePage: NextPage = () => {
   };
 
   const removeFilterRange = (id: string) => {
-    rangeFilters && delete rangeFilters[id];
-    rangeFilters && clearRangeFilters(rangeFilters[id]);
+    Object.keys(rangeFilters).length && clearRangeFilters(id);
+    Object.keys(rangeFilters).length && delete rangeFilters[id];
   };
 
   const handleDrawer = (asset: IAsset) => {
@@ -148,6 +150,7 @@ const ExplorePage: NextPage = () => {
   if (!ready) {
     return null;
   }
+
   return (
     <ClientOnly>
       <OpenGraph title={'List view'} description={'List view page description'} />
@@ -208,7 +211,7 @@ const ExplorePage: NextPage = () => {
                   <ClearAllFilter
                     clearSelectedFilters={clearAllSelectedFilters}
                     isFilterButtonVisible={
-                      checkedFilters.length || !disabledRanges.Grade || !disabledRanges.Year
+                      checkedFilters.length || Object.keys(rangeFilters).length > 0
                     }
                   />
                   <SortMenu {...sortListProps} />
