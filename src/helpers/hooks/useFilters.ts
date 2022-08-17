@@ -68,8 +68,6 @@ export const useFilters = () => {
     ],
   );
 
-  const rangeFilters = Object.keys(rangeFiltersMemo ?? {}).length > 0 ? rangeFiltersMemo : null;
-
   const updateCheckedFilters = (newCheckedFilters: IFilter[]) => {
     const updatedQuery = { ...query };
     for (const key of Object.keys(updatedQuery)) {
@@ -100,9 +98,8 @@ export const useFilters = () => {
     );
   };
 
-  const updateRangeFilters = (newRangeFilters: RangeFilters) => {
+  const clearRangeFilters = () => {
     const updatedQuery = { ...query };
-
     for (const key of Object.keys(updatedQuery)) {
       if (key.startsWith('attr_gte')) {
         delete updatedQuery[key];
@@ -112,6 +109,19 @@ export const useFilters = () => {
         delete updatedQuery[key];
       }
     }
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
+  const updateRangeFilters = (newRangeFilters: RangeFilters) => {
+    const updatedQuery = { ...query };
 
     if (newRangeFilters === null) {
       return;
@@ -147,9 +157,10 @@ export const useFilters = () => {
 
   return {
     checkedFilters: checkedFiltersMemo,
-    rangeFilters,
+    rangeFilters: rangeFiltersMemo,
     updateCheckedFilters,
     updateRangeFilters,
     clearQueryFilters,
+    clearRangeFilters,
   };
 };

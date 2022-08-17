@@ -11,7 +11,6 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 export const RangeFilter = ({
   handleRange,
   removeFilterRange,
-  filterRanges,
   disabledRanges,
   handleDisabled,
   filter,
@@ -54,17 +53,14 @@ export const RangeFilter = ({
     handleRange(filter.categoryId, value);
     handleDisabled(filter.categoryId as DisabledRangesKey);
   };
-
-  useEffect(() => {
-    if (!filterRanges) {
-      setValue([Number(filter.range?.[0]), Number(filter.range?.[filter.range?.length - 1])]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterRanges]);
+  const handleRemoveClick = () => {
+    removeFilterRange(filter.categoryId);
+    handleDisabled(filter.categoryId as DisabledRangesKey);
+  };
 
   useEffect(() => {
     !disabledRanges[filter.categoryId] && handleRange(filter.categoryId, value);
-    disabledRanges[filter.categoryId] && removeFilterRange(filter.categoryId);
+    // disabledRanges[filter.categoryId] && removeFilterRange(filter.categoryId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabledRanges[filter.categoryId]]);
 
@@ -143,9 +139,15 @@ export const RangeFilter = ({
               }}
               style={{ margin: 20 }}
             />
-            <Button onClick={handleApplyClick} style={{ padding: 20 }} variant="text">
-              <Typography>{disabledRanges[filter.categoryId] ? 'Apply' : 'Remove'}</Typography>
-            </Button>
+            {disabledRanges[filter.categoryId] ? (
+              <Button onClick={handleApplyClick} style={{ padding: 20 }} variant="text">
+                <Typography>Apply</Typography>
+              </Button>
+            ) : (
+              <Button onClick={handleRemoveClick} style={{ padding: 20 }} variant="text">
+                <Typography>Remove</Typography>
+              </Button>
+            )}
           </Box>
         </Box>
       </Popover>

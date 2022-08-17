@@ -18,12 +18,17 @@ import { useFilters } from '@/helpers/hooks/useFilters';
 import { NewFilters } from '@/components/NewFilters';
 import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
+import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 const ExplorePage: NextPage = () => {
+  const router = useRouter();
+  const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const [ready, setReady] = useState<boolean>(false);
+
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<IAsset | undefined>();
-  const searchQuery = useRouter().query.q;
+  const searchQuery = query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
   const {
     checkedFilters,
@@ -31,6 +36,7 @@ const ExplorePage: NextPage = () => {
     updateCheckedFilters,
     updateRangeFilters,
     clearQueryFilters,
+    clearRangeFilters,
   } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: true,
@@ -67,6 +73,10 @@ const ExplorePage: NextPage = () => {
     loadAssets(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortType, checkedFilters, rangeFilters, disabledRanges, search]);
+
+  useEffect(() => {
+    isReady ? setReady(true) : setReady(false);
+  }, [isReady]);
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -107,7 +117,7 @@ const ExplorePage: NextPage = () => {
 
   const removeFilterRange = (id: string) => {
     rangeFilters && delete rangeFilters[id];
-    updateRangeFilters({});
+    rangeFilters && clearRangeFilters(rangeFilters[id]);
   };
 
   const handleDrawer = (asset: IAsset) => {
@@ -135,8 +145,11 @@ const ExplorePage: NextPage = () => {
     sortType,
   };
 
+  if (!ready) {
+    return null;
+  }
   return (
-    <>
+    <ClientOnly>
       <OpenGraph title={'List view'} description={'List view page description'} />
 
       <Grid sx={{ marginTop: 10, backgroundColor: '#f0f0f0' }} container>
@@ -255,7 +268,7 @@ const ExplorePage: NextPage = () => {
           />
         )}
       </Grid>
-    </>
+    </ClientOnly>
   );
 };
 
