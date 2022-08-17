@@ -3,7 +3,6 @@ import { themeJump } from '@/styles/themeJump';
 import { ThemeProvider } from '@mui/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import user from '@testing-library/user-event';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';

@@ -43,8 +43,8 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
       label: '0',
     },
     {
-      value: sellOrderData?.fractionQty ?? 0,
-      label: sellOrderData?.fractionQty ?? 0,
+      value: sellOrderData?.fractionQtyAvailable ?? 0,
+      label: sellOrderData?.fractionQtyAvailable ?? 0,
     },
   ];
 
@@ -145,7 +145,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
               )`
                 : 'No Fractions Available'}
             </Typography>
-            {sellOrderData && (
+            {sellOrderData && !!sellOrderData?.fractionQtyAvailable && (
               <Box>
                 <Box sx={{ display: 'flex', marginTop: '20px' }}>
                   <Typography>Order Book</Typography>
@@ -163,7 +163,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
               </Box>
             )}
             <Box sx={{ margin: '40px 0' }}>
-              {sellOrderData && (
+              {sellOrderData && !!sellOrderData?.fractionQtyAvailable && (
                 <Box>
                   <Typography>Order Summary</Typography>
                   <Box sx={{ display: 'flex', marginTop: '10px' }}>

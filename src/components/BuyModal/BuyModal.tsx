@@ -46,6 +46,8 @@ export const BuyModal = ({ isOpen, totalFractions, totalPrice, onClose, sellOrde
     } else {
       if (response.status === StatusCodes.UNAUTHORIZED) {
         setAlertMessage('Please login to buy assets ');
+      } else {
+        setAlertMessage('Something went wrong.');
       }
       setValue(2);
     }
