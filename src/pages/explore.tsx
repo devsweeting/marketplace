@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey } from 'src/types';
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { loadListAssetByPage, latestDropAssets } from '@/api/endpoints/assets';
 import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
@@ -20,6 +20,7 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
+
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
@@ -46,38 +47,52 @@ const ExplorePage: NextPage = () => {
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const classes = useExplorePageStyles();
   const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
-  // const loadLatestDropAssets = async (page = 1) => {
-  //   const { items }: { items: IAsset[] } = await latestDropAssets({
-  //     page,
-  //   });
-  //   setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-  // };
-
-  // useEffect(() => {
-  //   loadLatestDropAssets(1);
-  // }, []);
-
-  const loadAssets = async (page = 1) => {
-    const queryString = await queryBuilder({
+  const loadLatestDropAssets = useCallback(async (page = 1) => {
+    const { items }: { items: IAsset[] } = await latestDropAssets({
       page,
-      sortType,
-      checkedFilters,
-      rangeFilters,
-      search,
     });
-
-    const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
-      queryString,
-    });
-    setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-    setCurrentMeta(meta);
-  };
+    setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+  }, []);
 
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
-    loadAssets(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType, checkedFilters, rangeFilters, disabledRanges, search, isReady]);
+    if (isReady) {
+      loadLatestDropAssets(1);
+    }
+  }, [isReady, loadLatestDropAssets]);
+
+  const loadAssets = useCallback(
+    async (page = 1) => {
+      const queryString = await queryBuilder({
+        page,
+        sortType,
+        checkedFilters,
+        rangeFilters,
+        search,
+      });
+
+      const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+        queryString,
+      });
+      setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+      setCurrentMeta(meta);
+    },
+    [checkedFilters, rangeFilters, search, sortType],
+  );
+
+  useEffect(() => {
+    isReady ? setReady(true) : setReady(false);
+    if (isReady) {
+      loadAssets(1);
+    }
+  }, [isReady, loadAssets]);
+
+  useEffect(() => {
+    setDisabledRanges({
+      Grade: !Object.keys(rangeFilters).includes('Grade'),
+      Year: !Object.keys(rangeFilters).includes('Year'),
+    });
+  }, [rangeFilters]);
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
