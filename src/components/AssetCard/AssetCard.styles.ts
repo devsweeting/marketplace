@@ -81,7 +81,7 @@ export const useAssetCardStyles = makeStyles((theme) => ({
   },
   starWrapper: {
     position: 'absolute',
-    zIndex: 100,
+    zIndex: 1,
     top: '10px',
     right: '10px',
   },

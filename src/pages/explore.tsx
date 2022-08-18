@@ -193,7 +193,6 @@ const ExplorePage: NextPage = () => {
   }
 
   const updateAsset = async (assetId: string) => {
-    console.log('updating asset');
     const newAssetData = (await getAssetById(assetId)).data as unknown as IAsset;
     const tempAssets = assets;
     tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;

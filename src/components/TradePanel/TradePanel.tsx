@@ -34,7 +34,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const sellOrderData = getMainSellOrder(asset);
 
   const percentClaimed = sellOrderData
-    ? Math.round((sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000) / 100
+    ? Math.floor((sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000) / 100
     : 0;
 
   const marks = [
@@ -136,7 +136,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               />
               <Box className={classes.detailsInfo}>
                 <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
-                  {100 - percentClaimed}% Claimed
+                  {(100 - percentClaimed).toFixed(2)}% Claimed
                 </Typography>
                 <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
               </Box>
@@ -183,15 +183,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                   >
                     Buy Now
                   </Button>
-
-                  <BuyModal
-                    isOpen={buyModalOpen}
-                    onClose={handleCloseBuyModal}
-                    sellOrder={sellOrderData}
-                    totalFractions={sliderValue}
-                    totalPrice={totalPrice}
-                    updateAsset={updateAsset}
-                  />
                 </Box>
               )}
               <Typography sx={{ padding: '10px 0', marginTop: '20px' }}>Card details</Typography>
@@ -217,6 +208,16 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
           </Box>
         </Drawer>
       </DialogContent>
+      {sellOrderData && (
+        <BuyModal
+          isOpen={buyModalOpen}
+          onClose={handleCloseBuyModal}
+          sellOrder={sellOrderData}
+          totalFractions={sliderValue}
+          totalPrice={totalPrice}
+          updateAsset={updateAsset}
+        />
+      )}
     </Box>
   );
 };
