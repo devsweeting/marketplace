@@ -10,18 +10,17 @@ import {
   Slider,
   Typography,
 } from '@mui/material';
-
+import type { ISellOrder } from '@/types/assetTypes';
+import type { ITradePanel } from './ITradePanel';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { BuyModal } from '../BuyModal/BuyModal';
 import { useTradePanelStyles } from './TradePanel.styles';
 import { AssetGallery } from './Components/CardGallery';
-import type { ITradePanel } from './ITradePanel';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
 import { useModal } from '@/helpers/hooks/useModal';
-import { ISellOrder } from '@/types/assetTypes';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
