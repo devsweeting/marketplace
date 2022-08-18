@@ -22,10 +22,10 @@ import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
 import { useModal } from '@/helpers/hooks/useModal';
 
-export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
+export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
   const user = useUser();
-  const { isOpen, setIsOpen } = useModal();
+  const { setIsModalOpen } = useModal();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -57,10 +57,14 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
 
   const handleOpenBuyModal = () => {
     if (!user) {
-      setIsOpen(!isOpen);
+      setIsModalOpen(true);
       return;
     }
-    setBuyModalOpen(!buyModalOpen);
+    setBuyModalOpen(true);
+  };
+
+  const handleCloseBuyModal = () => {
+    setBuyModalOpen(false);
   };
 
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
@@ -182,10 +186,11 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
 
                   <BuyModal
                     isOpen={buyModalOpen}
-                    onClose={handleOpenBuyModal}
+                    onClose={handleCloseBuyModal}
                     sellOrder={sellOrderData}
                     totalFractions={sliderValue}
                     totalPrice={totalPrice}
+                    updateAsset={updateAsset}
                   />
                 </Box>
               )}

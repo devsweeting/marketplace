@@ -15,9 +15,16 @@ export interface IBuyModal {
   totalFractions: number;
   totalPrice: number;
   sellOrder: ISellOrder;
+  updateAsset: (assetId: string) => void;
 }
-//TODO update sellOrder data to reflect the new values
-export const BuyModal = ({ isOpen, totalFractions, totalPrice, onClose, sellOrder }: IBuyModal) => {
+export const BuyModal = ({
+  isOpen,
+  totalFractions,
+  totalPrice,
+  onClose,
+  sellOrder,
+  updateAsset,
+}: IBuyModal) => {
   const modalClasses = useBuyModalStyles();
   const [value, setValue] = useState(0);
   const [alertMessage, setAlertMessage] = useState('');
@@ -40,7 +47,8 @@ export const BuyModal = ({ isOpen, totalFractions, totalPrice, onClose, sellOrde
       totalFractions,
       sellOrder.fractionPriceCents,
     );
-    // const response = await getSellOrderById(id);
+    updateAsset(sellOrder.assetId);
+
     if (response.status === StatusCodes.CREATED) {
       setValue(1);
     } else {

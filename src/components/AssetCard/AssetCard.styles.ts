@@ -80,7 +80,8 @@ export const useAssetCardStyles = makeStyles((theme) => ({
     overflowWrap: 'break-word',
   },
   starWrapper: {
-    position: 'relative',
+    position: 'absolute',
+    zIndex: 100,
     top: '10px',
     right: '10px',
   },
@@ -88,5 +89,31 @@ export const useAssetCardStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {},
+  },
+  soldOutWrapper: {
+    position: 'absolute',
+    zIndex: 1,
+    left: '50%',
+    top: '50%',
+    transform: 'translate(-50%, -50%) rotate(-20deg)',
+    [theme.breakpoints.down('md')]: {
+      top: '80%',
+    },
+  },
+  soldOutText: {
+    zIndex: 1,
+    padding: '5px',
+    fontSize: '3rem',
+    borderStyle: 'dashed',
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+    fontWeight: 700,
+    [theme.breakpoints.down(1240)]: {
+      fontSize: '3rem',
+    },
+    [theme.breakpoints.down('md')]: {
+      fontSize: '2rem',
+      top: '450px',
+    },
   },
 }));

@@ -99,7 +99,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
-      <Box sx={{ width: '100%', height: '100%', display: 'flex' }}>
+      <Box sx={{ width: '100%', height: '100%', display: 'flex', position: 'relative' }}>
         <CardActionArea>
           <Box onClick={onClick} className={classes.cardBody}>
             <Box className={classes.ImageWrapper}>
@@ -170,6 +170,11 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
             {hasBeenAdded ? 1 : 0}
           </Typography>
         </Box>
+        {sellOrderData?.fractionQtyAvailable === 0 && (
+          <Box className={classes.soldOutWrapper}>
+            <Typography className={classes.soldOutText}>SOLD OUT</Typography>
+          </Box>
+        )}
       </Box>
     </Card>
   );

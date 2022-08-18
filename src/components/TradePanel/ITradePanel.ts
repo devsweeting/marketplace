@@ -4,4 +4,5 @@ export interface ITradePanel {
   asset: IAsset;
   open: boolean;
   handleClose: () => void;
+  updateAsset: (assetId: string) => void;
 }
