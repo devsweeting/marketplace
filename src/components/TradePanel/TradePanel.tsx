@@ -21,6 +21,7 @@ import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
 import { useModal } from '@/helpers/hooks/useModal';
+import { ISellOrder } from '@/types/assetTypes';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
@@ -33,10 +34,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
 
-  const percentClaimed = sellOrderData
-    ? Math.floor((sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000) / 100
-    : 0;
-
   const marks = [
     {
       value: 0,
@@ -48,6 +45,13 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     },
   ];
 
+  const getPercentClaimed = (sellOrderData: ISellOrder | undefined): number => {
+    const percentClaimed = sellOrderData
+      ? Math.floor((sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000) / 100
+      : 0;
+
+    return isNaN(percentClaimed) ? 100 : percentClaimed;
+  };
   const resetData = () => {
     setDisableBuyBTN(true);
     setTotalPrice(0);
@@ -134,12 +138,12 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
             <Box className={classes.assetClaimedWrapper}>
               <LinearProgress
                 variant="determinate"
-                value={100 - percentClaimed}
+                value={100 - getPercentClaimed(sellOrderData)}
                 className={classes.progressBar}
               />
               <Box className={classes.detailsInfo}>
                 <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
-                  {(100 - percentClaimed).toFixed(2)}% Claimed
+                  {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
                 </Typography>
                 <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
               </Box>
@@ -147,7 +151,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
             <Typography className={classes.available_instances}>
               {sellOrderData?.fractionQtyAvailable
                 ? `${sellOrderData.fractionQtyAvailable} Fractions Available ( ${
-                    percentClaimed + '%'
+                    getPercentClaimed(sellOrderData) + '%'
                   }
               )`
                 : 'No Fractions Available'}

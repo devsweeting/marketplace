@@ -281,6 +281,8 @@ export const mockBrokenAssetResponse = {
           partnerId: '58e96913-b662-42e7-a62b-c2910a03b76c',
           fractionQty: 13392,
           fractionPriceCents: 32,
+          fractionQtyAvailable: 1000,
+
           expireTime: 2145945600,
           deletedTime: 0,
         },
