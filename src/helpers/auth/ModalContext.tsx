@@ -2,35 +2,37 @@ import type { Dispatch } from 'react';
 import { createContext, useCallback, useEffect, useState, useMemo } from 'react';
 
 export interface IModalContext {
-  isOpen: boolean;
-  setIsOpen: Dispatch<boolean>;
+  isModalOpen: boolean;
+  setIsModalOpen: Dispatch<boolean>;
 }
 
 const defaultState = {
-  isOpen: false,
+  isModalOpen: false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setIsOpen: () => {},
+  setIsModalOpen: () => {},
 };
 
 export const ModalContext = createContext<IModalContext>(defaultState);
 
 export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    isOpen ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
-  }, [isOpen]);
+    isModalOpen
+      ? (document.body.style.overflow = 'hidden')
+      : (document.body.style.overflow = 'auto');
+  }, [isModalOpen]);
 
   useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
+    setIsModalOpen(!isModalOpen);
+  }, [isModalOpen]);
 
   const contextValue = useMemo(
     () => ({
-      isOpen,
-      setIsOpen,
+      isModalOpen,
+      setIsModalOpen,
     }),
-    [isOpen, setIsOpen],
+    [isModalOpen, setIsModalOpen],
   );
 
   return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>;

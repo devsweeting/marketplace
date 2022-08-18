@@ -7,64 +7,52 @@ import { Button } from '@/components/Button';
 import { useProductStyles } from './ProductCard.styles';
 import { ShareButton } from '@/components/ShareButton';
 import { useModal } from '@/helpers/hooks/useModal';
-import { addToWatchlist, removeFromWatchlist } from '@/api/endpoints/watchlist';
-import { StatusCodes } from 'http-status-codes';
 import { useUser } from '@/helpers/hooks/useUser';
-
+import {
+  addToWatchlist,
+  addWatchlistToLocalStorage,
+  checkForAssetOnWatchlist,
+  hasBeenAddedWatchlist,
+  isAssetInLocalStorage,
+  removeFromWatchlist,
+  removeWatchlistFromLocalStorage,
+} from '@/api/endpoints/watchlist';
 export interface ProductDataProps {
   name: string;
   id: string;
 }
 
 export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
-  const { isOpen, setIsOpen } = useModal();
+  const { setIsModalOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
   const user = useUser();
-  let originalWatchlist;
 
   useEffect(() => {
-    if (localStorage.getItem('watchList')) {
-      const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-      if (originalWatchlist.some((watchItem: ProductDataProps) => watchItem.id === id)) {
-        setHasBeenAdded(true);
-        return;
-      }
+    setHasBeenAdded(isAssetInLocalStorage(id));
+
+    if (user) {
+      checkForAssetOnWatchlist(id).then((isOnWatchlist: boolean) => {
+        setHasBeenAdded(isOnWatchlist ?? false);
+      });
     }
-  }, [id, originalWatchlist]);
+  }, [id, user]);
 
   const handleClick = () => {
     if (!user) {
-      if (localStorage.getItem('watchList')) {
-        originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-        originalWatchlist.push({ id: id, name: name });
-      } else {
-        originalWatchlist = [{ id: id, name: name }];
-      }
-      localStorage.setItem('watchList', JSON.stringify(originalWatchlist));
-      setIsOpen(!isOpen);
+      addWatchlistToLocalStorage(id, name);
+      setIsModalOpen(true);
       setHasBeenAdded(true);
       return;
     }
 
     addToWatchlist({ id, name }).then((status) => {
-      switch (status) {
-        case StatusCodes.CREATED:
-          setHasBeenAdded(true);
-          return;
-        case StatusCodes.CONFLICT:
-          setHasBeenAdded(true);
-          return;
-      }
+      setHasBeenAdded(hasBeenAddedWatchlist(status));
     });
   };
 
   const handleRemoveClick = () => {
     if (!user) {
-      const originalWatchlist = JSON.parse(localStorage.getItem('watchList') as string);
-      const watchlist = originalWatchlist.filter(
-        (watchlist: ProductDataProps) => watchlist.id !== id,
-      );
-      localStorage.setItem('watchList', JSON.stringify(watchlist));
+      removeWatchlistFromLocalStorage(id);
       setHasBeenAdded(false);
       return;
     }
