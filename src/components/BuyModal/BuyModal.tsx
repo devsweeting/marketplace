@@ -88,6 +88,7 @@ export const BuyModal = ({
             <Button
               id="back"
               className={modalClasses.button}
+              sx={{ marginLeft: '10px' }}
               onClick={() => {
                 handleClose();
               }}
@@ -102,12 +103,13 @@ export const BuyModal = ({
               Success!
             </Typography>
             <Box className={modalClasses.content}>
-              <p>
+              <Typography sx={{ textAlign: 'center' }}>
                 You successfully bought {totalFractions} fractions for ${totalPrice}!
-              </p>
+              </Typography>
               <Button
                 id="close"
                 className={modalClasses.button}
+                sx={{ width: '100%' }}
                 onClick={() => {
                   handleClose();
                 }}

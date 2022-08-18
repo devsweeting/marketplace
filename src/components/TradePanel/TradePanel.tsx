@@ -86,6 +86,9 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     if (assetId !== asset.id) {
       resetData();
     }
+    if (sellOrderData?.fractionQtyAvailable && sliderValue > sellOrderData?.fractionQtyAvailable) {
+      setSliderValue(sellOrderData.fractionQtyAvailable);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliderValue, disableBuyBTN, totalPrice, assetId, asset]);
   const details = parseAssetAttributes(asset.attributes);
