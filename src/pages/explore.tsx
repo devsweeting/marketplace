@@ -4,8 +4,8 @@ import type { NextPage } from 'next';
 import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey } from 'src/types';
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import { useEffect, useState } from 'react';
-import { loadListAssetByPage, latestDropAssets } from '@/api/endpoints/list';
+import { useCallback, useEffect, useState } from 'react';
+import { loadListAssetByPage, latestDropAssets } from '@/api/endpoints/assets';
 import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
@@ -18,12 +18,19 @@ import { useFilters } from '@/helpers/hooks/useFilters';
 import { NewFilters } from '@/components/NewFilters';
 import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
+import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
+import { queryBuilder } from '@/helpers/queryBuilder';
+
 const ExplorePage: NextPage = () => {
+  const router = useRouter();
+  const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const [ready, setReady] = useState<boolean>(false);
+
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<IAsset | undefined>();
-  const searchQuery = useRouter().query.q;
+  const searchQuery = query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
   const {
     checkedFilters,
@@ -31,6 +38,7 @@ const ExplorePage: NextPage = () => {
     updateCheckedFilters,
     updateRangeFilters,
     clearQueryFilters,
+    clearRangeFilters,
   } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: true,
@@ -39,34 +47,52 @@ const ExplorePage: NextPage = () => {
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const classes = useExplorePageStyles();
   const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
-
-  const loadLatestDropAssets = async (page = 1) => {
+  const loadLatestDropAssets = useCallback(async (page = 1) => {
     const { items }: { items: IAsset[] } = await latestDropAssets({
       page,
     });
     setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-  };
-
-  useEffect(() => {
-    loadLatestDropAssets(1);
   }, []);
 
-  const loadAssets = async (page = 1) => {
-    const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
-      page,
-      sort: sortType,
-      filter: checkedFilters,
-      filterRanges: rangeFilters,
-      search,
-    });
-    setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-    setCurrentMeta(meta);
-  };
+  useEffect(() => {
+    isReady ? setReady(true) : setReady(false);
+    if (isReady) {
+      loadLatestDropAssets(1);
+    }
+  }, [isReady, loadLatestDropAssets]);
+
+  const loadAssets = useCallback(
+    async (page = 1) => {
+      const queryString = await queryBuilder({
+        page,
+        sortType,
+        checkedFilters,
+        rangeFilters,
+        search,
+      });
+
+      const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+        queryString,
+      });
+      setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+      setCurrentMeta(meta);
+    },
+    [checkedFilters, rangeFilters, search, sortType],
+  );
 
   useEffect(() => {
-    loadAssets(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortType, checkedFilters, rangeFilters, disabledRanges, search]);
+    isReady ? setReady(true) : setReady(false);
+    if (isReady) {
+      loadAssets(1);
+    }
+  }, [isReady, loadAssets]);
+
+  useEffect(() => {
+    setDisabledRanges({
+      Grade: !Object.keys(rangeFilters).includes('Grade'),
+      Year: !Object.keys(rangeFilters).includes('Year'),
+    });
+  }, [rangeFilters]);
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -94,6 +120,7 @@ const ExplorePage: NextPage = () => {
     setDisabledRanges({ Grade: true, Year: true });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDisabled = (key: DisabledRangesKey) => {
     setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key] });
   };
@@ -106,8 +133,8 @@ const ExplorePage: NextPage = () => {
   };
 
   const removeFilterRange = (id: string) => {
-    rangeFilters && delete rangeFilters[id];
-    updateRangeFilters({});
+    Object.keys(rangeFilters).length && clearRangeFilters(id);
+    Object.keys(rangeFilters).length && delete rangeFilters[id];
   };
 
   const handleDrawer = (asset: IAsset) => {
@@ -135,8 +162,12 @@ const ExplorePage: NextPage = () => {
     sortType,
   };
 
+  if (!ready) {
+    return null;
+  }
+
   return (
-    <>
+    <ClientOnly>
       <OpenGraph title={'List view'} description={'List view page description'} />
 
       <Grid sx={{ marginTop: 10, backgroundColor: '#f0f0f0' }} container>
@@ -195,7 +226,7 @@ const ExplorePage: NextPage = () => {
                   <ClearAllFilter
                     clearSelectedFilters={clearAllSelectedFilters}
                     isFilterButtonVisible={
-                      checkedFilters.length || !disabledRanges.Grade || !disabledRanges.Year
+                      checkedFilters.length || Object.keys(rangeFilters).length > 0
                     }
                   />
                   <SortMenu {...sortListProps} />
@@ -255,7 +286,7 @@ const ExplorePage: NextPage = () => {
           />
         )}
       </Grid>
-    </>
+    </ClientOnly>
   );
 };
 

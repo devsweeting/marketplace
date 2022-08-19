@@ -58,6 +58,11 @@ export interface IRange {
   max: string;
 }
 
+export interface IQuery {
+  [key: string]: string | string[] | undefined;
+}
+export type IQueryKey = keyof IQuery;
+
 export type DisabledRanges = {
   [key: string]: boolean;
 };

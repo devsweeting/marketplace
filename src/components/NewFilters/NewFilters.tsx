@@ -52,6 +52,7 @@ export const NewFilters = ({
     disabledRanges,
     handleDisabled,
   };
+
   switch (filterType) {
     case 'slider':
       return (
