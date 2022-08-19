@@ -31,33 +31,43 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
     setHasBeenAdded(isAssetInLocalStorage(id));
 
     if (user) {
-      checkForAssetOnWatchlist(id).then((isOnWatchlist: boolean) => {
-        setHasBeenAdded(isOnWatchlist ?? false);
-      });
+      checkForAssetOnWatchlist(id)
+        .then((isOnWatchlist: boolean) => {
+          setHasBeenAdded(isOnWatchlist ?? false);
+        })
+        .catch(() => {
+          setHasBeenAdded(false);
+        });
     }
   }, [id, user]);
 
   const handleClick = () => {
     if (!user) {
-      addWatchlistToLocalStorage(id, name);
-      setIsModalOpen(true);
-      setHasBeenAdded(true);
-      return;
+      void addWatchlistToLocalStorage(id, name).then(() => {
+        setIsModalOpen(true);
+        setHasBeenAdded(true);
+        return;
+      });
     }
 
-    addToWatchlist({ id, name }).then((status) => {
+    void addToWatchlist({ id, name }).then((status) => {
       setHasBeenAdded(hasBeenAddedWatchlist(status));
     });
   };
 
   const handleRemoveClick = () => {
     if (!user) {
-      removeWatchlistFromLocalStorage(id);
-      setHasBeenAdded(false);
-      return;
+      removeWatchlistFromLocalStorage(id)
+        .then(() => {
+          setHasBeenAdded(false);
+          return;
+        })
+        .catch(() => {
+          return;
+        });
     }
 
-    removeFromWatchlist({ id, name }).then(() => {
+    void removeFromWatchlist({ id, name }).then(() => {
       setHasBeenAdded(false);
       return;
     });

@@ -28,9 +28,13 @@ const Login: NextPage = (user) => {
       await Promise.all(watchList.map((item: ProductDataProps) => addToWatchlist(item)));
     };
 
-    addWatchListItems().then(() => {
-      localStorage.removeItem('watchList');
-    });
+    addWatchListItems()
+      .then(() => {
+        localStorage.removeItem('watchList');
+      })
+      .catch(() => {
+        return Promise.reject(new Error('Could not add watchlist items'));
+      });
   }, [user]);
 
   return (

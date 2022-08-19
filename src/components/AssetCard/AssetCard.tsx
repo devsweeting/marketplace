@@ -38,7 +38,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     setHasBeenAdded(isAssetInLocalStorage(assetData.id));
 
     if (user) {
-      checkForAssetOnWatchlist(assetData.id).then((isOnWatchlist: boolean) => {
+      void checkForAssetOnWatchlist(assetData.id).then((isOnWatchlist: boolean) => {
         setHasBeenAdded(isOnWatchlist ?? false);
       });
     }
@@ -46,25 +46,25 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
 
   const handleAddToWatchlist = (id: string, name: string) => {
     if (!user) {
-      addWatchlistToLocalStorage(id, name);
+      void addWatchlistToLocalStorage(id, name);
       setIsModalOpen(true);
       setHasBeenAdded(true);
       return;
     }
 
-    addToWatchlist({ id, name }).then((status) => {
+    void addToWatchlist({ id, name }).then((status) => {
       setHasBeenAdded(hasBeenAddedWatchlist(status));
     });
   };
 
   const handleRemoveFromWatchlist = (id: string, name: string) => {
     if (!user) {
-      removeWatchlistFromLocalStorage(id);
+      void removeWatchlistFromLocalStorage(id);
       setHasBeenAdded(false);
       return;
     }
 
-    removeFromWatchlist({ id, name }).then(() => {
+    void removeFromWatchlist({ id, name }).then(() => {
       setHasBeenAdded(false);
       return;
     });

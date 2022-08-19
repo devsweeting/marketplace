@@ -54,29 +54,36 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
       return;
     }
 
-    loginRequest(emailState).then((status) => {
-      switch (status) {
-        case StatusCodes.OK:
-          setAlertMessage('Check your email for a link to sign in.');
-          if (modalBox.current) {
-            modalBox.current.style.color = '#4caf50';
-          }
-          setButtonState(true);
-          return;
-        case StatusCodes.TOO_MANY_REQUESTS:
-          setAlertMessage('Too many requests. Please try again later.');
-          if (modalBox.current) {
-            modalBox.current.style.color = '#f44336';
-          }
-          setButtonState(true);
-          return;
-        default:
-          if (modalBox.current) {
-            setAlertMessage('Something went wrong. Please try again later.');
-            modalBox.current.style.color = '#ffae00';
-          }
-      }
-    });
+    loginRequest(emailState)
+      .then((status) => {
+        switch (status) {
+          case StatusCodes.OK:
+            setAlertMessage('Check your email for a link to sign in.');
+            if (modalBox.current) {
+              modalBox.current.style.color = '#4caf50';
+            }
+            setButtonState(true);
+            return;
+          case StatusCodes.TOO_MANY_REQUESTS:
+            setAlertMessage('Too many requests. Please try again later.');
+            if (modalBox.current) {
+              modalBox.current.style.color = '#f44336';
+            }
+            setButtonState(true);
+            return;
+          default:
+            if (modalBox.current) {
+              setAlertMessage('Something went wrong. Please try again later.');
+              modalBox.current.style.color = '#ffae00';
+            }
+        }
+      })
+      .catch(() => {
+        if (modalBox.current) {
+          setAlertMessage('Something went wrong. Please try again later.');
+          modalBox.current.style.color = '#ffae00';
+        }
+      });
   };
   return (
     <Modal

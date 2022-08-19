@@ -110,7 +110,7 @@ export const useFilters = () => {
       }
     }
 
-    router.push(
+    void router.push(
       {
         pathname: router.pathname,
         query: updatedQuery,
@@ -143,9 +143,11 @@ export const useFilters = () => {
   };
 
   const clearQueryFilters = () => {
-    updateCheckedFilters([]);
-    updateRangeFilters({});
-    router.push(
+    // eslint-disable-next-line no-console
+    updateCheckedFilters([]).catch(console.error);
+    // eslint-disable-next-line no-console
+    updateRangeFilters({}).catch(console.error);
+    void router.push(
       {
         pathname: router.pathname,
         query: '',
