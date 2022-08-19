@@ -56,4 +56,24 @@ describe('Asset Card', () => {
     const soldOut = screen.getByText(/sold out/i);
     expect(soldOut).toBeInTheDocument();
   });
+
+  test('should allow non auth user to add and remove item from watchlist ', async () => {
+    render(<MockAssetCard asset={mockData} />);
+
+    const addToWatchListBtn = screen.getByRole('button', { name: /add to watchlist/i });
+    expect(addToWatchListBtn).toBeInTheDocument();
+
+    await user.click(addToWatchListBtn);
+    const removeFromWatchListBtn = screen.getByRole('button', { name: /remove from watchlist/i });
+    expect(removeFromWatchListBtn).toBeInTheDocument();
+    await user.click(removeFromWatchListBtn);
+
+    const addToWatchListBtn2 = screen.getByRole('button', { name: /add to watchlist/i });
+    expect(addToWatchListBtn2).toBeInTheDocument();
+  });
+
+  test('should allow auth user to add and remove items', () => {
+    test.todo;
+    //TODO mock authentication and test if user can add and remove items from watchlist
+  });
 });

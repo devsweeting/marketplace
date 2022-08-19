@@ -152,6 +152,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           <Typography className={classes.star}>
             {!hasBeenAdded ? (
               <IconButton
+                aria-label="add to watchlist"
                 onClick={() => {
                   handleAddToWatchlist(assetData.id, assetData.name);
                 }}
@@ -160,6 +161,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
               </IconButton>
             ) : (
               <IconButton
+                aria-label="remove from watchlist"
                 onClick={() => {
                   handleRemoveFromWatchlist(assetData.id, assetData.name);
                 }}
