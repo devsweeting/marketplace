@@ -214,6 +214,127 @@ export const mockAssetResponse = {
   ],
 };
 
+export const mockAssetSoldOut = {
+  id: 'f6785460-d9b8-41ca-8f84-393e8b31095f',
+  name: 'aut sint quaerat aliquam',
+  description: 'Et possimus sed odit.',
+  media: [
+    {
+      id: 'c4065aea-f19e-4498-bab5-6cccc1a38bbc',
+      title: 'occaecati ea dolorum quia',
+      description: 'laborum nobis quia illum',
+      // url: 'http://placeimg.com/640/480',
+      sortOrder: 5,
+      assetId: 'f6785460-d9b8-41ca-8f84-393e8b31095f',
+      fileId: '90f7807d-7a8e-4491-92af-02844d5fabd1',
+      file: 'http://example.com/test-bucket/assets/f6785460-d9b8-41ca-8f84-393e8b31095f/0b20cb87-9a1e-4e4d-81dd-853369bcdd4c',
+      absoluteUrl:
+        'http://example.com/test-bucket/assets/f6785460-d9b8-41ca-8f84-393e8b31095f/0b20cb87-9a1e-4e4d-81dd-853369bcdd4c',
+    },
+  ],
+  refId: '8qls222q',
+  slug: 'aut-sint-quaerat-aliquam',
+  createdAt: '2022-08-03T14:28:30.117Z',
+  updatedAt: '2022-08-03T14:28:30.117Z',
+  attributes: [
+    {
+      trait: 'Category',
+      value: 'Baseball',
+      display: null,
+    },
+    {
+      trait: 'Category',
+      value: 'Football',
+      display: null,
+    },
+    {
+      trait: 'Year',
+      value: '1990',
+      display: null,
+    },
+    {
+      trait: 'Grade',
+      value: '10',
+      display: 'string',
+    },
+    {
+      trait: 'Grading Service',
+      value: 'PSA',
+      display: null,
+    },
+  ],
+  partner: 'DgWyEPJE79U6wb9y9KZLC11ZoDEj',
+  sellOrders: [
+    {
+      id: 'b5f044b9-769b-49ba-a6f4-d5b0bdc972d2',
+      assetId: 'f6785460-d9b8-41ca-8f84-393e8b31095f',
+      userId: '6738afac-3c59-47d9-96a5-25fab622645c',
+      partnerId: '58e96913-b662-42e7-a62b-c2910a03b76c',
+      fractionQty: 1000,
+      fractionQtyAvailable: 0,
+      fractionPriceCents: 32,
+      expireTime: 2145945600,
+      startTime: 0,
+      deletedTime: 0,
+      type: 'standard',
+    },
+  ],
+};
+
+export const mockAssetNoImage = {
+  id: 'f6785460-d9b8-41ca-8f84-393e8b31095f',
+  name: 'aut sint quaerat aliquam',
+  description: 'Et possimus sed odit.',
+  media: null,
+  refId: '8qls222q',
+  slug: 'aut-sint-quaerat-aliquam',
+  createdAt: '2022-08-03T14:28:30.117Z',
+  updatedAt: '2022-08-03T14:28:30.117Z',
+  attributes: [
+    {
+      trait: 'Category',
+      value: 'Baseball',
+      display: null,
+    },
+    {
+      trait: 'Category',
+      value: 'Football',
+      display: null,
+    },
+    {
+      trait: 'Year',
+      value: '1990',
+      display: null,
+    },
+    {
+      trait: 'Grade',
+      value: '10',
+      display: 'string',
+    },
+    {
+      trait: 'Grading Service',
+      value: 'PSA',
+      display: null,
+    },
+  ],
+  partner: 'DgWyEPJE79U6wb9y9KZLC11ZoDEj',
+  sellOrders: [
+    {
+      id: 'b5f044b9-769b-49ba-a6f4-d5b0bdc972d2',
+      assetId: 'f6785460-d9b8-41ca-8f84-393e8b31095f',
+      userId: '6738afac-3c59-47d9-96a5-25fab622645c',
+      partnerId: '58e96913-b662-42e7-a62b-c2910a03b76c',
+      fractionQty: 1000,
+      fractionQtyAvailable: 0,
+      fractionPriceCents: 32,
+      expireTime: 2145945600,
+      startTime: 0,
+      deletedTime: 0,
+      type: 'standard',
+    },
+  ],
+};
+
 export const mockBrokenAssetResponse = {
   meta: {
     totalItems: 2,
@@ -395,6 +516,7 @@ export const mockBrokenAssetResponse = {
       ],
     },
     {
+      // Sellorders exist but is empty
       id: 'c187ecb3-9427-450c-a060-d7d1faa1484b',
       name: 'omnis laboriosam maiores rerum',
       description: 'Voluptas quae aliquid et est sit rem.',
@@ -421,8 +543,10 @@ export const mockBrokenAssetResponse = {
       sellOrders: [],
     },
     {
+      // Null Media & SellOrder
       id: '8122da58-5950-4858-a257-877def93f571',
       name: 'Test Asset',
+
       description: null,
       media: null,
       refId: '1111111111111111',

@@ -3,7 +3,11 @@ import { themeJump } from '@/styles/themeJump';
 import { ThemeProvider } from '@mui/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
+import {
+  mockAssetNoImage,
+  mockAssetResponse,
+  mockAssetSoldOut,
+} from '@/__mocks__/mockAssetResponse';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
 
@@ -122,14 +126,19 @@ describe('TradePanel', () => {
   });
 
   test('should not display slider or buy button if available fractions is 0', () => {
-    test.todo;
+    render(<MockTradePanel asset={mockAssetSoldOut} />);
+    const slider = screen.queryByRole('slider');
+    const buyBtn = screen.queryByRole('button', { name: /buy/i });
+    const fractionAvailability = screen.getByText(/No Fractions Available/i);
+
+    expect(slider).toBeNull;
+    expect(buyBtn).toBeNull;
+    expect(fractionAvailability).toBeInTheDocument();
   });
 
   test('should not display image if image is null', () => {
-    test.todo;
-  });
-
-  test('should call buy modal function', () => {
-    test.todo;
+    render(<MockTradePanel asset={mockAssetNoImage as unknown as IAsset} />);
+    const img = screen.queryByRole('img');
+    expect(img).toBeNull();
   });
 });
