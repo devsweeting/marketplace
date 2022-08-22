@@ -14,9 +14,7 @@ export const Logout = ({
   const router = useRouter();
   const handleLogoutClick = () => {
     userContext.logout();
-    router.push('/logout').catch(() => {
-      return;
-    });
+    void router.push('/logout');
   };
 
   return (
