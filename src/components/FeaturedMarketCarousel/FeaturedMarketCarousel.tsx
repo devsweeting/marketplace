@@ -13,10 +13,12 @@ export const FeaturedMarketCarousel = ({
   assets,
   title,
   handleDrawer,
+  handleApplyBrandFilter,
 }: {
   assets: IAsset[] | IMarket[];
   title: string;
   handleDrawer?: (asset: IAsset) => void;
+  handleApplyBrandFilter?: (string: string) => void;
 }) => {
   const classes = useFeaturedMarketCarouselStyles();
   const scroll = useRef<HTMLDivElement>(null);
@@ -130,9 +132,7 @@ export const FeaturedMarketCarousel = ({
               ))
             : assets.map((card: any, index: number) => (
                 <TrendingMarketCard
-                  handleDrawer={() => {
-                    return undefined;
-                  }}
+                  handleApplyBrandFilter={handleApplyBrandFilter}
                   brand={card}
                   key={index}
                   tabIndex={index}

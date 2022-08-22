@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey } from 'src/types';
+import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey, IMarket } from 'src/types';
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
-import { loadListAssetByPage, latestDropAssets, getAssetById } from '@/api/endpoints/assets';
+import {
+  loadListAssetByPage,
+  latestDropAssets,
+  getAssetById,
+  trendingMarkets,
+} from '@/api/endpoints/assets';
 import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
@@ -13,7 +18,6 @@ import { TradePanel } from '@/components/TradePanel';
 import { AssetListView } from '@/containers/AssetListView';
 import { SortMenu } from '@/components/NewFilters/components/SortMenu';
 import { useExplorePageStyles } from '@/styles/explorePage.styles';
-import { market } from '@/__mocks__/mockBrands';
 import { useFilters } from '@/helpers/hooks/useFilters';
 import { NewFilters } from '@/components/NewFilters';
 import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
@@ -24,6 +28,7 @@ const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
 
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
@@ -36,6 +41,7 @@ const ExplorePage: NextPage = () => {
     rangeFilters,
     updateCheckedFilters,
     updateRangeFilters,
+    clearTrendingFilters,
     clearQueryFilters,
     clearRangeFilters,
   } = useFilters();
@@ -87,14 +93,19 @@ const ExplorePage: NextPage = () => {
     [checkedFilters, rangeFilters, search, sortType],
   );
 
+  const loadTrendingMarkets = useCallback(async () => {
+    const { markets }: { markets: IMarket[] } = await trendingMarkets();
+    setTrendingMarket(markets);
+  }, []);
+
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadAssets(1).catch(() => {
-        setAssets([]);
-      });
+      loadTrendingMarkets();
+      loadAssets(1);
+      loadLatestDropAssets();
     }
-  }, [isReady, loadAssets]);
+  }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets]);
 
   useEffect(() => {
     setDisabledRanges({
@@ -171,6 +182,21 @@ const ExplorePage: NextPage = () => {
     setTradePanelData(asset);
   };
 
+  const handleApplyBrandFilter = (filter: string) => {
+    const filterValue = filter.split('=')?.[1];
+    if (!checkedFilters.some((filter) => filter.categoryId === 'brand')) {
+      if (!checkedFilters.some((filter) => filter.filterId === filterValue)) {
+        updateCheckedFilters([...checkedFilters, { filterId: filterValue, categoryId: 'brand' }]);
+      }
+      const index = checkedFilters.map((object) => object.filterId).indexOf(filterValue);
+      if (index !== -1) {
+        checkedFilters[index].filterId = filterValue;
+      }
+    }
+
+    clearTrendingFilters();
+  };
+
   const filterProps = {
     handleFiltersChange,
     clearAllSelectedFilters,
@@ -219,7 +245,11 @@ const ExplorePage: NextPage = () => {
             title={'Latest Drop'}
             handleDrawer={handleDrawer}
           />
-          <FeaturedMarketCarousel assets={market} title={'Trending Markets'} />
+          <FeaturedMarketCarousel
+            handleApplyBrandFilter={handleApplyBrandFilter}
+            assets={trendingMarket}
+            title={'Trending Markets'}
+          />
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
             <Grid
               container

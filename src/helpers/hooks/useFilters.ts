@@ -98,6 +98,25 @@ export const useFilters = () => {
     );
   };
 
+  const clearTrendingFilters = () => {
+    const updatedQuery = { ...query };
+    if (Object.keys(updatedQuery).length > 0) {
+      for (const key of Object.keys(updatedQuery)) {
+        if (key.startsWith('attr_eq[brand]')) {
+          delete updatedQuery[key];
+          return router.push(
+            {
+              pathname: router.pathname,
+              query: updatedQuery,
+            },
+            undefined,
+            { shallow: true },
+          );
+        }
+      }
+    }
+  };
+
   const clearRangeFilters = (filterId: any) => {
     const updatedQuery = { ...query };
     for (const key of Object.keys(updatedQuery)) {
@@ -180,6 +199,7 @@ export const useFilters = () => {
     rangeFilters: rangeFiltersMemo,
     updateCheckedFilters,
     updateRangeFilters,
+    clearTrendingFilters,
     clearQueryFilters,
     clearRangeFilters,
   };

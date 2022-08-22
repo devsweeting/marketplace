@@ -1,4 +1,4 @@
-import type { IAsset, IMeta } from 'src/types';
+import type { IAsset, IMeta, IMarket } from 'src/types';
 import { apiClient } from '@/api/client';
 
 export const loadListAssetByPage = async ({
@@ -54,17 +54,22 @@ export const latestDropAssets = async ({
   }
 };
 
-export const getAssetById = async (id: string) => {
+export const trendingMarkets = async (): Promise<{ markets: IMarket[] }> => {
   try {
-    const res = await apiClient.get(`/assets/${id}`);
+    const res = await apiClient.get(`/trending`);
+
     if (res.status !== 200 || !res.data) {
-      return;
+      return {
+        markets: [],
+      };
     }
-    return res as unknown as Promise<{ data: IAsset }>;
+    return res.data as unknown as Promise<{ markets: IMarket[] }>;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
 
-    return;
+    return {
+      markets: [],
+    };
   }
 };
