@@ -135,6 +135,7 @@ describe('TradePanel', () => {
     const { rerender } = render(<MockTradePanel asset={data} />);
     const slider = screen.getByRole('slider');
     const buyBtn = screen.getByRole('button', { name: /buy/i });
+    const cardName = screen.getByText(data.name);
     expect(buyBtn).toBeDisabled;
     // mock the getBoundingClientRect
     slider.getBoundingClientRect = jest.fn(() => {
@@ -151,10 +152,12 @@ describe('TradePanel', () => {
     }) as unknown as () => DOMRect;
     await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
     expect(buyBtn).not.toBeDisabled();
+    expect(cardName).toBeInTheDocument();
 
     rerender(<MockTradePanel asset={mockAssetResponse.items[1]} />);
+    const newCardName = screen.getByText(mockAssetResponse.items[1].name);
     expect(buyBtn).toBeDisabled();
-    //TODO check for total price, slider value, and asset ID
+    expect(newCardName).toBeInTheDocument();
   });
 
   test('should not display slider or buy button if available fractions is 0', () => {
