@@ -38,36 +38,62 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     setHasBeenAdded(isAssetInLocalStorage(assetData.id));
 
     if (user) {
-      void checkForAssetOnWatchlist(assetData.id).then((isOnWatchlist: boolean) => {
-        setHasBeenAdded(isOnWatchlist ?? false);
-      });
+      checkForAssetOnWatchlist(assetData.id)
+        .then((isOnWatchlist: boolean) => {
+          setHasBeenAdded(isOnWatchlist ?? false);
+        })
+        .catch(() => {
+          setHasBeenAdded(false);
+        });
     }
   }, [assetData.id, user]);
 
   const handleAddToWatchlist = (id: string, name: string) => {
     if (!user) {
-      void addWatchlistToLocalStorage(id, name);
-      setIsModalOpen(true);
-      setHasBeenAdded(true);
-      return;
+      addWatchlistToLocalStorage(id, name)
+        .then(() => {
+          setIsModalOpen(true);
+          setHasBeenAdded(true);
+          return;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
+        });
     }
 
-    void addToWatchlist({ id, name }).then((status) => {
-      setHasBeenAdded(hasBeenAddedWatchlist(status));
-    });
+    addToWatchlist({ id, name })
+      .then((status) => {
+        setHasBeenAdded(hasBeenAddedWatchlist(status));
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      });
   };
 
   const handleRemoveFromWatchlist = (id: string, name: string) => {
     if (!user) {
-      void removeWatchlistFromLocalStorage(id);
-      setHasBeenAdded(false);
-      return;
+      removeWatchlistFromLocalStorage(id)
+        .then(() => {
+          setHasBeenAdded(false);
+          return;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
+        });
     }
 
-    void removeFromWatchlist({ id, name }).then(() => {
-      setHasBeenAdded(false);
-      return;
-    });
+    removeFromWatchlist({ id, name })
+      .then(() => {
+        setHasBeenAdded(false);
+        return;
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      });
   };
 
   const details = parseAssetAttributes(assetData.attributes);
