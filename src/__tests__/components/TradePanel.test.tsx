@@ -10,11 +10,18 @@ import {
 } from '@/__mocks__/mockAssetResponse';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
+import type { IUser } from '@/types/user';
+import user from '@testing-library/user-event';
+
+import { UserContext } from '@/helpers/auth/UserContext';
 
 const mockHandleClose = jest.fn();
 const mockUpdateAsset = jest.fn();
+const mockUserContextFunctions = jest.fn();
 
 const data: IAsset = mockAssetResponse.items[0];
+const mockUser = { id: 'asdf', email: 'example@example.com' };
+
 const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
@@ -25,6 +32,27 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
         handleClose={mockHandleClose}
         updateAsset={mockUpdateAsset}
       />
+    </ThemeProvider>
+  );
+};
+
+const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser }) => {
+  return (
+    <ThemeProvider theme={themeJump}>
+      <UserContext.Provider
+        value={{
+          user: user,
+          refreshUser: mockUserContextFunctions,
+          logout: mockUserContextFunctions,
+        }}
+      >
+        <TradePanel
+          asset={asset}
+          open={true}
+          handleClose={mockHandleClose}
+          updateAsset={mockUpdateAsset}
+        />
+      </UserContext.Provider>
     </ThemeProvider>
   );
 };
@@ -78,7 +106,7 @@ describe('TradePanel', () => {
   });
 
   test('should allow user to buy share', async () => {
-    render(<MockTradePanel asset={data} />);
+    render(<MockTradePanelWithUser asset={data} user={mockUser} />);
     const slider = screen.getByRole('slider');
     const buyBtn = screen.getByRole('button', { name: /buy/i });
     expect(buyBtn).toBeDisabled;
@@ -97,6 +125,10 @@ describe('TradePanel', () => {
     }) as unknown as () => DOMRect;
     await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
     expect(buyBtn).not.toBeDisabled();
+    await user.click(buyBtn);
+
+    const closeBtn = screen.getByRole('button', { name: /cancel/i });
+    await user.click(closeBtn);
   });
 
   test('should reset if the card data changes', async () => {

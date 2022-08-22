@@ -27,7 +27,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   const { setIsModalOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDownOnCard = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
       onClick();
     }
@@ -59,6 +59,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
         .catch(() => {
           return;
         });
+      return;
     }
 
     addToWatchlist({ id, name })
@@ -80,6 +81,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
         .catch(() => {
           return;
         });
+      return;
     }
 
     removeFromWatchlist({ id, name })
@@ -97,7 +99,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     <Card
       className={`${classes.card} ${activeCardId === assetData.id ? classes.active : ''}`}
       tabIndex={0}
-      onKeyDown={handleKeyDown}
+      onKeyDown={handleKeyDownOnCard}
     >
       <Box sx={{ width: '100%', height: '100%', display: 'flex', position: 'relative' }}>
         <CardActionArea>

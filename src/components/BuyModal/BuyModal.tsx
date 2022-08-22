@@ -80,7 +80,7 @@ export const BuyModal = ({
               id="confirm"
               className={modalClasses.button}
               onClick={() => {
-                handleBuyFractions();
+                void handleBuyFractions();
               }}
             >
               confirm
