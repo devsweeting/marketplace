@@ -43,7 +43,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           setHasBeenAdded(isOnWatchlist ?? false);
         })
         .catch(() => {
-          setHasBeenAdded(false);
+          return;
         });
     }
   }, [assetData.id, user]);
@@ -56,9 +56,8 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           setHasBeenAdded(true);
           return;
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
+        .catch(() => {
+          return;
         });
     }
 
@@ -66,9 +65,8 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       .then((status) => {
         setHasBeenAdded(hasBeenAddedWatchlist(status));
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error(error);
+      .catch(() => {
+        return;
       });
   };
 
@@ -79,9 +77,8 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           setHasBeenAdded(false);
           return;
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
+        .catch(() => {
+          return;
         });
     }
 
@@ -90,9 +87,8 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
         setHasBeenAdded(false);
         return;
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error(error);
+      .catch(() => {
+        return;
       });
   };
 

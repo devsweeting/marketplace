@@ -85,9 +85,7 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadAssets(1).catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
+      loadAssets(1).catch(() => {
         setAssets([]);
       });
     }
@@ -116,9 +114,8 @@ const ExplorePage: NextPage = () => {
         (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
       );
       updateCheckedFilters(newcheckedFilters)
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.log(error);
+        .catch(() => {
+          return;
         })
         .finally(() => {
           loadAssets(1).catch(() => {
@@ -128,9 +125,8 @@ const ExplorePage: NextPage = () => {
       return;
     }
     updateCheckedFilters([...checkedFilters, { filterId, categoryId }])
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
+      .catch(() => {
+        return;
       })
       .finally(() => {
         loadAssets(1).catch(() => {

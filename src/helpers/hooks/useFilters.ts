@@ -143,10 +143,28 @@ export const useFilters = () => {
   };
 
   const clearQueryFilters = () => {
-    // eslint-disable-next-line no-console
-    updateCheckedFilters([]).catch((error) => console.error(error));
-    // eslint-disable-next-line no-console
-    updateRangeFilters({}).catch((error) => console.error(error));
+    const updatedQuery = { ...query };
+    updateCheckedFilters([]).catch(() => {
+      void router.push(
+        {
+          pathname: router.pathname,
+          query: updatedQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
+    });
+
+    updateRangeFilters({}).catch(() => {
+      void router.push(
+        {
+          pathname: router.pathname,
+          query: updatedQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
+    });
     void router.push(
       {
         pathname: router.pathname,

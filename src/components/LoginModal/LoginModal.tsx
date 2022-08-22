@@ -83,6 +83,9 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
           setAlertMessage('Something went wrong. Please try again later.');
           modalBox.current.style.color = '#ffae00';
         }
+      })
+      .finally(() => {
+        setButtonState(true);
       });
   };
   return (

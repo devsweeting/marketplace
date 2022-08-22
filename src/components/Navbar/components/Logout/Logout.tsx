@@ -15,8 +15,7 @@ export const Logout = ({
   const handleLogoutClick = () => {
     userContext.logout();
     router.push('/logout').catch(() => {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      void router.push('/').catch(() => {});
+      return;
     });
   };
 

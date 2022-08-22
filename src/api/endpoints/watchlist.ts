@@ -12,9 +12,7 @@ export const checkForAssetOnWatchlist = async (id: string) => {
     const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`);
     return isOnWatchlist.data?.inWatchlist ?? false;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return false;
+    return;
   }
 };
 
@@ -25,8 +23,6 @@ export const addToWatchlist = async (item: ProductDataProps) => {
     });
     return addToWatchListResponse.status;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
     return StatusCodes.INTERNAL_SERVER_ERROR;
   }
 };
@@ -36,8 +32,6 @@ export const removeFromWatchlist = async (item: ProductDataProps) => {
     const deleteWatchListResponse = await apiClient.delete(`/watchlist/${item.id}`);
     return deleteWatchListResponse.status;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
     return StatusCodes.INTERNAL_SERVER_ERROR;
   }
 };
@@ -56,8 +50,6 @@ export const isAssetInLocalStorage = (assetId: string): boolean => {
     }
     return false;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
     return false;
   }
 };
@@ -72,8 +64,7 @@ export const addWatchlistToLocalStorage = async (id: string, name: string) => {
     }
     localStorage.setItem(WATCHLIST, JSON.stringify(localWatchlist));
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    return;
   }
 };
 
@@ -83,8 +74,7 @@ export const removeWatchlistFromLocalStorage = async (id: string) => {
     const watchlist = localWatchlist.filter((watchlist: ProductDataProps) => watchlist.id !== id);
     localStorage.setItem(WATCHLIST, JSON.stringify(watchlist));
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
+    return;
   }
 };
 

@@ -35,10 +35,8 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
         .then((isOnWatchlist: boolean) => {
           setHasBeenAdded(isOnWatchlist ?? false);
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
-          setHasBeenAdded(false);
+        .catch(() => {
+          return;
         });
     }
   }, [id, user]);
@@ -51,10 +49,8 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
           setHasBeenAdded(true);
           return;
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
-          setHasBeenAdded(false);
+        .catch(() => {
+          return;
         });
     }
 
@@ -70,9 +66,7 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
           setHasBeenAdded(false);
           return;
         })
-        .catch((error) => {
-          // eslint-disable-next-line no-console
-          console.error(error);
+        .catch(() => {
           return;
         });
     }
@@ -82,9 +76,7 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
         setHasBeenAdded(false);
         return;
       })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error(error);
+      .catch(() => {
         return;
       });
   };
