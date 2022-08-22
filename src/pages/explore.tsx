@@ -85,7 +85,9 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadAssets(1).catch(() => {
+      loadAssets(1).catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
         setAssets([]);
       });
     }
@@ -113,10 +115,28 @@ const ExplorePage: NextPage = () => {
       const newcheckedFilters = checkedFilters.filter(
         (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
       );
-      void updateCheckedFilters(newcheckedFilters);
+      updateCheckedFilters(newcheckedFilters)
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.log(error);
+        })
+        .finally(() => {
+          loadAssets(1).catch(() => {
+            setAssets([]);
+          });
+        });
       return;
     }
-    void updateCheckedFilters([...checkedFilters, { filterId, categoryId }]);
+    updateCheckedFilters([...checkedFilters, { filterId, categoryId }])
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      })
+      .finally(() => {
+        loadAssets(1).catch(() => {
+          setAssets([]);
+        });
+      });
   };
 
   const clearAllSelectedFilters = () => {

@@ -42,7 +42,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    void refreshUser();
+    refreshUser().catch((error) => {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    });
   }, [refreshUser]);
 
   const contextValue = useMemo(

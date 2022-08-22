@@ -35,7 +35,9 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
         .then((isOnWatchlist: boolean) => {
           setHasBeenAdded(isOnWatchlist ?? false);
         })
-        .catch(() => {
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
           setHasBeenAdded(false);
         });
     }
@@ -43,11 +45,17 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
 
   const handleClick = () => {
     if (!user) {
-      void addWatchlistToLocalStorage(id, name).then(() => {
-        setIsModalOpen(true);
-        setHasBeenAdded(true);
-        return;
-      });
+      addWatchlistToLocalStorage(id, name)
+        .then(() => {
+          setIsModalOpen(true);
+          setHasBeenAdded(true);
+          return;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
+          setHasBeenAdded(false);
+        });
     }
 
     void addToWatchlist({ id, name }).then((status) => {
@@ -62,15 +70,23 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
           setHasBeenAdded(false);
           return;
         })
-        .catch(() => {
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error(error);
           return;
         });
     }
 
-    void removeFromWatchlist({ id, name }).then(() => {
-      setHasBeenAdded(false);
-      return;
-    });
+    removeFromWatchlist({ id, name })
+      .then(() => {
+        setHasBeenAdded(false);
+        return;
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        return;
+      });
   };
 
   const classes = useProductStyles();

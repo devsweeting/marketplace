@@ -144,9 +144,9 @@ export const useFilters = () => {
 
   const clearQueryFilters = () => {
     // eslint-disable-next-line no-console
-    updateCheckedFilters([]).catch(console.error);
+    updateCheckedFilters([]).catch((error) => console.error(error));
     // eslint-disable-next-line no-console
-    updateRangeFilters({}).catch(console.error);
+    updateRangeFilters({}).catch((error) => console.error(error));
     void router.push(
       {
         pathname: router.pathname,
