@@ -38,36 +38,58 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     setHasBeenAdded(isAssetInLocalStorage(assetData.id));
 
     if (user) {
-      checkForAssetOnWatchlist(assetData.id).then((isOnWatchlist: boolean) => {
-        setHasBeenAdded(isOnWatchlist ?? false);
-      });
+      checkForAssetOnWatchlist(assetData.id)
+        .then((isOnWatchlist: boolean) => {
+          setHasBeenAdded(isOnWatchlist ?? false);
+        })
+        .catch(() => {
+          return;
+        });
     }
   }, [assetData.id, user]);
 
   const handleAddToWatchlist = (id: string, name: string) => {
     if (!user) {
-      addWatchlistToLocalStorage(id, name);
-      setIsModalOpen(true);
-      setHasBeenAdded(true);
-      return;
+      addWatchlistToLocalStorage(id, name)
+        .then(() => {
+          setIsModalOpen(true);
+          setHasBeenAdded(true);
+          return;
+        })
+        .catch(() => {
+          return;
+        });
     }
 
-    addToWatchlist({ id, name }).then((status) => {
-      setHasBeenAdded(hasBeenAddedWatchlist(status));
-    });
+    addToWatchlist({ id, name })
+      .then((status) => {
+        setHasBeenAdded(hasBeenAddedWatchlist(status));
+      })
+      .catch(() => {
+        return;
+      });
   };
 
   const handleRemoveFromWatchlist = (id: string, name: string) => {
     if (!user) {
-      removeWatchlistFromLocalStorage(id);
-      setHasBeenAdded(false);
-      return;
+      removeWatchlistFromLocalStorage(id)
+        .then(() => {
+          setHasBeenAdded(false);
+          return;
+        })
+        .catch(() => {
+          return;
+        });
     }
 
-    removeFromWatchlist({ id, name }).then(() => {
-      setHasBeenAdded(false);
-      return;
-    });
+    removeFromWatchlist({ id, name })
+      .then(() => {
+        setHasBeenAdded(false);
+        return;
+      })
+      .catch(() => {
+        return;
+      });
   };
 
   const details = parseAssetAttributes(assetData.attributes);

@@ -42,7 +42,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    refreshUser();
+    refreshUser().catch(() => {
+      return;
+    });
   }, [refreshUser]);
 
   const contextValue = useMemo(

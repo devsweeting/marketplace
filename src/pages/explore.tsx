@@ -57,7 +57,9 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadLatestDropAssets(1);
+      loadLatestDropAssets(1).catch(() => {
+        setAssets([]);
+      });
     }
   }, [isReady, loadLatestDropAssets]);
 
@@ -83,7 +85,9 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadAssets(1);
+      loadAssets(1).catch(() => {
+        setAssets([]);
+      });
     }
   }, [isReady, loadAssets]);
 
@@ -109,10 +113,26 @@ const ExplorePage: NextPage = () => {
       const newcheckedFilters = checkedFilters.filter(
         (filter: IFilter) => !(filter.categoryId === categoryId && filter.filterId === filterId),
       );
-      updateCheckedFilters(newcheckedFilters);
+      updateCheckedFilters(newcheckedFilters)
+        .catch(() => {
+          return;
+        })
+        .finally(() => {
+          loadAssets(1).catch(() => {
+            setAssets([]);
+          });
+        });
       return;
     }
-    updateCheckedFilters([...checkedFilters, { filterId, categoryId }]);
+    updateCheckedFilters([...checkedFilters, { filterId, categoryId }])
+      .catch(() => {
+        return;
+      })
+      .finally(() => {
+        loadAssets(1).catch(() => {
+          setAssets([]);
+        });
+      });
   };
 
   const clearAllSelectedFilters = () => {
@@ -126,7 +146,7 @@ const ExplorePage: NextPage = () => {
   };
 
   const handleRange = (id: string, val: any) => {
-    updateRangeFilters({
+    void updateRangeFilters({
       ...rangeFilters,
       [id]: { min: val[0], max: val[1] },
     });
@@ -249,7 +269,9 @@ const ExplorePage: NextPage = () => {
                   sx={{ marginTop: { xs: '36px', md: '95px' } }}
                   size="large"
                   onClick={() => {
-                    loadAssets((currentMeta?.currentPage ?? 0) + 1);
+                    loadAssets((currentMeta?.currentPage ?? 0) + 1).catch(() => {
+                      setAssets([]);
+                    });
                   }}
                 >
                   LOAD MORE

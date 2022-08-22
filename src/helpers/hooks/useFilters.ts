@@ -110,7 +110,7 @@ export const useFilters = () => {
       }
     }
 
-    router.push(
+    void router.push(
       {
         pathname: router.pathname,
         query: updatedQuery,
@@ -143,9 +143,29 @@ export const useFilters = () => {
   };
 
   const clearQueryFilters = () => {
-    updateCheckedFilters([]);
-    updateRangeFilters({});
-    router.push(
+    const updatedQuery = { ...query };
+    updateCheckedFilters([]).catch(() => {
+      void router.push(
+        {
+          pathname: router.pathname,
+          query: updatedQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
+    });
+
+    updateRangeFilters({}).catch(() => {
+      void router.push(
+        {
+          pathname: router.pathname,
+          query: updatedQuery,
+        },
+        undefined,
+        { shallow: true },
+      );
+    });
+    void router.push(
       {
         pathname: router.pathname,
         query: '',

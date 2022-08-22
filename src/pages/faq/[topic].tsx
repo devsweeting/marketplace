@@ -44,14 +44,33 @@ const FaqTopicPage = () => {
   const handleSelectChangeOnMobile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     findAnchorIndexMobile(value);
-    setRouterPath(value);
+    setRouterPath(value)
+      .then(() => {
+        setMobileAnchor(findAnchorIndexMobile(value));
+      })
+      .catch(() => {
+        setMobileAnchor(0);
+      })
+      .finally(() => {
+        setShowFixedDropdown(false);
+      });
+
     const topic = findTopicOnDesktop(value);
     topic && setActiveTopic(topic);
   };
 
   const changeTopicOnDekstop = (e: React.SyntheticEvent) => {
     const { id } = e.target as Element;
-    setRouterPath(id);
+    setRouterPath(id)
+      .then(() => {
+        setActiveTopic(findTopicOnDesktop(id));
+      })
+      .catch(() => {
+        setActiveTopic(articles[0]);
+      })
+      .finally(() => {
+        setShowFixedDropdown(false);
+      });
   };
 
   const findTopicOnDesktop = useCallback((urlParam: string | string[]) => {
