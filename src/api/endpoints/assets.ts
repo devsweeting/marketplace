@@ -55,6 +55,16 @@ export const latestDropAssets = async ({
 };
 
 export const getAssetById = async (id: string) => {
-  const response = await apiClient.get(`/assets/${id}`);
-  return response;
+  try {
+    const res = await apiClient.get(`/assets/${id}`);
+    if (res.status !== 200 || !res.data) {
+      return;
+    }
+    return res as unknown as Promise<{ data: IAsset }>;
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+
+    return;
+  }
 };
