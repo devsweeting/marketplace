@@ -33,7 +33,7 @@ const Login: NextPage = (user) => {
         localStorage.removeItem('watchList');
       })
       .catch(() => {
-        return Promise.reject(new Error('Could not add watchlist items'));
+        return;
       });
   }, [user]);
 
