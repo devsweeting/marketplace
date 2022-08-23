@@ -21,6 +21,8 @@ import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
 import { useModal } from '@/helpers/hooks/useModal';
+import { calcValuation } from '@/helpers/calcValuation';
+import { formatNumber } from '@/helpers/formatNumber';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
@@ -40,7 +42,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     },
     {
       value: sellOrderData?.fractionQtyAvailable ?? 0,
-      label: sellOrderData?.fractionQtyAvailable ?? 0,
+      label: formatNumber(sellOrderData?.fractionQtyAvailable ?? 0),
     },
   ];
 
@@ -130,7 +132,15 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               </Grid>
               <Grid item xs={5} sx={{ textAlign: 'right' }}>
                 <Typography className={classes.card_valuation}>Card Valuation</Typography>
-                <Typography variant="h3">$XX,XXX</Typography>
+                <Typography variant="h3">
+                  {'$' +
+                    formatNumber(
+                      calcValuation(
+                        sellOrderData?.fractionQty ?? 0,
+                        sellOrderData?.fractionPriceCents ?? 0,
+                      ),
+                    )}
+                </Typography>
               </Grid>
             </Grid>
 
@@ -149,7 +159,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
             </Box>
             <Typography className={classes.available_instances}>
               {sellOrderData?.fractionQtyAvailable
-                ? `${sellOrderData.fractionQtyAvailable} Fractions Available ( ${
+                ? `${formatNumber(sellOrderData.fractionQtyAvailable)} Fractions Available ( ${
                     getPercentClaimed(sellOrderData) + '%'
                   }
               )`
@@ -177,8 +187,10 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 <Box>
                   <Typography>Order Summary</Typography>
                   <Box sx={{ display: 'flex', marginTop: '10px' }}>
-                    <Typography>{sliderValue} fractions</Typography>
-                    <Typography sx={{ marginLeft: 'auto' }}>${totalPrice}</Typography>
+                    <Typography>{formatNumber(sliderValue)} fractions</Typography>
+                    <Typography sx={{ marginLeft: 'auto' }}>
+                      {'$' + formatNumber(totalPrice)}
+                    </Typography>
                   </Box>
 
                   <Button
