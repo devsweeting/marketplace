@@ -20,6 +20,8 @@ import { useEffect, useState } from 'react';
 import { useModal } from '@/helpers/hooks/useModal';
 import { useUser } from '@/helpers/hooks/useUser';
 import { Star } from '@mui/icons-material';
+import { calcValuation } from '@/helpers/calcValuation';
+import { formatNumber } from '@/helpers/formatNumber';
 
 export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   const sellOrderData = getMainSellOrder(assetData);
@@ -133,7 +135,15 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
                     <Box className={classes.cardPriceSection}>
                       <Box className={classes.CardPriceItem}>
                         <Typography>Valuation</Typography>
-                        <Typography className={classes.price}>$xxxx</Typography>
+                        <Typography className={classes.price}>
+                          {'$' +
+                            formatNumber(
+                              calcValuation(
+                                sellOrderData?.fractionQty ?? 0,
+                                sellOrderData?.fractionPriceCents ?? 0,
+                              ),
+                            )}
+                        </Typography>
                       </Box>
                       <Box className={classes.CardPriceItem}>
                         <Typography>Fraction Price</Typography>

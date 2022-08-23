@@ -3,6 +3,7 @@ import { Box, Typography, Card } from '@mui/material';
 import Image from 'next/image';
 import { useTrendingMarketCardStyles } from './TrendingMarketCard.styles';
 import type { IMarket } from '@/types/assetTypes';
+import { formatNumber } from '@/helpers/formatNumber';
 
 export const TrendingMarketCard = ({
   brand,
@@ -47,7 +48,7 @@ export const TrendingMarketCard = ({
           >
             {brand.value_dollars && (
               <Typography variant="h2" component="h4" className={classes.cardSubTitle}>
-                Valuation: {brand.value_dollars}
+                Valuation: {'$' + formatNumber(brand.value_dollars)}
               </Typography>
             )}
           </div>
