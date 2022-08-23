@@ -90,6 +90,9 @@ export const useAssetCardStyles = makeStyles((theme) => ({
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {},
   },
+  starWatchlisted: {
+    color: theme.palette.accent.main,
+  },
   soldOutWrapper: {
     position: 'absolute',
     zIndex: 1,

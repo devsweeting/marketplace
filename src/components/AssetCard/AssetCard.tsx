@@ -167,6 +167,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
                 onClick={() => {
                   handleRemoveFromWatchlist(assetData.id, assetData.name);
                 }}
+                className={classes.starWatchlisted}
               >
                 <Star />
               </IconButton>
