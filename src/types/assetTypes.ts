@@ -2,13 +2,14 @@ export interface IAsset {
   id: string;
   refId: string;
   name: string;
-  description: string;
   media: IMedia[];
-  attributes: IAttribute[];
-  slug: string;
-  createdAt: string;
-  updatedAt: string;
   sellOrders: ISellOrder[];
+  slug: string;
+  description: string;
+  updatedAt: string;
+  createdAt: string;
+  attributes: IAttribute[];
+  partner: string;
 }
 
 // TODO: Update this when data is available
@@ -25,12 +26,14 @@ export interface IAttribute {
 }
 
 export interface IMedia {
-  assetId: string;
+  id: string;
   title: string;
   description: string | null;
-  fileId: string;
-  sortOrder: number;
   absoluteUrl: string;
+  assetId: string;
+  fileId: string;
+  file: string;
+  sortOrder: number;
 }
 
 export interface IMeta {
@@ -77,7 +80,10 @@ export interface ISellOrder {
   userId: string;
   partnerId: string;
   fractionQty: number;
+  fractionQtyAvailable: number;
   fractionPriceCents: number;
   expireTime: number;
+  startTime: number;
   deletedTime: number;
+  type: string;
 }

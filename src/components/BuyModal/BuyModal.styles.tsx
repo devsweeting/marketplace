@@ -11,12 +11,12 @@ export const useBuyModalStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    marginTop: '10px',
+    marginTop: '40px',
     height: '43px',
-    marginLeft: '10px',
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     lineHeight: '0 !important',
+    textAlign: 'center',
 
     '@media (max-width:900px)': {
       marginTop: '5px',
@@ -99,15 +99,16 @@ export const useBuyModalStyles = makeStyles((theme) => ({
       margin: '10px',
     },
   },
+
+  title: {
+    color: 'black',
+    marginTop: '32px',
+    textAlign: 'center',
+  },
 }));
 
 export const modal = {
   transform: 'translate(-50%, -50%)',
   bgcolor: 'background.paper',
   p: 4,
-};
-
-export const title = {
-  color: 'black',
-  marginTop: '32px',
 };

@@ -21,8 +21,8 @@ export const Properties = ({ attributes }: { attributes: AttributeProps }) => {
       </Typography>
 
       <Grid container>
-        {attributes.map((attribute) => (
-          <PropertyBox attribute={attribute} key={attribute.trait} />
+        {attributes.map((attribute, index) => (
+          <PropertyBox attribute={attribute} key={attribute.trait + index} />
         ))}
       </Grid>
     </Box>

@@ -10,18 +10,22 @@ import {
   Slider,
   Typography,
 } from '@mui/material';
-
+import type { ISellOrder } from '@/types/assetTypes';
+import type { ITradePanel } from './ITradePanel';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { BuyModal } from '../BuyModal/BuyModal';
 import { useTradePanelStyles } from './TradePanel.styles';
 import { AssetGallery } from './Components/CardGallery';
-import type { ITradePanel } from './ITradePanel';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
-export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
-  const classes = useTradePanelStyles();
+import { useUser } from '@/helpers/hooks/useUser';
+import { useModal } from '@/helpers/hooks/useModal';
 
+export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
+  const classes = useTradePanelStyles();
+  const user = useUser();
+  const { setIsModalOpen } = useModal();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -35,11 +39,18 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
       label: '0',
     },
     {
-      value: sellOrderData?.fractionQty ?? 0,
-      label: sellOrderData?.fractionQty ?? 0,
+      value: sellOrderData?.fractionQtyAvailable ?? 0,
+      label: sellOrderData?.fractionQtyAvailable ?? 0,
     },
   ];
 
+  const getPercentClaimed = (sellOrderData: ISellOrder | undefined): number => {
+    const percentClaimed = sellOrderData
+      ? Math.floor((sellOrderData?.fractionQtyAvailable / sellOrderData?.fractionQty) * 10000) / 100
+      : 0;
+
+    return isNaN(percentClaimed) ? 100 : percentClaimed;
+  };
   const resetData = () => {
     setDisableBuyBTN(true);
     setTotalPrice(0);
@@ -48,7 +59,15 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
   };
 
   const handleOpenBuyModal = () => {
-    setBuyModalOpen(!buyModalOpen);
+    if (!user) {
+      setIsModalOpen(true);
+      return;
+    }
+    setBuyModalOpen(true);
+  };
+
+  const handleCloseBuyModal = () => {
+    setBuyModalOpen(false);
   };
 
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
@@ -69,6 +88,9 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
     }
     if (assetId !== asset.id) {
       resetData();
+    }
+    if (sellOrderData?.fractionQtyAvailable && sliderValue > sellOrderData?.fractionQtyAvailable) {
+      setSliderValue(sellOrderData.fractionQtyAvailable);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliderValue, disableBuyBTN, totalPrice, assetId, asset]);
@@ -113,16 +135,27 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
             </Grid>
 
             <Box className={classes.assetClaimedWrapper}>
-              <LinearProgress variant="determinate" value={25} className={classes.progressBar} />
+              <LinearProgress
+                variant="determinate"
+                value={100 - getPercentClaimed(sellOrderData)}
+                className={classes.progressBar}
+              />
               <Box className={classes.detailsInfo}>
-                <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>XX% Claimed</Typography>
+                <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
+                  {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
+                </Typography>
                 <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
               </Box>
             </Box>
             <Typography className={classes.available_instances}>
-              {sellOrderData?.fractionQty ?? 'No '} Fractions Available (XX%)
+              {sellOrderData?.fractionQtyAvailable
+                ? `${sellOrderData.fractionQtyAvailable} Fractions Available ( ${
+                    getPercentClaimed(sellOrderData) + '%'
+                  }
+              )`
+                : 'No Fractions Available'}
             </Typography>
-            {sellOrderData && (
+            {sellOrderData && !!sellOrderData?.fractionQtyAvailable && (
               <Box>
                 <Box sx={{ display: 'flex', marginTop: '20px' }}>
                   <Typography>Order Book</Typography>
@@ -130,7 +163,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
                 <Slider
                   defaultValue={0}
                   value={sliderValue}
-                  max={sellOrderData.fractionQty}
+                  max={sellOrderData.fractionQtyAvailable}
                   step={1}
                   valueLabelDisplay="auto"
                   onChange={handleSliderChange}
@@ -140,7 +173,7 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
               </Box>
             )}
             <Box sx={{ margin: '40px 0' }}>
-              {sellOrderData && (
+              {sellOrderData && !!sellOrderData?.fractionQtyAvailable && (
                 <Box>
                   <Typography>Order Summary</Typography>
                   <Box sx={{ display: 'flex', marginTop: '10px' }}>
@@ -156,13 +189,6 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
                   >
                     Buy Now
                   </Button>
-
-                  <BuyModal
-                    isOpen={buyModalOpen}
-                    onClose={handleOpenBuyModal}
-                    fractions={sliderValue}
-                    totalPrice={totalPrice}
-                  />
                 </Box>
               )}
               <Typography sx={{ padding: '10px 0', marginTop: '20px' }}>Card details</Typography>
@@ -188,6 +214,16 @@ export const TradePanel = ({ asset, open, handleClose }: ITradePanel) => {
           </Box>
         </Drawer>
       </DialogContent>
+      {sellOrderData && (
+        <BuyModal
+          isOpen={buyModalOpen}
+          onClose={handleCloseBuyModal}
+          sellOrder={sellOrderData}
+          totalFractions={sliderValue}
+          totalPrice={totalPrice}
+          updateAsset={updateAsset}
+        />
+      )}
     </Box>
   );
 };

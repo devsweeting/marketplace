@@ -5,7 +5,7 @@ import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey } from '
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
-import { loadListAssetByPage, latestDropAssets } from '@/api/endpoints/assets';
+import { loadListAssetByPage, latestDropAssets, getAssetById } from '@/api/endpoints/assets';
 import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
@@ -20,7 +20,6 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
-
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
@@ -29,7 +28,7 @@ const ExplorePage: NextPage = () => {
 
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState<IAsset | undefined>();
+  const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const searchQuery = query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
   const {
@@ -62,6 +61,12 @@ const ExplorePage: NextPage = () => {
       });
     }
   }, [isReady, loadLatestDropAssets]);
+
+  useEffect(() => {
+    if (tradePanelData) {
+      setTradePanelData(assets[assets.findIndex((asset) => asset.id === tradePanelData.id)]);
+    }
+  }, [assets, tradePanelData]);
 
   const loadAssets = useCallback(
     async (page = 1) => {
@@ -159,11 +164,11 @@ const ExplorePage: NextPage = () => {
 
   const handleDrawer = (asset: IAsset) => {
     if (!isOpen) {
-      setIsOpen(!isOpen);
-    } else if (isOpen && data && asset.id === data.id) {
-      setIsOpen(!isOpen);
+      setIsOpen(true);
+    } else if (isOpen && tradePanelData && asset.id === tradePanelData.id) {
+      setIsOpen(false);
     }
-    setData(asset);
+    setTradePanelData(asset);
   };
 
   const filterProps = {
@@ -185,6 +190,23 @@ const ExplorePage: NextPage = () => {
   if (!ready) {
     return null;
   }
+
+  const updateAsset = (assetId: string): void => {
+    getAssetById(assetId)
+      .then((asset) => {
+        if (!asset) {
+          return;
+        }
+        const newAssetData = asset.data;
+        const tempAssets = assets;
+        tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;
+        setAssets(tempAssets);
+        setTradePanelData(newAssetData);
+      })
+      .catch(() => {
+        return;
+      });
+  };
 
   return (
     <ClientOnly>
@@ -259,7 +281,7 @@ const ExplorePage: NextPage = () => {
                 <AssetListView
                   handleDrawer={handleDrawer}
                   assets={assets}
-                  activeCardId={isOpen ? data?.id : ''}
+                  activeCardId={isOpen ? tradePanelData?.id : ''}
                 />
               )}
             </Grid>
@@ -298,10 +320,11 @@ const ExplorePage: NextPage = () => {
             </Grid>
           </Box>
         </Grid>
-        {data && (
+        {tradePanelData && (
           <TradePanel
+            updateAsset={updateAsset}
             open={isOpen}
-            asset={data}
+            asset={tradePanelData}
             handleClose={() => {
               setIsOpen(!isOpen);
             }}

@@ -3,19 +3,56 @@ import { themeJump } from '@/styles/themeJump';
 import { ThemeProvider } from '@mui/styles';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import user from '@testing-library/user-event';
-import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
+import {
+  mockAssetNoImage,
+  mockAssetResponse,
+  mockAssetSoldOut,
+} from '@/__mocks__/mockAssetResponse';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
+import type { IUser } from '@/types/user';
+import user from '@testing-library/user-event';
 
-const handleClose = jest.fn();
+import { UserContext } from '@/helpers/auth/UserContext';
 
-const data = mockAssetResponse.items[0];
+const mockHandleClose = jest.fn();
+const mockUpdateAsset = jest.fn();
+const mockUserContextFunctions = jest.fn();
+
+const data: IAsset = mockAssetResponse.items[0];
+const mockUser = { id: 'asdf', email: 'example@example.com' };
+
 const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <TradePanel asset={asset} open={true} handleClose={handleClose} />
+      <TradePanel
+        asset={asset}
+        open={true}
+        handleClose={mockHandleClose}
+        updateAsset={mockUpdateAsset}
+      />
+    </ThemeProvider>
+  );
+};
+
+const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser }) => {
+  return (
+    <ThemeProvider theme={themeJump}>
+      <UserContext.Provider
+        value={{
+          user: user,
+          refreshUser: mockUserContextFunctions,
+          logout: mockUserContextFunctions,
+        }}
+      >
+        <TradePanel
+          asset={asset}
+          open={true}
+          handleClose={mockHandleClose}
+          updateAsset={mockUpdateAsset}
+        />
+      </UserContext.Provider>
     </ThemeProvider>
   );
 };
@@ -63,13 +100,13 @@ describe('TradePanel', () => {
 
     await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
     const totalPrice = screen.getByText(
-      `$${(data.sellOrders[0].fractionPriceCents * data.sellOrders[0].fractionQty) / 100}`,
+      `$${(data.sellOrders[0].fractionPriceCents * data.sellOrders[0].fractionQtyAvailable) / 100}`,
     );
     expect(totalPrice).toBeInTheDocument();
   });
 
   test('should allow user to buy share', async () => {
-    render(<MockTradePanel asset={data} />);
+    render(<MockTradePanelWithUser asset={data} user={mockUser} />);
     const slider = screen.getByRole('slider');
     const buyBtn = screen.getByRole('button', { name: /buy/i });
     expect(buyBtn).toBeDisabled;
@@ -89,11 +126,54 @@ describe('TradePanel', () => {
     await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
     expect(buyBtn).not.toBeDisabled();
     await user.click(buyBtn);
-    const buyModal = screen.getByRole('tabpanel');
-    expect(buyModal).toBeInTheDocument();
-  });
-});
 
-test('should reset if the card data changes', async () => {
-  test.todo;
+    const closeBtn = screen.getByRole('button', { name: /cancel/i });
+    await user.click(closeBtn);
+  });
+
+  test('should reset if the card data changes', async () => {
+    const { rerender } = render(<MockTradePanel asset={data} />);
+    const slider = screen.getByRole('slider');
+    const buyBtn = screen.getByRole('button', { name: /buy/i });
+    const cardName = screen.getByText(data.name);
+    expect(buyBtn).toBeDisabled;
+    // mock the getBoundingClientRect
+    slider.getBoundingClientRect = jest.fn(() => {
+      return {
+        bottom: 286.22918701171875,
+        height: 28,
+        left: 19.572917938232422,
+        right: 583.0937919616699,
+        top: 258.22918701171875,
+        width: 563.5208740234375,
+        x: 19.572917938232422,
+        y: 258.22918701171875,
+      };
+    }) as unknown as () => DOMRect;
+    await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
+    expect(buyBtn).not.toBeDisabled();
+    expect(cardName).toBeInTheDocument();
+
+    rerender(<MockTradePanel asset={mockAssetResponse.items[1]} />);
+    const newCardName = screen.getByText(mockAssetResponse.items[1].name);
+    expect(buyBtn).toBeDisabled();
+    expect(newCardName).toBeInTheDocument();
+  });
+
+  test('should not display slider or buy button if available fractions is 0', () => {
+    render(<MockTradePanel asset={mockAssetSoldOut} />);
+    const slider = screen.queryByRole('slider');
+    const buyBtn = screen.queryByRole('button', { name: /buy/i });
+    const fractionAvailability = screen.getByText(/No Fractions Available/i);
+
+    expect(slider).toBeNull;
+    expect(buyBtn).toBeNull;
+    expect(fractionAvailability).toBeInTheDocument();
+  });
+
+  test('should not display image if image is null', () => {
+    render(<MockTradePanel asset={mockAssetNoImage as unknown as IAsset} />);
+    const img = screen.queryByRole('img');
+    expect(img).toBeNull();
+  });
 });
