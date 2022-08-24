@@ -24,12 +24,14 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
+import type { ParsedUrlQuery } from 'querystring';
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
+  const [queryParams, setQueryParams] = useState<ParsedUrlQuery | undefined>(() => query);
 
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
@@ -183,6 +185,12 @@ const ExplorePage: NextPage = () => {
   };
 
   const handleApplyBrandFilter = (filter: string) => {
+    setQueryParams(() => {
+      if (isReady) {
+        return query;
+      }
+    });
+    console.log(queryParams);
     const filterValue = filter.split('=')?.[1];
     if (!checkedFilters.some((filter) => filter.categoryId === 'brand')) {
       if (!checkedFilters.some((filter) => filter.filterId === filterValue)) {
