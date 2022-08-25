@@ -28,6 +28,7 @@ export const useFilters = () => {
 
   const checkedFilters: IFilter[] = [];
   const rangeFiltersObj: RangeFilters = {};
+  const brandFilters: IFilter[] = [];
 
   for (const [key, value] of Object.entries(query)) {
     if (key.startsWith('attr_eq')) {
@@ -56,6 +57,12 @@ export const useFilters = () => {
     () => checkedFilters,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [checkedFilters.map((item) => `${item.categoryId}-${item.filterId}`).join('')],
+  );
+
+  const brandFiltersMemo = useMemo(
+    () => brandFilters,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [brandFilters.map((item) => `${item.categoryId}-${item.filterId}`).join('')],
   );
   const rangeFiltersMemo = useMemo(
     () => {
@@ -100,11 +107,42 @@ export const useFilters = () => {
     );
   };
 
-  const clearTrendingFilters = () => {
+  const updateBrandFilters = async (newBrandFilters: IFilter[]) => {
+    const updatedQuery = { ...query };
+
+    for (const key of Object.keys(updatedQuery)) {
+      if (key.startsWith('attr_eq[brand]')) {
+        delete updatedQuery[key];
+      }
+    }
+
+    for (const filter of newBrandFilters) {
+      const key = `attr_eq[${filter.categoryId}]`;
+
+      const currentFilters = updatedQuery[key];
+      const filters = [filter.filterId];
+
+      if (Array.isArray(currentFilters)) {
+        filters.push(...currentFilters);
+      }
+
+      updatedQuery[key] = filters;
+    }
+    return router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
+
+  const clearTrendingFilter = (filterValue: string) => {
     const updatedQuery = { ...query };
     if (Object.keys(updatedQuery).length > 0) {
-      for (const key of Object.keys(updatedQuery)) {
-        if (key.startsWith('attr_eq[brand]')) {
+      for (const [key, value] of Object.entries(updatedQuery)) {
+        if (key.startsWith('attr_eq[brand]') && value === filterValue) {
           delete updatedQuery[key];
           return router.push(
             {
@@ -199,9 +237,11 @@ export const useFilters = () => {
   return {
     checkedFilters: checkedFiltersMemo,
     rangeFilters: rangeFiltersMemo,
+    brandFilters: brandFiltersMemo,
     updateCheckedFilters,
     updateRangeFilters,
-    clearTrendingFilters,
+    updateBrandFilters,
+    clearTrendingFilter,
     clearQueryFilters,
     clearRangeFilters,
   };

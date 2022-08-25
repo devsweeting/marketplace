@@ -39,15 +39,17 @@ const ExplorePage: NextPage = () => {
   const {
     checkedFilters,
     rangeFilters,
+    brandFilters,
     updateCheckedFilters,
     updateRangeFilters,
-    clearTrendingFilters,
+    clearTrendingFilter,
+    updateBrandFilters,
     clearQueryFilters,
     clearRangeFilters,
   } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
-    Grade: !Object.keys(query).some((key) => key.includes('Grade')) ? false : true,
-    Year: !Object.keys(query).some((key) => key.includes('Grade')) ? false : true,
+    Grade: !Object.keys(query).some((key) => key.includes('Grade')) ? true : false,
+    Year: !Object.keys(query).some((key) => key.includes('Year')) ? true : false,
   });
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const classes = useExplorePageStyles();
@@ -62,11 +64,12 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadLatestDropAssets(1).catch(() => {
-        setAssets([]);
+      setDisabledRanges({
+        Grade: !Object.keys(query).some((key) => key.includes('Grade')) ? true : false,
+        Year: !Object.keys(query).some((key) => key.includes('Year')) ? true : false,
       });
     }
-  }, [isReady, loadLatestDropAssets]);
+  }, [isReady, query]);
 
   useEffect(() => {
     if (tradePanelData) {
@@ -181,21 +184,19 @@ const ExplorePage: NextPage = () => {
   };
 
   const handleApplyBrandFilter = (filter: string) => {
-    const filterValue = filter.split('=')?.[1];
-    if (!checkedFilters.some((filter) => filter.categoryId === 'brand')) {
-      if (!checkedFilters.some((filter) => filter.filterId === filterValue)) {
-        void updateCheckedFilters([
-          ...checkedFilters,
-          { filterId: filterValue, categoryId: 'brand' },
-        ]);
+    if (Object.keys(filter).length) {
+      const filterValue = filter.split('=')?.[1];
+      if (
+        !brandFilters.some((filter) => filter.filterId === filterValue) &&
+        !brandFilters.some((filter) => filter.categoryId === 'brand')
+      ) {
+        void updateBrandFilters([{ filterId: filterValue, categoryId: 'brand' }]);
       }
-      const index = checkedFilters.map((object) => object.filterId).indexOf(filterValue);
-      if (index !== -1) {
-        checkedFilters[index].filterId = filterValue;
+      if (filterValue) {
+        void clearTrendingFilter(filterValue);
       }
     }
-
-    void clearTrendingFilters();
+    return;
   };
 
   const filterProps = {
