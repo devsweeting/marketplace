@@ -1,4 +1,5 @@
 import { makeStyles } from '@mui/styles';
+import { lighten } from '@mui/material';
 
 export const useTrendingMarketCardStyles = makeStyles((theme) => ({
   marketCardContainer: {
@@ -24,6 +25,11 @@ export const useTrendingMarketCardStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     margin: '10px 25px',
     [theme.breakpoints.down('sm')]: { width: '235px', margin: ' 5px 17px' },
+  },
+
+  active: {
+    backgroundColor: lighten(theme.palette.primary.main, 0.9),
+    transition: 'background-color 300ms ease-in',
   },
 
   cardTitle: {

@@ -7,23 +7,31 @@ import { formatNumber } from '@/helpers/formatNumber';
 
 export const TrendingMarketCard = ({
   brand,
-  handleApplyBrandFilter,
+  onClick,
   tabIndex,
+  activeCard,
 }: {
   brand: IMarket;
-  handleApplyBrandFilter?: (filter: string) => void;
+  onClick: () => void;
   tabIndex?: number;
+  activeCard?: string;
 }) => {
   const classes = useTrendingMarketCardStyles();
-  if (!handleApplyBrandFilter) return null;
+
+  if (!onClick) return null;
   return (
     <Box
       className={classes.marketCardContainer}
       id={'marketCard'}
       tabIndex={tabIndex}
-      onClick={() => handleApplyBrandFilter(brand.filter)}
+      onClick={() => {
+        onClick();
+      }}
     >
-      <Card variant="outlined" className={classes.card}>
+      <Card
+        variant="outlined"
+        className={`${classes.card} ${activeCard === brand.brand ? classes.active : ''}`}
+      >
         <Box className={classes.assetImageInnerContainer}>
           {/* TODO: Update this when data is available */}
           <Image

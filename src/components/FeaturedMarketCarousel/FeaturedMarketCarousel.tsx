@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useWindowDimensions } from '@/helpers/hooks/useWindowDimensions';
 import { useFeaturedMarketCarouselStyles } from './FeaturedMarketCarousel.styles';
 import { Box, Grid, Typography } from '@mui/material';
@@ -14,17 +14,24 @@ export const FeaturedMarketCarousel = ({
   title,
   handleDrawer,
   handleApplyBrandFilter,
+  isBrandCardActive,
 }: {
   assets: IAsset[] | IMarket[];
   title: string;
   handleDrawer?: (asset: IAsset) => void;
   handleApplyBrandFilter?: (string: string) => void;
+  isBrandCardActive?: boolean;
 }) => {
   const classes = useFeaturedMarketCarouselStyles();
   const scroll = useRef<HTMLDivElement>(null);
   const { width } = useWindowDimensions();
   const [scrollX, setScrollX] = useState(0);
   const [scrollEnd, setScrollEnd] = useState(false);
+  const [clickedCard, setClickedCard] = useState('');
+
+  useEffect(() => {
+    isBrandCardActive;
+  }, [isBrandCardActive]);
 
   const slide = (shift: number) => {
     if (scroll.current) {
@@ -132,9 +139,14 @@ export const FeaturedMarketCarousel = ({
               ))
             : assets.map((card: any, index: number) => (
                 <TrendingMarketCard
-                  handleApplyBrandFilter={handleApplyBrandFilter}
+                  onClick={() => {
+                    setClickedCard(card.brand);
+
+                    handleApplyBrandFilter && handleApplyBrandFilter(card.filter);
+                  }}
+                  activeCard={isBrandCardActive ? clickedCard : ''}
                   brand={card}
-                  key={index}
+                  key={card.brand}
                   tabIndex={index}
                 />
               ))}

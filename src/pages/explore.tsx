@@ -30,6 +30,7 @@ const ExplorePage: NextPage = () => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
+  const [isBrandCardActive, setIsBrandCardActive] = useState<boolean>(false);
 
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
@@ -191,6 +192,7 @@ const ExplorePage: NextPage = () => {
         !brandFilters.some((filter) => filter.categoryId === 'brand')
       ) {
         void updateBrandFilters([{ filterId: filterValue, categoryId: 'brand' }]);
+        setIsBrandCardActive(!isBrandCardActive);
       }
       if (filterValue) {
         void clearTrendingFilter(filterValue);
@@ -249,6 +251,7 @@ const ExplorePage: NextPage = () => {
           />
           <FeaturedMarketCarousel
             handleApplyBrandFilter={handleApplyBrandFilter}
+            isBrandCardActive={isBrandCardActive}
             assets={trendingMarket}
             title={'Trending Markets'}
           />
