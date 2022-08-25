@@ -76,9 +76,11 @@ export const RangeFilter = ({
     switch (name) {
       case 'min':
         setMin(value);
+        setValue([min, max]);
         return;
       case 'max':
         setMax(value);
+        setValue([min, max]);
         return;
       default:
         setValue([min, max]);

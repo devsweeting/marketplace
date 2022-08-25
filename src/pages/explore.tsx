@@ -46,8 +46,8 @@ const ExplorePage: NextPage = () => {
     clearRangeFilters,
   } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
-    Grade: !Object.keys(query).map((key) => key.includes('Grade')) ? false : true,
-    Year: !Object.keys(query).map((key) => key.includes('Year')) ? false : true,
+    Grade: !Object.keys(query).some((key) => key.includes('Grade')) ? false : true,
+    Year: !Object.keys(query).some((key) => key.includes('Grade')) ? false : true,
   });
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const classes = useExplorePageStyles();

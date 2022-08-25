@@ -59,7 +59,6 @@ export const useFilters = () => {
   );
   const rangeFiltersMemo = useMemo(
     () => {
-      console.log(rangeFiltersObj, 'called memo');
       return rangeFiltersObj;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -153,7 +152,7 @@ export const useFilters = () => {
       updatedQuery[`attr_gte[${key}]`] = range.min;
       updatedQuery[`attr_lte[${key}]`] = range.max;
     }
-    console.log(updatedQuery, 'rangefilter');
+
     return router.push(
       {
         pathname: router.pathname,
