@@ -154,7 +154,9 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
                   {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
                 </Typography>
-                <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
+                {sellOrderData?.type === 'drop' && (
+                  <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
+                )}
               </Box>
             </Box>
             <Typography className={classes.available_instances}>

@@ -84,4 +84,6 @@ export interface ISellOrder {
   startTime: number;
   deletedTime: number;
   type: string;
+  userFractionLimit: number | null;
+  userFractionLimitEndTime: string | null;
 }
