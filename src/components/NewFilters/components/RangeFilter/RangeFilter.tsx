@@ -1,7 +1,7 @@
 import { Box, TextField, Typography } from '@mui/material';
 import Popover from '@mui/material/Popover';
 import { Button } from '@/components/Button';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRangeStyles } from './RangeFilter.styles';
 import type { DisabledRanges, DisabledRangesKey, RangeFilters } from '@/types/assetTypes';
 import { useRouter } from 'next/router';
@@ -31,7 +31,7 @@ export const RangeFilter = ({
         range: string[];
         filters?: undefined;
       };
-  handleRange: (id: string, val: number[]) => void;
+  handleRange: (id: string, val: any) => void;
   removeFilterRange: (id: string) => void;
   filterRanges: RangeFilters;
   disabledRanges: DisabledRanges;
@@ -44,23 +44,22 @@ export const RangeFilter = ({
   let rangeMax;
   if (Object.keys(query).length > 0) {
     for (const [key, range] of Object.entries(query)) {
-      if (key.startsWith('attr_gte') && range) {
-        rangeMin = parseInt(range as string);
+      if (key.startsWith(`attr_gte[${filter.categoryId}]`) && range) {
+        rangeMin = range;
       }
-      if (key.startsWith('attr_lte') && range) {
-        rangeMax = parseInt(range as string);
+      if (key.startsWith(`attr_lte[${filter.categoryId}]`) && range) {
+        rangeMax = range;
       }
     }
   }
 
-  const [min, setMin] = useState<number>(rangeMin ? rangeMin : Number(filter.range?.[0]));
-  const [max, setMax] = useState<number>(
-    rangeMax ? rangeMax : Number(filter.range?.[filter.range?.length - 1]),
-  );
-  const [value, setValue] = useState<number[]>([
-    rangeMin ? rangeMin : min,
-    rangeMax ? rangeMax : max,
-  ]);
+  const [min, setMin] = useState(rangeMin ? rangeMin : filter.range?.[0]);
+  const [max, setMax] = useState(rangeMax ? rangeMax : filter.range?.[filter.range?.length - 1]);
+  const [value, setValue] = useState([rangeMin ? rangeMin : min, rangeMax ? rangeMax : max]);
+
+  useEffect(() => {
+    setValue([min, max]);
+  }, [max, min]);
 
   const handleApplyClick = () => {
     setValue([min, max]);
@@ -72,31 +71,20 @@ export const RangeFilter = ({
     removeFilterRange(filter.categoryId);
     handleDisabled(filter.categoryId as DisabledRangesKey);
   };
-  const handleChange = useCallback(
-    (event: { target: { name: string; value: string } }) => {
-      const { name, value } = event.target;
-      switch (name) {
-        case 'min':
-          setMin(parseInt(value));
-          return;
-        case 'max':
-          setMax(parseInt(value));
-          return;
-        default:
-          setValue([min, max]);
-          break;
-      }
-    },
-    [max, min],
-  );
-
-  useEffect(() => {
-    !disabledRanges[filter.categoryId] && handleRange(filter.categoryId, value);
-  }, [disabledRanges, filter.categoryId, value]);
-
-  // useEffect(() => {
-  //   setValue([min, max]);
-  // }, [max, min]);
+  const handleChange = (event: { target: { name: string; value: string } }) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'min':
+        setMin(value);
+        return;
+      case 'max':
+        setMax(value);
+        return;
+      default:
+        setValue([min, max]);
+        break;
+    }
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -105,7 +93,7 @@ export const RangeFilter = ({
   const handleClose = () => {
     setAnchorEl(null);
     setValue([min, max]);
-    handleRange(filter.categoryId, value);
+    !disabledRanges[filter.categoryId] && handleRange(filter.categoryId, value);
   };
   const open = Boolean(anchorEl);
   const id = open ? `${filter.categoryId}` : undefined;
@@ -145,15 +133,14 @@ export const RangeFilter = ({
               type="number"
               value={min}
               onChange={handleChange}
-              defaultValue="Small"
               label="Min"
               name="min"
               variant="outlined"
               size="small"
               InputProps={{
                 inputProps: {
-                  min: Number(filter.range?.[0]),
-                  max: Number(filter.range?.[filter.range?.length - 2]),
+                  min: filter.range?.[0],
+                  max: filter.range?.[filter.range?.length - 2],
                   step: 1,
                 },
               }}
@@ -164,14 +151,13 @@ export const RangeFilter = ({
               value={max}
               onChange={handleChange}
               name="max"
-              defaultValue="Small"
               label="Max"
               variant="outlined"
               size="small"
               InputProps={{
                 inputProps: {
-                  min: Number(filter.range?.[0]),
-                  max: Number(filter.range?.[filter.range?.length - 1]),
+                  min: filter.range?.[0],
+                  max: filter.range?.[filter.range?.length - 1],
                   step: 1,
                 },
               }}

@@ -24,14 +24,12 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
-import type { ParsedUrlQuery } from 'querystring';
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-  const [queryParams, setQueryParams] = useState<ParsedUrlQuery | undefined>(() => query);
 
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
@@ -48,8 +46,8 @@ const ExplorePage: NextPage = () => {
     clearRangeFilters,
   } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
-    Grade: true,
-    Year: true,
+    Grade: !Object.keys(query).map((key) => key.includes('Grade')) ? false : true,
+    Year: !Object.keys(query).map((key) => key.includes('Year')) ? false : true,
   });
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const classes = useExplorePageStyles();
@@ -103,18 +101,17 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadTrendingMarkets();
-      loadAssets(1);
-      loadLatestDropAssets();
+      loadTrendingMarkets().catch(() => {
+        setTrendingMarket([]);
+      });
+      loadAssets(1).catch(() => {
+        setAssets([]);
+      });
+      loadLatestDropAssets().catch(() => {
+        setDropAssets([]);
+      });
     }
   }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets]);
-
-  useEffect(() => {
-    setDisabledRanges({
-      Grade: !Object.keys(rangeFilters).includes('Grade'),
-      Year: !Object.keys(rangeFilters).includes('Year'),
-    });
-  }, [rangeFilters]);
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -158,7 +155,6 @@ const ExplorePage: NextPage = () => {
     setDisabledRanges({ Grade: true, Year: true });
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDisabled = (key: DisabledRangesKey) => {
     setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key] });
   };
@@ -185,16 +181,13 @@ const ExplorePage: NextPage = () => {
   };
 
   const handleApplyBrandFilter = (filter: string) => {
-    setQueryParams(() => {
-      if (isReady) {
-        return query;
-      }
-    });
-    console.log(queryParams);
     const filterValue = filter.split('=')?.[1];
     if (!checkedFilters.some((filter) => filter.categoryId === 'brand')) {
       if (!checkedFilters.some((filter) => filter.filterId === filterValue)) {
-        updateCheckedFilters([...checkedFilters, { filterId: filterValue, categoryId: 'brand' }]);
+        void updateCheckedFilters([
+          ...checkedFilters,
+          { filterId: filterValue, categoryId: 'brand' },
+        ]);
       }
       const index = checkedFilters.map((object) => object.filterId).indexOf(filterValue);
       if (index !== -1) {
@@ -202,7 +195,7 @@ const ExplorePage: NextPage = () => {
       }
     }
 
-    clearTrendingFilters();
+    void clearTrendingFilters();
   };
 
   const filterProps = {
