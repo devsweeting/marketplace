@@ -30,7 +30,7 @@ const ExplorePage: NextPage = () => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-  const [isBrandCardActive, setIsBrandCardActive] = useState<boolean>(false);
+  const [activeBrandCard, setActiveBrandCard] = useState<string>('');
 
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
@@ -157,6 +157,7 @@ const ExplorePage: NextPage = () => {
   const clearAllSelectedFilters = () => {
     clearQueryFilters();
     setDisabledRanges({ Grade: true, Year: true });
+    setActiveBrandCard('');
   };
 
   const handleDisabled = (key: DisabledRangesKey) => {
@@ -184,7 +185,7 @@ const ExplorePage: NextPage = () => {
     setTradePanelData(asset);
   };
 
-  const handleApplyBrandFilter = (filter: string) => {
+  const handleApplyBrandFilter = (filter: string, brand: IMarket) => {
     if (Object.keys(filter).length) {
       const filterValue = filter.split('=')?.[1];
       if (
@@ -192,11 +193,13 @@ const ExplorePage: NextPage = () => {
         !brandFilters.some((filter) => filter.categoryId === 'brand')
       ) {
         void updateBrandFilters([{ filterId: filterValue, categoryId: 'brand' }]);
-        setIsBrandCardActive(!isBrandCardActive);
+        setActiveBrandCard(brand.brand);
       }
-      if (filterValue) {
-        void clearTrendingFilter(filterValue);
-      }
+      clearTrendingFilter(filterValue)
+        ?.then(() => setActiveBrandCard(''))
+        .catch(() => {
+          return;
+        });
     }
     return;
   };
@@ -251,7 +254,7 @@ const ExplorePage: NextPage = () => {
           />
           <FeaturedMarketCarousel
             handleApplyBrandFilter={handleApplyBrandFilter}
-            isBrandCardActive={isBrandCardActive}
+            activeBrandCard={activeBrandCard}
             assets={trendingMarket}
             title={'Trending Markets'}
           />
