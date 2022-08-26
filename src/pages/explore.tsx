@@ -73,10 +73,10 @@ const ExplorePage: NextPage = () => {
   }, [isReady, query]);
 
   useEffect(() => {
-    if (tradePanelData) {
-      setTradePanelData(assets[assets.findIndex((asset) => asset.id === tradePanelData.id)]);
+    if (!assets.length && !dropAssets.length) {
+      setIsOpen(false);
     }
-  }, [assets, tradePanelData]);
+  }, [assets, dropAssets]);
 
   const loadAssets = useCallback(
     async (page = 1) => {
