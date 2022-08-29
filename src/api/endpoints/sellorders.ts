@@ -21,7 +21,7 @@ export const getSellOrderById = async (id: string) => {
  * @param id Id of the sell order
  * @returns object
  */
-export const checkNumSellordersUserCanBuy = async (id: string) => {
+export const getNumSellordersUserCanBuy = async (id: string) => {
   const response = await apiClient.get(`/sellorders/${id}/check`);
   return response;
 };

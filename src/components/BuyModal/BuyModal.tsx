@@ -42,22 +42,27 @@ export const BuyModal = ({
   };
 
   const handleBuyFractions = async () => {
-    const response = await purchaseSellOrder(
+    const response: any = await purchaseSellOrder(
       sellOrder.id,
       totalFractions,
       sellOrder.fractionPriceCents,
     );
     updateAsset(sellOrder.assetId);
-
-    if (response.status === StatusCodes.CREATED) {
-      setValue(1);
-    } else {
-      if (response.status === StatusCodes.UNAUTHORIZED) {
-        setAlertMessage('Please login to buy assets ');
-      } else {
+    switch (response.status) {
+      case StatusCodes.CREATED:
+        setValue(1);
+        break;
+      case StatusCodes.BAD_REQUEST:
+        setAlertMessage('You cannot purchase any more of this item at this time.');
+        if (response.data.message === 'USER_CANNOT_PURCHASE_OWN_ORDER') {
+          setAlertMessage('You cannot purchase your own order.');
+        }
+        setValue(2);
+        break;
+      default:
         setAlertMessage('Something went wrong.');
-      }
-      setValue(2);
+        setValue(2);
+        break;
     }
   };
   const handleClose = () => {

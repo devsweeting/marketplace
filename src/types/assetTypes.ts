@@ -72,6 +72,10 @@ export type DisabledRangesKey = keyof DisabledRanges;
 
 export type RangeFilters = Record<string, IRange> | null;
 
+export interface IUserBuyLimit {
+  fractionsAvailableToPurchase: number;
+  fractionsPurchased: number;
+}
 export interface ISellOrder {
   id: string;
   assetId: string;

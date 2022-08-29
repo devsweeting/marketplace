@@ -10,7 +10,7 @@ import {
   Slider,
   Typography,
 } from '@mui/material';
-import type { ISellOrder } from '@/types/assetTypes';
+import type { ISellOrder, IUserBuyLimit } from '@/types/assetTypes';
 import type { ITradePanel } from './ITradePanel';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
@@ -23,6 +23,9 @@ import { useUser } from '@/helpers/hooks/useUser';
 import { useModal } from '@/helpers/hooks/useModal';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
+import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
+import { StatusCodes } from 'http-status-codes';
+import { convertTimeDiffToHHMMSS } from '@/helpers/time';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
@@ -34,6 +37,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
+  const [buyLimit, setBuyLimit] = useState<number>(1);
 
   const marks = [
     {
@@ -41,8 +45,8 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       label: '0',
     },
     {
-      value: sellOrderData?.fractionQtyAvailable ?? 0,
-      label: formatNumber(sellOrderData?.fractionQtyAvailable ?? 0),
+      value: buyLimit,
+      label: formatNumber(buyLimit),
     },
   ];
 
@@ -81,6 +85,45 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       );
     }
   };
+
+  const getUserBuyLimit = async (sellOrderData: ISellOrder | undefined) => {
+    if (!sellOrderData) {
+      return 0;
+    }
+    let userBuyLimit = sellOrderData.fractionQtyAvailable ?? 0;
+    if (
+      sellOrderData?.type === 'drop' &&
+      new Date(sellOrderData.userFractionLimitEndTime ?? 0) > new Date()
+    ) {
+      userBuyLimit = sellOrderData.userFractionLimit ?? 0;
+
+      if (!user) {
+        return userBuyLimit;
+      }
+
+      await getNumSellordersUserCanBuy(sellOrderData.id)
+        .then((res) => {
+          if (res.status === StatusCodes.OK) {
+            const data = res.data as unknown as IUserBuyLimit;
+            return (userBuyLimit = data?.fractionsAvailableToPurchase ?? 0);
+          } else {
+            return (userBuyLimit = 0);
+          }
+        })
+        .catch();
+    }
+    return userBuyLimit;
+  };
+
+  const handleUpdateBuyLimit = async () => {
+    const userBuyLimit = await getUserBuyLimit(sellOrderData);
+    setBuyLimit(userBuyLimit);
+  };
+
+  useEffect(() => {
+    void handleUpdateBuyLimit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sellOrderData]);
 
   useEffect(() => {
     if ((sliderValue as number) < 1) {
@@ -154,9 +197,13 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
                   {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
                 </Typography>
-                {sellOrderData?.type === 'drop' && (
-                  <Typography sx={{ fontSize: '10px' }}>Buy more fractions in HH:MM:SS</Typography>
-                )}
+                {sellOrderData?.type === 'drop' &&
+                  sellOrderData?.userFractionLimitEndTime !== null && (
+                    <Typography sx={{ fontSize: '10px' }}>
+                      Buy more fractions in{' '}
+                      {convertTimeDiffToHHMMSS(new Date(), sellOrderData.userFractionLimitEndTime)}{' '}
+                    </Typography>
+                  )}
               </Box>
             </Box>
             <Typography className={classes.available_instances}>
@@ -175,7 +222,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 <Slider
                   defaultValue={0}
                   value={sliderValue}
-                  max={sellOrderData.fractionQtyAvailable}
+                  max={buyLimit}
                   step={1}
                   valueLabelDisplay="auto"
                   onChange={handleSliderChange}
