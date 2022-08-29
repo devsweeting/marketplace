@@ -13,16 +13,21 @@ export const FeaturedMarketCarousel = ({
   assets,
   title,
   handleDrawer,
+  handleApplyBrandFilter,
+  activeBrandCard,
 }: {
   assets: IAsset[] | IMarket[];
   title: string;
   handleDrawer?: (asset: IAsset) => void;
+  handleApplyBrandFilter?: (string: string, brand: IMarket) => void;
+  activeBrandCard?: string;
 }) => {
   const classes = useFeaturedMarketCarouselStyles();
   const scroll = useRef<HTMLDivElement>(null);
   const { width } = useWindowDimensions();
   const [scrollX, setScrollX] = useState(0);
   const [scrollEnd, setScrollEnd] = useState(false);
+  const [clickedCard, setClickedCard] = useState('');
 
   const slide = (shift: number) => {
     if (scroll.current) {
@@ -130,11 +135,14 @@ export const FeaturedMarketCarousel = ({
               ))
             : assets.map((card: any, index: number) => (
                 <TrendingMarketCard
-                  handleDrawer={() => {
-                    return undefined;
+                  onClick={() => {
+                    setClickedCard(card.brand);
+
+                    handleApplyBrandFilter && handleApplyBrandFilter(card.filter, card);
                   }}
+                  activeCard={activeBrandCard ? clickedCard : ''}
                   brand={card}
-                  key={index}
+                  key={card.brand}
                   tabIndex={index}
                 />
               ))}
