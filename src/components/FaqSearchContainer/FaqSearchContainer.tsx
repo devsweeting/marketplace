@@ -22,12 +22,12 @@ export const FaqSearchContainer = ({ articles }: { articles: Article[] }) => {
           <Typography variant="body1" component="p" className={classes.topicsLegend}>
             Most viewed topics:
           </Typography>
-          {articles &&
-            articles.map((t) => {
-              return (
-                <Box key={t.category}>
-                  <Link href={`/faq/${t.category}`}>
-                    <a className={classes.chipWrapper}>
+          <>
+            {articles &&
+              articles.map((t) => {
+                return (
+                  <Box key={t.category}>
+                    <Link href={`/faq/${t.category}`} className={classes.chipWrapper}>
                       <Chip
                         className={classes.chip}
                         label={t.name}
@@ -35,11 +35,11 @@ export const FaqSearchContainer = ({ articles }: { articles: Article[] }) => {
                         variant="filled"
                         clickable
                       />
-                    </a>
-                  </Link>
-                </Box>
-              );
-            })}
+                    </Link>
+                  </Box>
+                );
+              })}
+          </>
         </Stack>
       </Box>
     </Box>

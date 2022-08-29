@@ -9,8 +9,8 @@ export const FaqBox = ({ item }: { item: any }) => {
 
   return (
     <Box className={classes.wrapper}>
-      <Link href={`/faq/${item.category}`}>
-        <a className={classes.innerWrapper}>
+      <Link href={`/faq/${item.category}`} className={classes.innerWrapper}>
+        <a>
           <Typography variant="body1" component="p" className={classes.title}>
             {item.name}
           </Typography>

@@ -84,8 +84,10 @@ const FaqTopicPage = () => {
   }, [urlParam]);
 
   useEffect(() => {
-    const elementOffset = myRefs.current[mobileAnchor].current.offsetTop;
-    window.scrollTo({ top: elementOffset - 50, behavior: 'smooth' });
+    if (myRefs.current !== null && mobileAnchor !== -1) {
+      const elementOffset = myRefs.current[mobileAnchor].current.offsetTop;
+      window.scrollTo({ top: elementOffset - 50, behavior: 'smooth' });
+    }
   }, [mobileAnchor]);
 
   useEffect(() => {
