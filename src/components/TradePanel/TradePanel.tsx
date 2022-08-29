@@ -39,7 +39,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
   const [buyLimit, setBuyLimit] = useState<number>(1);
-  console.log(sellOrderData);
   const marks = [
     {
       value: 0,
