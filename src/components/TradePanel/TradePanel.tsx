@@ -25,7 +25,8 @@ import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
 import { StatusCodes } from 'http-status-codes';
-import { convertTimeDiffToHHMMSS } from '@/helpers/time';
+import { calcTimeDifference, convertTimeDiffToHHMMSS } from '@/helpers/time';
+import { CountdownTimer } from '../coundownTimer';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
@@ -38,7 +39,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
   const [buyLimit, setBuyLimit] = useState<number>(1);
-
+  console.log(sellOrderData);
   const marks = [
     {
       value: 0,
@@ -199,10 +200,15 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 </Typography>
                 {sellOrderData?.type === 'drop' &&
                   sellOrderData?.userFractionLimitEndTime !== null && (
-                    <Typography sx={{ fontSize: '10px' }}>
-                      Buy more fractions in{' '}
-                      {convertTimeDiffToHHMMSS(new Date(), sellOrderData.userFractionLimitEndTime)}{' '}
-                    </Typography>
+                    <Box sx={{ display: 'flex' }}>
+                      <Typography sx={{ fontSize: '10px' }}>Buy more fractions in</Typography>
+                      <CountdownTimer
+                        sx={{ fontSize: '10px' }}
+                        startTime={Math.ceil(
+                          calcTimeDifference(new Date(), sellOrderData.userFractionLimitEndTime),
+                        )}
+                      />
+                    </Box>
                   )}
               </Box>
             </Box>
@@ -214,7 +220,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               )`
                 : 'No Fractions Available'}
             </Typography>
-            {sellOrderData && !!sellOrderData?.fractionQtyAvailable && (
+            {sellOrderData && !!buyLimit && (
               <Box>
                 <Box sx={{ display: 'flex', marginTop: '20px' }}>
                   <Typography>Order Book</Typography>
@@ -232,7 +238,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               </Box>
             )}
             <Box sx={{ margin: '40px 0' }}>
-              {sellOrderData && !!sellOrderData?.fractionQtyAvailable && (
+              {sellOrderData && !!buyLimit && (
                 <Box>
                   <Typography>Order Summary</Typography>
                   <Box sx={{ display: 'flex', marginTop: '10px' }}>
