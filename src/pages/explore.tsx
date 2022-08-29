@@ -1,11 +1,16 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey } from 'src/types';
+import type { IAsset, IMeta, IFilter, DisabledRanges, DisabledRangesKey, IMarket } from 'src/types';
 import { Box, Card, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
-import { loadListAssetByPage, latestDropAssets, getAssetById } from '@/api/endpoints/assets';
+import {
+  loadListAssetByPage,
+  latestDropAssets,
+  getAssetById,
+  trendingMarkets,
+} from '@/api/endpoints/assets';
 import { SortBy } from '@/domain/Category';
 import { useRouter } from 'next/router';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
@@ -13,7 +18,6 @@ import { TradePanel } from '@/components/TradePanel';
 import { AssetListView } from '@/containers/AssetListView';
 import { SortMenu } from '@/components/NewFilters/components/SortMenu';
 import { useExplorePageStyles } from '@/styles/explorePage.styles';
-import { market } from '@/__mocks__/mockBrands';
 import { useFilters } from '@/helpers/hooks/useFilters';
 import { NewFilters } from '@/components/NewFilters';
 import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
@@ -24,7 +28,9 @@ const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
+  const [activeBrandCard, setActiveBrandCard] = useState<string>('');
 
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
@@ -34,14 +40,17 @@ const ExplorePage: NextPage = () => {
   const {
     checkedFilters,
     rangeFilters,
+    brandFilters,
     updateCheckedFilters,
     updateRangeFilters,
+    clearTrendingFilter,
+    updateBrandFilters,
     clearQueryFilters,
     clearRangeFilters,
   } = useFilters();
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
-    Grade: true,
-    Year: true,
+    Grade: !Object.keys(query).some((key) => key.includes('Grade')) ? true : false,
+    Year: !Object.keys(query).some((key) => key.includes('Year')) ? true : false,
   });
   const [sortType, setSortType] = useState<string>(SortBy.DESC);
   const classes = useExplorePageStyles();
@@ -56,17 +65,18 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
-      loadLatestDropAssets(1).catch(() => {
-        setAssets([]);
+      setDisabledRanges({
+        Grade: !Object.keys(query).some((key) => key.includes('Grade')) ? true : false,
+        Year: !Object.keys(query).some((key) => key.includes('Year')) ? true : false,
       });
     }
-  }, [isReady, loadLatestDropAssets]);
+  }, [isReady, query]);
 
   useEffect(() => {
-    if (tradePanelData) {
-      setTradePanelData(assets[assets.findIndex((asset) => asset.id === tradePanelData.id)]);
+    if (!assets.length && !dropAssets.length) {
+      setIsOpen(false);
     }
-  }, [assets, tradePanelData]);
+  }, [assets, dropAssets]);
 
   const loadAssets = useCallback(
     async (page = 1) => {
@@ -87,21 +97,25 @@ const ExplorePage: NextPage = () => {
     [checkedFilters, rangeFilters, search, sortType],
   );
 
+  const loadTrendingMarkets = useCallback(async () => {
+    const { markets }: { markets: IMarket[] } = await trendingMarkets();
+    setTrendingMarket(markets);
+  }, []);
+
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
     if (isReady) {
+      loadTrendingMarkets().catch(() => {
+        setTrendingMarket([]);
+      });
       loadAssets(1).catch(() => {
         setAssets([]);
       });
+      loadLatestDropAssets().catch(() => {
+        setDropAssets([]);
+      });
     }
-  }, [isReady, loadAssets]);
-
-  useEffect(() => {
-    setDisabledRanges({
-      Grade: !Object.keys(rangeFilters).includes('Grade'),
-      Year: !Object.keys(rangeFilters).includes('Year'),
-    });
-  }, [rangeFilters]);
+  }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets]);
 
   const handleSortType = (sortBy: string) => {
     setSortType(sortBy);
@@ -143,9 +157,9 @@ const ExplorePage: NextPage = () => {
   const clearAllSelectedFilters = () => {
     clearQueryFilters();
     setDisabledRanges({ Grade: true, Year: true });
+    setActiveBrandCard('');
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDisabled = (key: DisabledRangesKey) => {
     setDisabledRanges({ ...disabledRanges, [key]: !disabledRanges[key] });
   };
@@ -169,6 +183,25 @@ const ExplorePage: NextPage = () => {
       setIsOpen(false);
     }
     setTradePanelData(asset);
+  };
+
+  const handleApplyBrandFilter = (filter: string, brand: IMarket) => {
+    if (Object.keys(filter).length) {
+      const filterValue = filter.split('=')?.[1];
+      if (
+        !brandFilters.some((filter) => filter.filterId === filterValue) &&
+        !brandFilters.some((filter) => filter.categoryId === 'brand')
+      ) {
+        void updateBrandFilters([{ filterId: filterValue, categoryId: 'brand' }]);
+        setActiveBrandCard(brand.brand);
+      }
+      clearTrendingFilter(filterValue)
+        ?.then(() => setActiveBrandCard(''))
+        .catch(() => {
+          return;
+        });
+    }
+    return;
   };
 
   const filterProps = {
@@ -219,7 +252,12 @@ const ExplorePage: NextPage = () => {
             title={'Latest Drop'}
             handleDrawer={handleDrawer}
           />
-          <FeaturedMarketCarousel assets={market} title={'Trending Markets'} />
+          <FeaturedMarketCarousel
+            handleApplyBrandFilter={handleApplyBrandFilter}
+            activeBrandCard={activeBrandCard}
+            assets={trendingMarket}
+            title={'Trending Markets'}
+          />
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
             <Grid
               container

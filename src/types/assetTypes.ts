@@ -11,8 +11,6 @@ export interface IAsset {
   attributes: IAttribute[];
   partner: string;
 }
-
-// TODO: Update this when data is available
 export interface IMarket {
   brand: string;
   filter: string;
