@@ -1,4 +1,13 @@
-import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, Typography } from '@mui/material';
+import {
+  Box,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import type { IFilter } from '@/types/assetTypes';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -41,6 +50,8 @@ export const CheckboxFilter = ({
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const theme = useTheme();
+  const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -63,7 +74,7 @@ export const CheckboxFilter = ({
   const id = open ? `${filter.categoryId}` : undefined;
 
   return (
-    <Box>
+    <Box className={classes.wrapper}>
       <Button
         className={open ? classes.open : classes.popoverButton}
         aria-describedby={id}
@@ -83,7 +94,7 @@ export const CheckboxFilter = ({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: !matchesDesktop ? 'right' : 'left',
         }}
         className={classes.MenuBackground}
       >

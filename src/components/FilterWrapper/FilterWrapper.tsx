@@ -2,19 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useFilters } from '@/helpers/hooks/useFilters';
 import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
-import { Box, Card, Divider, Grid, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import {
+  Box,
+  Card,
+  Divider,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material';
 import type { DisabledRanges, DisabledRangesKey, IFilter } from '@/types/assetTypes';
 import { NewFilters } from '@/components/NewFilters/NewFilters';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { SortMenu } from '@/components/NewFilters/components/SortMenu';
+import { useFilterWrapperStyles } from './FilterWrapper.styles';
 
 export const FilterWrapper = () => {
+  const theme = useTheme();
+  const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
+  const classes = useFilterWrapperStyles();
   const router = useRouter();
   const { isReady, query } = router;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ready, setReady] = useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeBrandCard, setActiveBrandCard] = useState<string>('');
+  const [expanded, setExpanded] = useState<string | false>(false);
+
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const [disabledRanges, setDisabledRanges] = useState<DisabledRanges>({
     Grade: !Object.keys(query).some((key) => key.includes('Grade')) ? true : false,
@@ -106,71 +128,129 @@ export const FilterWrapper = () => {
     handleSortType,
   };
   return (
-    <Grid
-      container
-      sx={{
-        display: 'root-flow',
-        alignItems: 'stretch',
-        justifyContent: 'space-between',
-        width: '100%',
-      }}
-    >
-      <Card
-        sx={{
-          width: '100%',
-          marginTop: '10px',
-          backgroundColor: 'white',
-          maxWidth: '1200px',
-          margin: 'auto',
-          borderRadius: '0',
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            padding: '20px 10px',
-            width: '100%',
-            maxWidth: '1200px',
-            margin: 'auto',
-            '@media (max-width:400px)': {
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-            },
-          }}
-        >
-          <Typography
-            variant="h3"
-            component={'h3'}
-            sx={{ marginRight: 5, fontSize: '1.5rem', whiteSpace: 'nowrap' }}
-          >
-            Explore Drops
-          </Typography>
-          <Box
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              justifyContent: 'space-between',
+    <>
+      {matchesDesktop ? (
+        <Grid container className={classes.desktopFilterWrapperWrapper}>
+          <Card
+            sx={{
+              width: '100%',
+              marginTop: '10px',
+              backgroundColor: 'white',
+              maxWidth: '1200px',
+              margin: 'auto',
+              borderRadius: '0',
             }}
           >
-            {mockCategoryFilters.map((filter, index) => (
-              <NewFilters
-                filterType={filter.filterType}
-                filter={filter}
-                {...filterProps}
-                key={index}
-              />
-            ))}
-            <ClearAllFilter
-              clearSelectedFilters={clearAllSelectedFilters}
-              isFilterButtonVisible={checkedFilters.length || Object.keys(rangeFilters).length > 0}
-            />
-            <SortMenu {...sortListProps} />
-          </Box>
-        </Box>
-        <Divider />
-      </Card>
-    </Grid>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '20px 10px',
+                width: '100%',
+                maxWidth: '1200px',
+                margin: 'auto',
+              }}
+            >
+              <Typography
+                variant="h3"
+                component={'h3'}
+                sx={{ marginLeft: 6, marginRight: 5, fontSize: '1.5rem', whiteSpace: 'nowrap' }}
+              >
+                Explore Drops
+              </Typography>
+
+              <Box
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                {mockCategoryFilters.map((filter, index) => (
+                  <NewFilters
+                    filterType={filter.filterType}
+                    filter={filter}
+                    {...filterProps}
+                    key={index}
+                  />
+                ))}
+                <ClearAllFilter
+                  clearSelectedFilters={clearAllSelectedFilters}
+                  isFilterButtonVisible={
+                    checkedFilters.length || Object.keys(rangeFilters).length > 0
+                  }
+                />
+                <SortMenu {...sortListProps} />
+              </Box>
+            </Box>
+            <Divider />
+          </Card>
+        </Grid>
+      ) : (
+        <Grid className={classes.mobileFilterWrapperWrapper}>
+          <Card className={classes.mobileFilterCard}>
+            <Box
+              sx={{
+                paddingTop: '20px',
+                width: '100%',
+              }}
+            >
+              <div className={classes.mobileFilterHead}>
+                <Typography variant="h3" component={'h3'} className={classes.mobileHeader}>
+                  Explore Drops
+                </Typography>
+                <ClearAllFilter
+                  clearSelectedFilters={clearAllSelectedFilters}
+                  isFilterButtonVisible={
+                    checkedFilters.length || Object.keys(rangeFilters).length > 0
+                  }
+                />
+              </div>
+              <Accordion
+                expanded={expanded === 'panel1'}
+                onChange={handleChange('panel1')}
+                TransitionProps={{ unmountOnExit: true }}
+              >
+                <AccordionSummary
+                  sx={{
+                    background: expanded !== 'panel1' ? 'whitesmoke' : 'white',
+                    '.Mui-expanded': {
+                      margin: 0,
+                    },
+                  }}
+                  expandIcon={
+                    expanded === 'panel1' ? (
+                      <RemoveIcon sx={{ color: theme.palette.primary.main }} />
+                    ) : (
+                      <AddIcon sx={{ color: theme.palette.primary.main }} />
+                    )
+                  }
+                >
+                  Filter Menu
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Box className={classes.mobileFilterStyles}>
+                    {mockCategoryFilters.map((filter, index) => (
+                      <NewFilters
+                        filterType={filter.filterType}
+                        filter={filter}
+                        {...filterProps}
+                        key={index}
+                      />
+                    ))}
+
+                    <SortMenu {...sortListProps} />
+                  </Box>
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+            <Divider />
+          </Card>
+        </Grid>
+      )}
+    </>
   );
 };

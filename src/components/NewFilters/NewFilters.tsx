@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import React from 'react';
 import { CheckboxFilter } from './components/CheckboxFilter';
 import { RangeFilter } from './components/RangeFilter';
+import { useNewFiltersStyles } from './NewFilters.styles';
 
 export const NewFilters = ({
   handleFiltersChange,
@@ -39,6 +40,7 @@ export const NewFilters = ({
   removeFilterRange: (id: string) => void;
   handleRange: (id: string, val: number[]) => void;
 }) => {
+  const classes = useNewFiltersStyles();
   const checkboxFilterProps = {
     handleFiltersChange,
     checkedFilters,
@@ -56,13 +58,13 @@ export const NewFilters = ({
   switch (filterType) {
     case 'slider':
       return (
-        <Box sx={{ m: 0.5 }}>
+        <Box className={classes.filterBoxes}>
           <RangeFilter filter={filter} {...rangeFilterProps} />
         </Box>
       );
     case 'checkbox':
       return (
-        <Box sx={{ m: 0.5 }}>
+        <Box className={classes.filterBoxes}>
           <CheckboxFilter filter={filter} {...checkboxFilterProps} />
         </Box>
       );

@@ -1,4 +1,4 @@
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
 import Popover from '@mui/material/Popover';
 import { Button } from '@/components/Button';
 import React, { useState, useEffect } from 'react';
@@ -39,6 +39,8 @@ export const RangeFilter = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const classes = useRangeStyles();
+  const theme = useTheme();
+  const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const { query } = useRouter();
   let rangeMin;
   let rangeMax;
@@ -100,7 +102,7 @@ export const RangeFilter = ({
   const open = Boolean(anchorEl);
   const id = open ? `${filter.categoryId}` : undefined;
   return (
-    <Box>
+    <Box className={classes.wrapper}>
       <Button
         className={open ? classes.open : classes.popoverButton}
         aria-describedby={id}
@@ -122,7 +124,7 @@ export const RangeFilter = ({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: !matchesDesktop ? 'right' : 'left',
         }}
         className={classes.MenuBackground}
       >

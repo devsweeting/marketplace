@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from '@/components/Button';
@@ -39,7 +40,7 @@ export const SortMenu = ({ handleSortType }: { handleSortType: (id: string) => v
 
   return (
     <>
-      <Box sx={{ marginLeft: 'auto' }}>
+      <Box className={classes.sortMenu}>
         <Button
           aria-controls={open ? `Button for Sort Menu}` : undefined}
           aria-haspopup="true"
@@ -47,7 +48,8 @@ export const SortMenu = ({ handleSortType }: { handleSortType: (id: string) => v
           variant="text"
           disableElevation
           onClick={handleClick}
-          endIcon={<KeyboardArrowDownIcon />}
+          endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
+          className={open ? classes.open : classes.MenuButton}
         >
           <Typography variant="h3" component="h3" className={classes.MenuTitle}>
             SORT BY
