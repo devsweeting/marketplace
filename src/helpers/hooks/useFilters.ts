@@ -29,6 +29,7 @@ export const useFilters = () => {
   const checkedFilters: IFilter[] = [];
   const rangeFiltersObj: RangeFilters = {};
   const brandFilters: IFilter[] = [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const sortByType: string[] = [];
 
   for (const [key, value] of Object.entries(query)) {
@@ -54,13 +55,8 @@ export const useFilters = () => {
     }
 
     if (key && key.startsWith('order') && !!value) {
-      const index = sortByType.indexOf(value as string);
-      if (index !== -1) {
-        sortByType[index] = value as string;
-      } else {
-        sortByType.length = 0;
-        sortByType.push(value as string);
-      }
+      sortByType.length = 0;
+      sortByType.push(value as string);
     }
   }
 
@@ -93,7 +89,7 @@ export const useFilters = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    sortByType,
+    sortByType.map((item) => item),
   ]);
 
   const updateSortByOrder = (sortBy: string) => {
@@ -103,7 +99,14 @@ export const useFilters = () => {
         delete updatedQuery[key];
       }
     }
-    updatedQuery['order'] = sortBy;
+    const index = sortByType.indexOf(sortBy);
+    if (index === -1) {
+      sortByType.length = 0;
+      sortByType.push(sortBy);
+    }
+    sortByType[index] = sortBy;
+
+    updatedQuery['order'] = sortByType[index];
 
     return router.push(
       {

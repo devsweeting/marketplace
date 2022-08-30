@@ -7,7 +7,6 @@ import type { DisabledRanges, DisabledRangesKey, IFilter } from '@/types/assetTy
 import { NewFilters } from '@/components/NewFilters/NewFilters';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { SortMenu } from '@/components/NewFilters/components/SortMenu';
-import { SortBy } from '@/domain/Category';
 
 export const FilterWrapper = () => {
   const router = useRouter();
@@ -32,8 +31,6 @@ export const FilterWrapper = () => {
     clearRangeFilters,
   } = useFilters();
 
-  const [sortType, setSortType] = useState<string>(SortBy.DESC);
-
   const handleFiltersChange = (event: React.ChangeEvent<HTMLInputElement>, categoryId: string) => {
     const { name: filterId } = event.target;
 
@@ -57,8 +54,7 @@ export const FilterWrapper = () => {
   };
 
   const handleSortType = (sortBy: string) => {
-    setSortType(sortBy);
-    updateSortByOrder(sortType).catch(() => {
+    updateSortByOrder(sortBy).catch(() => {
       return;
     });
   };
@@ -108,13 +104,12 @@ export const FilterWrapper = () => {
 
   const sortListProps = {
     handleSortType,
-    sortType,
   };
   return (
     <Grid
       container
       sx={{
-        display: 'flex',
+        display: 'root-flow',
         alignItems: 'stretch',
         justifyContent: 'space-between',
         width: '100%',
@@ -138,7 +133,10 @@ export const FilterWrapper = () => {
             width: '100%',
             maxWidth: '1200px',
             margin: 'auto',
-            '@media (max-width:900px)': {},
+            '@media (max-width:400px)': {
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            },
           }}
         >
           <Typography
@@ -148,19 +146,28 @@ export const FilterWrapper = () => {
           >
             Explore Drops
           </Typography>
-          {mockCategoryFilters.map((filter, index) => (
-            <NewFilters
-              filterType={filter.filterType}
-              filter={filter}
-              {...filterProps}
-              key={index}
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+            }}
+          >
+            {mockCategoryFilters.map((filter, index) => (
+              <NewFilters
+                filterType={filter.filterType}
+                filter={filter}
+                {...filterProps}
+                key={index}
+              />
+            ))}
+            <ClearAllFilter
+              clearSelectedFilters={clearAllSelectedFilters}
+              isFilterButtonVisible={checkedFilters.length || Object.keys(rangeFilters).length > 0}
             />
-          ))}
-          <ClearAllFilter
-            clearSelectedFilters={clearAllSelectedFilters}
-            isFilterButtonVisible={checkedFilters.length || Object.keys(rangeFilters).length > 0}
-          />
-          <SortMenu {...sortListProps} />
+            <SortMenu {...sortListProps} />
+          </Box>
         </Box>
         <Divider />
       </Card>
