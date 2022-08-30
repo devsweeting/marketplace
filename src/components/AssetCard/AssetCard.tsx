@@ -182,7 +182,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
                 <Star />
               </IconButton>
             )}
-            {hasBeenAdded ? 1 : 0}
+            {hasBeenAdded ? 1 : ''}
           </Typography>
         </Box>
         {sellOrderData?.fractionQtyAvailable === 0 && (

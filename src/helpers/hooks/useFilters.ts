@@ -29,6 +29,7 @@ export const useFilters = () => {
   const checkedFilters: IFilter[] = [];
   const rangeFiltersObj: RangeFilters = {};
   const brandFilters: IFilter[] = [];
+  const sortByType: string[] = [];
 
   for (const [key, value] of Object.entries(query)) {
     if (key.startsWith('attr_eq')) {
@@ -49,6 +50,16 @@ export const useFilters = () => {
 
       if (strippedKey && minValue && maxValue) {
         rangeFiltersObj[strippedKey] = { min: minValue, max: maxValue };
+      }
+    }
+
+    if (key && key.startsWith('order') && !!value) {
+      const index = sortByType.indexOf(value as string);
+      if (index !== -1) {
+        sortByType[index] = value as string;
+      } else {
+        sortByType.length = 0;
+        sortByType.push(value as string);
       }
     }
   }
@@ -76,6 +87,33 @@ export const useFilters = () => {
         .join(''),
     ],
   );
+
+  const sortTypeMemo = useMemo(() => {
+    return sortByType;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    sortByType,
+  ]);
+
+  const updateSortByOrder = (sortBy: string) => {
+    const updatedQuery = { ...query };
+    for (const key of Object.keys(updatedQuery)) {
+      if (key.startsWith('order')) {
+        delete updatedQuery[key];
+      }
+    }
+    updatedQuery['order'] = sortBy;
+
+    return router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
 
   const updateCheckedFilters = async (newCheckedFilters: IFilter[]) => {
     const updatedQuery = { ...query };
@@ -233,11 +271,12 @@ export const useFilters = () => {
       { shallow: true },
     );
   };
-
   return {
     checkedFilters: checkedFiltersMemo,
     rangeFilters: rangeFiltersMemo,
     brandFilters: brandFiltersMemo,
+    sortByOrder: sortTypeMemo[0],
+    updateSortByOrder,
     updateCheckedFilters,
     updateRangeFilters,
     updateBrandFilters,
