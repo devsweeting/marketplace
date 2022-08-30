@@ -1,7 +1,7 @@
 import { TradePanel } from '@/components/TradePanel';
 import { themeJump } from '@/styles/themeJump';
 import { ThemeProvider } from '@mui/styles';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import {
   mockAssetNoImage,
@@ -14,7 +14,7 @@ import type { IUser } from '@/types/user';
 import user from '@testing-library/user-event';
 
 import { UserContext } from '@/helpers/auth/UserContext';
-
+import { StatusCodes } from 'http-status-codes';
 const mockHandleClose = jest.fn();
 const mockUpdateAsset = jest.fn();
 const mockUserContextFunctions = jest.fn();
@@ -56,21 +56,41 @@ const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser })
     </ThemeProvider>
   );
 };
-
 describe('TradePanel', () => {
-  test('should contain all the content', () => {
+  const globalFetch = global.fetch;
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        headers: new Headers({
+          'content-type': 'application/json',
+        }),
+        ok: true,
+        status: StatusCodes.CREATED,
+        json: () => Promise.resolve({ test: 'test' }),
+      }),
+    ) as jest.Mock;
+  });
+
+  afterAll(() => {
+    global.fetch = globalFetch;
+  });
+
+  test('should contain all the content', async () => {
     render(<MockTradePanel asset={data} />);
-    const cardTitle = screen.getByText(/research drawer/i);
-    const closeBtn = screen.getByRole('button', { name: /close/i });
-    const name = screen.getByText(data.name);
-    const images = screen.getAllByRole('img');
-    const detail = screen.getByText(
+    const cardTitle = await screen.findByText(/research drawer/i);
+    const closeBtn = await screen.findByRole('button', { name: /close/i });
+    const name = await screen.findByText(data.name);
+    const images = await screen.findAllByRole('img');
+    const detail = await screen.findByText(
       `${details.year} #xxx ${details.grading_service} ${details.grading}`,
     );
-    const slider = screen.getByRole('slider');
-    const buyBtn = screen.getByRole('button', { name: /buy now/i });
-    const orderSummary = screen.getByText(/order summary/i);
-
+    const slider = await screen.findByRole('slider');
+    const buyBtn = await screen.findByRole('button', { name: /buy now/i });
+    const orderSummary = await screen.findByText(/order summary/i);
+    const valuation = await screen.findByText(/\$320/i);
     expect(cardTitle).toBeInTheDocument();
     expect(closeBtn).toBeInTheDocument();
     expect(name).toBeInTheDocument();
@@ -79,11 +99,14 @@ describe('TradePanel', () => {
     expect(slider).toBeInTheDocument();
     expect(buyBtn).toBeInTheDocument();
     expect(orderSummary).toBeInTheDocument();
+    expect(valuation).toBeInTheDocument();
   });
 
   test('should allow user to select a number of shares', async () => {
-    render(<MockTradePanel asset={data} />);
-    const slider = screen.getByRole('slider');
+    render(<MockTradePanel asset={mockAssetResponse.items[0]} />);
+
+    const slider = await screen.findByRole('slider');
+    expect(slider).toBeInTheDocument();
     // mock the getBoundingClientRect
     slider.getBoundingClientRect = jest.fn(() => {
       return {
@@ -97,18 +120,15 @@ describe('TradePanel', () => {
         y: 258.22918701171875,
       };
     }) as unknown as () => DOMRect;
-
-    await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
-    const totalPrice = screen.getByText(
-      `$${(data.sellOrders[0].fractionPriceCents * data.sellOrders[0].fractionQtyAvailable) / 100}`,
-    );
+    await fireEvent.mouseDown(slider, { clientX: 1000, clientY: 1000 });
+    const totalPrice = await screen.findByText(`$0.32`);
     expect(totalPrice).toBeInTheDocument();
   });
 
   test('should allow user to buy share', async () => {
     render(<MockTradePanelWithUser asset={data} user={mockUser} />);
-    const slider = screen.getByRole('slider');
-    const buyBtn = screen.getByRole('button', { name: /buy/i });
+    const slider = await screen.findByRole('slider');
+    const buyBtn = await screen.findByRole('button', { name: /buy/i });
     expect(buyBtn).toBeDisabled;
     // mock the getBoundingClientRect
     slider.getBoundingClientRect = jest.fn(() => {
@@ -127,15 +147,15 @@ describe('TradePanel', () => {
     expect(buyBtn).not.toBeDisabled();
     await user.click(buyBtn);
 
-    const closeBtn = screen.getByRole('button', { name: /cancel/i });
+    const closeBtn = await screen.findByRole('button', { name: /cancel/i });
     await user.click(closeBtn);
   });
 
   test('should reset if the card data changes', async () => {
     const { rerender } = render(<MockTradePanel asset={data} />);
-    const slider = screen.getByRole('slider');
-    const buyBtn = screen.getByRole('button', { name: /buy/i });
-    const cardName = screen.getByText(data.name);
+    const slider = await screen.findByRole('slider');
+    const buyBtn = await screen.findByRole('button', { name: /buy/i });
+    const cardName = await screen.findByText(data.name);
     expect(buyBtn).toBeDisabled;
     // mock the getBoundingClientRect
     slider.getBoundingClientRect = jest.fn(() => {
@@ -155,25 +175,27 @@ describe('TradePanel', () => {
     expect(cardName).toBeInTheDocument();
 
     rerender(<MockTradePanel asset={mockAssetResponse.items[1]} />);
-    const newCardName = screen.getByText(mockAssetResponse.items[1].name);
+    const newCardName = await screen.findByText(mockAssetResponse.items[1].name);
     expect(buyBtn).toBeDisabled();
     expect(newCardName).toBeInTheDocument();
   });
 
-  test('should not display slider or buy button if available fractions is 0', () => {
+  test('should not display slider or buy button if available units is 0', async () => {
     render(<MockTradePanel asset={mockAssetSoldOut} />);
-    const slider = screen.queryByRole('slider');
-    const buyBtn = screen.queryByRole('button', { name: /buy/i });
-    const fractionAvailability = screen.getByText(/No Fractions Available/i);
+    const slider = await screen.findByRole('slider');
+    const buyBtn = await screen.findByRole('button', { name: /buy/i });
+    const fractionAvailability = await screen.findByText(/No units Available/i);
 
     expect(slider).toBeNull;
     expect(buyBtn).toBeNull;
     expect(fractionAvailability).toBeInTheDocument();
   });
 
-  test('should not display image if image is null', () => {
+  test('should not display image if image is null', async () => {
     render(<MockTradePanel asset={mockAssetNoImage as unknown as IAsset} />);
-    const img = screen.queryByRole('img');
-    expect(img).toBeNull();
+    await waitFor(() => {
+      const img = screen.queryByRole('img');
+      expect(img).toBeNull();
+    });
   });
 });

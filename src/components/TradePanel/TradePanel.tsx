@@ -25,13 +25,14 @@ import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
 import { StatusCodes } from 'http-status-codes';
-import { calcTimeDifference, convertTimeDiffToHHMMSS } from '@/helpers/time';
+import { calcTimeDifference } from '@/helpers/time';
 import { CountdownTimer } from '../coundownTimer';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
   const user = useUser();
   const { setIsModalOpen } = useModal();
+
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -91,37 +92,41 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       return 0;
     }
     let userBuyLimit = sellOrderData.fractionQtyAvailable ?? 0;
+
     if (
-      sellOrderData?.type === 'drop' &&
-      new Date(sellOrderData.userFractionLimitEndTime ?? 0) > new Date()
+      sellOrderData?.type !== 'drop' ||
+      new Date(sellOrderData.userFractionLimitEndTime ?? 0) < new Date()
     ) {
-      userBuyLimit = sellOrderData.userFractionLimit ?? 0;
-
-      if (!user) {
-        return userBuyLimit;
-      }
-
-      await getNumSellordersUserCanBuy(sellOrderData.id)
-        .then((res) => {
-          if (res.status === StatusCodes.OK) {
-            const data = res.data as unknown as IUserBuyLimit;
-            return (userBuyLimit = data?.fractionsAvailableToPurchase ?? 0);
-          } else {
-            return (userBuyLimit = 0);
-          }
-        })
-        .catch();
+      return userBuyLimit;
     }
+
+    userBuyLimit = sellOrderData.userFractionLimit ?? 0;
+    if (!user) {
+      return userBuyLimit;
+    }
+
+    await getNumSellordersUserCanBuy(sellOrderData.id)
+      .then((res) => {
+        if (res.status === StatusCodes.OK) {
+          const data = res.data as unknown as IUserBuyLimit;
+          return (userBuyLimit = data?.fractionsAvailableToPurchase ?? 0);
+        } else {
+          return (userBuyLimit = 0);
+        }
+      })
+      .catch();
+
     return userBuyLimit;
   };
 
-  const handleUpdateBuyLimit = async () => {
-    const userBuyLimit = await getUserBuyLimit(sellOrderData);
-    setBuyLimit(userBuyLimit);
-  };
-
   useEffect(() => {
+    const handleUpdateBuyLimit = async () => {
+      const userBuyLimit = await getUserBuyLimit(sellOrderData);
+      setBuyLimit(userBuyLimit);
+      console.log('user limit', buyLimit);
+    };
     void handleUpdateBuyLimit();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sellOrderData]);
 
@@ -199,8 +204,10 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 </Typography>
                 {sellOrderData?.type === 'drop' &&
                   sellOrderData?.userFractionLimitEndTime !== null && (
-                    <Box sx={{ display: 'flex' }}>
-                      <Typography sx={{ fontSize: '10px' }}>Buy more fractions in</Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
+                        Buy more units in
+                      </Typography>
                       <CountdownTimer
                         sx={{ fontSize: '10px' }}
                         startTime={Math.ceil(
@@ -213,11 +220,11 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
             </Box>
             <Typography className={classes.available_instances}>
               {sellOrderData?.fractionQtyAvailable
-                ? `${formatNumber(sellOrderData.fractionQtyAvailable)} Fractions Available ( ${
+                ? `${formatNumber(sellOrderData.fractionQtyAvailable)} Units Available ( ${
                     getPercentClaimed(sellOrderData) + '%'
                   }
               )`
-                : 'No Fractions Available'}
+                : 'No Units Available'}
             </Typography>
             {sellOrderData && !!buyLimit && (
               <Box>
@@ -241,7 +248,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 <Box>
                   <Typography>Order Summary</Typography>
                   <Box sx={{ display: 'flex', marginTop: '10px' }}>
-                    <Typography>{formatNumber(sliderValue)} fractions</Typography>
+                    <Typography>{formatNumber(sliderValue)} units</Typography>
                     <Typography sx={{ marginLeft: 'auto' }}>
                       {'$' + formatNumber(totalPrice)}
                     </Typography>

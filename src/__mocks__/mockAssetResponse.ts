@@ -125,7 +125,7 @@ export const mockAssetResponse = {
           expireTime: 2145945600,
           deletedTime: 0,
           startTime: 0,
-          fractionQtyAvailable: 100,
+          fractionQtyAvailable: 101,
           type: 'standard',
           userFractionLimit: null,
           userFractionLimitEndTime: null,

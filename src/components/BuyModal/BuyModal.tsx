@@ -59,6 +59,10 @@ export const BuyModal = ({
         }
         setValue(2);
         break;
+      case StatusCodes.UNAUTHORIZED:
+        setAlertMessage('Please login to buy assets');
+        setValue(2);
+        break;
       default:
         setAlertMessage('Something went wrong.');
         setValue(2);
