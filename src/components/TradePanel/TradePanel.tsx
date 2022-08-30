@@ -123,7 +123,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     const handleUpdateBuyLimit = async () => {
       const userBuyLimit = await getUserBuyLimit(sellOrderData);
       setBuyLimit(userBuyLimit);
-      console.log('user limit', buyLimit);
     };
     void handleUpdateBuyLimit();
 

@@ -1,5 +1,6 @@
 import { useInterval } from '@/helpers/hooks/useInterval';
-import { SxProps, Theme, Typography } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useState } from 'react';
 
 export const CountdownTimer = ({

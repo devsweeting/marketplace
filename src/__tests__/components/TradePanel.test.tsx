@@ -38,24 +38,18 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
 
 const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser }) => {
   return (
-    <ThemeProvider theme={themeJump}>
-      <UserContext.Provider
-        value={{
-          user: user,
-          refreshUser: mockUserContextFunctions,
-          logout: mockUserContextFunctions,
-        }}
-      >
-        <TradePanel
-          asset={asset}
-          open={true}
-          handleClose={mockHandleClose}
-          updateAsset={mockUpdateAsset}
-        />
-      </UserContext.Provider>
-    </ThemeProvider>
+    <UserContext.Provider
+      value={{
+        user: user,
+        refreshUser: mockUserContextFunctions,
+        logout: mockUserContextFunctions,
+      }}
+    >
+      <MockTradePanel asset={asset} />
+    </UserContext.Provider>
   );
 };
+
 describe('TradePanel', () => {
   const globalFetch = global.fetch;
 
@@ -197,5 +191,47 @@ describe('TradePanel', () => {
       const img = screen.queryByRole('img');
       expect(img).toBeNull();
     });
+  });
+});
+
+describe('TradePanel asset:Drop', () => {
+  const globalFetch = global.fetch;
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        headers: new Headers({
+          'content-type': 'application/json',
+        }),
+        ok: true,
+        status: StatusCodes.CREATED,
+        json: () => Promise.resolve({ test: 'test' }),
+      }),
+    ) as jest.Mock;
+  });
+
+  afterAll(() => {
+    global.fetch = globalFetch;
+  });
+
+  test('should only allow user buy the allotted amount of shares', async () => {
+    const mockFetch = (global.fetch = jest.fn(() =>
+      Promise.resolve({
+        headers: new Headers({
+          'content-type': 'application/json',
+        }),
+        ok: true,
+        status: StatusCodes.OK,
+        json: () => Promise.resolve({ fractionsAvailableToPurchase: 10, fractionsPurchased: 10 }),
+      }),
+    ) as jest.Mock);
+    render(<MockTradePanelWithUser asset={mockAssetResponse.items[2]} user={mockUser} />);
+    const buyBtn = await screen.findByRole('button', { name: /buy/i });
+    const maxSliderValue = await screen.findByText('10');
+    expect(maxSliderValue).toBeInTheDocument();
+    expect(buyBtn).toBeDisabled;
+    expect(mockFetch).toBeCalledTimes(1);
   });
 });
