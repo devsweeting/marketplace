@@ -7,8 +7,9 @@
 export function calcTimeDifference(startDate: Date | string, endDate: Date | string) {
   const start = new Date(startDate);
   const end = new Date(endDate);
+  const result = (end.getTime() - start.getTime()) / 1000;
 
-  return (end.getTime() - start.getTime()) / 1000;
+  return isNaN(result) ? undefined : result;
 }
 
 /**
@@ -17,9 +18,13 @@ export function calcTimeDifference(startDate: Date | string, endDate: Date | str
  * @returns string formatted to HH:MM:SS
  */
 export function convertSecondsToHHMMSS(seconds: number): string {
+  //TODO fix this function
+  console.log(new Date(seconds * 1000));
   return new Date(seconds * 1000).toISOString().slice(11, 19);
 }
 
 export function convertTimeDiffToHHMMSS(startDate: Date | string, endDate: Date | string) {
-  return convertSecondsToHHMMSS(calcTimeDifference(startDate, endDate));
+  const seconds = calcTimeDifference(startDate, endDate) ?? 0;
+  console.log(seconds);
+  return convertSecondsToHHMMSS(seconds);
 }
