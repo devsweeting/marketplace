@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useWindowDimensions } from '@/helpers/hooks/useWindowDimensions';
 import { useFeaturedMarketCarouselStyles } from './FeaturedMarketCarousel.styles';
 import { Box, Grid, Typography } from '@mui/material';
@@ -28,6 +28,11 @@ export const FeaturedMarketCarousel = ({
   const [scrollX, setScrollX] = useState(0);
   const [scrollEnd, setScrollEnd] = useState(false);
   const [clickedCard, setClickedCard] = useState('');
+  useEffect(() => {
+    if (!activeBrandCard) {
+      setClickedCard('');
+    }
+  }, [activeBrandCard]);
 
   const slide = (shift: number) => {
     if (scroll.current) {

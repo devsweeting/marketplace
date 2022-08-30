@@ -131,16 +131,7 @@ export const FilterWrapper = () => {
     <>
       {matchesDesktop ? (
         <Grid container className={classes.desktopFilterWrapperWrapper}>
-          <Card
-            sx={{
-              width: '100%',
-              marginTop: '10px',
-              backgroundColor: 'white',
-              maxWidth: '1200px',
-              margin: 'auto',
-              borderRadius: '0',
-            }}
-          >
+          <Card className={classes.desktopFilterCard}>
             <Box
               sx={{
                 display: 'flex',

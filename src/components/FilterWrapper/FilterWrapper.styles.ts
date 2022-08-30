@@ -31,6 +31,14 @@ export const useFilterWrapperStyles = makeStyles(() => ({
     margin: 'auto',
     borderRadius: '0',
   },
+  desktopFilterCard: {
+    width: '100%',
+    marginTop: '10px',
+    backgroundColor: 'white',
+    maxWidth: '1200px',
+    margin: 'auto',
+    borderRadius: '0',
+  },
   mobileFilterWrapperWrapper: {
     display: 'flex',
     alignItems: 'stretch',
