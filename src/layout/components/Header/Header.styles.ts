@@ -18,6 +18,9 @@ export const useHeaderStyles = makeStyles(
       '@media (max-width: 900px)': {
         padding: `0 41px`,
       },
+      [theme.breakpoints.down('sm')]: {
+        padding: `0px`,
+      },
       '& .MuiToolbar-root': {
         boxShadow: '0px rgba(0, 0, 0, 0)',
         '@media (min-width: 600px)': {

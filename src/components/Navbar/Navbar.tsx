@@ -10,6 +10,7 @@ import { useUser } from '@/helpers/hooks/useUser';
 import { UserPane } from './components/UserPane';
 import { SearchModal } from '../SearchModal';
 import { useState } from 'react';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 type NavLink = {
   title: string;
@@ -19,24 +20,38 @@ type NavLink = {
 export type NavLinksProps = NavLink[];
 
 export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [isOpen, setIsOpen] = useState(false);
   const classes = useNavbarStyles();
   const user = useUser();
 
   return (
-    <Toolbar component="nav" sx={{ display: { xs: `flex` } }}>
-      <Stack direction="row" sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+    <Toolbar component="nav" sx={{ display: { xs: `flex` }, justifyContent: 'flex-end' }}>
+      <Stack
+        direction={`${matchesMobile ? 'column-reverse' : 'row'}`}
+        sx={{
+          display: 'flex',
+          alignItems: matchesMobile ? 'flex-start' : 'center',
+          textAlign: 'center',
+        }}
+      >
         {navLinks.map(({ title, path }: { title: string; path: string }, i: any) => (
           <NavLink key={`${title}${i}`} href={path}>
             {title}
           </NavLink>
         ))}
-        <Typography variant="h4" component="span" className={classes.searchIcon} ml={2}>
-          <SearchIcon
-            onClick={() => {
-              setIsOpen(!isOpen);
-            }}
-          />
+        <Typography
+          variant="h4"
+          component="span"
+          className={classes.searchIcon}
+          ml={matchesMobile ? 1 : 2}
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
+        >
+          Search
+          <SearchIcon />
         </Typography>
         {!user ? <Login /> : <UserPane user={user} />}
       </Stack>
