@@ -1,5 +1,5 @@
 import type { IBuyModal } from '@/components/BuyModal/BuyModal';
-import { BuyModal } from '@/components/BuyModal/BuyModal';
+import { BuyModal } from '@/components/BuyModal/';
 import { themeJump } from '@/styles/themeJump';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { ThemeProvider } from '@mui/styles';

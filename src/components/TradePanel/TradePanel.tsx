@@ -210,7 +210,8 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                       <CountdownTimer
                         sx={{ fontSize: '10px' }}
                         startTime={Math.ceil(
-                          calcTimeDifference(new Date(), sellOrderData.userFractionLimitEndTime),
+                          calcTimeDifference(new Date(), sellOrderData.userFractionLimitEndTime) ??
+                            0,
                         )}
                       />
                     </Box>
