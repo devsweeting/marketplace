@@ -28,7 +28,6 @@ const MockBuyModal = ({
   );
 };
 
-//TODO add test for user buying own fractions
 const mockOnClose = jest.fn();
 const mockUpdateAsset = jest.fn();
 
