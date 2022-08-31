@@ -30,7 +30,8 @@ describe('Time: convertTimeDiffToHHMMSS', () => {
     expect(convertSecondsToHHMMSS(1)).toEqual('00:00:01');
     expect(convertSecondsToHHMMSS(121)).toEqual('00:02:01');
     expect(convertSecondsToHHMMSS(12100)).toEqual('03:21:40');
-    expect(convertSecondsToHHMMSS(1536000)).toEqual('18:40:00');
+    expect(convertSecondsToHHMMSS(1536000)).toEqual('426:40:00');
+    expect(convertSecondsToHHMMSS(31536000)).toEqual('8760:00:00');
   });
 });
 
@@ -38,6 +39,6 @@ describe('Time: convertTimeDiffToHHMMSS', () => {
   test('should return time in seconds to format HHMMSS', () => {
     expect(convertTimeDiffToHHMMSS(new Date(), new Date())).toEqual('00:00:00');
     expect(convertTimeDiffToHHMMSS(new Date(0), new Date(1000))).toEqual('00:00:01');
-    expect(convertTimeDiffToHHMMSS('12-12-2020', '12-12-2021')).toEqual('18:40:00');
+    expect(convertTimeDiffToHHMMSS('12-12-2020', '12-12-2021')).toEqual('8760:00:00');
   });
 });

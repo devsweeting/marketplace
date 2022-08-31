@@ -17,14 +17,17 @@ export function calcTimeDifference(startDate: Date | string, endDate: Date | str
  * @param seconds
  * @returns string formatted to HH:MM:SS
  */
-export function convertSecondsToHHMMSS(seconds: number): string {
-  //TODO fix this function
-  console.log(new Date(seconds * 1000));
-  return new Date(seconds * 1000).toISOString().slice(11, 19);
+export function convertSecondsToHHMMSS(totalSeconds: number): string {
+  const hours = Math.floor(totalSeconds / 3600);
+  totalSeconds %= 3600;
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${twoDigits(hours)}:${twoDigits(minutes)}:${twoDigits(seconds)}`;
 }
 
 export function convertTimeDiffToHHMMSS(startDate: Date | string, endDate: Date | string) {
   const seconds = calcTimeDifference(startDate, endDate) ?? 0;
-  console.log(seconds);
   return convertSecondsToHHMMSS(seconds);
 }
+
+const twoDigits = (num: number) => String(num).padStart(2, '0');
