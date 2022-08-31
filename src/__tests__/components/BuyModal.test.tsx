@@ -1,5 +1,5 @@
 import type { IBuyModal } from '@/components/BuyModal/BuyModal';
-import { BuyModal } from '@/components/BuyModal/BuyModal';
+import { BuyModal } from '@/components/BuyModal/';
 import { themeJump } from '@/styles/themeJump';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { ThemeProvider } from '@mui/styles';
@@ -172,6 +172,66 @@ describe('BuyModal', () => {
     const confirmBtn = screen.getByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
     const errorMessage = screen.getByText(/Something went wrong./i);
+    expect(errorMessage).toBeInTheDocument();
+
+    expect(mockFetch).toBeCalledTimes(1);
+  });
+
+  test('should display message if user has reached their limit.', async () => {
+    const mockFetch = (global.fetch = jest.fn(() =>
+      Promise.resolve({
+        headers: new Headers({
+          'content-type': 'application/json',
+        }),
+        ok: true,
+        status: StatusCodes.BAD_REQUEST,
+        json: () => Promise.resolve({ message: 'PURCHASE_LIMIT_REACHED' }),
+      }),
+    ) as jest.Mock);
+    render(
+      <MockBuyModal
+        totalFractions={mockTotalFraction}
+        totalPrice={mockTotalPrice}
+        sellOrder={mockData.sellOrders[0]}
+        isOpen={true}
+        onClose={mockOnClose}
+        updateAsset={mockUpdateAsset}
+      ></MockBuyModal>,
+    );
+    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
+    await user.click(confirmBtn);
+    const errorMessage = screen.getByText(
+      /You cannot purchase any more of this item at this time./i,
+    );
+    expect(errorMessage).toBeInTheDocument();
+
+    expect(mockFetch).toBeCalledTimes(1);
+  });
+
+  test('should display message if user tries to buy own asset.', async () => {
+    const mockFetch = (global.fetch = jest.fn(() =>
+      Promise.resolve({
+        headers: new Headers({
+          'content-type': 'application/json',
+        }),
+        ok: true,
+        status: StatusCodes.BAD_REQUEST,
+        json: () => Promise.resolve({ message: 'USER_CANNOT_PURCHASE_OWN_ORDER' }),
+      }),
+    ) as jest.Mock);
+    render(
+      <MockBuyModal
+        totalFractions={mockTotalFraction}
+        totalPrice={mockTotalPrice}
+        sellOrder={mockData.sellOrders[0]}
+        isOpen={true}
+        onClose={mockOnClose}
+        updateAsset={mockUpdateAsset}
+      ></MockBuyModal>,
+    );
+    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
+    await user.click(confirmBtn);
+    const errorMessage = screen.getByText(/You cannot purchase your own order./i);
     expect(errorMessage).toBeInTheDocument();
 
     expect(mockFetch).toBeCalledTimes(1);
