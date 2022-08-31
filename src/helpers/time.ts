@@ -1,3 +1,5 @@
+import { padTo2Digits } from './padTo2Digits';
+
 /**
  * Finds the amount of time (in seconds) between two dates
  * @param startDate the starting date
@@ -22,12 +24,10 @@ export function convertSecondsToHHMMSS(totalSeconds: number): string {
   totalSeconds %= 3600;
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
-  return `${twoDigits(hours)}:${twoDigits(minutes)}:${twoDigits(seconds)}`;
+  return `${padTo2Digits(hours)}:${padTo2Digits(minutes)}:${padTo2Digits(seconds)}`;
 }
 
 export function convertTimeDiffToHHMMSS(startDate: Date | string, endDate: Date | string) {
   const seconds = calcTimeDifference(startDate, endDate) ?? 0;
   return convertSecondsToHHMMSS(seconds);
 }
-
-const twoDigits = (num: number) => String(num).padStart(2, '0');

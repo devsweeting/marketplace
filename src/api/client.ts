@@ -5,6 +5,7 @@ import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
 import { logger } from '@/helpers/logger';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
+import { padTo2Digits } from '@/helpers/padTo2Digits';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -33,10 +34,6 @@ export interface IApiTextResponse extends IBaseApiResponse {
 export type IApiResponse = IApiJsonResponse | IApiTextResponse;
 
 export type IApiUrl = `/${string}`;
-
-function padTo2Digits(num: number) {
-  return num.toString().padStart(2, '0');
-}
 
 function formatDate(date: Date) {
   return (
