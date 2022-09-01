@@ -84,11 +84,16 @@ export const useAssetCardStyles = makeStyles((theme) => ({
     zIndex: 1,
     top: '10px',
     right: '10px',
+    [theme.breakpoints.down('sm')]: {
+      right: '0px',
+    },
   },
   star: {
     display: 'flex',
     alignItems: 'center',
-    [theme.breakpoints.down('md')]: {},
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
   },
   starWatchlisted: {
     color: theme.palette.accent.main,

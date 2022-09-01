@@ -29,6 +29,8 @@ export const useFilters = () => {
   const checkedFilters: IFilter[] = [];
   const rangeFiltersObj: RangeFilters = {};
   const brandFilters: IFilter[] = [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const sortByType: string[] = [];
 
   for (const [key, value] of Object.entries(query)) {
     if (key.startsWith('attr_eq')) {
@@ -50,6 +52,11 @@ export const useFilters = () => {
       if (strippedKey && minValue && maxValue) {
         rangeFiltersObj[strippedKey] = { min: minValue, max: maxValue };
       }
+    }
+
+    if (key && key.startsWith('order') && !!value) {
+      sortByType.length = 0;
+      sortByType.push(value as string);
     }
   }
 
@@ -76,6 +83,40 @@ export const useFilters = () => {
         .join(''),
     ],
   );
+
+  const sortTypeMemo = useMemo(() => {
+    return sortByType;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    sortByType.map((item) => item),
+  ]);
+
+  const updateSortByOrder = (sortBy: string) => {
+    const updatedQuery = { ...query };
+    for (const key of Object.keys(updatedQuery)) {
+      if (key.startsWith('order')) {
+        delete updatedQuery[key];
+      }
+    }
+    const index = sortByType.indexOf(sortBy);
+    if (index === -1) {
+      sortByType.length = 0;
+      sortByType.push(sortBy);
+    }
+    sortByType[index] = sortBy;
+
+    updatedQuery['order'] = sortByType[index];
+
+    return router.push(
+      {
+        pathname: router.pathname,
+        query: updatedQuery,
+      },
+      undefined,
+      { shallow: true },
+    );
+  };
 
   const updateCheckedFilters = async (newCheckedFilters: IFilter[]) => {
     const updatedQuery = { ...query };
@@ -233,11 +274,12 @@ export const useFilters = () => {
       { shallow: true },
     );
   };
-
   return {
     checkedFilters: checkedFiltersMemo,
     rangeFilters: rangeFiltersMemo,
     brandFilters: brandFiltersMemo,
+    sortByOrder: sortTypeMemo[0],
+    updateSortByOrder,
     updateCheckedFilters,
     updateRangeFilters,
     updateBrandFilters,

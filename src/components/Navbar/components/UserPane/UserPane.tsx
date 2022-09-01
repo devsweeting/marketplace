@@ -10,11 +10,13 @@ import { Logout as LogoutButton } from '../Logout';
 import Link from 'next/link';
 import Logout from '@mui/icons-material/Logout';
 
-import { Divider, ListItemIcon, Typography } from '@mui/material';
+import { Divider, ListItemIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { userPanelLinks } from '@/domain/userPaneLink';
 import type { IUser } from '@/types/user';
 
 export const UserPane = ({ user }: { user: IUser }) => {
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const classes = useUserPaneStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
@@ -31,17 +33,18 @@ export const UserPane = ({ user }: { user: IUser }) => {
         onClick={handleClick}
         onMouseEnter={handleClick}
         size="small"
-        sx={{ ml: 2 }}
+        sx={{ ml: matchesMobile ? 1 : 2 }}
         aria-controls={isOpen ? 'account-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen ? 'true' : undefined}
       >
-        <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+        <Avatar sx={{ width: matchesMobile ? 60 : 32, height: matchesMobile ? 60 : 32 }}></Avatar>
       </IconButton>
       <Menu
         open={isOpen}
         anchorEl={anchorEl}
         onClose={handleClose}
+        style={{ marginTop: matchesMobile ? 6 : 1 }}
         PaperProps={{
           elevation: 0,
           sx: {
@@ -59,7 +62,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
               display: 'block',
               position: 'absolute',
               top: 0,
-              right: 14,
+              right: matchesMobile ? 29 : 14,
               width: 10,
               height: 10,
               bgcolor: 'background.paper',

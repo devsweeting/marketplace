@@ -12,8 +12,11 @@ export const useClearAllFilter = makeStyles(
       justifyContent: 'space-between',
       alignItems: 'center',
 
-      ['@media (max-width:900px)']: {
-        paddingRight: 0,
+      [theme.breakpoints.down('sm')]: {
+        width: '140px',
+        paddingRight: '0px',
+        justifyContent: 'center',
+        marginRight: '5px',
       },
     },
     closeButton: {

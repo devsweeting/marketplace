@@ -10,6 +10,10 @@ export const useExplorePageStyles = makeStyles((theme) => ({
     }),
     margin: '0 10px 10px 10px',
     width: '800px',
+    [theme.breakpoints.down('sm')]: {
+      margin: '0 0px 10px 0px',
+      maxWidth: '400px',
+    },
   },
   assetListOpen: {
     flexGrow: 1,
@@ -20,5 +24,8 @@ export const useExplorePageStyles = makeStyles((theme) => ({
     }),
     margin: '0 500px 10px 10px',
     width: '500px',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '350px',
+    },
   },
 }));

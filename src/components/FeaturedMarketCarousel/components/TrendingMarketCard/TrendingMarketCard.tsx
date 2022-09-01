@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Card } from '@mui/material';
 import Image from 'next/image';
 import { useTrendingMarketCardStyles } from './TrendingMarketCard.styles';
 import type { IMarket } from '@/types/assetTypes';
 import { formatNumber } from '@/helpers/formatNumber';
+import { useRouter } from 'next/router';
 
 export const TrendingMarketCard = ({
   brand,
@@ -16,7 +17,20 @@ export const TrendingMarketCard = ({
   tabIndex?: number;
   activeCard?: string;
 }) => {
+  const [activated, setActivated] = useState<string | undefined>('');
   const classes = useTrendingMarketCardStyles();
+  const router = useRouter();
+  const { query, isReady } = router;
+
+  useEffect(() => {
+    if (isReady) {
+      if (Object.keys(query).length > 0) {
+        setActivated(activeCard);
+      } else {
+        setActivated('');
+      }
+    }
+  }, [query, isReady, activeCard]);
 
   if (!onClick) return null;
   return (
@@ -30,7 +44,7 @@ export const TrendingMarketCard = ({
     >
       <Card
         variant="outlined"
-        className={`${classes.card} ${activeCard === brand.brand ? classes.active : ''}`}
+        className={`${classes.card} ${activated === brand.brand ? classes.active : ''}`}
       >
         <Box className={classes.assetImageInnerContainer}>
           {/* TODO: Update this when data is available */}
