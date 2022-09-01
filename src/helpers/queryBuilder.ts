@@ -43,12 +43,12 @@ const queryStringBuilder = ({
   if (sortType) {
     querystring += `&sort=asset.createdAt&order=${sortType}`;
   }
-  if (checkedFilters) {
+  if (checkedFilters && checkedFilters.length) {
     checkedFilters.forEach((item: IFilter) => {
       querystring += `&attr_eq[${item.categoryId}]=${item.filterId}`;
     });
   }
-  if (rangeFilters) {
+  if (rangeFilters && Object.keys(rangeFilters).length > 0) {
     Object.entries(rangeFilters).forEach(([key, value]) => {
       querystring += `&attr_gte[${key}]=${value.min}&attr_lte[${key}]=${value.max}`;
     });

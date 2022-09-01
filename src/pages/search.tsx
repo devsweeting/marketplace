@@ -196,7 +196,7 @@ const SearchPage: NextPage = () => {
       <OpenGraph title={'List view'} description={'List view page description'} />
 
       <Grid sx={{ marginTop: 10, backgroundColor: '#fff', width: '100%' }}>
-        <Grid container item style={{ width: '100%' }}>
+        <Grid container item style={{ margin: '0 10px', width: '99%' }}>
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
             <Grid
               container
@@ -210,9 +210,7 @@ const SearchPage: NextPage = () => {
               <Card
                 sx={{
                   width: '100%',
-
                   backgroundColor: 'white',
-
                   borderRadius: '0',
                 }}
               >
@@ -223,7 +221,6 @@ const SearchPage: NextPage = () => {
                     padding: '20px 10px',
                     width: '100%',
                     maxWidth: '1200px',
-                    margin: 'auto',
                   }}
                 >
                   <Typography

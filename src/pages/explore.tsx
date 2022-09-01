@@ -30,8 +30,6 @@ const ExplorePage: NextPage = () => {
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
-  const searchQuery = query.q;
-  const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
   const [activeBrandCard, setActiveBrandCard] = useState<string>('');
   const {
     checkedFilters,
@@ -63,7 +61,6 @@ const ExplorePage: NextPage = () => {
         sortType: sortByOrder,
         checkedFilters,
         rangeFilters,
-        search,
       });
 
       const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
@@ -72,8 +69,7 @@ const ExplorePage: NextPage = () => {
       setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
       setCurrentMeta(meta);
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [checkedFilters, rangeFilters, search, sortByOrder],
+    [checkedFilters, rangeFilters, sortByOrder],
   );
 
   const loadTrendingMarkets = useCallback(async () => {
