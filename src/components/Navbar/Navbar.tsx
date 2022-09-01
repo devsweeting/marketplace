@@ -53,7 +53,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
             setIsOpen(!isOpen);
           }}
         >
-          {'Search'}
+          {matchesMobile ? 'Search' : ''}
           <SearchIcon />
         </Typography>
         <div className={classes.mobileNavMenuItem}>

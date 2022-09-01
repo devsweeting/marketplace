@@ -9,7 +9,7 @@ export interface ISearchModal {
 export const SearchModal = ({ isOpen, onClose }: ISearchModal) => {
   const classes = useSearchModalStyles();
   return (
-    <Modal open={isOpen} onClose={onClose} sx={{ margin: '10px' }}>
+    <Modal open={isOpen} onClose={onClose} sx={{ margin: '10px', top: '40%' }}>
       <Box sx={{ bgcolor: 'background.paper', borderRadius: '10px' }}>
         <Typography variant="h3" component="h2" align="center" sx={{ lineHeight: '57px' }}>
           Search Assets
