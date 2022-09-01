@@ -106,7 +106,9 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      width: '80vw',
+                      justifyContent: 'space-evenly',
+
+                      width: '50vw',
                       height: '100vh',
                     }}
                   >

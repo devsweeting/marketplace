@@ -27,7 +27,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
   const user = useUser();
 
   return (
-    <Toolbar component="nav" sx={{ display: { xs: `flex` }, justifyContent: 'flex-end' }}>
+    <Toolbar component="nav" sx={{ display: { xs: `flex` }, justifyContent: 'center' }}>
       <Stack
         direction={`${matchesMobile ? 'column-reverse' : 'row'}`}
         sx={{
@@ -35,25 +35,30 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
           alignItems: matchesMobile ? 'flex-start' : 'center',
           textAlign: 'center',
         }}
+        className={classes.mobileNavBar}
       >
         {navLinks.map(({ title, path }: { title: string; path: string }, i: any) => (
-          <NavLink key={`${title}${i}`} href={path}>
-            {title}
-          </NavLink>
+          <div key={i} className={classes.mobileNavMenuItem}>
+            <NavLink key={`${title}${i}`} href={path}>
+              {title}
+            </NavLink>
+          </div>
         ))}
         <Typography
           variant="h4"
           component="span"
-          className={classes.searchIcon}
+          className={`${classes.searchIcon} ${classes.mobileNavMenuItem}`}
           ml={matchesMobile ? 1 : 2}
           onClick={() => {
             setIsOpen(!isOpen);
           }}
         >
-          Search
+          {'Search'}
           <SearchIcon />
         </Typography>
-        {!user ? <Login /> : <UserPane user={user} />}
+        <div className={classes.mobileNavMenuItem}>
+          {!user ? <Login /> : <UserPane user={user} />}
+        </div>
       </Stack>
       <SearchModal
         isOpen={isOpen}

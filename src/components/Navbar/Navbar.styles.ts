@@ -12,4 +12,14 @@ export const useNavbarStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  mobileNavBar: {
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: '120px',
+    },
+  },
+  mobileNavMenuItem: {
+    [theme.breakpoints.down('sm')]: {
+      marginTop: '30px',
+    },
+  },
 }));
