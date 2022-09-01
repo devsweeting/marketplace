@@ -6,6 +6,7 @@ import { logger } from '@/helpers/logger';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
 import { padTo2Digits } from '@/helpers/padTo2Digits';
+import { getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -124,6 +125,9 @@ export class ApiClient {
       }
 
       if (token && token.accessToken) {
+        if (getExpFromJwtAsDate(token) <= new Date()) {
+          console.log('token expired', getExpFromJwtAsDate(token));
+        }
         /**
          *  if token is expired
          *      make a call to get a new token

@@ -14,6 +14,5 @@ export const getUserFromJwt = (jwt?: IJwt): IUser | undefined => {
     return;
   }
   const parsedJwt = jwtDecode<{ id: string; email: string }>(jwt.accessToken);
-
   return { id: parsedJwt.id, email: parsedJwt.email };
 };
