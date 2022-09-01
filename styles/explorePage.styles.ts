@@ -8,12 +8,6 @@ export const useExplorePageStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    margin: '0 10px 10px 10px',
-    width: '800px',
-    [theme.breakpoints.down('sm')]: {
-      margin: '0 0px 10px 0px',
-      maxWidth: '400px',
-    },
   },
   assetListOpen: {
     flexGrow: 1,
@@ -22,10 +16,7 @@ export const useExplorePageStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    margin: '0 500px 10px 10px',
+    margin: '0 500px 0 0',
     width: '500px',
-    [theme.breakpoints.down('sm')]: {
-      maxWidth: '350px',
-    },
   },
 }));

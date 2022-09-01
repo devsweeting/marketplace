@@ -151,19 +151,41 @@ const ExplorePage: NextPage = () => {
     <ClientOnly>
       <OpenGraph title={'List view'} description={'List view page description'} />
 
-      <Grid sx={{ marginTop: 10, backgroundColor: '#f0f0f0' }} container>
+      <Grid
+        sx={{
+          marginTop: 10,
+          backgroundColor: '#fff',
+          width: '100%',
+          maxWidth: '1500px',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+        container
+      >
         <Grid container item>
-          <FeaturedMarketCarousel
-            assets={dropAssets}
-            title={'Latest Drop'}
-            handleDrawer={handleDrawer}
-          />
-          <FeaturedMarketCarousel
-            handleApplyBrandFilter={handleApplyBrandFilter}
-            activeBrandCard={activeBrandCard}
-            assets={trendingMarket}
-            title={'Trending Markets'}
-          />
+          <div
+            style={{
+              marginTop: 10,
+              backgroundColor: '#fff',
+              width: '100%',
+              maxWidth: '1500px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              border: '1px solid rgb(216, 216, 216)',
+            }}
+          >
+            <FeaturedMarketCarousel
+              assets={dropAssets}
+              title={'Latest Drop'}
+              handleDrawer={handleDrawer}
+            />
+            <FeaturedMarketCarousel
+              handleApplyBrandFilter={handleApplyBrandFilter}
+              activeBrandCard={activeBrandCard}
+              assets={trendingMarket}
+              title={'Trending Markets'}
+            />
+          </div>
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
             <FilterWrapper />
             <Grid container direction="row" justifyContent="center" alignItems="stretch">

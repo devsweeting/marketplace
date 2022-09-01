@@ -35,8 +35,6 @@ export const useFilterWrapperStyles = makeStyles(() => ({
     width: '100%',
     marginTop: '10px',
     backgroundColor: 'white',
-    maxWidth: '1200px',
-    margin: 'auto',
     borderRadius: '0',
   },
   mobileFilterWrapperWrapper: {

@@ -138,8 +138,6 @@ export const FilterWrapper = () => {
                 alignItems: 'center',
                 padding: '20px 10px',
                 width: '100%',
-                maxWidth: '1200px',
-                margin: 'auto',
               }}
             >
               <Typography

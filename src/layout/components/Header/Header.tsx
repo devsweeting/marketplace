@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Drawer from '@mui/material/Drawer';
 import { Navbar } from '@/components/Navbar';
 import { SearchBox } from '@/components/SearchBox';
 import { SkinContext } from '@/styles/skin-context';
@@ -25,7 +25,6 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const [openState, setOpenState] = useState(false);
-  const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const toggleDrawer = (open: boolean | ((prevState: boolean) => boolean)) => () => {
     setOpenState(open);
@@ -90,17 +89,15 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                   aria-label="open drawer"
                   onClick={toggleDrawer(true)}
                   sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }}
+                  style={{ marginRight: '10px' }}
                 >
                   <MenuIcon />
                 </IconButton>
-                <SwipeableDrawer
-                  disableBackdropTransition={!iOS}
-                  disableDiscovery={iOS}
+                <Drawer
                   anchor="right" //from which side the drawer slides in
                   variant="temporary" //if and how easily the drawer can be closed
                   open={openState} //if open is true, drawer is shown
                   onClose={toggleDrawer(false)} //function that is called when the drawer should close
-                  onOpen={toggleDrawer(true)}
                 >
                   <Box
                     style={{
@@ -117,6 +114,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                       color="inherit"
                       aria-label="Close drawer"
                       onClick={toggleDrawer(false)}
+                      sx={{ mr: 1 }}
                       style={{
                         display: 'flex',
                         justifyContent: 'flex-start',
@@ -130,7 +128,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
 
                     <Navbar navLinks={Routes} />
                   </Box>
-                </SwipeableDrawer>
+                </Drawer>
               </>
             )}
           </Container>
