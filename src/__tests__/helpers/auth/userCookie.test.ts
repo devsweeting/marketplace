@@ -25,7 +25,7 @@ describe('setUserCookie', () => {
   });
 
   test('should set user cookies', () => {
-    setUserCookie('some data', mockReq, res);
+    setUserCookie({ accessToken: 'test-string', refreshToken: 'refresh-token' }, mockReq, res);
     expect(mockCookiesNext.setCookies).toHaveBeenCalledTimes(1);
   });
 });
@@ -42,9 +42,13 @@ describe('getUserCookie', () => {
   });
 
   test('should return decrypted token if token does exist', () => {
-    mockCookiesNext.getCookie.mockImplementation(() => encrypt('test-string'));
+    mockCookiesNext.getCookie.mockImplementation(() => {
+      const token = encrypt('test-string');
+      const refresh = encrypt('refresh');
+      return JSON.stringify({ accessToken: token, refreshToken: refresh });
+    });
     const result = getUserCookie(mockReq);
-    expect(result).toBe('test-string');
+    expect(result).toStrictEqual({ accessToken: 'test-string', refreshToken: 'refresh' });
   });
 });
 

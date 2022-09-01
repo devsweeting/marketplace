@@ -6,7 +6,6 @@ import type { IJwt } from '@/types/jwt';
 
 export const getUserFromRequest = (req: NextServerRequest): IUser | undefined => {
   const token = getUserCookie(req);
-  console.log('\n\n\n\ntoken ', token);
   return getUserFromJwt(token);
 };
 

@@ -123,7 +123,7 @@ export class ApiClient {
         returnedByteSize = request.headers['content-length'];
       }
 
-      if (token) {
+      if (token && token.accessToken) {
         /**
          *  if token is expired
          *      make a call to get a new token
@@ -132,7 +132,7 @@ export class ApiClient {
          *
          */
 
-        request.headers['Authorization'] = `Bearer ${token}`;
+        request.headers['Authorization'] = `Bearer ${token.accessToken}`;
         authuser = getUserFromJwt(token);
       }
     }
