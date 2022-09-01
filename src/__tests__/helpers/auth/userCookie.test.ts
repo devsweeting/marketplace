@@ -16,6 +16,7 @@ type Request = IncomingMessage & {
 };
 
 const mockReq = {} as unknown as Request;
+
 const res = {} as unknown as ServerResponse;
 
 describe('setUserCookie', () => {

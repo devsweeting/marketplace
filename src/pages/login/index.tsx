@@ -41,6 +41,7 @@ export default Login;
 
 export const getServerSideProps = getServerSidePropsWithUser(async ({ req, res, query, user }) => {
   const jwt = await loginConfirm({ req, token: query.token });
+  console.log('JWT ', jwt);
 
   if (!jwt && !user) {
     res.statusCode = 400;

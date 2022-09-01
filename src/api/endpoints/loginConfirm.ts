@@ -3,6 +3,7 @@ import { unwrapString } from '@/helpers/unwrapString';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
 import { apiClient } from '@/api/client';
+import type { IJwt } from '@/types/jwt';
 
 export const loginConfirm = async ({
   req,
@@ -10,9 +11,8 @@ export const loginConfirm = async ({
 }: {
   req: IncomingMessage;
   token?: string | string[];
-}): Promise<string | undefined> => {
+}): Promise<IJwt | undefined> => {
   const parsedToken = unwrapString(token);
-
   if (!parsedToken) {
     return;
   }
@@ -27,14 +27,15 @@ export const loginConfirm = async ({
       },
     },
   });
-
+  console.log(response.data);
+  console.log(response);
   if (!response.ok) {
     return;
   }
 
-  if (response.isJson) {
+  if (!response.isJson) {
     return;
   }
 
-  return response.data;
+  return response.data as unknown as IJwt;
 };

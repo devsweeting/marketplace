@@ -124,6 +124,14 @@ export class ApiClient {
       }
 
       if (token) {
+        /**
+         *  if token is expired
+         *      make a call to get a new token
+         *  if req is not ok
+         *      return early
+         *
+         */
+
         request.headers['Authorization'] = `Bearer ${token}`;
         authuser = getUserFromJwt(token);
       }

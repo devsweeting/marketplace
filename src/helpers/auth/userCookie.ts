@@ -2,14 +2,21 @@ import { getCookie, removeCookies, setCookies } from 'cookies-next';
 import { USER_TOKEN_COOKIE } from '@/helpers/constants';
 import { decrypt, encrypt } from '@/helpers/crypto';
 import type { NextServerRequest, NextServerResponse } from '@/types/next';
+import type { IJwt } from '@/types/jwt';
 
 export const setUserCookie = (
-  token: string,
+  token: IJwt,
   req: NextServerRequest,
   res: NextServerResponse,
 ): void => {
-  const ecryptedToken = encrypt(token);
-  setCookies(USER_TOKEN_COOKIE, ecryptedToken, {
+  const encryptedToken = encrypt(token.accessToken);
+  const encryptedRefreshToken = encrypt(token.refreshToken);
+  const tokens = JSON.stringify({
+    accessToken: encryptedToken,
+    refreshToken: encryptedRefreshToken,
+  });
+  // console.log('tokens', tokens);
+  setCookies(USER_TOKEN_COOKIE, tokens, {
     req,
     res,
     httpOnly: true,
@@ -17,14 +24,29 @@ export const setUserCookie = (
   });
 };
 
-export const getUserCookie = (req: NextServerRequest): string | undefined => {
-  const token = getCookie(USER_TOKEN_COOKIE, { req });
+export const getUserCookie = (req: NextServerRequest): IJwt | undefined => {
+  const tokens = getCookie(USER_TOKEN_COOKIE, { req });
 
-  if (typeof token !== 'string') {
+  if (typeof tokens !== 'string') {
+    return;
+  }
+  // console.log('\n\n\n\ntokens from cookie ', tokens);
+  let encryptedTokens;
+  try {
+    encryptedTokens = JSON.parse(tokens);
+  } catch (error) {
     return;
   }
 
-  return decrypt(token);
+  // console.log('\n\n\n\nencrypted tokens from cookie ', encryptedTokens);
+
+  const decryptedToken = decrypt(encryptedTokens.accessToken);
+  const decryptedRefreshToken = decrypt(encryptedTokens.refreshToken);
+
+  return {
+    accessToken: decryptedToken,
+    refreshToken: decryptedRefreshToken,
+  };
 };
 
 export const removeUserCookie = (req: NextServerRequest, res: NextServerResponse) => {
