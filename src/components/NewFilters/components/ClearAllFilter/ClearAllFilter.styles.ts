@@ -19,14 +19,19 @@ export const useClearAllFilter = makeStyles(
         marginRight: '5px',
       },
     },
+    button: {
+      color: 'rgba(0, 0, 0, 0.6)',
+    },
     closeButton: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
+      color: 'rgba(0, 0, 0, 0.6)',
     },
     arrowIcon: {
       cursor: 'pointer',
+      color: 'rgba(0, 0, 0, 0.6)',
       paddingRight: theme.spacing(1),
       fontSize: '46px',
       ['@media (min-width:900px)']: {

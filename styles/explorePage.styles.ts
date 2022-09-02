@@ -17,6 +17,5 @@ export const useExplorePageStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     margin: '0 500px 0 0',
-    width: '500px',
   },
 }));

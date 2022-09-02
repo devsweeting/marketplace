@@ -33,9 +33,10 @@ export const useFilterWrapperStyles = makeStyles(() => ({
   },
   desktopFilterCard: {
     width: '100%',
-    marginTop: '10px',
+    padding: '10px 0',
     backgroundColor: 'white',
     borderRadius: '0',
+    borderBottom: '1px solid rgba(0,0,0,0.2)',
   },
   mobileFilterWrapperWrapper: {
     display: 'flex',

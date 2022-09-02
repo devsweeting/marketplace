@@ -136,16 +136,16 @@ export const FilterWrapper = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                padding: '20px 10px',
+                padding: '0 10px',
                 width: '100%',
               }}
             >
               <Typography
                 variant="h3"
                 component={'h3'}
-                sx={{ marginLeft: 6, marginRight: 5, fontSize: '1.5rem', whiteSpace: 'nowrap' }}
+                sx={{ marginLeft: 1.2, marginRight: 1.2, fontSize: '1.3rem', whiteSpace: 'nowrap' }}
               >
-                Explore Drops
+                {router.asPath.includes('/search') ? 'Search Results' : 'Explore Drops'}
               </Typography>
 
               <Box
@@ -175,7 +175,6 @@ export const FilterWrapper = () => {
                 <SortMenu {...sortListProps} />
               </Box>
             </Box>
-            <Divider />
           </Card>
         </Grid>
       ) : (

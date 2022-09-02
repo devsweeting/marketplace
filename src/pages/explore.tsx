@@ -63,11 +63,13 @@ const ExplorePage: NextPage = () => {
         rangeFilters,
       });
 
-      const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
-        queryString,
-      });
-      setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-      setCurrentMeta(meta);
+      if (queryString) {
+        const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+          queryString,
+        });
+        setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
+        setCurrentMeta(meta);
+      }
     },
     [checkedFilters, rangeFilters, sortByOrder],
   );
@@ -86,11 +88,12 @@ const ExplorePage: NextPage = () => {
       loadAssets(1).catch(() => {
         setAssets([]);
       });
+
       loadLatestDropAssets().catch(() => {
         setDropAssets([]);
       });
     }
-  }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets]);
+  }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets, sortByOrder]);
 
   useEffect(() => {
     if (Object.keys(query).length > 0 && !Object.keys(query).includes('attr_eq[brand]')) {
