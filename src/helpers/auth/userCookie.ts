@@ -1,4 +1,4 @@
-import { getCookie, removeCookies, setCookies } from 'cookies-next';
+import { getCookie, removeCookies, setCookie } from 'cookies-next';
 import { USER_TOKEN_COOKIE } from '@/helpers/constants';
 import { decrypt, encrypt } from '@/helpers/crypto';
 import type { NextServerRequest, NextServerResponse } from '@/types/next';
@@ -15,8 +15,7 @@ export const setUserCookie = (
     accessToken: encryptedToken,
     refreshToken: encryptedRefreshToken,
   });
-  // console.log('tokens', tokens);
-  setCookies(USER_TOKEN_COOKIE, tokens, {
+  setCookie(USER_TOKEN_COOKIE, tokens, {
     req,
     res,
     httpOnly: true,
@@ -30,15 +29,12 @@ export const getUserCookie = (req: NextServerRequest): IJwt | undefined => {
   if (typeof tokens !== 'string') {
     return;
   }
-  // console.log('\n\n\n\ntokens from cookie ', tokens);
   let encryptedTokens;
   try {
     encryptedTokens = JSON.parse(tokens);
   } catch (error) {
     return;
   }
-
-  // console.log('\n\n\n\nencrypted tokens from cookie ', encryptedTokens);
 
   const decryptedToken = decrypt(encryptedTokens.accessToken);
   const decryptedRefreshToken = decrypt(encryptedTokens.refreshToken);

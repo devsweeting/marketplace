@@ -1,12 +1,14 @@
 import type { NextServerRequest } from '@/types/next';
-import { getUserCookie } from '@/helpers/auth/userCookie';
+import { getUserCookie, removeUserCookie, setUserCookie } from '@/helpers/auth/userCookie';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
 import { logger } from '@/helpers/logger';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
 import { padTo2Digits } from '@/helpers/padTo2Digits';
-import { getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
+import { getExpFromAccessToken, getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
+import { IJwt } from '@/types/jwt';
+import { ServerResponse } from 'http';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -73,26 +75,27 @@ export class ApiClient {
     return this._send(url, 'GET', request);
   }
 
-  post(url: IApiUrl, request: IApiRequestWithBody) {
-    return this._send(url, 'POST', request);
+  post(url: IApiUrl, request: IApiRequestWithBody, res: ServerResponse) {
+    return this._send(url, 'POST', request, res);
   }
 
-  put(url: IApiUrl, request: IApiRequestWithBody) {
-    return this._send(url, 'PUT', request);
+  put(url: IApiUrl, request: IApiRequestWithBody, res: ServerResponse) {
+    return this._send(url, 'PUT', request, res);
   }
 
-  patch(url: IApiUrl, request: IApiRequestWithBody) {
-    return this._send(url, 'PATCH', request);
+  patch(url: IApiUrl, request: IApiRequestWithBody, res: ServerResponse) {
+    return this._send(url, 'PATCH', request, res);
   }
 
-  delete(url: IApiUrl, request: IApiRequest = {}) {
-    return this._send(url, 'DELETE', request);
+  delete(url: IApiUrl, request: IApiRequest = {}, res: ServerResponse) {
+    return this._send(url, 'DELETE', request, res);
   }
 
   private async _send(
     path: IApiUrl,
     method: string,
     request: IApiRequest | IApiRequestWithBody,
+    res?: ServerResponse,
   ): Promise<IApiResponse> {
     if (!request.headers) {
       request.headers = {};
@@ -127,6 +130,50 @@ export class ApiClient {
       if (token && token.accessToken) {
         if (getExpFromJwtAsDate(token) <= new Date()) {
           console.log('token expired', getExpFromJwtAsDate(token));
+          try {
+            const headers = {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token.accessToken}`,
+            };
+            const response = await fetch(`${ApiClient.getBaseUrl()}/users/login/refresh`, {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify({ refreshToken: token.refreshToken }),
+            });
+            // console.log('\n\n\n\n\n response: ', await response.json());
+            if (!response.ok) {
+              //TODO log out user
+              const data = await response.json();
+              const responseHeaders: Record<string, string> = {};
+
+              response.headers.forEach((value, key) => {
+                responseHeaders[key] = value.toLowerCase();
+              });
+              console.log('Error');
+              return {
+                status: response.status,
+                ok: response.ok,
+                data,
+                headers: responseHeaders,
+                isJson: true,
+              };
+            }
+            const data = await response.json();
+            console.log(data);
+            console.log(getExpFromAccessToken(data.accessToken));
+            const newJWt: IJwt = {
+              accessToken: data.accessToken,
+              refreshToken: token.refreshToken,
+            };
+            if (res === undefined) {
+              console.log('\n\n\n\n\n\n\n undefined');
+            }
+            setUserCookie(newJWt, request.req, res);
+            // console.log('\n\n\n\n\n response body: ', response);
+          } catch (error) {
+            console.log(error);
+          }
         }
         /**
          *  if token is expired
@@ -135,7 +182,6 @@ export class ApiClient {
          *      return early
          *
          */
-
         request.headers['Authorization'] = `Bearer ${token.accessToken}`;
         authuser = getUserFromJwt(token);
       }

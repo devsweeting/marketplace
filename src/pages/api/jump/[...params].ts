@@ -37,7 +37,7 @@ const jumpApiProxy: NextApiHandler = async (req, res) => {
     return;
   }
 
-  const apiResponse = await apiClient[method](url, apiRequest);
+  const apiResponse = await apiClient[method](url, apiRequest, res);
   res.status(apiResponse.status);
   if (apiResponse.isJson) {
     res.json(apiResponse.data);

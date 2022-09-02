@@ -12,11 +12,18 @@ export const getExpFromJwt = (jwt?: IJwt): string | undefined => {
   if (!jwt) {
     return;
   }
-  const parsedJwt = jwtDecode<{ exp: string }>(jwt.refreshToken);
+  const parsedJwt = jwtDecode<{ exp: string }>(jwt.accessToken);
   return parsedJwt.exp;
 };
 
 export const getExpFromJwtAsDate = (jwt?: IJwt): Date => {
-  const date = getExpFromJwt(jwt);
-  return new Date(date ?? 0);
+  const date = getExpFromJwt(jwt) ?? 0;
+  console.log(date);
+  console.log(date * 1000);
+  return new Date(date * 1000);
+};
+
+export const getExpFromAccessToken = (accessToken: string) => {
+  const parsedToken = jwtDecode<{ exp: number }>(accessToken);
+  return new Date(parsedToken.exp * 1000);
 };

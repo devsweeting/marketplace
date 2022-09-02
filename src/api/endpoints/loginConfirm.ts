@@ -1,4 +1,4 @@
-import type { IncomingMessage } from 'http';
+import type { IncomingMessage, ServerResponse } from 'http';
 import { unwrapString } from '@/helpers/unwrapString';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
@@ -8,25 +8,31 @@ import type { IJwt } from '@/types/jwt';
 export const loginConfirm = async ({
   req,
   token,
+  res,
 }: {
   req: IncomingMessage;
   token?: string | string[];
+  res: ServerResponse;
 }): Promise<IJwt | undefined> => {
   const parsedToken = unwrapString(token);
   if (!parsedToken) {
     return;
   }
 
-  const response = await apiClient.post('/users/login/confirm', {
-    body: {
-      token: parsedToken,
-      metadata: {
-        ipAddress: getIpAddress(req),
-        browserUserAgent: req.headers['user-agent'],
-        localeInformation: parseLocale(req),
+  const response = await apiClient.post(
+    '/users/login/confirm',
+    {
+      body: {
+        token: parsedToken,
+        metadata: {
+          ipAddress: getIpAddress(req),
+          browserUserAgent: req.headers['user-agent'],
+          localeInformation: parseLocale(req),
+        },
       },
     },
-  });
+    res,
+  );
   console.log(response.data);
   console.log(response);
   if (!response.ok) {
