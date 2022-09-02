@@ -8,7 +8,6 @@ import * as Sentry from '@sentry/nextjs';
 import { padTo2Digits } from '@/helpers/padTo2Digits';
 import { getExpFromAccessToken, getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
 import type { IJwt } from '@/types/jwt';
-import { NextResponse } from 'next/server';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -75,7 +74,7 @@ export class ApiClient {
     return this._send(url, 'GET', request);
   }
 
-  post(url: IApiUrl, request: IApiRequestWithBody, res: NextServerResponse) {
+  post(url: IApiUrl, request: IApiRequestWithBody, res?: NextServerResponse) {
     return this._send(url, 'POST', request, res);
   }
 
@@ -206,7 +205,6 @@ export class ApiClient {
         headers: headers,
         body: JSON.stringify({ refreshToken: token.refreshToken }),
       });
-      // console.log('\n\n\n\n\n response: ', await response.json());
       if (!response.ok) {
         //TODO log out user
         const data = await response.json();
