@@ -1,4 +1,4 @@
-import type { NextServerRequest } from '@/types/next';
+import type { NextServerRequest, NextServerResponse } from '@/types/next';
 import { getUserCookie, removeUserCookie, setUserCookie } from '@/helpers/auth/userCookie';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/nextjs';
 import { padTo2Digits } from '@/helpers/padTo2Digits';
 import { getExpFromAccessToken, getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
 import type { IJwt } from '@/types/jwt';
-import type { ServerResponse } from 'http';
+import { NextResponse } from 'next/server';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -75,19 +75,19 @@ export class ApiClient {
     return this._send(url, 'GET', request);
   }
 
-  post(url: IApiUrl, request: IApiRequestWithBody, res: ServerResponse) {
+  post(url: IApiUrl, request: IApiRequestWithBody, res: NextServerResponse) {
     return this._send(url, 'POST', request, res);
   }
 
-  put(url: IApiUrl, request: IApiRequestWithBody, res: ServerResponse) {
+  put(url: IApiUrl, request: IApiRequestWithBody, res: NextServerResponse) {
     return this._send(url, 'PUT', request, res);
   }
 
-  patch(url: IApiUrl, request: IApiRequestWithBody, res: ServerResponse) {
+  patch(url: IApiUrl, request: IApiRequestWithBody, res: NextServerResponse) {
     return this._send(url, 'PATCH', request, res);
   }
 
-  delete(url: IApiUrl, request: IApiRequest = {}, res: ServerResponse) {
+  delete(url: IApiUrl, request: IApiRequest = {}, res: NextServerResponse) {
     return this._send(url, 'DELETE', request, res);
   }
 
@@ -95,7 +95,7 @@ export class ApiClient {
     path: IApiUrl,
     method: string,
     request: IApiRequest | IApiRequestWithBody,
-    res?: ServerResponse,
+    res?: NextServerResponse,
   ): Promise<IApiResponse> {
     if (!request.headers) {
       request.headers = {};
@@ -185,7 +185,12 @@ export class ApiClient {
     }
   }
 
-  private async _refreshJwt(token: IJwt, req: NextServerRequest, res: ServerResponse | undefined) {
+  private async _refreshJwt(
+    token: IJwt,
+    req: NextServerRequest,
+    res: NextServerResponse | undefined,
+  ) {
+    //TODO check if the JWT has been tampered with
     if (!res || !req) {
       return;
     }
@@ -232,8 +237,9 @@ export class ApiClient {
       setUserCookie(newJWt, req, res);
       // console.log('\n\n\n\n\n response body: ', response);
     } catch (error) {
+      // TODO handle invalid refreshToken error
       removeUserCookie(req, res);
-      console.log(error);
+      logger.error(error);
     }
   }
 }

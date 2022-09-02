@@ -1,9 +1,10 @@
-import type { IncomingMessage, ServerResponse } from 'http';
+import type { IncomingMessage } from 'http';
 import { unwrapString } from '@/helpers/unwrapString';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
 import { apiClient } from '@/api/client';
 import type { IJwt } from '@/types/jwt';
+import type { NextServerResponse } from '@/types/next';
 
 export const loginConfirm = async ({
   req,
@@ -12,7 +13,7 @@ export const loginConfirm = async ({
 }: {
   req: IncomingMessage;
   token?: string | string[];
-  res: ServerResponse;
+  res: NextServerResponse;
 }): Promise<IJwt | undefined> => {
   const parsedToken = unwrapString(token);
   if (!parsedToken) {
