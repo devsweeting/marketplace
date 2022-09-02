@@ -26,7 +26,7 @@ describe('setUserCookie', () => {
 
   test('should set user cookies', () => {
     setUserCookie({ accessToken: 'test-string', refreshToken: 'refresh-token' }, mockReq, res);
-    expect(mockCookiesNext.setCookies).toHaveBeenCalledTimes(1);
+    expect(mockCookiesNext.setCookie).toHaveBeenCalledTimes(1);
   });
 });
 

@@ -33,8 +33,7 @@ export const loginConfirm = async ({
     },
     res,
   );
-  console.log(response.data);
-  console.log(response);
+
   if (!response.ok) {
     return;
   }

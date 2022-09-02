@@ -7,8 +7,8 @@ import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
 import { padTo2Digits } from '@/helpers/padTo2Digits';
 import { getExpFromAccessToken, getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
-import { IJwt } from '@/types/jwt';
-import { ServerResponse } from 'http';
+import type { IJwt } from '@/types/jwt';
+import type { ServerResponse } from 'http';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -129,59 +129,9 @@ export class ApiClient {
 
       if (token && token.accessToken) {
         if (getExpFromJwtAsDate(token) <= new Date()) {
-          console.log('token expired', getExpFromJwtAsDate(token));
-          try {
-            const headers = {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token.accessToken}`,
-            };
-            const response = await fetch(`${ApiClient.getBaseUrl()}/users/login/refresh`, {
-              method: 'POST',
-              headers: headers,
-              body: JSON.stringify({ refreshToken: token.refreshToken }),
-            });
-            // console.log('\n\n\n\n\n response: ', await response.json());
-            if (!response.ok) {
-              //TODO log out user
-              const data = await response.json();
-              const responseHeaders: Record<string, string> = {};
-
-              response.headers.forEach((value, key) => {
-                responseHeaders[key] = value.toLowerCase();
-              });
-              console.log('Error');
-              return {
-                status: response.status,
-                ok: response.ok,
-                data,
-                headers: responseHeaders,
-                isJson: true,
-              };
-            }
-            const data = await response.json();
-            console.log(data);
-            console.log(getExpFromAccessToken(data.accessToken));
-            const newJWt: IJwt = {
-              accessToken: data.accessToken,
-              refreshToken: token.refreshToken,
-            };
-            if (res === undefined) {
-              console.log('\n\n\n\n\n\n\n undefined');
-            }
-            setUserCookie(newJWt, request.req, res);
-            // console.log('\n\n\n\n\n response body: ', response);
-          } catch (error) {
-            console.log(error);
-          }
+          await this._refreshJwt(token, request.req, res);
         }
-        /**
-         *  if token is expired
-         *      make a call to get a new token
-         *  if req is not ok
-         *      return early
-         *
-         */
+
         request.headers['Authorization'] = `Bearer ${token.accessToken}`;
         authuser = getUserFromJwt(token);
       }
@@ -232,6 +182,58 @@ export class ApiClient {
         headers: responseHeaders,
         isJson: false,
       };
+    }
+  }
+
+  private async _refreshJwt(token: IJwt, req: NextServerRequest, res: ServerResponse | undefined) {
+    if (!res || !req) {
+      return;
+    }
+    console.log('token expired', getExpFromJwtAsDate(token));
+    try {
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token.accessToken}`,
+      };
+      const response = await fetch(`${ApiClient.getBaseUrl()}/users/login/refresh`, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ refreshToken: token.refreshToken }),
+      });
+      // console.log('\n\n\n\n\n response: ', await response.json());
+      if (!response.ok) {
+        //TODO log out user
+        const data = await response.json();
+        const responseHeaders: Record<string, string> = {};
+
+        response.headers.forEach((value, key) => {
+          responseHeaders[key] = value.toLowerCase();
+        });
+        console.log('Error');
+        return {
+          status: response.status,
+          ok: response.ok,
+          data,
+          headers: responseHeaders,
+          isJson: true,
+        };
+      }
+      const data = await response.json();
+      console.log(data);
+      console.log(getExpFromAccessToken(data.accessToken));
+      const newJWt: IJwt = {
+        accessToken: data.accessToken,
+        refreshToken: token.refreshToken,
+      };
+      if (res === undefined) {
+        console.log('\n\n\n\n\n\n\n undefined');
+      }
+      setUserCookie(newJWt, req, res);
+      // console.log('\n\n\n\n\n response body: ', response);
+    } catch (error) {
+      removeUserCookie(req, res);
+      console.log(error);
     }
   }
 }

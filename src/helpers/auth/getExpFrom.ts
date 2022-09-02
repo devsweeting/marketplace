@@ -2,6 +2,7 @@ import jwtDecode from 'jwt-decode';
 import type { NextServerRequest } from '@/types/next';
 import { getUserCookie } from '@/helpers/auth/userCookie';
 import type { IJwt } from '@/types/jwt';
+import { safeParseInt } from '../safeParseInt';
 
 export const getExpFromRequest = (req: NextServerRequest): string | undefined => {
   const token = getUserCookie(req);
@@ -17,9 +18,7 @@ export const getExpFromJwt = (jwt?: IJwt): string | undefined => {
 };
 
 export const getExpFromJwtAsDate = (jwt?: IJwt): Date => {
-  const date = getExpFromJwt(jwt) ?? 0;
-  console.log(date);
-  console.log(date * 1000);
+  const date = safeParseInt(getExpFromJwt(jwt) ?? '') ?? 0;
   return new Date(date * 1000);
 };
 
