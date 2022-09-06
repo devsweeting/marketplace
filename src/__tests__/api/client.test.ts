@@ -151,8 +151,12 @@ describe('ApiClient', () => {
 
   test('it attaches jwt if available', async () => {
     const expectedUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/test`;
-    const mockValidJwt =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWF0IjoxNjU1NzYwNzY0LCJleHAiOjE2NTU4Njg3NjR9.jT_lLXBBTqaAOaSesfsASQNhYuBwY2osw8aYAMT2khs';
+    const mockValidJwt = {
+      accessToken:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWQiOjEzMzcsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1NTc2MDc2NCwiZXhwIjoxNjU1ODY4NzY0fQ.sbsnnXF4pygn92GeJ5FMmQjy4HHEFkWZGdldjSxvdQ0',
+      refreshToken:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWQiOjEzMzcsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1NTc2MDc2NCwiZXhwIjoxNjU1ODY4NzY0fQ.sbsnnXF4pygn92GeJ5FMmQjy4HHEFkWZGdldjSxvdQ0',
+    };
 
     const mockRequest = {} as NextServerRequest;
 
@@ -169,13 +173,21 @@ describe('ApiClient', () => {
     mockGetUserCookie.mockReturnValue(mockValidJwt);
 
     await client.post('/test', { req: mockRequest, body: { test: 'test' } });
-
-    expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
+    expect(global.fetch).toHaveBeenNthCalledWith(1, expectedUrl, {
+      body: JSON.stringify({ test: 'test' }),
+      // body: JSON.stringify({ refreshToken: mockValidJwt.refreshToken }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${mockValidJwt.accessToken}`,
+      },
+    });
+    expect(global.fetch).toHaveBeenNthCalledWith(2, expectedUrl, {
       body: JSON.stringify({ test: 'test' }),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${mockValidJwt}`,
+        Authorization: `Bearer ${mockValidJwt.accessToken}`,
       },
     });
   });

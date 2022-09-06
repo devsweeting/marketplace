@@ -217,7 +217,6 @@ export class ApiClient {
         });
 
         console.log('Error', response.status);
-        removeUserCookie(req, res);
 
         return {
           status: response.status,
