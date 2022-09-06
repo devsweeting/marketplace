@@ -3,13 +3,12 @@ import { makeStyles } from '@mui/styles';
 export const useHowItWorks = makeStyles(
   () => ({
     wrapper: {
-      background: '#ebebeb',
       width: '100%',
       display: 'flex',
-      flexDirection: 'row',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      minHeight: '300px',
+      minHeight: '50vh',
     },
   }),
   { name: 'howItWorks' },

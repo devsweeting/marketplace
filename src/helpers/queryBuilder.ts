@@ -9,9 +9,9 @@ export const queryBuilder = async ({
 }: {
   page: number;
   limit?: number;
-  sortType: string | undefined;
+  sortType?: string | undefined;
   checkedFilters?: Array<IFilter>;
-  rangeFilters: null | RangeFilters;
+  rangeFilters?: null | RangeFilters | undefined;
   search?: string | undefined;
 }) => {
   const queryString = await queryStringBuilder({
