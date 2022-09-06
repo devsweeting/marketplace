@@ -1,4 +1,4 @@
-import { getCookie, removeCookies, setCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { USER_TOKEN_COOKIE } from '@/helpers/constants';
 import { decrypt, encrypt } from '@/helpers/crypto';
 import type { NextServerRequest, NextServerResponse } from '@/types/next';
@@ -46,5 +46,5 @@ export const getUserCookie = (req: NextServerRequest): IJwt | undefined => {
 };
 
 export const removeUserCookie = (req: NextServerRequest, res: NextServerResponse) => {
-  removeCookies(USER_TOKEN_COOKIE, { req, res });
+  deleteCookie(USER_TOKEN_COOKIE, { req, res });
 };
