@@ -31,3 +31,29 @@ export function convertTimeDiffToHHMMSS(startDate: Date | string, endDate: Date 
   const seconds = calcTimeDifference(startDate, endDate) ?? 0;
   return convertSecondsToHHMMSS(seconds);
 }
+
+export function formatDate(date: Date) {
+  return (
+    [
+      padTo2Digits(date.getDate()),
+      date.toLocaleString('default', { month: 'short' }),
+      date.getFullYear(),
+    ].join('/') +
+    ':' +
+    [
+      padTo2Digits(date.getHours()),
+      padTo2Digits(date.getMinutes()),
+      padTo2Digits(date.getSeconds()),
+    ].join(':')
+  );
+}
+
+export function getTimezoneOffset() {
+  function daylight(n: number) {
+    return (n < 10 ? '0' : '') + n;
+  }
+  let offset = new Date().getTimezoneOffset();
+  const sign = offset < 0 ? '+' : '-';
+  offset = Math.abs(offset);
+  return sign + daylight((offset / 60) | 0) + daylight(offset % 60);
+}

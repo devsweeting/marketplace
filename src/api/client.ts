@@ -5,9 +5,9 @@ import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
 import { logger } from '@/helpers/logger';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
-import { padTo2Digits } from '@/helpers/padTo2Digits';
 import { getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
 import type { IJwt } from '@/types/jwt';
+import { formatDate, getTimezoneOffset } from '@/helpers/time';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -37,31 +37,6 @@ export type IApiResponse = IApiJsonResponse | IApiTextResponse;
 
 export type IApiUrl = `/${string}`;
 
-function formatDate(date: Date) {
-  return (
-    [
-      padTo2Digits(date.getDate()),
-      date.toLocaleString('default', { month: 'short' }),
-      date.getFullYear(),
-    ].join('/') +
-    ':' +
-    [
-      padTo2Digits(date.getHours()),
-      padTo2Digits(date.getMinutes()),
-      padTo2Digits(date.getSeconds()),
-    ].join(':')
-  );
-}
-
-function getTimezoneOffset() {
-  function daylight(n: number) {
-    return (n < 10 ? '0' : '') + n;
-  }
-  let offset = new Date().getTimezoneOffset();
-  const sign = offset < 0 ? '+' : '-';
-  offset = Math.abs(offset);
-  return sign + daylight((offset / 60) | 0) + daylight(offset % 60);
-}
 export class ApiClient {
   static getBaseUrl() {
     if (typeof window === 'undefined') {
@@ -102,7 +77,7 @@ export class ApiClient {
 
     let body: string | undefined;
     let host: string | undefined = '-';
-    let authuser;
+    let authUser;
     const time = formatDate(new Date());
     const timeZone = getTimezoneOffset();
     let returnedByteSize;
@@ -135,7 +110,7 @@ export class ApiClient {
         }
 
         request.headers['Authorization'] = `Bearer ${token.accessToken}`;
-        authuser = getUserFromJwt(token);
+        authUser = getUserFromJwt(token);
       }
     }
 
@@ -150,13 +125,13 @@ export class ApiClient {
       });
       if (response.ok) {
         logger.info(
-          `${host ?? '-'} ${authuser ?? '-'} [${time} ${timeZone}] ${method} ${response.url} ${
+          `${host ?? '-'} ${authUser ?? '-'} [${time} ${timeZone}] ${method} ${response.url} ${
             response.status
           } ${returnedByteSize ?? '-'}`,
         );
       } else {
         logger.error(
-          `${host ?? '-'} ${authuser ?? '-'} [${time} ${timeZone}]  ${method} ${response.url} ${
+          `${host ?? '-'} ${authUser ?? '-'} [${time} ${timeZone}]  ${method} ${response.url} ${
             response.status
           } ${response.statusText} ${returnedByteSize ?? '-'}`,
         );
@@ -192,7 +167,7 @@ export class ApiClient {
     req: NextServerRequest,
     res: NextServerResponse | undefined,
   ) {
-    //TODO check if the JWT has been tampered with
+    console.log('refresh jwt');
     if (!res || !req) {
       return;
     }
@@ -208,7 +183,7 @@ export class ApiClient {
         body: JSON.stringify({ refreshToken: token.refreshToken }),
       });
       if (!response.ok) {
-        //TODO log out user
+        //TODO log out user or handle unauthenticated users
         const data = await response.json();
         const responseHeaders: Record<string, string> = {};
 
@@ -237,6 +212,7 @@ export class ApiClient {
       setUserCookie(newJWt, req, res);
     } catch (error) {
       removeUserCookie(req, res);
+      console.log('error');
       logger.error(error);
     }
   }
