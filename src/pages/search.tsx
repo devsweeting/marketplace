@@ -102,7 +102,6 @@ const SearchPage: NextPage = () => {
           marginTop: 10,
           backgroundColor: '#fff',
           width: '100%',
-          maxWidth: '1500px',
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
