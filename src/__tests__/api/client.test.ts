@@ -175,11 +175,9 @@ describe('ApiClient', () => {
     await client.post('/test', { req: mockRequest, body: { test: 'test' } });
     expect(global.fetch).toHaveBeenNthCalledWith(1, expectedUrl, {
       body: JSON.stringify({ test: 'test' }),
-      // body: JSON.stringify({ refreshToken: mockValidJwt.refreshToken }),
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Authorization: `Bearer ${mockValidJwt.accessToken}`,
       },
     });
     expect(global.fetch).toHaveBeenNthCalledWith(2, expectedUrl, {
