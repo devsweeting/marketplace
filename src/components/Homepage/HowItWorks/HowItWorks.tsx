@@ -14,8 +14,6 @@ export const HowItWorks = () => {
           justifyContent: 'center',
           alignItems: 'center',
           marginTop: 20,
-
-          maxWidth: 1440,
           marginBottom: 10,
         }}
       >
@@ -101,22 +99,17 @@ export const HowItWorks = () => {
           </Typography>
         </Grid>
       </Grid>
+
       <Grid
         container
         style={{
-          display: 'grid',
-          gridTemplateColumns: '49vw 49vw',
-          justifyContent: 'center',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
           width: '100%',
         }}
       >
-        <Grid
-          item
-          style={{
-            gridColumn: '1',
-            marginLeft: '50px',
-          }}
-        >
+        <Grid item style={{ width: '50%' }}>
           <Box
             style={{
               display: 'flex',
@@ -150,8 +143,9 @@ export const HowItWorks = () => {
                     borderRadius: '50px',
                     width: '200px',
                     height: '55px',
-                    marginTop: '40px',
+                    marginTop: '25px',
                     fontSize: '1.3rem',
+                    border: '3px solid black',
                   }}
                 >
                   Learn More
@@ -163,8 +157,8 @@ export const HowItWorks = () => {
         <Grid
           item
           style={{
-            gridColumn: '2',
-            marginRight: '50px',
+            width: '50%',
+
             justifyContent: 'center',
             alignItems: 'center',
             height: '45vw',
@@ -206,8 +200,7 @@ export const HowItWorks = () => {
         <Grid
           item
           style={{
-            gridColumn: '1',
-            marginLeft: '50px',
+            width: '50%',
             justifyContent: 'center',
             alignItems: 'center',
             height: '45vw',
@@ -248,7 +241,7 @@ export const HowItWorks = () => {
         <Grid
           item
           style={{
-            gridColumn: '2',
+            width: '50%',
           }}
         >
           <Box
@@ -257,7 +250,7 @@ export const HowItWorks = () => {
               flexDirection: 'column',
               justifyContent: 'center',
               height: '100%',
-              marginRight: '50px',
+
               backgroundColor: 'whitesmoke',
             }}
           >
@@ -286,8 +279,9 @@ export const HowItWorks = () => {
                     borderRadius: '50px',
                     width: '200px',
                     height: '55px',
-                    marginTop: '40px',
+                    marginTop: '25px',
                     fontSize: '1.3rem',
+                    border: '3px solid black',
                   }}
                 >
                   Learn More
@@ -299,9 +293,8 @@ export const HowItWorks = () => {
         <Grid
           item
           style={{
-            gridColumn: '1',
+            width: '50%',
             height: '45vw',
-            marginLeft: '50px',
           }}
         >
           <Box
@@ -342,8 +335,9 @@ export const HowItWorks = () => {
                     borderRadius: '50px',
                     width: '200px',
                     height: '55px',
-                    marginTop: '40px',
+                    marginTop: '25px',
                     fontSize: '1.3rem',
+                    border: '3px solid white',
                   }}
                 >
                   Learn More
@@ -355,8 +349,7 @@ export const HowItWorks = () => {
         <Grid
           item
           style={{
-            gridColumn: '2',
-            marginRight: '50px',
+            width: '50%',
             justifyContent: 'center',
             alignItems: 'center',
             height: '45vw',

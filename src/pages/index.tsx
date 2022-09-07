@@ -2,6 +2,7 @@ import { Box, Grid } from '@mui/material';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Hero } from '@/components/Homepage/Hero';
 import { HowItWorks } from '@/components/Homepage/HowItWorks';
+import { Testimonials } from '@/components/Homepage/Testimonials';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { useRouter } from 'next/router';
 
@@ -39,7 +40,6 @@ const Homepage = () => {
 
         <Box
           sx={{
-            maxWidth: 1440,
             margin: '0 auto',
           }}
         >
@@ -63,6 +63,9 @@ const Homepage = () => {
 
             <Grid item xs={12}>
               <HowItWorks />
+            </Grid>
+            <Grid item xs={12}>
+              <Testimonials />
             </Grid>
           </Grid>
         </Box>
