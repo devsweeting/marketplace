@@ -153,9 +153,7 @@ export class ApiClient {
       };
     }
   }
-  /**
-   * check for an expired JWT, if it is expired send a request to update it, if not send the request.
-   */
+
   private async _sendWithJwtCheck(
     path: IApiUrl,
     method: string,
@@ -168,7 +166,13 @@ export class ApiClient {
       if (token && token.accessToken) {
         if (getExpFromJwtAsDate(token) <= new Date()) {
           const response = await this._refreshJwt(token, request, res);
-          if (response.status === StatusCodes.UNAUTHORIZED) {
+          if (
+            response.status === StatusCodes.UNAUTHORIZED ||
+            response.status === StatusCodes.UNPROCESSABLE_ENTITY
+          ) {
+            response.status = StatusCodes.MOVED_TEMPORARILY;
+            response.headers = { ...response.headers, Location: '/logout' };
+            // TODO handle logout
             return response;
           }
         }
@@ -182,7 +186,6 @@ export class ApiClient {
     request: IApiRequest | IApiRequestWithBody,
     res: NextServerResponse,
   ): Promise<IApiResponse> {
-    console.log('refresh jwt');
     try {
       const jwtRefreshRequest = {
         headers: request.headers,
@@ -190,21 +193,10 @@ export class ApiClient {
       };
       const response = await this._send('/users/login/refresh', 'POST', jwtRefreshRequest);
       if (!response.ok) {
-        //TODO log out user or handle unauthenticated users
-
-        console.log('Error', response.status);
         return response;
-        // return {
-        //   status: response.status,
-        //   ok: response.ok,
-        //   data,
-        //   headers: responseHeaders,
-        //   isJson: true,
-        // };
       }
 
       const data = (await response.data) as any;
-      // console.log(data);
       if (data?.accessToken !== undefined && data?.refreshToken !== undefined && request.req) {
         const newJWt: IJwt = {
           accessToken: data.accessToken,
@@ -217,7 +209,9 @@ export class ApiClient {
       }
       return response;
     } catch (error) {
-      // removeUserCookie(request.req, res);
+      if (request.req) {
+        removeUserCookie(request.req, res);
+      }
       logger.error(error);
       return {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
