@@ -164,15 +164,17 @@ export class ApiClient {
       const token = getUserCookie(request.req);
 
       if (token && token.accessToken) {
-        if (getExpFromJwtAsDate(token) <= new Date()) {
+        const expireDate = getExpFromJwtAsDate(token);
+        if (expireDate && expireDate <= new Date()) {
           const response = await this._refreshJwt(token, request, res);
           if (
             response.status === StatusCodes.UNAUTHORIZED ||
             response.status === StatusCodes.UNPROCESSABLE_ENTITY
           ) {
-            response.status = StatusCodes.MOVED_TEMPORARILY;
-            response.headers = { ...response.headers, Location: '/logout' };
+            response.status = StatusCodes.UNAUTHORIZED;
             // TODO handle logout
+            // response.status = StatusCodes.MOVED_TEMPORARILY;
+            // response.headers = { ...response.headers, Location: '/logout' };
             return response;
           }
         }

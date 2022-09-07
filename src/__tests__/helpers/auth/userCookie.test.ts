@@ -59,6 +59,6 @@ describe('removeUserCookie', () => {
 
   test('should call removeCookies once', () => {
     removeUserCookie(mockReq, res);
-    expect(mockCookiesNext.removeCookies).toHaveBeenCalledTimes(1);
+    expect(mockCookiesNext.deleteCookie).toHaveBeenCalledTimes(1);
   });
 });

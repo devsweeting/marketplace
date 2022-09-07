@@ -41,16 +41,27 @@ describe('BuyModal', () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
+    global.fetch = jest
+      .fn(() =>
+        Promise.resolve({
+          headers: new Headers({
+            'content-type': 'application/json',
+          }),
+          ok: true,
+          status: StatusCodes.CREATED,
+          json: () => Promise.resolve({ test: 'test' }),
         }),
-        ok: true,
-        status: StatusCodes.CREATED,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock;
+      )
+      .mockReturnValue(
+        Promise.resolve({
+          headers: new Headers({
+            'content-type': 'application/json',
+          }),
+          ok: true,
+          status: StatusCodes.CREATED,
+          json: () => Promise.resolve({ test: 'test' }),
+        }),
+      ) as jest.Mock;
   });
 
   afterAll(() => {
@@ -108,11 +119,12 @@ describe('BuyModal', () => {
         updateAsset={mockUpdateAsset}
       ></MockBuyModal>,
     );
-    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
+    const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
+
     expect(global.fetch).toBeCalledTimes(1);
-    const success = screen.getByText(/success!/i);
-    const closeBtn = screen.getByRole('button', { name: /close/i });
+    const success = await screen.findByText(/success!/i);
+    const closeBtn = await screen.findByRole('button', { name: /close/i });
     expect(closeBtn).toBeInTheDocument();
     expect(success).toBeInTheDocument();
     await user.click(closeBtn);
@@ -140,9 +152,9 @@ describe('BuyModal', () => {
         updateAsset={mockUpdateAsset}
       ></MockBuyModal>,
     );
-    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
+    const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
-    const errorMessage = screen.getByText(/please login to buy assets/i);
+    const errorMessage = await screen.findByText(/please login to buy assets/i);
     expect(errorMessage).toBeInTheDocument();
 
     expect(mockFetch).toBeCalledTimes(1);
@@ -169,9 +181,9 @@ describe('BuyModal', () => {
         updateAsset={mockUpdateAsset}
       ></MockBuyModal>,
     );
-    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
+    const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
-    const errorMessage = screen.getByText(/Something went wrong./i);
+    const errorMessage = await screen.findByText(/Something went wrong./i);
     expect(errorMessage).toBeInTheDocument();
 
     expect(mockFetch).toBeCalledTimes(1);
@@ -198,9 +210,9 @@ describe('BuyModal', () => {
         updateAsset={mockUpdateAsset}
       ></MockBuyModal>,
     );
-    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
+    const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
-    const errorMessage = screen.getByText(
+    const errorMessage = await screen.findByText(
       /You cannot purchase any more of this item at this time./i,
     );
     expect(errorMessage).toBeInTheDocument();
@@ -229,9 +241,9 @@ describe('BuyModal', () => {
         updateAsset={mockUpdateAsset}
       ></MockBuyModal>,
     );
-    const confirmBtn = screen.getByRole('button', { name: /confirm/i });
+    const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
-    const errorMessage = screen.getByText(/You cannot purchase your own order./i);
+    const errorMessage = await screen.findByText(/You cannot purchase your own order./i);
     expect(errorMessage).toBeInTheDocument();
 
     expect(mockFetch).toBeCalledTimes(1);
