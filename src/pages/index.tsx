@@ -31,6 +31,7 @@ const Homepage = () => {
   const handleDrawer = () => {
     return null;
   };
+
   return (
     <>
       <ClientOnly>
