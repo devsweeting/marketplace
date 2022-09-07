@@ -50,26 +50,25 @@ export class ApiClient {
   }
 
   post(url: IApiUrl, request: IApiRequestWithBody, res?: NextServerResponse) {
-    return this._send(url, 'POST', request, res);
+    return this._sendWithJwtCheck(url, 'POST', request, res);
   }
 
   put(url: IApiUrl, request: IApiRequestWithBody, res?: NextServerResponse) {
-    return this._send(url, 'PUT', request, res);
+    return this._sendWithJwtCheck(url, 'PUT', request, res);
   }
 
   patch(url: IApiUrl, request: IApiRequestWithBody, res?: NextServerResponse) {
-    return this._send(url, 'PATCH', request, res);
+    return this._sendWithJwtCheck(url, 'PATCH', request, res);
   }
 
   delete(url: IApiUrl, request: IApiRequest = {}, res?: NextServerResponse) {
-    return this._send(url, 'DELETE', request, res);
+    return this._sendWithJwtCheck(url, 'DELETE', request, res);
   }
 
   private async _send(
     path: IApiUrl,
     method: string,
     request: IApiRequest | IApiRequestWithBody,
-    res?: NextServerResponse,
   ): Promise<IApiResponse> {
     if (!request.headers) {
       request.headers = {};
@@ -102,13 +101,6 @@ export class ApiClient {
       }
 
       if (token && token.accessToken) {
-        if (getExpFromJwtAsDate(token) <= new Date()) {
-          const value = await this._refreshJwt(token, request.req, res);
-          if (value?.status === StatusCodes.UNAUTHORIZED) {
-            return value;
-          }
-        }
-
         request.headers['Authorization'] = `Bearer ${token.accessToken}`;
         authUser = getUserFromJwt(token);
       }
@@ -161,59 +153,78 @@ export class ApiClient {
       };
     }
   }
+  /**
+   * check for an expired JWT, if it is expired send a request to update it, if not send the request.
+   */
+  private async _sendWithJwtCheck(
+    path: IApiUrl,
+    method: string,
+    request: IApiRequest | IApiRequestWithBody,
+    res: NextServerResponse | undefined,
+  ) {
+    if (request.req && res) {
+      const token = getUserCookie(request.req);
+
+      if (token && token.accessToken) {
+        if (getExpFromJwtAsDate(token) <= new Date()) {
+          const response = await this._refreshJwt(token, request, res);
+          if (response.status === StatusCodes.UNAUTHORIZED) {
+            return response;
+          }
+        }
+      }
+    }
+    return await this._send(path, method, request);
+  }
 
   private async _refreshJwt(
     token: IJwt,
-    req: NextServerRequest,
-    res: NextServerResponse | undefined,
-  ) {
+    request: IApiRequest | IApiRequestWithBody,
+    res: NextServerResponse,
+  ): Promise<IApiResponse> {
     console.log('refresh jwt');
-    if (!res || !req) {
-      return;
-    }
     try {
-      const headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token.accessToken}`,
+      const jwtRefreshRequest = {
+        headers: request.headers,
+        body: { refreshToken: token.refreshToken },
       };
-      const response = await fetch(`${ApiClient.getBaseUrl()}/users/login/refresh`, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify({ refreshToken: token.refreshToken }),
-      });
+      const response = await this._send('/users/login/refresh', 'POST', jwtRefreshRequest);
       if (!response.ok) {
         //TODO log out user or handle unauthenticated users
-        const data = await response.json();
-        const responseHeaders: Record<string, string> = {};
-
-        response.headers.forEach((value, key) => {
-          responseHeaders[key] = value.toLowerCase();
-        });
 
         console.log('Error', response.status);
+        return response;
+        // return {
+        //   status: response.status,
+        //   ok: response.ok,
+        //   data,
+        //   headers: responseHeaders,
+        //   isJson: true,
+        // };
+      }
 
-        return {
-          status: response.status,
-          ok: response.ok,
-          data,
-          headers: responseHeaders,
-          isJson: true,
+      const data = (await response.data) as any;
+      // console.log(data);
+      if (data?.accessToken !== undefined && data?.refreshToken !== undefined && request.req) {
+        const newJWt: IJwt = {
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
         };
+        if (res === undefined) {
+          logger.error('res is undefined');
+        }
+        await setUserCookie(newJWt, request.req, res);
       }
-      const data = await response.json();
-      const newJWt: IJwt = {
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-      };
-      if (res === undefined) {
-        logger.error('res is undefined');
-      }
-      setUserCookie(newJWt, req, res);
+      return response;
     } catch (error) {
-      removeUserCookie(req, res);
-      console.log('error');
+      // removeUserCookie(request.req, res);
       logger.error(error);
+      return {
+        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        ok: false,
+        headers: {},
+        isJson: false,
+      };
     }
   }
 }
