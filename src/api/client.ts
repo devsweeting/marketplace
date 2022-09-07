@@ -196,17 +196,8 @@ export class ApiClient {
         return response;
       }
 
-      const data = (await response.data) as any;
-      if (data?.accessToken !== undefined && data?.refreshToken !== undefined && request.req) {
-        const newJWt: IJwt = {
-          accessToken: data.accessToken,
-          refreshToken: data.refreshToken,
-        };
-        if (res === undefined) {
-          logger.error('res is undefined');
-        }
-        await setUserCookie(newJWt, request.req, res);
-      }
+      const data = (await response.data) as unknown as any;
+      await updateCookie(data, request, res);
       return response;
     } catch (error) {
       if (request.req) {
@@ -223,4 +214,19 @@ export class ApiClient {
   }
 }
 
+async function updateCookie(
+  data: { accessToken: string; refreshToken: string } | undefined,
+  request: IApiRequestWithBody | IApiRequest,
+  res: NextServerResponse,
+) {
+  if (!data || !data.accessToken || !data.refreshToken || !request.req || !res) {
+    return;
+  }
+
+  const newJWt: IJwt = {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  };
+  await setUserCookie(newJWt, request.req, res);
+}
 export const apiClient = new ApiClient();
