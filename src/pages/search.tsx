@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
+import { IAsset } from 'src/types';
 import type { IAsset, IMeta } from 'src/types';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
@@ -55,7 +56,7 @@ const SearchPage: NextPage = () => {
   );
 
   useEffect(() => {
-    isReady ? setReady(true) : setReady(false);
+    setReady(isReady);
     if (isReady) {
       loadAssets(1).catch(() => {
         setAssets([]);
@@ -72,25 +73,33 @@ const SearchPage: NextPage = () => {
     setTradePanelData(asset);
   };
 
+  const handleButtonClick = () => {
+    loadAssets((currentMeta?.currentPage ?? 0) + 1).catch(() => {
+      setAssets([]);
+    });
+  }
+
   if (!ready) {
     return null;
   }
 
   const updateAsset = (assetId: string): void => {
-    getAssetById(assetId)
-      .then((asset) => {
-        if (!asset) {
+    Promise <
+      { data: IAsset } >
+      getAssetById(assetId)
+        .then((asset) => {
+          if (!asset) {
+            return;
+          }
+          const newAssetData = asset.data;
+          const tempAssets = assets;
+          tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;
+          setAssets(tempAssets);
+          setTradePanelData(newAssetData);
+        })
+        .catch(() => {
           return;
-        }
-        const newAssetData = asset.data;
-        const tempAssets = assets;
-        tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;
-        setAssets(tempAssets);
-        setTradePanelData(newAssetData);
-      })
-      .catch(() => {
-        return;
-      });
+        });
   };
 
   return (
@@ -124,11 +133,7 @@ const SearchPage: NextPage = () => {
                 <Button
                   sx={{ marginTop: { xs: '36px', md: '95px' } }}
                   size="large"
-                  onClick={() => {
-                    loadAssets((currentMeta?.currentPage ?? 0) + 1).catch(() => {
-                      setAssets([]);
-                    });
-                  }}
+                  onClick={handleButtonClick}
                 >
                   LOAD MORE
                 </Button>
