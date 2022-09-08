@@ -75,7 +75,7 @@ export const SignUpCallToAction = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 100,
+          zIndex: 6,
         }}
       >
         <Typography variant="h2" component="h2" style={{ marginBottom: '15px', fontSize: '4rem' }}>
