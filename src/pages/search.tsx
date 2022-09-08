@@ -2,7 +2,7 @@ import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
 import { IAsset } from 'src/types';
-import type { IAsset, IMeta } from 'src/types';
+import type { IMeta } from 'src/types';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
@@ -77,7 +77,7 @@ const SearchPage: NextPage = () => {
     loadAssets((currentMeta?.currentPage ?? 0) + 1).catch(() => {
       setAssets([]);
     });
-  }
+  };
 
   if (!ready) {
     return null;
