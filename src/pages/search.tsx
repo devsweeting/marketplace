@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import { IAsset } from 'src/types';
-import type { IMeta } from 'src/types';
+import type { IMeta, IAsset } from 'src/types';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
@@ -84,22 +83,20 @@ const SearchPage: NextPage = () => {
   }
 
   const updateAsset = (assetId: string): void => {
-    Promise <
-      { data: IAsset } >
-      getAssetById(assetId)
-        .then((asset) => {
-          if (!asset) {
-            return;
-          }
-          const newAssetData = asset.data;
-          const tempAssets = assets;
-          tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;
-          setAssets(tempAssets);
-          setTradePanelData(newAssetData);
-        })
-        .catch(() => {
+    getAssetById(assetId)
+      .then((asset) => {
+        if (!asset) {
           return;
-        });
+        }
+        const newAssetData = asset.data;
+        const tempAssets = assets;
+        tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;
+        setAssets(tempAssets);
+        setTradePanelData(newAssetData);
+      })
+      .catch(() => {
+        return;
+      });
   };
 
   return (
