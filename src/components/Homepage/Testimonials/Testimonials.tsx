@@ -30,13 +30,32 @@ export const Testimonials = () => {
     },
   ];
   return (
-    <Box>
-      <Typography variant="h2" component="h2">
-        What our collectors say
-      </Typography>
-      <Typography variant="body1" component="p">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid
-      </Typography>
+    <Box
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: '120px',
+        marginBottom: '100px',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginBottom: '50px',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="h2" component="h2" style={{ marginBottom: '15px' }}>
+          What our collectors say
+        </Typography>
+        <Typography variant="subtitle1" component="p" style={{ fontSize: '1.4rem' }}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid
+        </Typography>
+      </div>
       <Grid container>
         <Box
           style={{
@@ -56,7 +75,14 @@ export const Testimonials = () => {
                 backgroundColor: 'whitesmoke',
               }}
             >
-              <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
+              <Box
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  marginBottom: '20px',
+                }}
+              >
                 <Box
                   style={{
                     display: 'flex',

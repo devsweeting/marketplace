@@ -3,6 +3,7 @@ import { OpenGraph } from '@/components/OpenGraph';
 import { Hero } from '@/components/Homepage/Hero';
 import { HowItWorks } from '@/components/Homepage/HowItWorks';
 import { Testimonials } from '@/components/Homepage/Testimonials';
+import { SignUpCallToAction } from '@/components/Homepage/SignUpCallToAction';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { useRouter } from 'next/router';
 
@@ -66,6 +67,9 @@ const Homepage = () => {
             </Grid>
             <Grid item xs={12}>
               <Testimonials />
+            </Grid>
+            <Grid item xs={12}>
+              <SignUpCallToAction />
             </Grid>
           </Grid>
         </Box>
