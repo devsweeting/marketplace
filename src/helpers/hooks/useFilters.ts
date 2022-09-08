@@ -226,10 +226,11 @@ export const useFilters = () => {
     if (newRangeFilters === null) {
       return;
     }
-
-    for (const [key, range] of Object.entries(newRangeFilters)) {
-      updatedQuery[`attr_gte[${key}]`] = range.min;
-      updatedQuery[`attr_lte[${key}]`] = range.max;
+    if (newRangeFilters) {
+      for (const [key, range] of Object.entries(newRangeFilters)) {
+        updatedQuery[`attr_gte[${key}]`] = range.min;
+        updatedQuery[`attr_lte[${key}]`] = range.max;
+      }
     }
 
     return router.push(

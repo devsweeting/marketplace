@@ -15,6 +15,7 @@ export const SignUpCallToAction = () => {
         alignItems: 'center',
         position: 'relative',
         overflow: 'hidden',
+        marginBottom: '100px',
       }}
     >
       <div
