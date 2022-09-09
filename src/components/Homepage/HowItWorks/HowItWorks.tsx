@@ -88,7 +88,7 @@ export const HowItWorks = () => {
           width: '100%',
         }}
       >
-        <Grid item style={{ width: '50%' }}>
+        <Grid item className={classes.heroWrapper}>
           <Box
             style={{
               display: 'flex',
@@ -97,7 +97,7 @@ export const HowItWorks = () => {
               height: '100%',
             }}
           >
-            <div style={{ margin: '0 100px' }}>
+            <div className={classes.heroBox}>
               <Typography
                 variant="h3"
                 component="h3"
@@ -133,16 +133,7 @@ export const HowItWorks = () => {
             </div>
           </Box>
         </Grid>
-        <Grid
-          item
-          style={{
-            width: '50%',
-
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '45vw',
-          }}
-        >
+        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
           <Box
             style={{
               display: 'flex',
@@ -176,15 +167,7 @@ export const HowItWorks = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid
-          item
-          style={{
-            width: '50%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '45vw',
-          }}
-        >
+        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
           <Box
             style={{
               display: 'flex',
@@ -217,12 +200,7 @@ export const HowItWorks = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid
-          item
-          style={{
-            width: '50%',
-          }}
-        >
+        <Grid item className={classes.heroWrapper}>
           <Box
             style={{
               display: 'flex',
@@ -233,7 +211,7 @@ export const HowItWorks = () => {
               backgroundColor: 'whitesmoke',
             }}
           >
-            <div style={{ margin: '0 100px' }}>
+            <div className={classes.heroBox}>
               <Typography
                 variant="h3"
                 component="h3"
@@ -269,13 +247,7 @@ export const HowItWorks = () => {
             </div>
           </Box>
         </Grid>
-        <Grid
-          item
-          style={{
-            width: '50%',
-            height: '45vw',
-          }}
-        >
+        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
           <Box
             style={{
               display: 'flex',
@@ -285,7 +257,7 @@ export const HowItWorks = () => {
               height: '100%',
             }}
           >
-            <div style={{ margin: '0 100px' }}>
+            <div className={classes.heroBox}>
               <Typography
                 variant="h3"
                 component="h3"
@@ -325,15 +297,7 @@ export const HowItWorks = () => {
             </div>
           </Box>
         </Grid>
-        <Grid
-          item
-          style={{
-            width: '50%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '45vw',
-          }}
-        >
+        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
           <Box
             style={{
               display: 'flex',

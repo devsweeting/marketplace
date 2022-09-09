@@ -35,7 +35,25 @@ export const useHowItWorks = makeStyles(
         width: '90%',
       },
     },
-    hero: {},
+    heroWrapper: {
+      width: '50%',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1.2rem',
+        width: '100%',
+      },
+    },
+    heroBox: {
+      margin: '0 100px',
+      [theme.breakpoints.down('sm')]: {
+        margin: '0 20px',
+        padding: '30px 0',
+      },
+    },
+    right: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vw',
+    },
   }),
   { name: 'howItWorks' },
 );
