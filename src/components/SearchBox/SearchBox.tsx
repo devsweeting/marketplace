@@ -42,7 +42,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
 
   return (
     <form
-      action="/explore"
+      action="/search"
       method="get"
       onSubmit={handleSubmit}
       autoComplete="off"

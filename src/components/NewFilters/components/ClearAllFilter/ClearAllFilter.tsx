@@ -30,6 +30,7 @@ export const ClearAllFilter: React.FC<ClearAllFiltersProps> = ({
             onClick={() => {
               clearSelectedFilters();
             }}
+            className={classes.button}
           >
             CLEAR ALL
           </Button>

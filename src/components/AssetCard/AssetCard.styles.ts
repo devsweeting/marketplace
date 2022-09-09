@@ -5,6 +5,7 @@ export const useAssetCardStyles = makeStyles((theme) => ({
   card: {
     cursor: 'pointer',
     borderRadius: '0px',
+    borderBottom: '1px solid ' + lighten(theme.palette.primary.main, 0.85),
     [theme.breakpoints.down('md')]: {
       maxWidth: '400px',
       borderRadius: '4px',
@@ -14,18 +15,18 @@ export const useAssetCardStyles = makeStyles((theme) => ({
   cardBody: {
     display: 'flex',
     width: '100%',
-    padding: theme.spacing(2),
+
     [theme.breakpoints.down('md')]: {
       flexWrap: 'wrap',
     },
   },
   active: {
-    backgroundColor: lighten(theme.palette.primary.main, 0.9),
+    backgroundColor: lighten(theme.palette.primary.main, 0.95),
     transition: 'background-color 300ms ease-in',
   },
   ImageWrapper: {
     maxWidth: '120px',
-    backgroundColor: lighten(theme.palette.primary.main, 0.8),
+    backgroundColor: lighten(theme.palette.primary.main, 0.95),
     padding: theme.spacing(3),
     [theme.breakpoints.down('md')]: {
       maxWidth: '100%',

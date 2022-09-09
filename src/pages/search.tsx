@@ -1,18 +1,12 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import type { IAsset, IMeta, IMarket } from 'src/types';
+import type { IMeta, IAsset } from 'src/types';
 import { Box, Divider, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
-import {
-  loadListAssetByPage,
-  latestDropAssets,
-  getAssetById,
-  trendingMarkets,
-} from '@/api/endpoints/assets';
+import { loadListAssetByPage, getAssetById } from '@/api/endpoints/assets';
 import { useRouter } from 'next/router';
-import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { TradePanel } from '@/components/TradePanel';
 import { AssetListView } from '@/containers/AssetListView';
 import { useExplorePageStyles } from '@/styles/explorePage.styles';
@@ -20,39 +14,24 @@ import { useFilters } from '@/helpers/hooks/useFilters';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
 import { FilterWrapper } from '@/components/FilterWrapper';
-const ExplorePage: NextPage = () => {
+const SearchPage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
-  const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-
+  const searchQuery = query.q;
+  const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
-  const [activeBrandCard, setActiveBrandCard] = useState<string>('');
-  const {
-    checkedFilters,
-    rangeFilters,
-    brandFilters,
-    clearTrendingFilter,
-    updateBrandFilters,
-    sortByOrder,
-  } = useFilters();
+  const { checkedFilters, rangeFilters, sortByOrder } = useFilters();
   const classes = useExplorePageStyles();
-  const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
-  const loadLatestDropAssets = useCallback(async (page = 1) => {
-    const { items }: { items: IAsset[] } = await latestDropAssets({
-      page,
-    });
-    setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-  }, []);
 
   useEffect(() => {
-    if (!assets.length && !dropAssets.length) {
+    if (!assets.length) {
       setIsOpen(false);
     }
-  }, [assets, dropAssets]);
+  }, [assets]);
 
   const loadAssets = useCallback(
     async (page = 1) => {
@@ -61,6 +40,7 @@ const ExplorePage: NextPage = () => {
         sortType: sortByOrder,
         checkedFilters,
         rangeFilters,
+        search,
       });
 
       if (queryString) {
@@ -71,35 +51,17 @@ const ExplorePage: NextPage = () => {
         setCurrentMeta(meta);
       }
     },
-    [checkedFilters, rangeFilters, sortByOrder],
+    [checkedFilters, rangeFilters, sortByOrder, search],
   );
 
-  const loadTrendingMarkets = useCallback(async () => {
-    const { markets }: { markets: IMarket[] } = await trendingMarkets();
-    setTrendingMarket(markets);
-  }, []);
-
   useEffect(() => {
-    isReady ? setReady(true) : setReady(false);
+    setReady(isReady);
     if (isReady) {
-      loadTrendingMarkets().catch(() => {
-        setTrendingMarket([]);
-      });
       loadAssets(1).catch(() => {
         setAssets([]);
       });
-
-      loadLatestDropAssets().catch(() => {
-        setDropAssets([]);
-      });
     }
-  }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets, sortByOrder]);
-
-  useEffect(() => {
-    if (Object.keys(query).length > 0 && !Object.keys(query).includes('attr_eq[brand]')) {
-      setActiveBrandCard('');
-    }
-  }, [query]);
+  }, [isReady, loadAssets, sortByOrder]);
 
   const handleDrawer = (asset: IAsset) => {
     if (!isOpen) {
@@ -110,23 +72,10 @@ const ExplorePage: NextPage = () => {
     setTradePanelData(asset);
   };
 
-  const handleApplyBrandFilter = (filter: string, brand: IMarket) => {
-    if (Object.keys(filter).length) {
-      const filterValue = filter.split('=')?.[1];
-      if (
-        !brandFilters.some((filter) => filter.filterId === filterValue) &&
-        !brandFilters.some((filter) => filter.categoryId === 'brand')
-      ) {
-        void updateBrandFilters([{ filterId: filterValue, categoryId: 'brand' }]);
-        setActiveBrandCard(brand.brand);
-      }
-      clearTrendingFilter(filterValue)
-        ?.then(() => setActiveBrandCard(''))
-        .catch(() => {
-          return;
-        });
-    }
-    return;
+  const handleButtonClick = () => {
+    loadAssets((currentMeta?.currentPage ?? 0) + 1).catch(() => {
+      setAssets([]);
+    });
   };
 
   if (!ready) {
@@ -159,25 +108,12 @@ const ExplorePage: NextPage = () => {
           marginTop: 10,
           backgroundColor: '#fff',
           width: '100%',
-
           marginLeft: 'auto',
           marginRight: 'auto',
         }}
         container
       >
         <Grid container item>
-          <FeaturedMarketCarousel
-            assets={dropAssets}
-            title={'Latest Drop'}
-            handleDrawer={handleDrawer}
-          />
-          <FeaturedMarketCarousel
-            handleApplyBrandFilter={handleApplyBrandFilter}
-            activeBrandCard={activeBrandCard}
-            assets={trendingMarket}
-            title={'Trending Markets'}
-          />
-
           <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
             <FilterWrapper />
             <Grid container direction="row" justifyContent="center" alignItems="stretch">
@@ -194,11 +130,7 @@ const ExplorePage: NextPage = () => {
                 <Button
                   sx={{ marginTop: { xs: '36px', md: '95px' } }}
                   size="large"
-                  onClick={() => {
-                    loadAssets((currentMeta?.currentPage ?? 0) + 1).catch(() => {
-                      setAssets([]);
-                    });
-                  }}
+                  onClick={handleButtonClick}
                 >
                   LOAD MORE
                 </Button>
@@ -239,4 +171,4 @@ const ExplorePage: NextPage = () => {
   );
 };
 
-export default ExplorePage;
+export default SearchPage;

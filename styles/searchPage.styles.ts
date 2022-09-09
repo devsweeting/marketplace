@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 
-export const useExplorePageStyles = makeStyles((theme) => ({
+export const useSearchPageStyles = makeStyles((theme) => ({
   assetListClosed: {
     flexGrow: 1,
 
@@ -17,5 +17,6 @@ export const useExplorePageStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     margin: '0 500px 0 0',
+    width: '500px',
   },
 }));

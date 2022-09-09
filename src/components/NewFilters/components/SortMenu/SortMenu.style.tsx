@@ -11,7 +11,9 @@ export const useSortMenuStyles = makeStyles((theme) => ({
     },
   },
   MenuButton: {
+    color: 'rgba(0, 0, 0, 0.6)',
     [theme.breakpoints.down('sm')]: {
+      color: 'rgba(0, 0, 0, 0.6)',
       display: 'flex',
       justifyContent: 'flex-end',
       width: '100%',
@@ -26,8 +28,9 @@ export const useSortMenuStyles = makeStyles((theme) => ({
     },
   },
   MenuTitle: {
-    fontSize: '0.85rem',
+    fontSize: '0.75rem',
     fontWeight: '600',
+    color: 'rgba(0, 0, 0, 0.6)',
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
       justifyContent: 'flex-end',
