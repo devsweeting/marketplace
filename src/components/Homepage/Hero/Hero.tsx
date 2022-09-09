@@ -7,13 +7,13 @@ export const Hero = () => {
   const classes = useHeroStyles();
   return (
     <Box className={classes.wrapper}>
-      <Typography variant="h2" component="h2">
+      <Typography variant="h2" component="h2" className={classes.title}>
         Physical trading cards
       </Typography>
-      <Typography variant="h2" component="h2">
+      <Typography variant="h2" component="h2" className={classes.title}>
         NFT marketplace
       </Typography>
-      <Box sx={{ border: '1px solid black', width: '50%', m: 10 }}>
+      <Box className={classes.searchBox}>
         <SearchBox placeholder="Rookie..." />
       </Box>
     </Box>

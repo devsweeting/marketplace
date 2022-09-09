@@ -7,32 +7,11 @@ export const HowItWorks = () => {
   const classes = useHowItWorks();
   return (
     <Box className={classes.wrapper}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 20,
-          marginBottom: 10,
-        }}
-      >
+      <Box className={classes.howItWorksHeader}>
         <Typography variant="h2" component="h2">
           How it works
         </Typography>
-        <Typography
-          variant="body1"
-          component="p"
-          style={{
-            fontSize: '2rem',
-            margin: 20,
-            width: '70%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            textAlign: 'center',
-          }}
-        >
+        <Typography variant="body1" component="p" className={classes.text}>
           All assets are stored safely in a vault. All collectibles are vaulted and insured. We
           procure, store, and insure iconic collectibles in third-party custodial vaults at no added
           costs.
