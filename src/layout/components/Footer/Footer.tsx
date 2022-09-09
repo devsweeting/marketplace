@@ -14,8 +14,8 @@ export const Footer = () => {
       <Grid item className={classes.container}>
         <div
           style={{
-            width: '96%',
-            maxWidth: '96%',
+            width: '97%',
+            maxWidth: '97%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -23,11 +23,12 @@ export const Footer = () => {
         >
           <div
             style={{
-              width: '96%',
-              height: '350px',
+              width: '97%',
+              height: '280px',
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'flex-start',
+              marginTop: '70px',
             }}
           >
             <Box
@@ -80,108 +81,113 @@ export const Footer = () => {
                 </li>
               </ul>
             </Box>
-            <Box
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                flexDirection: 'column',
-              }}
-            >
-              <Typography
-                variant="subtitle2"
-                component="p"
-                style={{ color: 'white', fontSize: 20 }}
-              >
-                {'Jump'}
-              </Typography>
-              <ul
+            <div style={{ display: 'flex', width: '60%', justifyContent: 'space-between' }}>
+              <Box
                 style={{
                   display: 'flex',
-                  listStyle: 'none',
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
                   flexDirection: 'column',
-                  margin: 0,
-                  padding: 0,
-                  width: '250px',
                 }}
               >
-                <li style={{ color: 'white', fontSize: 16 }}>About us</li>
-                <li style={{ color: 'white', fontSize: 16 }}>Careers</li>
-              </ul>
-            </Box>
-            <Box
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                flexDirection: 'column',
-              }}
-            >
-              <Typography
-                variant="subtitle2"
-                component="p"
-                style={{ color: 'white', fontSize: 20 }}
-              >
-                {'Product'}
-              </Typography>
-              <ul
+                <Typography
+                  variant="subtitle2"
+                  component="p"
+                  style={{ color: 'white', fontSize: 20 }}
+                >
+                  {'Jump'}
+                </Typography>
+                <ul
+                  style={{
+                    display: 'flex',
+                    listStyle: 'none',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'column',
+                    margin: 0,
+                    padding: 0,
+                    width: '250px',
+                  }}
+                >
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>About us</li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Careers</li>
+                </ul>
+              </Box>
+              <Box
                 style={{
                   display: 'flex',
-                  listStyle: 'none',
                   alignItems: 'flex-start',
                   justifyContent: 'flex-start',
                   flexDirection: 'column',
-                  margin: 0,
-                  padding: 0,
-                  width: '250px',
                 }}
               >
-                <li style={{ color: 'white', fontSize: 16 }}>Marketplace</li>
-                <li style={{ color: 'white', fontSize: 16 }}>Search</li>
-                <li style={{ color: 'white', fontSize: 16 }}>PWCC</li>
-                <li style={{ color: 'white', fontSize: 16 }}>Fractions</li>
-              </ul>
-            </Box>
-            <Box>
-              <Typography
-                variant="subtitle2"
-                component="p"
-                style={{ color: 'white', fontSize: 20 }}
-              >
-                {'NFT sport cards'}
-              </Typography>
-              <ul
+                <Typography
+                  variant="subtitle2"
+                  component="p"
+                  style={{ color: 'white', fontSize: 20 }}
+                >
+                  {'Product'}
+                </Typography>
+                <ul
+                  style={{
+                    display: 'flex',
+                    listStyle: 'none',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'column',
+                    margin: 0,
+                    padding: 0,
+                    width: '250px',
+                  }}
+                >
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Marketplace</li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Search</li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>PWCC</li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Fractions</li>
+                </ul>
+              </Box>
+              <Box
                 style={{
                   display: 'flex',
-                  listStyle: 'none',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  margin: 0,
-                  padding: 0,
-                  width: '250px',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  flexDirection: 'column',
                 }}
               >
-                <li>
-                  <FacebookIcon style={{ color: 'white', fontSize: 24 }} />
-                </li>
-                <li>
-                  <InstagramIcon style={{ color: 'white', fontSize: 24 }} />
-                </li>
-                <li>
-                  <TwitterIcon style={{ color: 'white', fontSize: 24 }} />
-                </li>
-                <li>
-                  <GitHubIcon style={{ color: 'white', fontSize: 24 }} />
-                </li>
-              </ul>
-            </Box>
+                <Typography
+                  variant="subtitle2"
+                  component="p"
+                  style={{ color: 'white', fontSize: 20 }}
+                >
+                  {'Resources'}
+                </Typography>
+                <ul
+                  style={{
+                    display: 'flex',
+                    listStyle: 'none',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    flexDirection: 'column',
+                    margin: 0,
+                    padding: 0,
+                    width: '250px',
+                  }}
+                >
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>FAQ</li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Help</li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Blog</li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>
+                    Join our community
+                  </li>
+                  <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Newsletter</li>
+                </ul>
+              </Box>
+            </div>
           </div>
           <Divider
             sx={{
               backgroundColor: 'white',
-              width: '96%',
+              width: '97%',
               height: '2px',
               margin: '10px 0',
               opacity: '0.3',
@@ -199,7 +205,7 @@ export const Footer = () => {
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                width: '96%',
+                width: '97%',
               }}
             >
               <Typography variant="body1" component="p" className={classes.text}>

@@ -16,7 +16,7 @@ export const useFooterStyles = makeStyles(
       fontFamily: 'Rubik',
       color: 'white',
       fontWeight: 300,
-      fontSize: '14px',
+      fontSize: '16px',
       lineHeight: '17px',
       opacity: '0.8',
       margin: '24px 0px',
