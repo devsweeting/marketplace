@@ -1,24 +1,13 @@
 import { Box, Button, Typography } from '@mui/material';
+import { useSignUpCallToActionStyles } from './SignUpCallToAction.styles';
 import React from 'react';
 
 export const SignUpCallToAction = () => {
+  const classes = useSignUpCallToActionStyles();
   return (
-    <Box
-      style={{
-        width: '100%',
-        minWidth: '100%',
-        height: '650px',
-        backgroundColor: 'whitesmoke',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-        marginBottom: '100px',
-      }}
-    >
+    <Box className={classes.CTAWrapper}>
       <div
+        // rightSquareOne
         style={{
           backgroundColor: 'white',
           height: '265px',
@@ -32,6 +21,7 @@ export const SignUpCallToAction = () => {
         }}
       ></div>
       <div
+        // leftSquareOne
         style={{
           backgroundColor: 'white',
           height: '265px',
@@ -44,6 +34,7 @@ export const SignUpCallToAction = () => {
         }}
       ></div>
       <div
+        // leftSquareTwo
         style={{
           backgroundColor: 'white',
           height: '265px',
@@ -57,6 +48,7 @@ export const SignUpCallToAction = () => {
         }}
       ></div>
       <div
+        // rightSquareTwo
         style={{
           backgroundColor: 'white',
           height: '265px',
@@ -78,26 +70,13 @@ export const SignUpCallToAction = () => {
           zIndex: 6,
         }}
       >
-        <Typography variant="h2" component="h2" style={{ marginBottom: '15px', fontSize: '4rem' }}>
+        <Typography variant="h2" component="h2" className={classes.CTAHeader}>
           New Drops every week
         </Typography>
-        <Typography variant="subtitle1" component="p" style={{ fontSize: '1.4rem' }}>
+        <Typography variant="subtitle1" component="p" className={classes.CTASubHeader}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </Typography>
-        <Button
-          style={{
-            color: 'white',
-            backgroundColor: 'black',
-            borderRadius: '50px',
-            width: '175px',
-            height: '55px',
-            marginTop: '25px',
-            fontSize: '1.3rem',
-            border: '3px solid black',
-          }}
-        >
-          Sign up
-        </Button>
+        <Button className={classes.button}>Sign up</Button>
       </Box>
     </Box>
   );
