@@ -1,6 +1,7 @@
 import { Box, Card, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
+import { useTestimonialStyles } from './Testimomials.styles';
 
 export const Testimonials = () => {
   const mockTestimonies = [
@@ -29,34 +30,18 @@ export const Testimonials = () => {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. ',
     },
   ];
+  const classes = useTestimonialStyles();
   return (
-    <Box
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: '120px',
-        marginBottom: '100px',
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginBottom: '50px',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Typography variant="h2" component="h2" style={{ marginBottom: '15px' }}>
+    <Box className={classes.testimonialsWrapper}>
+      <div className={classes.testimonialHeaderWrapper}>
+        <Typography variant="h2" component="h2" className={classes.testimonialsHeader}>
           What our collectors say
         </Typography>
-        <Typography variant="subtitle1" component="p" style={{ fontSize: '1.4rem' }}>
+        <Typography variant="subtitle1" component="p" className={classes.testimonialsSubHeader}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid
         </Typography>
       </div>
-      <Grid container>
+      <Grid className={classes.slider} container>
         <Box
           style={{
             display: 'flex',
@@ -66,15 +51,7 @@ export const Testimonials = () => {
           }}
         >
           {mockTestimonies.map((testimony, index) => (
-            <Card
-              key={index}
-              style={{
-                width: '33.33%',
-                margin: '10px 40px',
-                padding: '50px',
-                backgroundColor: 'whitesmoke',
-              }}
-            >
+            <Card key={index} className={classes.card}>
               <Box
                 style={{
                   display: 'flex',
