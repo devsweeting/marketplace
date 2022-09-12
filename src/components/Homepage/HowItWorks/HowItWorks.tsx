@@ -90,6 +90,7 @@ export const HowItWorks = () => {
       >
         <Grid item className={classes.heroWrapper}>
           <Box
+            className={classes.heroBoxContainer}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -98,11 +99,7 @@ export const HowItWorks = () => {
             }}
           >
             <div className={classes.heroBox}>
-              <Typography
-                variant="h3"
-                component="h3"
-                style={{ fontSize: '3rem', margin: '0 0 25px 0' }}
-              >
+              <Typography variant="h3" component="h3" className={classes.heroTitle} style={{}}>
                 1. Digitize
               </Typography>
               <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
@@ -116,14 +113,10 @@ export const HowItWorks = () => {
                 }}
               >
                 <Button
+                  className={classes.button}
                   style={{
                     color: 'white',
                     backgroundColor: 'black',
-                    borderRadius: '50px',
-                    width: '200px',
-                    height: '55px',
-                    marginTop: '25px',
-                    fontSize: '1.3rem',
                     border: '3px solid black',
                   }}
                 >
@@ -136,26 +129,11 @@ export const HowItWorks = () => {
         <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
           <Box
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
               backgroundColor: 'black',
-              padding: '15%',
-              width: '100%',
-              height: '100%',
             }}
+            className={classes.imageWrapper}
           >
-            <Box
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-              }}
-            >
+            <Box className={classes.nextImageHolder}>
               <Image
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
@@ -168,27 +146,8 @@ export const HowItWorks = () => {
           </Box>
         </Grid>
         <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
-          <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: '15%',
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            <Box
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-              }}
-            >
+          <Box style={{}} className={classes.imageWrapper}>
+            <Box className={classes.nextImageHolder}>
               <Image
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
@@ -202,6 +161,7 @@ export const HowItWorks = () => {
         </Grid>
         <Grid item className={classes.heroWrapper}>
           <Box
+            className={classes.heroBoxContainer}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -212,11 +172,7 @@ export const HowItWorks = () => {
             }}
           >
             <div className={classes.heroBox}>
-              <Typography
-                variant="h3"
-                component="h3"
-                style={{ fontSize: '3rem', margin: '0 0 25px 0' }}
-              >
+              <Typography variant="h3" component="h3" className={classes.heroTitle} style={{}}>
                 2. Collect
               </Typography>
               <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
@@ -230,14 +186,10 @@ export const HowItWorks = () => {
                 }}
               >
                 <Button
+                  className={classes.button}
                   style={{
                     color: 'white',
                     backgroundColor: 'black',
-                    borderRadius: '50px',
-                    width: '200px',
-                    height: '55px',
-                    marginTop: '25px',
-                    fontSize: '1.3rem',
                     border: '3px solid black',
                   }}
                 >
@@ -250,10 +202,10 @@ export const HowItWorks = () => {
         <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
           <Box
             style={{
+              backgroundColor: 'black',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
-              backgroundColor: 'black',
               height: '100%',
             }}
           >
@@ -261,7 +213,8 @@ export const HowItWorks = () => {
               <Typography
                 variant="h3"
                 component="h3"
-                style={{ fontSize: '3rem', margin: '0 0 25px 0', color: 'white' }}
+                className={classes.heroTitle}
+                style={{ color: 'white' }}
               >
                 3. Sell
               </Typography>
@@ -280,14 +233,10 @@ export const HowItWorks = () => {
                 }}
               >
                 <Button
+                  className={classes.button}
                   style={{
                     color: 'black',
                     backgroundColor: 'white',
-                    borderRadius: '50px',
-                    width: '200px',
-                    height: '55px',
-                    marginTop: '25px',
-                    fontSize: '1.3rem',
                     border: '3px solid white',
                   }}
                 >
@@ -298,28 +247,8 @@ export const HowItWorks = () => {
           </Box>
         </Grid>
         <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
-          <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-
-              padding: '15%',
-              width: '100%',
-              height: '100%',
-            }}
-          >
-            <Box
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-                height: '100%',
-                position: 'relative',
-              }}
-            >
+          <Box style={{}} className={classes.imageWrapper}>
+            <Box className={classes.nextImageHolder}>
               <Image
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
