@@ -32,6 +32,37 @@ export const useSignUpCallToActionStyles = makeStyles((theme) => ({
       lineBreak: 'anywhere',
     },
   },
+  square: {
+    backgroundColor: 'white',
+    height: '265px',
+    width: '175px',
+    border: '4px solid grey',
+    borderRadius: '8px',
+    opacity: '0.35',
+    position: 'absolute',
+  },
+  rightSquareOne: {
+    right: -70,
+    bottom: 130,
+  },
+  rightSquareTwo: {
+    left: '20%',
+    bottom: 130,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+  leftSquareOne: {
+    left: -70,
+  },
+  leftSquareTwo: {
+    right: '20%',
+    top: 170,
+
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
   button: {
     color: 'white',
     backgroundColor: 'black',

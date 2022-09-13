@@ -6,61 +6,10 @@ export const SignUpCallToAction = () => {
   const classes = useSignUpCallToActionStyles();
   return (
     <Box className={classes.CTAWrapper}>
-      <div
-        // rightSquareOne
-        style={{
-          backgroundColor: 'white',
-          height: '265px',
-          width: '175px',
-          border: '4px solid grey',
-          borderRadius: '8px',
-          opacity: '0.35',
-          position: 'absolute',
-          right: -70,
-          bottom: 130,
-        }}
-      ></div>
-      <div
-        // leftSquareOne
-        style={{
-          backgroundColor: 'white',
-          height: '265px',
-          width: '175px',
-          border: '4px solid grey',
-          borderRadius: '8px',
-          opacity: '0.35',
-          position: 'absolute',
-          left: -70,
-        }}
-      ></div>
-      <div
-        // leftSquareTwo
-        style={{
-          backgroundColor: 'white',
-          height: '265px',
-          width: '175px',
-          border: '4px solid grey',
-          borderRadius: '8px',
-          opacity: '0.35',
-          position: 'absolute',
-          right: 390,
-          top: 170,
-        }}
-      ></div>
-      <div
-        // rightSquareTwo
-        style={{
-          backgroundColor: 'white',
-          height: '265px',
-          width: '175px',
-          border: '4px solid grey',
-          borderRadius: '8px',
-          opacity: '0.35',
-          position: 'absolute',
-          left: 390,
-          bottom: 130,
-        }}
-      ></div>
+      <div className={`${classes.square} ${classes.rightSquareOne}`}></div>
+      <div className={`${classes.square} ${classes.leftSquareOne}`}></div>
+      <div className={`${classes.square} ${classes.leftSquareTwo}`}></div>
+      <div className={`${classes.square} ${classes.rightSquareTwo}`}></div>
       <Box
         style={{
           display: 'flex',
