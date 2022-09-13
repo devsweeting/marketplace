@@ -51,10 +51,10 @@ export const useSubscribeCTAStyles = makeStyles(
       position: 'relative',
       overflow: 'hidden',
       [theme.breakpoints.down('sm')]: {
-        height: '100vw',
+        height: '90vw',
         padding: '0 10px',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
       },
     },
     textfieldInput: {
@@ -78,6 +78,7 @@ export const useSubscribeCTAStyles = makeStyles(
       justifyContent: 'center',
       alignItems: 'center',
       [theme.breakpoints.down('sm')]: {
+        margin: '15px auto 20% auto',
         width: '100%',
         flexDirection: 'column',
       },
@@ -90,9 +91,9 @@ export const useSubscribeCTAStyles = makeStyles(
         justifyContent: 'center',
         alignItems: 'center',
         alignText: 'center',
-        margin: '25px auto',
+        margin: '20% auto 0 auto',
         width: '100%',
-        fontSize: '2.4rem',
+        fontSize: '2.3rem',
       },
     },
     button: {
@@ -105,7 +106,7 @@ export const useSubscribeCTAStyles = makeStyles(
       fontSize: '1.3rem',
       border: '3px solid black',
       [theme.breakpoints.down('sm')]: {
-        margin: '0px',
+        margin: '10px auto',
       },
     },
   }),
