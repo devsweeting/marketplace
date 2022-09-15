@@ -62,6 +62,7 @@ export const Footer = () => {
                 justifyContent: 'flex-end',
                 flexDirection: 'column',
                 width: '33.33%',
+                marginBottom: '20px',
               }}
             >
               <Typography
@@ -83,8 +84,8 @@ export const Footer = () => {
                   width: '100%',
                 }}
               >
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>About us</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Careers</li>
+                <li className={classes.resourceText}>About us</li>
+                <li className={classes.resourceText}>Careers</li>
               </ul>
             </Box>
             <Box
@@ -94,6 +95,7 @@ export const Footer = () => {
                 justifyContent: 'flex-start',
                 flexDirection: 'column',
                 width: '33.33%',
+                marginBottom: '20px',
               }}
             >
               <Typography
@@ -115,10 +117,10 @@ export const Footer = () => {
                   width: '100%',
                 }}
               >
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Marketplace</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Search</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>PWCC</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Fractions</li>
+                <li className={classes.resourceText}>Marketplace</li>
+                <li className={classes.resourceText}>Search</li>
+                <li className={classes.resourceText}>PWCC</li>
+                <li className={classes.resourceText}>Fractions</li>
               </ul>
             </Box>
             <Box
@@ -127,6 +129,7 @@ export const Footer = () => {
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start',
                 flexDirection: 'column',
+                marginBottom: '20px',
               }}
             >
               <Typography
@@ -148,49 +151,11 @@ export const Footer = () => {
                   width: '100%',
                 }}
               >
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>FAQ</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Help</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Blog</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>
-                  Join our community
-                </li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Newsletter</li>
-              </ul>
-            </Box>
-            <Box
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-start',
-                flexDirection: 'column',
-              }}
-            >
-              <Typography
-                variant="subtitle2"
-                component="p"
-                style={{ color: 'white', fontSize: 20 }}
-              >
-                {'Resources'}
-              </Typography>
-              <ul
-                style={{
-                  display: 'flex',
-                  listStyle: 'none',
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-start',
-                  flexDirection: 'column',
-                  margin: 0,
-                  padding: 0,
-                  width: '100%',
-                }}
-              >
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>FAQ</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Help</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Blog</li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>
-                  Join our community
-                </li>
-                <li style={{ color: 'white', fontSize: 16, margin: '10px 0' }}>Newsletter</li>
+                <li className={classes.resourceText}>FAQ</li>
+                <li className={classes.resourceText}>Help</li>
+                <li className={classes.resourceText}>Blog</li>
+                <li className={classes.resourceText}>Join our community</li>
+                <li className={classes.resourceText}>Newsletter</li>
               </ul>
             </Box>
           </div>
@@ -212,24 +177,11 @@ export const Footer = () => {
             width: '100%',
           }}
         >
-          <Box
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '97%',
-            }}
-          >
+          <Box className={classes.footer}>
             <Typography variant="body1" component="p" className={classes.text}>
               © 2022 Jump. All rights reserved.
             </Typography>
-            <Box
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '20%',
-              }}
-            >
+            <Box className={classes.termsAndPolicy}>
               <Typography variant="body1" component="p" className={classes.text}>
                 {'Privacy Policy'}
               </Typography>

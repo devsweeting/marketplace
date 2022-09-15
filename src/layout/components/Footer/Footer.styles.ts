@@ -52,6 +52,15 @@ export const useFooterStyles = makeStyles(
         width: '100%',
       },
     },
+    resourceText: {
+      color: 'white',
+      fontSize: 16,
+      margin: '10px 0',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: 14,
+        margin: '15px 0',
+      },
+    },
     logo: {
       position: 'relative',
       width: '113px',
@@ -60,6 +69,24 @@ export const useFooterStyles = makeStyles(
       [theme.breakpoints.down('sm')]: {
         width: '150px',
         height: '69px',
+      },
+    },
+    footer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '97%',
+      [theme.breakpoints.down('sm')]: {
+        flexWrap: 'wrap-reverse',
+        justifyContent: 'center',
+      },
+    },
+    termsAndPolicy: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '20%',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
       },
     },
     text: {
