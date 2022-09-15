@@ -23,7 +23,7 @@ const Accordion = styled((props: AccordionProps) => (
 
 const AccordionSummary = styled((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
-    expandIcon={<ExpandMoreIcon sx={{ fontSize: '0.9rem', fontWeight: 'bold' }} />}
+    expandIcon={<ExpandMoreIcon sx={{ fontSize: '1.2rem', fontWeight: 'bold' }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -47,16 +47,18 @@ export const CustomizedAccordions = () => {
     <div>
       <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary
-          style={{ padding: '0', fontWeight: 'bold' }}
+          style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}
           aria-controls="panel1d-content"
           id="panel1d-header"
         >
-          <Typography style={{ padding: '0', fontWeight: 'bold' }}>
+          <Typography style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}>
             What is the biggest advantage of selling my items with PWCC?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography
+            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.7' }}
+          >
             {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
             with thousands of unique users participating in every auction. PWCC's strong reputation
             in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace
@@ -68,16 +70,18 @@ export const CustomizedAccordions = () => {
       </Accordion>
       <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
         <AccordionSummary
-          style={{ padding: '0', fontWeight: 'bold' }}
+          style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}
           aria-controls="panel2d-content"
           id="panel2d-header"
         >
-          <Typography style={{ padding: '0', fontWeight: 'bold' }}>
+          <Typography style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}>
             What is the biggest advantage of selling my items with PWCC?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography
+            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.7' }}
+          >
             {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
             with thousands of unique users participating in every auction. PWCC's strong reputation
             in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace
@@ -89,16 +93,18 @@ export const CustomizedAccordions = () => {
       </Accordion>
       <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
         <AccordionSummary
-          style={{ padding: '0', fontWeight: 'bold' }}
+          style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}
           aria-controls="panel3d-content"
           id="panel3d-header"
         >
-          <Typography style={{ padding: '0', fontWeight: 'bold' }}>
+          <Typography style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}>
             What is the biggest advantage of selling my items with PWCC?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
+          <Typography
+            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.7' }}
+          >
             {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
             with thousands of unique users participating in every auction. PWCC's strong reputation
             in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace
