@@ -12,7 +12,7 @@ export const useSignUpCallToActionStyles = makeStyles((theme) => ({
     alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
-    marginBottom: '100px',
+    marginBottom: '20px',
     [theme.breakpoints.down('sm')]: {
       height: '125vw',
     },

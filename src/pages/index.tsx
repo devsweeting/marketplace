@@ -5,6 +5,7 @@ import { HowItWorks } from '@/components/Homepage/HowItWorks';
 import { Testimonials } from '@/components/Homepage/Testimonials';
 import { SignUpCallToAction } from '@/components/Homepage/SignUpCallToAction';
 import { SubscribeCallToAction } from '@/components/Homepage/SubscribeCallToAction';
+import { FAQ } from '@/components/Homepage/FAQ';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { useRouter } from 'next/router';
 
@@ -71,6 +72,9 @@ const Homepage = () => {
             </Grid>
             <Grid item xs={12}>
               <SignUpCallToAction />
+            </Grid>
+            <Grid item xs={12}>
+              <FAQ />
             </Grid>
             <Grid item xs={12}>
               <SubscribeCallToAction />
