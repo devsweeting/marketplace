@@ -31,6 +31,7 @@ export const Testimonials = () => {
     },
   ];
   const classes = useTestimonialStyles();
+
   return (
     <Box className={classes.testimonialsWrapper}>
       <div className={classes.testimonialHeaderWrapper}>
@@ -42,14 +43,7 @@ export const Testimonials = () => {
         </Typography>
       </div>
       <Grid className={classes.slider} container>
-        <Box
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'flex-start',
-          }}
-        >
+        <Box className={classes.cardWrapper}>
           {mockTestimonies.map((testimony, index) => (
             <Card key={index} className={classes.card}>
               <Box

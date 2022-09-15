@@ -57,7 +57,7 @@ export const CustomizedAccordions = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography
-            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.7' }}
+            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.5' }}
           >
             {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
             with thousands of unique users participating in every auction. PWCC's strong reputation
@@ -80,7 +80,7 @@ export const CustomizedAccordions = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography
-            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.7' }}
+            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.5' }}
           >
             {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
             with thousands of unique users participating in every auction. PWCC's strong reputation
@@ -103,7 +103,7 @@ export const CustomizedAccordions = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography
-            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.7' }}
+            style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.5' }}
           >
             {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
             with thousands of unique users participating in every auction. PWCC's strong reputation

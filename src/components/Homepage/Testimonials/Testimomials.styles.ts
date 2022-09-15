@@ -47,11 +47,25 @@ export const useTestimonialStyles = makeStyles((theme) => ({
       'scroll-snap-type': 'x proximity',
     },
   },
+  cardWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'nowrap',
+    },
+  },
   card: {
-    width: '33.33%',
-    margin: '10px 40px',
+    width: '30%',
+    margin: '10px 20px',
     padding: '50px',
     backgroundColor: 'whitesmoke',
+    [theme.breakpoints.down('md')]: {
+      margin: '10px 5px',
+      padding: '8px',
+    },
     [theme.breakpoints.down('sm')]: {
       width: '90vw',
       margin: '2px 15px',
