@@ -5,7 +5,7 @@ import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
 import { logger } from '@/helpers/logger';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
-import { getExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
+import { getAccessExpFromJwtAsDate, getExpFromRefreshToken } from '@/helpers/auth/getExpFrom';
 import type { IJwt } from '@/types/jwt';
 import { formatDate, getTimezoneOffset } from '@/helpers/time';
 export interface IApiRequest {
@@ -164,7 +164,8 @@ export class ApiClient {
       const token = getUserCookie(request.req);
 
       if (token && token.accessToken) {
-        const expireDate = getExpFromJwtAsDate(token);
+        const expireDate = getAccessExpFromJwtAsDate(token);
+
         if (expireDate && expireDate <= new Date()) {
           const response = await this._refreshJwt(token, request, res);
           if (
@@ -172,9 +173,8 @@ export class ApiClient {
             response.status === StatusCodes.UNPROCESSABLE_ENTITY
           ) {
             response.status = StatusCodes.UNAUTHORIZED;
-            // TODO handle logout
-            // response.status = StatusCodes.MOVED_TEMPORARILY;
-            // response.headers = { ...response.headers, Location: '/logout' };
+            response.data = { message: 'Invalid tokens' };
+            removeUserCookie(request.req, res);
             return response;
           }
         }
@@ -224,11 +224,13 @@ async function updateCookie(
   if (!data || !data.accessToken || !data.refreshToken || !request.req || !res) {
     return;
   }
-
+  const expireTime: number = getExpFromRefreshToken(data.refreshToken) ?? 0;
+  const now = new Date().getTime() / 1000;
+  const cookieExp = expireTime - now - 5;
   const newJWt: IJwt = {
     accessToken: data.accessToken,
     refreshToken: data.refreshToken,
   };
-  await setUserCookie(newJWt, request.req, res);
+  await setUserCookie(newJWt, request.req, res, cookieExp);
 }
 export const apiClient = new ApiClient();

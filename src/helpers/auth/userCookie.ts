@@ -8,6 +8,7 @@ export const setUserCookie = (
   token: IJwt,
   req: NextServerRequest,
   res: NextServerResponse,
+  age?: number,
 ): void => {
   const encryptedToken = encrypt(token.accessToken);
   const encryptedRefreshToken = encrypt(token.refreshToken);
@@ -19,7 +20,7 @@ export const setUserCookie = (
     req,
     res,
     httpOnly: true,
-    maxAge: 60 * 60 * 24 * 365,
+    maxAge: age ?? 60 * 60 * 24 * 365,
   });
 };
 

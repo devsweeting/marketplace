@@ -4,25 +4,55 @@ import { getUserCookie } from '@/helpers/auth/userCookie';
 import type { IJwt } from '@/types/jwt';
 import { safeParseInt } from '../safeParseInt';
 
-export const getExpFromRequest = (req: NextServerRequest): string | undefined => {
+/**
+ * Gets the expiration time of the tokens contained in the JWT through the request.
+ * @param req nextApiRequest
+ * @returns Object containing expiration time for the access and refresh tokens.
+ */
+export const getExpFromRequest = (
+  req: NextServerRequest,
+): { accessExp: string | undefined; refreshExp: string | undefined } => {
   const token = getUserCookie(req);
   return getExpFromJwt(token);
 };
 
-export const getExpFromJwt = (jwt?: IJwt): string | undefined => {
+/**
+ * Gets the expiration time for the tokens contained in the JWT
+ * @param jwt
+ * @returns Object containing expiration time for the access and refresh tokens.
+ */
+export const getExpFromJwt = (
+  jwt?: IJwt,
+): { accessExp: string | undefined; refreshExp: string | undefined } => {
   if (!jwt) {
-    return;
+    return { accessExp: undefined, refreshExp: undefined };
   }
-  const parsedJwt = jwtDecode<{ exp: string }>(jwt.accessToken);
-  return parsedJwt.exp;
+  const parsedJwtAccess = jwtDecode<{ exp: string }>(jwt.accessToken);
+  const parsedJwtRefresh = jwtDecode<{ exp: string }>(jwt.refreshToken);
+  return { accessExp: parsedJwtAccess.exp, refreshExp: parsedJwtRefresh.exp };
 };
 
-export const getExpFromJwtAsDate = (jwt?: IJwt): Date => {
-  const date = safeParseInt(getExpFromJwt(jwt) ?? '') ?? 0;
+/**
+ * Gets the expiration date for the access token from the jwt
+ * @param jwt
+ * @returns expiration date of the access token as a Date string.
+ */
+export const getAccessExpFromJwtAsDate = (jwt?: IJwt): Date => {
+  const tokensExp = getExpFromJwt(jwt);
+  const date = safeParseInt(tokensExp.accessExp ?? '') ?? 0;
+  return new Date(date * 1000);
+};
+
+export const getRefreshExpFromJwtAsDate = (jwt?: IJwt): Date => {
+  const tokensExp = getExpFromJwt(jwt);
+  const date = safeParseInt(tokensExp.refreshExp ?? '') ?? 0;
   return new Date(date * 1000);
 };
 
 export const getExpFromAccessToken = (accessToken: string) => {
-  const parsedToken = jwtDecode<{ exp: number }>(accessToken);
-  return new Date(parsedToken.exp * 1000);
+  return jwtDecode<{ exp: number }>(accessToken).exp;
+};
+
+export const getExpFromRefreshToken = (refreshToken: string) => {
+  return jwtDecode<{ exp: number }>(refreshToken).exp;
 };
