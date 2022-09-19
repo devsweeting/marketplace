@@ -1,9 +1,33 @@
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, Card, Grid, Typography } from '@mui/material';
 import type { NextPage } from 'next/types';
-import * as React from 'react';
+import { getPortfolioAssetsByUserId } from '@/api/endpoints/portfolio';
+import { useUser } from '@/helpers/hooks/useUser';
+import React, { useState, useEffect } from 'react';
+import { formatNumber } from '@/helpers/formatNumber';
 
 const PortfolioPage: NextPage = () => {
+  const [portfolioData, setPortfolioData] = useState([]);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  const user = useUser();
+
+  useEffect(() => {
+    setHasMounted(true);
+    if (user && user.id) {
+      getPortfolioAssetsByUserId(user.id)
+        .then((data) => {
+          setPortfolioData(data.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user]);
+  console.log(portfolioData);
+  if (!hasMounted) {
+    return null;
+  }
   return (
     <>
       <OpenGraph title={'List view'} description={'List view page description'} />
@@ -102,6 +126,68 @@ const PortfolioPage: NextPage = () => {
             </Box>
           </Grid>
         </Card>
+      </Grid>
+      <Grid
+        sx={{
+          display: 'flex',
+          width: '100%',
+          padding: '24px',
+          margin: '56px auto 56px auto',
+        }}
+      >
+        <Box style={{ marginRight: '40px' }}>
+          <Typography variant="h3" component="h3">
+            Porfolio Value
+          </Typography>
+          <Typography
+            variant="h2"
+            component="p"
+            style={{
+              fontSize: '3.75rem',
+              fontWeight: '600',
+              lineHeight: '60px',
+              fontStyle: 'normal',
+            }}
+          >
+            {portfolioData && Object.keys(portfolioData).length && (
+              <>{`$${formatNumber(portfolioData.totalCostSpentInCents / 100)}`}</>
+            )}
+          </Typography>
+        </Box>
+        <Box style={{ marginRight: '40px', marginLeft: '40px' }}>
+          <Typography variant="h3" component="h3">
+            Cash Balance
+          </Typography>
+          <Typography
+            variant="h2"
+            component="p"
+            style={{
+              fontSize: '3.75rem',
+              fontWeight: '600',
+              lineHeight: '60px',
+              fontStyle: 'normal',
+            }}
+          >
+            $1200
+          </Typography>
+        </Box>
+        <Box style={{ marginRight: '40px', marginLeft: '40px' }}>
+          <Typography variant="h3" component="h3">
+            Total Units
+          </Typography>
+          <Typography
+            variant="h2"
+            component="p"
+            style={{
+              fontSize: '3.75rem',
+              fontWeight: '600',
+              lineHeight: '60px',
+              fontStyle: 'normal',
+            }}
+          >
+            1200
+          </Typography>
+        </Box>
       </Grid>
     </>
   );
