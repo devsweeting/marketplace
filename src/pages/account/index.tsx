@@ -1,224 +1,132 @@
 import { OpenGraph } from '@/components/OpenGraph';
-import { Box, Card, Grid, Typography } from '@mui/material';
+import { Loader } from '@/components/Loader';
 import type { NextPage } from 'next/types';
 import { getPortfolioAssetsByUserId } from '@/api/endpoints/portfolio';
-import React, { useState, useEffect } from 'react';
-import { formatNumber } from '@/helpers/formatNumber';
+import React, { useEffect, useReducer } from 'react';
 import type { IAsset } from '@/types/assetTypes';
+import { PortfolioHeader } from '@/components/PortfolioPage/PortfolioHeader';
+import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
+import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 
+type IPorfolioAsset = IAsset & {
+  fractionPriceCents: number | undefined;
+  fractionQty: number | undefined;
+};
 interface IPurchaseHistoryItem {
-  asset: IAsset;
-  assetId: string;
-  createdAt: string;
-  deletedAt: string | null;
-  fractionPriceCents: number;
-  fractionQty: number;
-  id: string;
-  isDelete: boolean;
-  purchaseTotal: number;
-  sellOrderId: string;
-  updatedAt: string;
-  userId: string;
+  length: number;
+  asset: IPorfolioAsset;
+  assetId?: string;
+  createdAt?: string;
+  deletedAt?: string | null;
+  fractionPriceCents?: number;
+  fractionQty?: number;
+  id?: string;
+  isDelete?: boolean;
+  purchaseTotal?: number;
+  sellOrderId?: string;
+  updatedAt?: string;
+  userId?: string;
 }
-interface IPortfilioData {
+export interface IPortfolioData {
   totalValueInCents: number;
   totalUnits: number;
-  purchaseHistory: IPurchaseHistoryItem[];
+  purchaseHistory?: IPurchaseHistoryItem[] | [];
   sellOrderHistory: [];
 }
 
-const PortfolioPage: NextPage = () => {
-  const [portfolioData, setPortfolioData] = useState<IPortfilioData | undefined>();
-  const [hasMounted, setHasMounted] = useState(false);
-  useEffect(() => {
-    setHasMounted(true);
+interface IPortfolioDataState {
+  isLoading: boolean;
+  portfolio: IPortfolioData;
+  error: string;
+}
 
-    getPortfolioAssetsByUserId()
-      .then((data) => setPortfolioData(data as unknown as IPortfilioData))
-      .catch((err) => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
-  }, []);
-  const assetsList = [];
-  if (portfolioData) {
-    if (Object.keys(portfolioData).length > 0) {
-      for (let i = 0; i < portfolioData.purchaseHistory.length; i++) {
-        assetsList.push(portfolioData.purchaseHistory[i].asset);
-      }
+type PortfolioListAction =
+  | { type: 'fetching' }
+  | { type: 'success'; payload: IPortfolioData }
+  | { type: 'error'; error: Error };
+
+const initialPortfolioListState: IPortfolioDataState = {
+  isLoading: true,
+  portfolio: [] as unknown as IPortfolioData,
+  error: '',
+};
+
+const portfolioReducer = (state: IPortfolioDataState, action: PortfolioListAction) => {
+  switch (action.type) {
+    case 'fetching': {
+      return { ...state, isLoading: true, error: '' };
+    }
+    case 'success': {
+      return { ...state, isLoading: false, portfolio: action.payload };
+    }
+    case 'error': {
+      return { ...state, isLoading: false, error: action.error.message };
+    }
+    default: {
+      return state;
     }
   }
-  if (!hasMounted) {
-    return null;
+};
+const PortfolioPage: NextPage = () => {
+  const [{ isLoading, error, portfolio }, dispatch] = useReducer(
+    portfolioReducer,
+    initialPortfolioListState,
+  );
+
+  const handlePortfolioDataFetch = () => {
+    dispatch({ type: 'fetching' });
+    return getPortfolioAssetsByUserId()
+      .then((data) => {
+        dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
+      })
+      .catch((error) => {
+        dispatch({ type: 'error', error });
+      });
+  };
+
+  useEffect(() => {
+    void handlePortfolioDataFetch();
+  }, []);
+
+  const portfolioAssetsList = [];
+  if (portfolio?.purchaseHistory && !Object.keys(portfolio).includes('statusCode')) {
+    for (let i = 0; i < portfolio.purchaseHistory.length; i++) {
+      if (
+        Object.keys(portfolio).length > 0 &&
+        Object.keys(portfolio.purchaseHistory[i]).length > 0 &&
+        Object.keys(portfolio.purchaseHistory[i]).includes('asset')
+      ) {
+        portfolio.purchaseHistory[i].asset.fractionPriceCents =
+          portfolio.purchaseHistory[i].fractionPriceCents;
+        portfolio.purchaseHistory[i].asset.fractionQty = portfolio.purchaseHistory[i].fractionQty;
+      }
+      portfolioAssetsList.push(portfolio.purchaseHistory[i].asset);
+    }
+  }
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error !== '') {
+    return (
+      <div>
+        <p className="text-red">{error}</p>
+        <button
+          onClick={() => {
+            void handlePortfolioDataFetch();
+          }}
+        >
+          Try again
+        </button>
+      </div>
+    );
   }
   return (
     <>
       <OpenGraph title={'List view'} description={'List view page description'} />
-      <Grid
-        sx={{
-          marginTop: 10,
-          backgroundColor: '#fff',
-          width: '100%',
-
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
-        container
-      >
-        <Card
-          sx={{
-            display: 'flex',
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-          }}
-        >
-          <Box>
-            <Typography
-              component="h2"
-              variant="h2"
-              style={{
-                margin: 0,
-                padding: '24px',
-                fontWeight: '600',
-                fontSize: '24px',
-                lineHeight: '32px',
-              }}
-            >
-              Portfolio
-            </Typography>
-          </Box>
-          <Grid
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '100%',
-              marginRight: '20px',
-            }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center', padding: '0 16px' }}>
-              <Box sx={{ padding: '24px 16px', borderBottom: '2px solid black' }}>
-                <Typography
-                  component="h2"
-                  variant="h2"
-                  style={{
-                    margin: 0,
-                    padding: '0',
-                    fontWeight: '600',
-                    fontSize: '16px',
-                    lineHeight: '32px',
-                    color: '#6B7280',
-                  }}
-                >
-                  Overview
-                </Typography>
-              </Box>
-              <Box sx={{ padding: '24px 16px', borderBottom: '2px solid black' }}>
-                <Typography
-                  component="h2"
-                  variant="h2"
-                  style={{
-                    margin: 0,
-                    padding: '0',
-                    fontWeight: '600',
-                    fontSize: '16px',
-                    lineHeight: '32px',
-                    color: '#6B7280',
-                  }}
-                >
-                  Watchlist
-                </Typography>
-              </Box>
-              <Box sx={{ padding: '24px 16px', borderBottom: '2px solid black' }}>
-                <Typography
-                  component="h2"
-                  variant="h2"
-                  style={{
-                    margin: 0,
-                    padding: '0',
-                    fontWeight: '600',
-                    fontSize: '16px',
-                    lineHeight: '32px',
-                    color: '#6B7280',
-                  }}
-                >
-                  Transactions
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Card>
-      </Grid>
-      <Grid
-        sx={{
-          display: 'flex',
-          width: '100%',
-          padding: '24px',
-          margin: '56px auto 56px auto',
-        }}
-      >
-        <Box style={{ marginRight: '40px' }}>
-          <Typography variant="h3" component="h3">
-            Porfolio Value
-          </Typography>
-          <Typography
-            variant="h2"
-            component="p"
-            style={{
-              fontSize: '3.75rem',
-              fontWeight: '600',
-              lineHeight: '60px',
-              fontStyle: 'normal',
-            }}
-          >
-            {portfolioData && Object.keys(portfolioData).length && (
-              <>{`$${
-                portfolioData.totalValueInCents
-                  ? formatNumber(portfolioData.totalValueInCents / 100)
-                  : 0
-              }`}</>
-            )}
-          </Typography>
-        </Box>
-        <Box style={{ marginRight: '40px', marginLeft: '40px' }}>
-          <Typography variant="h3" component="h3">
-            Cash Balance
-          </Typography>
-          <Typography
-            variant="h2"
-            component="p"
-            style={{
-              fontSize: '3.75rem',
-              fontWeight: '600',
-              lineHeight: '60px',
-              fontStyle: 'normal',
-            }}
-          >
-            $1200
-          </Typography>
-        </Box>
-        <Box style={{ marginRight: '40px', marginLeft: '40px' }}>
-          <Typography variant="h3" component="h3">
-            Total Units
-          </Typography>
-          <Typography
-            variant="h2"
-            component="p"
-            style={{
-              fontSize: '3.75rem',
-              fontWeight: '600',
-              lineHeight: '60px',
-              fontStyle: 'normal',
-            }}
-          >
-            {portfolioData && Object.keys(portfolioData).length && (
-              <>{`${portfolioData.totalUnits}`}</>
-            )}
-          </Typography>
-        </Box>
-      </Grid>
-      <Grid container direction="row" justifyContent="center" alignItems="stretch"></Grid>
+      <PortfolioHeader />
+      <PortFolioStats portfolio={portfolio} />
+      <PortfolioAssetList portfolioAssetsList={portfolioAssetsList} />
     </>
   );
 };
