@@ -2,29 +2,52 @@ import { OpenGraph } from '@/components/OpenGraph';
 import { Box, Card, Grid, Typography } from '@mui/material';
 import type { NextPage } from 'next/types';
 import { getPortfolioAssetsByUserId } from '@/api/endpoints/portfolio';
-import { useUser } from '@/helpers/hooks/useUser';
 import React, { useState, useEffect } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
+import type { IAsset } from '@/types/assetTypes';
+
+interface IPurchaseHistoryItem {
+  asset: IAsset;
+  assetId: string;
+  createdAt: string;
+  deletedAt: string | null;
+  fractionPriceCents: number;
+  fractionQty: number;
+  id: string;
+  isDelete: boolean;
+  purchaseTotal: number;
+  sellOrderId: string;
+  updatedAt: string;
+  userId: string;
+}
+interface IPortfilioData {
+  totalValueInCents: number;
+  totalUnits: number;
+  purchaseHistory: IPurchaseHistoryItem[];
+  sellOrderHistory: [];
+}
 
 const PortfolioPage: NextPage = () => {
-  const [portfolioData, setPortfolioData] = useState([]);
+  const [portfolioData, setPortfolioData] = useState<IPortfilioData | undefined>();
   const [hasMounted, setHasMounted] = useState(false);
-
-  const user = useUser();
-
   useEffect(() => {
     setHasMounted(true);
-    if (user && user.id) {
-      getPortfolioAssetsByUserId(user.id)
-        .then((data) => {
-          setPortfolioData(data.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+
+    getPortfolioAssetsByUserId()
+      .then((data) => setPortfolioData(data as unknown as IPortfilioData))
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
+  }, []);
+  const assetsList = [];
+  if (portfolioData) {
+    if (Object.keys(portfolioData).length > 0) {
+      for (let i = 0; i < portfolioData.purchaseHistory.length; i++) {
+        assetsList.push(portfolioData.purchaseHistory[i].asset);
+      }
     }
-  }, [user]);
-  console.log(portfolioData);
+  }
   if (!hasMounted) {
     return null;
   }
@@ -150,7 +173,11 @@ const PortfolioPage: NextPage = () => {
             }}
           >
             {portfolioData && Object.keys(portfolioData).length && (
-              <>{`$${formatNumber(portfolioData.totalCostSpentInCents / 100)}`}</>
+              <>{`$${
+                portfolioData.totalValueInCents
+                  ? formatNumber(portfolioData.totalValueInCents / 100)
+                  : 0
+              }`}</>
             )}
           </Typography>
         </Box>
@@ -185,10 +212,13 @@ const PortfolioPage: NextPage = () => {
               fontStyle: 'normal',
             }}
           >
-            1200
+            {portfolioData && Object.keys(portfolioData).length && (
+              <>{`${portfolioData.totalUnits}`}</>
+            )}
           </Typography>
         </Box>
       </Grid>
+      <Grid container direction="row" justifyContent="center" alignItems="stretch"></Grid>
     </>
   );
 };
