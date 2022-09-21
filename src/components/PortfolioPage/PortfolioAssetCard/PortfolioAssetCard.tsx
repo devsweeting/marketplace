@@ -20,7 +20,9 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
         cursor: 'pointer',
         borderRadius: '0px',
         borderBottom: '1px solid ' + lighten(theme.palette.primary.main, 0.85),
-        [theme.breakpoints.down('md')]: {
+      }}
+      sx={{
+        ['@media (max-width:900px)']: {
           maxWidth: '400px',
           borderRadius: '4px',
           margin: '10px 10px',
@@ -53,11 +55,11 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                 },
               }}
             >
-              {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
+              {assetData.media && assetData.media[0] && assetData.media[0].file.absoluteUrl && (
                 <Image
                   placeholder="blur"
-                  blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
-                  src={assetData.media[0].absoluteUrl}
+                  blurDataURL={`/_next/image?url=${assetData.media[0].file.absoluteUrl}&w=16&q=1`}
+                  src={assetData.media[0].file.absoluteUrl}
                   alt={assetData.media[0].title}
                   width={200}
                   height={340}

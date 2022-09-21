@@ -8,7 +8,7 @@ import { PortfolioHeader } from '@/components/PortfolioPage/PortfolioHeader';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 
-type IPorfolioAsset = IAsset & {
+export type IPorfolioAsset = IAsset & {
   fractionPriceCents: number | undefined;
   fractionQty: number | undefined;
 };
@@ -103,6 +103,7 @@ const PortfolioPage: NextPage = () => {
       portfolioAssetsList.push(portfolio.purchaseHistory[i].asset);
     }
   }
+  console.log(portfolioAssetsList);
   if (isLoading) {
     return <Loader />;
   }

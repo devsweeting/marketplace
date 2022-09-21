@@ -1,14 +1,12 @@
 import { Box, Grid, useTheme } from '@mui/material';
-import type { IAsset } from '@/types/assetTypes';
+import type { IPorfolioAsset } from '@/pages/account';
 import React from 'react';
 import { PortfolioAssetCard } from '../PortfolioAssetCard';
 
 export const PortfolioAssetList = ({
   portfolioAssetsList,
 }: {
-  portfolioAssetsList: (IAsset | undefined)[];
-  fractionQty: number;
-  fractionPriceCents: number;
+  portfolioAssetsList: (IPorfolioAsset | undefined)[];
 }) => {
   const theme = useTheme();
   return (
