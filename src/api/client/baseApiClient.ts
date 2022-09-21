@@ -37,49 +37,45 @@ export type IApiResponse = IApiJsonResponse | IApiTextResponse;
 
 export type IApiUrl = `/${string}`;
 
-export class ApiClient {
-  static getBaseUrl() {
-    if (typeof window === 'undefined') {
-      return process.env.NEXT_PUBLIC_BACKEND_URL;
-    }
-    return '/api/jump';
-  }
+export abstract class BaseApiClient {
+  abstract getBaseUrl(): string;
 
   get(url: IApiUrl, request: IApiRequest = {}) {
-    return this._send(url, 'GET', request);
+    return this.send(url, 'GET', request);
   }
 
-  post(url: IApiUrl, request: IApiRequestWithBody, res?: NextServerResponse) {
-    return this._sendWithJwtCheck(url, 'POST', request, res);
+  post(url: IApiUrl, request: IApiRequestWithBody) {
+    return this.send(url, 'POST', request);
   }
 
-  put(url: IApiUrl, request: IApiRequestWithBody, res?: NextServerResponse) {
-    return this._sendWithJwtCheck(url, 'PUT', request, res);
+  put(url: IApiUrl, request: IApiRequestWithBody) {
+    return this.send(url, 'PUT', request);
   }
 
-  patch(url: IApiUrl, request: IApiRequestWithBody, res?: NextServerResponse) {
-    return this._sendWithJwtCheck(url, 'PATCH', request, res);
+  patch(url: IApiUrl, request: IApiRequestWithBody) {
+    return this.send(url, 'PATCH', request);
   }
 
-  delete(url: IApiUrl, request: IApiRequest = {}, res?: NextServerResponse) {
-    return this._sendWithJwtCheck(url, 'DELETE', request, res);
+  delete(url: IApiUrl, request: IApiRequest = {}) {
+    return this.send(url, 'DELETE', request);
   }
 
-  private async _send(
+  async send(
     path: IApiUrl,
     method: string,
     request: IApiRequest | IApiRequestWithBody,
+    options?: {
+      onError: (response: Response) => void;
+      onSuccess: (response: Response) => void;
+      onCatch?: () => void;
+    },
   ): Promise<IApiResponse> {
+    console.log('base send function');
     if (!request.headers) {
       request.headers = {};
     }
 
     let body: string | undefined;
-    let host: string | undefined = '-';
-    let authUser;
-    const time = formatDate(new Date());
-    const timeZone = getTimezoneOffset();
-    let returnedByteSize;
 
     if ('body' in request && request.body) {
       if (request.body instanceof URLSearchParams) {
@@ -91,24 +87,9 @@ export class ApiClient {
       }
     }
 
-    if ('req' in request && request.req) {
-      const token = getUserCookie(request.req);
-
-      host = getIpAddress(request.req);
-
-      if (request.headers['content-length']) {
-        returnedByteSize = request.headers['content-length'];
-      }
-
-      if (token && token.accessToken) {
-        request.headers['Authorization'] = `Bearer ${token.accessToken}`;
-        authUser = getUserFromJwt(token);
-      }
-    }
-
     const responseHeaders: Record<string, string> = {};
 
-    const url = `${ApiClient.getBaseUrl()}${path}`;
+    const url = `${this.getBaseUrl()}${path}`;
     try {
       const response = await fetch(url, {
         method,
@@ -116,17 +97,9 @@ export class ApiClient {
         body,
       });
       if (response.ok) {
-        logger.info(
-          `${host ?? '-'} ${authUser ?? '-'} [${time} ${timeZone}] ${method} ${response.url} ${
-            response.status
-          } ${returnedByteSize ?? '-'}`,
-        );
+        options?.onSuccess(response);
       } else {
-        logger.error(
-          `${host ?? '-'} ${authUser ?? '-'} [${time} ${timeZone}]  ${method} ${response.url} ${
-            response.status
-          } ${response.statusText} ${returnedByteSize ?? '-'}`,
-        );
+        options?.onError(response);
       }
 
       response.headers.forEach((value, key) => {
@@ -154,83 +127,83 @@ export class ApiClient {
     }
   }
 
-  private async _sendWithJwtCheck(
-    path: IApiUrl,
-    method: string,
-    request: IApiRequest | IApiRequestWithBody,
-    res: NextServerResponse | undefined,
-  ) {
-    if (request.req && res) {
-      //DO this in the browser only
-      const token = getUserCookie(request.req);
+  //   private async _sendWithJwtCheck(
+  //     path: IApiUrl,
+  //     method: string,
+  //     request: IApiRequest | IApiRequestWithBody,
+  //     res: NextServerResponse | undefined,
+  //   ) {
+  //     if (request.req && res) {
+  //       //DO this in the browser only
+  //       const token = getUserCookie(request.req);
 
-      if (token && token.accessToken) {
-        const expireDate = getAccessExpFromJwtAsDate(token);
+  //       if (token && token.accessToken) {
+  //         const expireDate = getAccessExpFromJwtAsDate(token);
 
-        if (expireDate && expireDate <= new Date()) {
-          const response = await this._refreshJwt(token, request, res);
-          if (
-            response.status === StatusCodes.UNAUTHORIZED ||
-            response.status === StatusCodes.UNPROCESSABLE_ENTITY
-          ) {
-            response.status = StatusCodes.UNAUTHORIZED;
-            response.data = { message: 'Invalid tokens' };
-            removeUserCookie(request.req, res);
-            return response;
-          }
-        }
-      }
-    }
-    return await this._send(path, method, request);
-  }
+  //         if (expireDate && expireDate <= new Date()) {
+  //           const response = await this._refreshJwt(token, request, res);
+  //           if (
+  //             response.status === StatusCodes.UNAUTHORIZED ||
+  //             response.status === StatusCodes.UNPROCESSABLE_ENTITY
+  //           ) {
+  //             response.status = StatusCodes.UNAUTHORIZED;
+  //             response.data = { message: 'Invalid tokens' };
+  //             removeUserCookie(request.req, res);
+  //             return response;
+  //           }
+  //         }
+  //       }
+  //     }
+  //     return await this.send(path, method, request);
+  //   }
 
-  private async _refreshJwt(
-    token: IJwt,
-    request: IApiRequest | IApiRequestWithBody,
-    res: NextServerResponse,
-  ): Promise<IApiResponse> {
-    try {
-      const jwtRefreshRequest = {
-        headers: request.headers,
-        body: { refreshToken: token.refreshToken },
-      };
-      const response = await this._send('/users/login/refresh', 'POST', jwtRefreshRequest);
-      if (!response.ok) {
-        return response;
-      }
+  //   private async _refreshJwt(
+  //     token: IJwt,
+  //     request: IApiRequest | IApiRequestWithBody,
+  //     res: NextServerResponse,
+  //   ): Promise<IApiResponse> {
+  //     try {
+  //       const jwtRefreshRequest = {
+  //         headers: request.headers,
+  //         body: { refreshToken: token.refreshToken },
+  //       };
+  //       const response = await this.send('/users/login/refresh', 'POST', jwtRefreshRequest);
+  //       if (!response.ok) {
+  //         return response;
+  //       }
 
-      const data = (await response.data) as unknown as any;
-      await updateCookie(data, request, res);
-      return response;
-    } catch (error) {
-      if (request.req) {
-        removeUserCookie(request.req, res);
-      }
-      logger.error(error);
-      return {
-        status: StatusCodes.INTERNAL_SERVER_ERROR,
-        ok: false,
-        headers: {},
-        isJson: false,
-      };
-    }
-  }
-}
+  //       const data = (await response.data) as unknown as any;
+  //       await updateCookie(data, request, res);
+  //       return response;
+  //     } catch (error) {
+  //       if (request.req) {
+  //         removeUserCookie(request.req, res);
+  //       }
+  //       logger.error(error);
+  //       return {
+  //         status: StatusCodes.INTERNAL_SERVER_ERROR,
+  //         ok: false,
+  //         headers: {},
+  //         isJson: false,
+  //       };
+  //     }
+  //   }
+  // }
 
-async function updateCookie(
-  data: { accessToken: string; refreshToken: string } | undefined,
-  request: IApiRequestWithBody | IApiRequest,
-  res: NextServerResponse,
-) {
-  if (!data || !data.accessToken || !data.refreshToken || !request.req || !res) {
-    return;
-  }
-  const expireTime: number = getExpFromRefreshToken(data.refreshToken) ?? 0;
-  const now = new Date().getTime() / 1000;
-  const cookieExp = expireTime - now - 5;
-  const newJWt: IJwt = {
-    accessToken: data.accessToken,
-    refreshToken: data.refreshToken,
-  };
-  await setUserCookie(newJWt, request.req, res, cookieExp);
+  // async function updateCookie(
+  //   data: { accessToken: string; refreshToken: string } | undefined,
+  //   request: IApiRequestWithBody | IApiRequest,
+  //   res: NextServerResponse,
+  // ) {
+  //   if (!data || !data.accessToken || !data.refreshToken || !request.req || !res) {
+  //     return;
+  //   }
+  //   const expireTime: number = getExpFromRefreshToken(data.refreshToken) ?? 0;
+  //   const now = new Date().getTime() / 1000;
+  //   const cookieExp = expireTime - now - 5;
+  //   const newJWt: IJwt = {
+  //     accessToken: data.accessToken,
+  //     refreshToken: data.refreshToken,
+  //   };
+  //   await setUserCookie(newJWt, request.req, res, cookieExp);
 }

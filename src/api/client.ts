@@ -1,2 +1,4 @@
-import { ApiClient } from './client/baseApiClient';
-export const apiClient = typeof window === 'undefined' ? new ApiClient() : new ApiClient();
+import { ServerApiClient } from './client/serverApiClient';
+import { BrowserApiClient } from './client/browserApiClient';
+export const apiClient =
+  typeof window === 'undefined' ? new ServerApiClient() : new BrowserApiClient();
