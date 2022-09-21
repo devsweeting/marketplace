@@ -103,7 +103,6 @@ const PortfolioPage: NextPage = () => {
       portfolioAssetsList.push(portfolio.purchaseHistory[i].asset);
     }
   }
-  console.log(portfolioAssetsList);
   if (isLoading) {
     return <Loader />;
   }
@@ -111,7 +110,7 @@ const PortfolioPage: NextPage = () => {
   if (error !== '') {
     return (
       <div>
-        <p className="text-red">{error}</p>
+        <p>{error}</p>
         <button
           onClick={() => {
             void handlePortfolioDataFetch();

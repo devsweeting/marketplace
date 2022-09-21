@@ -1,4 +1,3 @@
-import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { formatNumber } from '@/helpers/formatNumber';
 import { Card, CardActionArea, lighten, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
@@ -12,18 +11,14 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
   };
 
   const theme = useTheme();
-  const details = parseAssetAttributes(assetData.attributes);
-  console.log(assetData.attributes);
 
   return (
     <Card
-      style={{
+      sx={{
         cursor: 'pointer',
         borderRadius: '0px',
         borderBottom: '1px solid ' + lighten(theme.palette.primary.main, 0.85),
-      }}
-      sx={{
-        ['@media (max-width:900px)']: {
+        [theme.breakpoints.down('md')]: {
           maxWidth: '400px',
           borderRadius: '4px',
           margin: '10px 10px',
@@ -36,18 +31,17 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
         <CardActionArea>
           <Box
             onClick={onClick}
-            style={{
+            sx={{
               display: 'flex',
               width: '100%',
               alignItems: 'center',
-
               [theme.breakpoints.down('md')]: {
                 flexWrap: 'wrap',
               },
             }}
           >
             <Box
-              style={{
+              sx={{
                 maxWidth: '120px',
                 backgroundColor: lighten(theme.palette.primary.main, 0.95),
                 padding: theme.spacing(3),
@@ -69,24 +63,136 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                 ></Image>
               )}
             </Box>
-            <Box>
-              <Typography
-                style={{
-                  fontFamily: 'Montserrat',
-                  fontWeight: 700,
-                  fontSize: '18px',
-                  overflowWrap: 'break-word',
+            <Box
+              sx={{
+                padding: '40px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-between',
+                width: '100%',
+                [theme.breakpoints.down('md')]: {
+                  flexDirection: 'column',
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  width: '40%',
+                  [theme.breakpoints.down('md')]: {
+                    width: '100%',
+                  },
                 }}
               >
-                {assetData.name}
-              </Typography>
-              <Box style={{ display: 'flex' }}>
-                <Typography>{details.year}</Typography>
-                <Typography>#xxx</Typography>
-                <Typography>Set Topps</Typography>
-                <Typography>
-                  {details.grading} {details.grading_service}
+                <Typography
+                  style={{
+                    fontFamily: 'Montserrat',
+                    fontWeight: 700,
+                    fontSize: '24px',
+                    lineHeight: '32px',
+                    overflowWrap: 'break-word',
+                  }}
+                >
+                  {assetData.name}
                 </Typography>
+                <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography>{assetData.attributes.year[0]}</Typography>
+                  <Typography>#xxx</Typography>
+                  <Typography>Set Topps</Typography>
+                  <Typography>
+                    {assetData.attributes['grading service'][0]} {assetData.attributes['grade'][0]}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <Box
+                  sx={{
+                    minWidth: '100px',
+                    margin: '0 25px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    [theme.breakpoints.down('md')]: {
+                      minWidth: '33%',
+                      margin: '5px',
+                    },
+                  }}
+                >
+                  <Typography
+                    style={{
+                      fontFamily: 'Montserrat',
+                      fontWeight: 400,
+                      fontSize: '16px',
+                      lineHeight: '24px',
+                    }}
+                  >
+                    Valuation
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: 'Montserrat',
+                      fontWeight: 700,
+                      fontSize: '36px',
+                      [theme.breakpoints.down('md')]: {
+                        fontSize: '24px',
+                      },
+                    }}
+                  >
+                    {'$' +
+                      formatNumber((assetData.fractionPriceCents * assetData.fractionQty) / 100)}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    minWidth: '100px',
+                    [theme.breakpoints.down('md')]: {
+                      minWidth: '33%',
+                      margin: '5px',
+                    },
+                  }}
+                >
+                  <Typography>Unit Price</Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: 'Montserrat',
+                      fontWeight: 700,
+                      fontSize: '36px',
+                      [theme.breakpoints.down('md')]: {
+                        fontSize: '24px',
+                      },
+                    }}
+                  >
+                    {'$' + assetData.fractionPriceCents / 100}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    minWidth: '100px',
+                    [theme.breakpoints.down('md')]: {
+                      margin: '5px',
+                      minWidth: '33%',
+                    },
+                  }}
+                >
+                  <Typography>Total Units</Typography>
+                  <Typography
+                    sx={{
+                      fontFamily: 'Montserrat',
+                      fontWeight: 700,
+                      fontSize: '36px',
+                      [theme.breakpoints.down('md')]: {
+                        fontSize: '24px',
+                      },
+                    }}
+                  >
+                    {assetData.fractionQty}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
             {/* <Box sx={{ width: '100%' }}>
@@ -141,7 +247,9 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                           Valuation
                         </Typography>
                         <Typography
-                          style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px' }}
+                  x style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px', [theme.breakpoints.down('md')]: {
+                      fontSize: '24px',
+                    }, }}
                         >
                           {'$' +
                             formatNumber(
@@ -159,7 +267,9 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                       >
                         <Typography>Unit Price</Typography>
                         <Typography
-                          style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px' }}
+                  x style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px', [theme.breakpoints.down('md')]: {
+                      fontSize: '24px',
+                    }, }}
                         >
                           {'$' + assetData.fractionPriceCents / 100}
                         </Typography>
@@ -174,7 +284,9 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                       >
                         <Typography>Total Units</Typography>
                         <Typography
-                          style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px' }}
+                  x style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px', [theme.breakpoints.down('md')]: {
+                      fontSize: '24px',
+                    }, }}
                         >
                           {assetData.fractionQty}
                         </Typography>

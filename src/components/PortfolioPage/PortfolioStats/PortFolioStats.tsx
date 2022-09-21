@@ -1,19 +1,30 @@
 import { formatNumber } from '@/helpers/formatNumber';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 import React from 'react';
 import type { IPortfolioData } from '@/pages/account';
 
 export const PortFolioStats = ({ portfolio }: { portfolio: IPortfolioData }) => {
+  const theme = useTheme();
   return (
     <Grid
       sx={{
         display: 'flex',
         width: '100%',
         padding: '24px',
-        margin: '56px auto 56px auto',
+        margin: '56px auto',
+        [theme.breakpoints.down('md')]: {
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          margin: '23px auto',
+        },
       }}
     >
-      <Box style={{ marginRight: '40px' }}>
+      <Box
+        sx={{
+          marginRight: '40px',
+        }}
+      >
         <Typography
           variant="h3"
           component="h3"
@@ -43,7 +54,15 @@ export const PortFolioStats = ({ portfolio }: { portfolio: IPortfolioData }) => 
           )}
         </Typography>
       </Box>
-      <Box style={{ marginRight: '40px', marginLeft: '40px' }}>
+      <Box
+        sx={{
+          marginRight: '40px',
+          marginLeft: '40px',
+          [theme.breakpoints.down('md')]: {
+            margin: '0 ',
+          },
+        }}
+      >
         <Typography
           variant="h3"
           component="h3"
@@ -66,11 +85,19 @@ export const PortFolioStats = ({ portfolio }: { portfolio: IPortfolioData }) => 
             fontStyle: 'normal',
           }}
         >
-          $1200
+          $XXXX
         </Typography>
       </Box>
       {portfolio && Object.keys(portfolio).includes('totalUnits') && (
-        <Box style={{ marginRight: '40px', marginLeft: '40px' }}>
+        <Box
+          sx={{
+            marginRight: '40px',
+            marginLeft: '40px',
+            [theme.breakpoints.down('md')]: {
+              margin: '0 ',
+            },
+          }}
+        >
           <Typography
             variant="h3"
             component="h3"

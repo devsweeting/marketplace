@@ -12,14 +12,15 @@ export const PortfolioAssetList = ({
   return (
     <Grid container direction="row" justifyContent="center" alignItems="stretch">
       <Box
-        style={{
+        sx={{
           display: 'block',
           width: '100%',
           [theme.breakpoints.down('md')]: {
             display: 'flex',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            width: 'auto',
+            width: '100%',
+            margin: '0 auto',
           },
           [theme.breakpoints.down('sm')]: {
             display: 'flex',
