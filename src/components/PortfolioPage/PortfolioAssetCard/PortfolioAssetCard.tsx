@@ -13,6 +13,7 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
 
   const theme = useTheme();
   const details = parseAssetAttributes(assetData.attributes);
+  console.log(assetData.attributes);
 
   return (
     <Card
@@ -38,6 +39,7 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
             style={{
               display: 'flex',
               width: '100%',
+              alignItems: 'center',
 
               [theme.breakpoints.down('md')]: {
                 flexWrap: 'wrap',
@@ -67,7 +69,27 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                 ></Image>
               )}
             </Box>
-            <Box sx={{ width: '100%' }}>
+            <Box>
+              <Typography
+                style={{
+                  fontFamily: 'Montserrat',
+                  fontWeight: 700,
+                  fontSize: '18px',
+                  overflowWrap: 'break-word',
+                }}
+              >
+                {assetData.name}
+              </Typography>
+              <Box style={{ display: 'flex' }}>
+                <Typography>{details.year}</Typography>
+                <Typography>#xxx</Typography>
+                <Typography>Set Topps</Typography>
+                <Typography>
+                  {details.grading} {details.grading_service}
+                </Typography>
+              </Box>
+            </Box>
+            {/* <Box sx={{ width: '100%' }}>
               <Box style={{ display: 'flex', width: '100%' }}>
                 <Box style={{ padding: `${theme.spacing(3)} ${theme.spacing(2)}`, width: '100%' }}>
                   <Typography
@@ -161,7 +183,7 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                   </Box>
                 </Box>
               </Box>
-            </Box>
+            </Box> */}
           </Box>
         </CardActionArea>
       </Box>
