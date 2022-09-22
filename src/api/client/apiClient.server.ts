@@ -37,7 +37,7 @@ export class ServerApiClient extends BaseApiClient {
       }
     }
 
-    console.log(new Date().getTime(), 'Server API call');
+    // console.log(new Date().getTime(), 'Server API call');
 
     const onSuccess = (response: Response) => {
       logger.info(

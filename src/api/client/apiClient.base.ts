@@ -64,7 +64,7 @@ export abstract class BaseApiClient {
       onCatch?: () => void;
     },
   ): Promise<IApiResponse> {
-    console.log('base send function');
+    // console.log('base send function');
     if (!request.headers) {
       request.headers = {};
     }
