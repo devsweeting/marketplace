@@ -1,6 +1,6 @@
 import Grid from '@mui/material/Grid';
 import { useFooterStyles } from './Footer.styles';
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Divider, List, ListItem, Typography } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -29,7 +29,7 @@ export const Footer = () => {
             >
               {'NFT sport cards'}
             </Typography>
-            <ul
+            <List
               style={{
                 display: 'flex',
                 listStyle: 'none',
@@ -40,19 +40,19 @@ export const Footer = () => {
                 width: '100%',
               }}
             >
-              <li>
+              <ListItem>
                 <FacebookIcon style={{ color: 'white', fontSize: 24 }} />
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <InstagramIcon style={{ color: 'white', fontSize: 24 }} />
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <TwitterIcon style={{ color: 'white', fontSize: 24 }} />
-              </li>
-              <li>
+              </ListItem>
+              <ListItem>
                 <GitHubIcon style={{ color: 'white', fontSize: 24 }} />
-              </li>
-            </ul>
+              </ListItem>
+            </List>
           </Box>
           <div className={classes.resources}>
             <Box
@@ -72,7 +72,7 @@ export const Footer = () => {
               >
                 {'Jump'}
               </Typography>
-              <ul
+              <List
                 style={{
                   display: 'flex',
                   listStyle: 'none',
@@ -84,9 +84,9 @@ export const Footer = () => {
                   width: '100%',
                 }}
               >
-                <li className={classes.resourceText}>About us</li>
-                <li className={classes.resourceText}>Careers</li>
-              </ul>
+                <ListItem className={classes.resourceText}>About us</ListItem>
+                <ListItem className={classes.resourceText}>Careers</ListItem>
+              </List>
             </Box>
             <Box
               style={{
@@ -105,7 +105,7 @@ export const Footer = () => {
               >
                 {'Product'}
               </Typography>
-              <ul
+              <List
                 style={{
                   display: 'flex',
                   listStyle: 'none',
@@ -117,11 +117,11 @@ export const Footer = () => {
                   width: '100%',
                 }}
               >
-                <li className={classes.resourceText}>Marketplace</li>
-                <li className={classes.resourceText}>Search</li>
-                <li className={classes.resourceText}>PWCC</li>
-                <li className={classes.resourceText}>Fractions</li>
-              </ul>
+                <ListItem className={classes.resourceText}>Marketplace</ListItem>
+                <ListItem className={classes.resourceText}>Search</ListItem>
+                <ListItem className={classes.resourceText}>PWCC</ListItem>
+                <ListItem className={classes.resourceText}>Fractions</ListItem>
+              </List>
             </Box>
             <Box
               style={{
@@ -139,7 +139,7 @@ export const Footer = () => {
               >
                 {'Resources'}
               </Typography>
-              <ul
+              <List
                 style={{
                   display: 'flex',
                   listStyle: 'none',
@@ -151,12 +151,12 @@ export const Footer = () => {
                   width: '100%',
                 }}
               >
-                <li className={classes.resourceText}>FAQ</li>
-                <li className={classes.resourceText}>Help</li>
-                <li className={classes.resourceText}>Blog</li>
-                <li className={classes.resourceText}>Join our community</li>
-                <li className={classes.resourceText}>Newsletter</li>
-              </ul>
+                <ListItem className={classes.resourceText}>FAQ</ListItem>
+                <ListItem className={classes.resourceText}>Help</ListItem>
+                <ListItem className={classes.resourceText}>Blog</ListItem>
+                <ListItem className={classes.resourceText}>Join our community</ListItem>
+                <ListItem className={classes.resourceText}>Newsletter</ListItem>
+              </List>
             </Box>
           </div>
         </div>

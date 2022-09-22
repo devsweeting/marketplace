@@ -56,6 +56,7 @@ export const useFooterStyles = makeStyles(
       color: 'white',
       fontSize: 16,
       margin: '10px 0',
+      padding: 0,
       [theme.breakpoints.down('sm')]: {
         fontSize: 14,
         margin: '15px 0',
