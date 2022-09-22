@@ -1,7 +1,6 @@
-import type { IApiRequest, IApiRequestWithBody, IApiResponse } from '@/api/client/apiClient.base';
 import { ServerApiClient } from '@/api/client/apiClient.server';
-import { getAccessExpFromJwtAsDate, getExpFromRefreshToken } from '@/helpers/auth/getExpFrom';
-import { getUserCookie, setUserCookie } from '@/helpers/auth/userCookie';
+import { getAccessExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
+import { getUserCookie, removeUserCookie, updateUserCookie } from '@/helpers/auth/userCookie';
 import type { IJwt } from '@/types/jwt';
 import type { NextServerResponse } from '@/types/next';
 import { withSentry } from '@sentry/nextjs';
@@ -31,12 +30,18 @@ const refreshToken = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (expireDate && expireDate <= new Date()) {
     const response = await refreshJwt(token, req, res);
+    if (response.status === StatusCodes.UNAUTHORIZED) {
+      // Log out user
+      removeUserCookie(req, res);
+      res.status(response.status).json({ data: { message: 'Invalid token' } });
+      return;
+    }
 
     res.status(response?.status ?? StatusCodes.INTERNAL_SERVER_ERROR);
     res.send(undefined);
     return;
   }
-  res.send(undefined);
+  res.status(500).send({ error: 'Internal error, Refresh failed' });
   return;
 };
 export const config = {
@@ -61,7 +66,7 @@ async function refreshJwt(token: IJwt, req: NextApiRequest, res: NextServerRespo
     }
 
     const data = (await response.data) as unknown as any;
-    await updateCookie(data, request, res);
+    await updateUserCookie(data, request, res);
     return response;
   } catch (error) {
     return {
@@ -71,23 +76,4 @@ async function refreshJwt(token: IJwt, req: NextApiRequest, res: NextServerRespo
       isJson: false,
     };
   }
-}
-
-async function updateCookie(
-  data: { accessToken: string; refreshToken: string } | undefined,
-  req: NextApiRequest,
-  res: NextServerResponse,
-) {
-  if (!data || !data.accessToken || !data.refreshToken || !req || !res) {
-    return;
-  }
-  const expireTime: number = getExpFromRefreshToken(data.refreshToken) ?? 0;
-  const now = new Date().getTime() / 1000;
-  const cookieExp = expireTime - now - 5;
-  const newJWt: IJwt = {
-    accessToken: data.accessToken,
-    refreshToken: data.refreshToken,
-  };
-  await setUserCookie(newJWt, req, res, cookieExp);
-  return;
 }

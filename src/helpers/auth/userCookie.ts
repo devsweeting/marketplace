@@ -3,6 +3,8 @@ import { USER_TOKEN_COOKIE } from '@/helpers/constants';
 import { decrypt, encrypt } from '@/helpers/crypto';
 import type { NextServerRequest, NextServerResponse } from '@/types/next';
 import type { IJwt } from '@/types/jwt';
+import type { NextApiRequest } from 'next';
+import { getExpFromRefreshToken } from './getExpFrom';
 
 export const setUserCookie = (
   token: IJwt,
@@ -49,3 +51,22 @@ export const getUserCookie = (req: NextServerRequest): IJwt | undefined => {
 export const removeUserCookie = (req: NextServerRequest, res: NextServerResponse) => {
   deleteCookie(USER_TOKEN_COOKIE, { req, res });
 };
+
+export async function updateUserCookie(
+  data: { accessToken: string; refreshToken: string } | undefined,
+  req: NextApiRequest,
+  res: NextServerResponse,
+) {
+  if (!data || !data.accessToken || !data.refreshToken || !req || !res) {
+    return;
+  }
+  const expireTime: number = getExpFromRefreshToken(data.refreshToken) ?? 0;
+  const now = new Date().getTime() / 1000;
+  const cookieExp = expireTime - now - 5;
+  const newJWt: IJwt = {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  };
+  await setUserCookie(newJWt, req, res, cookieExp);
+  return;
+}
