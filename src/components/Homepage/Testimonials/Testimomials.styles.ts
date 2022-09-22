@@ -36,7 +36,6 @@ export const useTestimonialStyles = makeStyles((theme) => ({
   },
   slider: {
     display: 'flex',
-
     overflowX: 'hidden',
     [theme.breakpoints.down('sm')]: {
       padding: `${theme.spacing(0)}`,
