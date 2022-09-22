@@ -7,6 +7,7 @@ import type { IAsset } from '@/types/assetTypes';
 import { PortfolioHeader } from '@/components/PortfolioPage/PortfolioHeader';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
+import { Box, Button, Card, Grid, TextField, Typography, useTheme } from '@mui/material';
 
 export type IPorfolioAsset = IAsset & {
   fractionPriceCents: number | undefined;
@@ -72,7 +73,7 @@ const PortfolioPage: NextPage = () => {
     portfolioReducer,
     initialPortfolioListState,
   );
-
+  const theme = useTheme();
   const handlePortfolioDataFetch = () => {
     dispatch({ type: 'fetching' });
     return getPortfolioAssetsByUserId()
@@ -122,12 +123,14 @@ const PortfolioPage: NextPage = () => {
     );
   }
   return (
-    <>
+    <Grid>
       <OpenGraph title={'List view'} description={'List view page description'} />
       <PortfolioHeader />
-      <PortFolioStats portfolio={portfolio} />
-      <PortfolioAssetList portfolioAssetsList={portfolioAssetsList} />
-    </>
+      <Box>
+        <PortFolioStats portfolio={portfolio} />
+        <PortfolioAssetList portfolioAssetsList={portfolioAssetsList} />
+      </Box>
+    </Grid>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Box, Grid, useTheme } from '@mui/material';
+import { Box, Grid, Skeleton, useTheme } from '@mui/material';
 import type { IPorfolioAsset } from '@/pages/account';
 import React from 'react';
 import { PortfolioAssetCard } from '../PortfolioAssetCard';
@@ -30,10 +30,32 @@ export const PortfolioAssetList = ({
           },
         }}
       >
-        {portfolioAssetsList.length > 0 &&
+        {portfolioAssetsList.length > 0 ? (
           portfolioAssetsList.map((asset) => (
             <PortfolioAssetCard key={asset?.id} assetData={asset} onClick={undefined} />
-          ))}
+          ))
+        ) : (
+          <>
+            <Skeleton
+              variant="rectangular"
+              animation="wave"
+              sx={{ marginBottom: '10px', width: '100%' }}
+              height={110}
+            />
+            <Skeleton
+              variant="rectangular"
+              animation="wave"
+              sx={{ marginBottom: '10px', width: '100%' }}
+              height={110}
+            />
+            <Skeleton
+              variant="rectangular"
+              animation="wave"
+              sx={{ marginBottom: '10px', width: '100%' }}
+              height={110}
+            />
+          </>
+        )}
       </Box>
     </Grid>
   );
