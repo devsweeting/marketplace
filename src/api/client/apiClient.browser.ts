@@ -17,7 +17,7 @@ export class BrowserApiClient extends BaseApiClient {
     let response;
     await this._lock.acquireAsync();
     try {
-      const refreshResponse = await fetch('/api/refreshToken', {});
+      response = await super.send('/refreshToken', 'GET', {});
 
       if (response.status !== StatusCodes.UNAUTHORIZED) {
         response = await super.send(path, method, request);
