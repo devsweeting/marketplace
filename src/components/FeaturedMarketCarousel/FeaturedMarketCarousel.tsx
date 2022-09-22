@@ -147,7 +147,7 @@ export const FeaturedMarketCarousel = ({
                   }}
                   activeCard={activeBrandCard ? clickedCard : ''}
                   brand={card}
-                  key={card.brand}
+                  key={index}
                   tabIndex={index}
                 />
               ))}

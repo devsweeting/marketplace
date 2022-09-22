@@ -70,7 +70,7 @@ export type DisabledRanges = {
 
 export type DisabledRangesKey = keyof DisabledRanges;
 
-export type RangeFilters = Record<string, IRange> | null;
+export type RangeFilters = Record<string, IRange> | null | undefined;
 
 export interface IUserBuyLimit {
   fractionsAvailableToPurchase: number;

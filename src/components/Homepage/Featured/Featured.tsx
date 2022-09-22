@@ -6,9 +6,14 @@ export const Featured = () => {
   const classes = useFeaturedStyles();
   return (
     <Box className={classes.wrapper}>
-      <Typography variant="body1" component="p">
-        FEATURED SECTION
+      <Typography variant="h2" component="h2">
+        Featured in
       </Typography>
+      <Box>
+        <Typography variant="h2" component="h2" style={{ display: 'flex' }}>
+          {/* Companies */}
+        </Typography>
+      </Box>
     </Box>
   );
 };
