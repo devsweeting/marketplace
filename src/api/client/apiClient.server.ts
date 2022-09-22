@@ -3,8 +3,8 @@ import { getUserCookie } from '@/helpers/auth/userCookie';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { logger } from '@/helpers/logger';
 import { formatDate, getTimezoneOffset } from '@/helpers/time';
-import type { IApiRequest, IApiRequestWithBody, IApiResponse, IApiUrl } from './baseApiClient';
-import { BaseApiClient } from './baseApiClient';
+import type { IApiRequest, IApiRequestWithBody, IApiResponse, IApiUrl } from './apiClient.base';
+import { BaseApiClient } from './apiClient.base';
 
 export class ServerApiClient extends BaseApiClient {
   getBaseUrl() {
@@ -38,14 +38,6 @@ export class ServerApiClient extends BaseApiClient {
     }
 
     console.log(new Date().getTime(), 'Server API call');
-    console.log(
-      '\npath:',
-      path,
-      '\nmethod: ',
-      method,
-      '\nrequest: ',
-      request.body ? 'defined' : 'undefined',
-    );
 
     const onSuccess = (response: Response) => {
       logger.info(
