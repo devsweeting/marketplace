@@ -20,7 +20,7 @@ const refreshToken = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = getUserCookie(req);
 
   if (!token || !token.accessToken) {
-    res.status(StatusCodes.UNAUTHORIZED);
+    res.status(StatusCodes.OK);
     res.send(undefined);
     return;
   }
