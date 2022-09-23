@@ -80,6 +80,9 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                   width: '40%',
                   [theme.breakpoints.down('md')]: {
                     width: '100%',
+                    marginBottom: '20px',
+                    paddingBottom: '10px',
+                    borderBottom: '1px solid black',
                   },
                 }}
               >
@@ -94,7 +97,17 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                 >
                   {assetData.name}
                 </Typography>
-                <Box style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '80%',
+                    [theme.breakpoints.down('md')]: {
+                      margin: '10px 0',
+                      padding: '10px',
+                    },
+                  }}
+                >
                   <Typography>{assetData.attributes.year[0]}</Typography>
                   <Typography>#xxx</Typography>
                   <Typography>Set Topps</Typography>
@@ -106,9 +119,14 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
               <Box
                 style={{
                   display: 'flex',
-                  width: '100%',
+                  minWidth: '40%',
                   justifyContent: 'space-between',
                   flexWrap: 'wrap',
+
+                  [theme.breakpoints.down('md')]: {
+                    flexDirection: '100%',
+                    flexWrap: 'wrap',
+                  },
                 }}
               >
                 <Box
@@ -118,8 +136,9 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                     display: 'flex',
                     flexDirection: 'column',
                     [theme.breakpoints.down('md')]: {
-                      minWidth: '33%',
+                      minWidth: 'auto',
                       margin: '5px',
+                      flexWrap: 'wrap',
                     },
                   }}
                 >
@@ -173,6 +192,7 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                 <Box
                   sx={{
                     minWidth: '100px',
+                    margin: '0 25px',
                     [theme.breakpoints.down('md')]: {
                       margin: '5px',
                       minWidth: '33%',
@@ -195,107 +215,6 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                 </Box>
               </Box>
             </Box>
-            {/* <Box sx={{ width: '100%' }}>
-              <Box style={{ display: 'flex', width: '100%' }}>
-                <Box style={{ padding: `${theme.spacing(3)} ${theme.spacing(2)}`, width: '100%' }}>
-                  <Typography
-                    style={{
-                      fontFamily: 'Montserrat',
-                      fontWeight: 700,
-                      fontSize: '18px',
-                      overflowWrap: 'break-word',
-                    }}
-                  >
-                    {assetData.name}
-                  </Typography>
-                  <Box sx={{ display: 'flex', width: '100%' }}>
-                    <Box>
-                      <Typography>{details.year}</Typography>
-                      <Typography>#xxx</Typography>
-                      <Typography>Set Topps</Typography>
-                      <Typography>
-                        {details.grading} {details.grading_service}
-                      </Typography>
-                    </Box>
-                    <Box
-                      style={{
-                        display: 'flex',
-                        alignSelf: 'end',
-                        marginLeft: 'auto',
-                        [theme.breakpoints.down('md')]: {
-                          flexDirection: 'column-reverse',
-                        },
-                      }}
-                    >
-                      <Box
-                        style={{
-                          minWidth: '100px',
-                          margin: '0 25px',
-                          [theme.breakpoints.down('md')]: {
-                            minWidth: '0px',
-                          },
-                        }}
-                      >
-                        <Typography
-                          style={{
-                            fontFamily: 'Montserrat',
-                            fontWeight: 400,
-                            fontSize: '16px',
-                            lineHeight: '24px',
-                          }}
-                        >
-                          Valuation
-                        </Typography>
-                        <Typography
-                  x style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px', [theme.breakpoints.down('md')]: {
-                      fontSize: '24px',
-                    }, }}
-                        >
-                          {'$' +
-                            formatNumber(
-                              (assetData.fractionPriceCents * assetData.fractionQty) / 100,
-                            )}
-                        </Typography>
-                      </Box>
-                      <Box
-                        style={{
-                          minWidth: '100px',
-                          [theme.breakpoints.down('md')]: {
-                            minWidth: '0px',
-                          },
-                        }}
-                      >
-                        <Typography>Unit Price</Typography>
-                        <Typography
-                  x style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px', [theme.breakpoints.down('md')]: {
-                      fontSize: '24px',
-                    }, }}
-                        >
-                          {'$' + assetData.fractionPriceCents / 100}
-                        </Typography>
-                      </Box>
-                      <Box
-                        style={{
-                          minWidth: '100px',
-                          [theme.breakpoints.down('md')]: {
-                            minWidth: '0px',
-                          },
-                        }}
-                      >
-                        <Typography>Total Units</Typography>
-                        <Typography
-                  x style={{ fontFamily: 'Montserrat', fontWeight: 700, fontSize: '36px', [theme.breakpoints.down('md')]: {
-                      fontSize: '24px',
-                    }, }}
-                        >
-                          {assetData.fractionQty}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </Box> */}
           </Box>
         </CardActionArea>
       </Box>

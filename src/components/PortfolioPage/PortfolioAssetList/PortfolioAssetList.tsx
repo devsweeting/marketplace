@@ -39,19 +39,19 @@ export const PortfolioAssetList = ({
             <Skeleton
               variant="rectangular"
               animation="wave"
-              sx={{ marginBottom: '10px', width: '100%' }}
+              sx={{ marginBottom: '10px', width: '100%', zIndex: '1' }}
               height={110}
             />
             <Skeleton
               variant="rectangular"
               animation="wave"
-              sx={{ marginBottom: '10px', width: '100%' }}
+              sx={{ marginBottom: '10px', width: '100%', zIndex: '1' }}
               height={110}
             />
             <Skeleton
               variant="rectangular"
               animation="wave"
-              sx={{ marginBottom: '10px', width: '100%' }}
+              sx={{ marginBottom: '10px', width: '100%', zIndex: '1' }}
               height={110}
             />
           </>

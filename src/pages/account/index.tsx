@@ -2,7 +2,7 @@ import { OpenGraph } from '@/components/OpenGraph';
 import { Loader } from '@/components/Loader';
 import type { NextPage } from 'next/types';
 import { getPortfolioAssetsByUserId } from '@/api/endpoints/portfolio';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { PortfolioHeader } from '@/components/PortfolioPage/PortfolioHeader';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
@@ -73,7 +73,42 @@ const PortfolioPage: NextPage = () => {
     portfolioReducer,
     initialPortfolioListState,
   );
+  const [loginInputValue, setLoginInputValue] = useState('');
   const theme = useTheme();
+
+  const inputProps = {
+    root: {
+      '& .MuiFormLabel-root.Mui-error': {
+        color: '#b04995',
+      },
+      '& input': {
+        color: 'black',
+        fontSize: 20,
+        fontWeight: 600,
+        marginLeft: 20,
+        [theme.breakpoints.down('sm')]: {
+          fontSize: 18,
+        },
+      },
+      '& .MuiFormLabel-filled + .MuiInputBase-root input': {
+        padding: '35px 12px 14px',
+        [theme.breakpoints.down('sm')]: {
+          padding: '15px 6px 7px',
+        },
+      },
+      '& .Mui-focused input': {
+        padding: '35px 12px 14px',
+        [theme.breakpoints.down('sm')]: {
+          padding: '15px 6px 7px',
+        },
+      },
+      '& .MuiFormHelperText-root.Mui-error': {
+        color: '#b04995',
+        fontFamily: 'Muli',
+        fontSize: 12,
+      },
+    },
+  };
   const handlePortfolioDataFetch = () => {
     dispatch({ type: 'fetching' });
     return getPortfolioAssetsByUserId()
@@ -123,14 +158,115 @@ const PortfolioPage: NextPage = () => {
     );
   }
   return (
-    <Grid>
-      <OpenGraph title={'List view'} description={'List view page description'} />
-      <PortfolioHeader />
-      <Box>
-        <PortFolioStats portfolio={portfolio} />
-        <PortfolioAssetList portfolioAssetsList={portfolioAssetsList} />
-      </Box>
-    </Grid>
+    <>
+      <Grid>
+        <OpenGraph title={'List view'} description={'List view page description'} />
+        <PortfolioHeader />
+        <Box>
+          <PortFolioStats portfolio={portfolio} />
+          <PortfolioAssetList portfolioAssetsList={portfolioAssetsList} />
+        </Box>
+      </Grid>
+      {Object.keys(portfolio).includes('statusCode') && (
+        <Box
+          sx={{
+            position: 'fixed',
+            zIndex: 1,
+            top: '0',
+            bottom: '0',
+            right: '0',
+            left: '0',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Card sx={{ padding: '30px' }}>
+            <Box sx={{ margin: '20px', width: '100%' }}>
+              <Typography variant="h2" component="h2">
+                Login To Continue
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                margin: '40px 20px',
+                display: 'flex',
+              }}
+            >
+              <TextField
+                InputProps={{ inputProps, disableUnderline: true }}
+                id="outlined-basic"
+                variant="standard"
+                placeholder="Email"
+                value={loginInputValue}
+                onChange={(newValue) => setLoginInputValue(newValue.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    console.log((e.target as unknown as HTMLTextAreaElement).value);
+                  }
+                }}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  borderRadius: '50px',
+                  width: '100%',
+                  height: '75px',
+                  fontSize: '1.5rem',
+                  border: '2px solid grey',
+                  backgroundColor: 'white',
+                  '& input': {
+                    color: 'black',
+                    fontSize: 20,
+                    fontWeight: 600,
+                    marginLeft: '20px',
+                    [theme.breakpoints.down('sm')]: {
+                      fontSize: 18,
+                    },
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    margin: '10px 0px',
+                    width: '95%',
+                  },
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                marginRight: '40px',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                sx={{
+                  color: 'white',
+                  backgroundColor: 'black',
+                  borderRadius: '50px',
+                  width: '175px',
+                  height: '75px',
+                  margin: '0 20px',
+                  fontSize: '1.3rem',
+                  border: '3px solid black',
+                  '&:hover': {
+                    color: 'black',
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    margin: '10px auto',
+                  },
+                }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Card>
+        </Box>
+      )}
+    </>
   );
 };
 
