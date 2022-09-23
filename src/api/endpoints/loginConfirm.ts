@@ -9,7 +9,6 @@ import type { NextServerResponse } from '@/types/next';
 export const loginConfirm = async ({
   req,
   token,
-  res,
 }: {
   req: IncomingMessage;
   token?: string | string[];
@@ -20,20 +19,16 @@ export const loginConfirm = async ({
     return;
   }
 
-  const response = await apiClient.post(
-    '/users/login/confirm',
-    {
-      body: {
-        token: parsedToken,
-        metadata: {
-          ipAddress: getIpAddress(req),
-          browserUserAgent: req.headers['user-agent'],
-          localeInformation: parseLocale(req),
-        },
+  const response = await apiClient.post('/users/login/confirm', {
+    body: {
+      token: parsedToken,
+      metadata: {
+        ipAddress: getIpAddress(req),
+        browserUserAgent: req.headers['user-agent'],
+        localeInformation: parseLocale(req),
       },
     },
-    res,
-  );
+  });
 
   if (!response.ok) {
     return;

@@ -1,10 +1,10 @@
 import type { NextApiHandler } from 'next';
 import { StatusCodes } from 'http-status-codes';
-import type { IApiRequest, IApiRequestWithBody } from '@/api/client';
 import type { IncomingHttpHeaders } from 'http';
 import { unwrapString } from '@/helpers/unwrapString';
 import { apiClient } from '@/api/client';
 import { withSentry } from '@sentry/nextjs';
+import type { IApiRequest, IApiRequestWithBody } from '@/api/client/apiClient.base';
 
 const methods = {
   GET: 'get',
