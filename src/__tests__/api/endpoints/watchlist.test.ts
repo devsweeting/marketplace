@@ -45,7 +45,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
     const res = await checkForAssetOnWatchlist(mockData.id);
 
     expect(res).toBeTruthy();
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockFetch).toBeCalledTimes(2);
   });
 
   test('should return false if not on watchlist', async () => {
@@ -63,7 +63,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
     const res = await checkForAssetOnWatchlist(mockData.id);
 
     expect(res).toBeFalsy();
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockFetch).toBeCalledTimes(2);
   });
 });
 
@@ -82,7 +82,7 @@ describe('watchlist addToWatchlist', () => {
 
     const res = await addToWatchlist(mockPoductData);
     expect(res).toBe(StatusCodes.CREATED);
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockFetch).toBeCalledTimes(2);
   });
 });
 
@@ -101,7 +101,7 @@ describe('watchlist removeFromWatchList', () => {
 
     const res = await addToWatchlist(mockPoductData);
     expect(res).toBe(StatusCodes.NO_CONTENT);
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockFetch).toBeCalledTimes(2);
   });
 
   test('should return 404 if watchlist item is not found', async () => {
@@ -118,7 +118,7 @@ describe('watchlist removeFromWatchList', () => {
 
     const res = await addToWatchlist(mockPoductData);
     expect(res).toBe(StatusCodes.NOT_FOUND);
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockFetch).toBeCalledTimes(2);
   });
 });
 

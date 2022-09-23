@@ -21,19 +21,20 @@ export class ServerApiClient extends BaseApiClient {
     let returnedByteSize: string;
     const time = formatDate(new Date());
     const timeZone = getTimezoneOffset();
+    if (!request.headers) {
+      request.headers = {};
+    }
 
     if ('req' in request && request.req) {
       token = getUserCookie(request.req);
       host = getIpAddress(request.req);
 
-      if (request.headers) {
-        if (request.headers['content-length']) {
-          returnedByteSize = request.headers['content-length'];
-        }
-        if (token && token.accessToken) {
-          request.headers['Authorization'] = `Bearer ${token.accessToken}`;
-          authUser = getUserFromJwt(token)?.email ?? '-';
-        }
+      if (request.headers['content-length']) {
+        returnedByteSize = request.headers['content-length'];
+      }
+      if (token && token.accessToken) {
+        request.headers['Authorization'] = `Bearer ${token.accessToken}`;
+        authUser = getUserFromJwt(token)?.email ?? '-';
       }
     }
 

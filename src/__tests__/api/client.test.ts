@@ -1,11 +1,11 @@
 /**
  * @jest-environment node
  */
-import { ApiClient } from '@/api/client';
 import { StatusCodes } from 'http-status-codes';
 import { getUserCookie } from '@/helpers/auth/userCookie';
 import type { NextServerRequest } from '@/types/next';
 import { logger } from '@/helpers/logger';
+import { ServerApiClient } from '@/api/client/apiClient.server';
 
 jest.mock('@/helpers/auth/userCookie');
 jest.mock('@/helpers/logger');
@@ -14,7 +14,7 @@ const mockGetUserCookie = getUserCookie as unknown as jest.MockedFn<typeof getUs
 const mockLogger = logger as unknown as jest.Mocked<typeof logger>;
 
 describe('ApiClient', () => {
-  const client = new ApiClient();
+  const client = new ServerApiClient();
   const globalFetch = global.fetch;
 
   beforeEach(() => {

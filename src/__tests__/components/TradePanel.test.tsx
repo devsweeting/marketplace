@@ -232,6 +232,6 @@ describe('TradePanel asset:Drop', () => {
     const maxSliderValue = await screen.findByText('10');
     expect(maxSliderValue).toBeInTheDocument();
     expect(buyBtn).toBeDisabled;
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockFetch).toBeCalledTimes(2); //once to check refresh, then again to complete transaction
   });
 });

@@ -1,8 +1,8 @@
-import { ApiClient } from '@/api/client';
+import { BrowserApiClient } from '@/api/client/apiClient.browser';
 import { StatusCodes } from 'http-status-codes';
 
 describe('ApiClient browser', () => {
-  const client = new ApiClient();
+  const client = new BrowserApiClient();
   const globalFetch = global.fetch;
 
   beforeEach(() => {
