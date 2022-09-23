@@ -37,8 +37,6 @@ export class ServerApiClient extends BaseApiClient {
       }
     }
 
-    // console.log(new Date().getTime(), 'Server API call');
-
     const onSuccess = (response: Response) => {
       logger.info(
         `${host ?? '-'} ${authUser ?? '-'} [${time} ${timeZone}] ${method} ${response.url} ${
@@ -55,7 +53,11 @@ export class ServerApiClient extends BaseApiClient {
       );
     };
 
-    const response = await super.send(path, method, request, { onError, onSuccess });
+    const onCatch = (url: string, error: unknown) => {
+      logger.error(`${method} ${url} ${error}`);
+    };
+
+    const response = await super.send(path, method, request, { onError, onSuccess, onCatch });
     return response;
   }
 }

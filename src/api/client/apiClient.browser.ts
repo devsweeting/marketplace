@@ -26,6 +26,8 @@ export class BrowserApiClient extends BaseApiClient {
       this._lock.release();
     }
     if (!response) {
+      console.log('no response');
+
       return {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
         ok: false,

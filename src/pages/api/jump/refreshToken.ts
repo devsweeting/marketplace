@@ -10,7 +10,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 /**
  * Check if refresh token has expired.
  * This should NEVER be called outside of BrowserApiClient
- * @returns
  */
 const refreshToken = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req || !res) {
@@ -28,20 +27,21 @@ const refreshToken = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const expireDate = getAccessExpFromJwtAsDate(token);
 
-  if (expireDate && expireDate <= new Date()) {
-    const response = await refreshJwt(token, req, res);
-    if (response.status === StatusCodes.UNAUTHORIZED) {
-      // Log out user
-      removeUserCookie(req, res);
-      res.status(response.status).json({ data: { message: 'Invalid token' } });
-      return;
-    }
-
-    res.status(response?.status ?? StatusCodes.INTERNAL_SERVER_ERROR);
-    res.send(undefined);
+  if (!expireDate || expireDate > new Date()) {
+    res.status(StatusCodes.OK);
     return;
   }
-  res.status(500).send({ error: 'Internal error, Refresh failed' });
+
+  const response = await refreshJwt(token, req, res);
+  if (response.status === StatusCodes.UNAUTHORIZED) {
+    // Log out user
+    removeUserCookie(req, res);
+    res.status(response.status).json({ data: { message: 'Invalid token' } });
+    return;
+  }
+
+  res.status(response?.status ?? StatusCodes.INTERNAL_SERVER_ERROR);
+  res.send(undefined);
   return;
 };
 export const config = {
@@ -60,7 +60,7 @@ async function refreshJwt(token: IJwt, req: NextApiRequest, res: NextServerRespo
     };
 
     const response = await client.send('/users/login/refresh', 'POST', request);
-    console.log('Refresh called', response.status, ' ---- ', new Date().getTime());
+
     if (!response.ok) {
       return response;
     }

@@ -1,5 +1,4 @@
 import type { NextServerRequest } from '@/types/next';
-import { logger } from '@/helpers/logger';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
 export interface IApiRequest {
@@ -61,10 +60,9 @@ export abstract class BaseApiClient {
     options?: {
       onError: (response: Response) => void;
       onSuccess: (response: Response) => void;
-      onCatch?: () => void;
+      onCatch: (url: string, error: unknown) => void;
     },
   ): Promise<IApiResponse> {
-    // console.log('base send function');
     if (!request.headers) {
       request.headers = {};
     }
@@ -110,7 +108,7 @@ export abstract class BaseApiClient {
         isJson: responseIsJson,
       };
     } catch (err) {
-      logger.error(`${method} ${url} ${err}`);
+      options?.onCatch(url, err);
       Sentry.captureException(err);
       return {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
@@ -120,84 +118,4 @@ export abstract class BaseApiClient {
       };
     }
   }
-
-  //   private async _sendWithJwtCheck(
-  //     path: IApiUrl,
-  //     method: string,
-  //     request: IApiRequest | IApiRequestWithBody,
-  //     res: NextServerResponse | undefined,
-  //   ) {
-  //     if (request.req && res) {
-  //       //DO this in the browser only
-  //       const token = getUserCookie(request.req);
-
-  //       if (token && token.accessToken) {
-  //         const expireDate = getAccessExpFromJwtAsDate(token);
-
-  //         if (expireDate && expireDate <= new Date()) {
-  //           const response = await this._refreshJwt(token, request, res);
-  //           if (
-  //             response.status === StatusCodes.UNAUTHORIZED ||
-  //             response.status === StatusCodes.UNPROCESSABLE_ENTITY
-  //           ) {
-  //             response.status = StatusCodes.UNAUTHORIZED;
-  //             response.data = { message: 'Invalid tokens' };
-  //             removeUserCookie(request.req, res);
-  //             return response;
-  //           }
-  //         }
-  //       }
-  //     }
-  //     return await this.send(path, method, request);
-  //   }
-
-  //   private async _refreshJwt(
-  //     token: IJwt,
-  //     request: IApiRequest | IApiRequestWithBody,
-  //     res: NextServerResponse,
-  //   ): Promise<IApiResponse> {
-  //     try {
-  //       const jwtRefreshRequest = {
-  //         headers: request.headers,
-  //         body: { refreshToken: token.refreshToken },
-  //       };
-  //       const response = await this.send('/users/login/refresh', 'POST', jwtRefreshRequest);
-  //       if (!response.ok) {
-  //         return response;
-  //       }
-
-  //       const data = (await response.data) as unknown as any;
-  //       await updateCookie(data, request, res);
-  //       return response;
-  //     } catch (error) {
-  //       if (request.req) {
-  //         removeUserCookie(request.req, res);
-  //       }
-  //       logger.error(error);
-  //       return {
-  //         status: StatusCodes.INTERNAL_SERVER_ERROR,
-  //         ok: false,
-  //         headers: {},
-  //         isJson: false,
-  //       };
-  //     }
-  //   }
-  // }
-
-  // async function updateCookie(
-  //   data: { accessToken: string; refreshToken: string } | undefined,
-  //   request: IApiRequestWithBody | IApiRequest,
-  //   res: NextServerResponse,
-  // ) {
-  //   if (!data || !data.accessToken || !data.refreshToken || !request.req || !res) {
-  //     return;
-  //   }
-  //   const expireTime: number = getExpFromRefreshToken(data.refreshToken) ?? 0;
-  //   const now = new Date().getTime() / 1000;
-  //   const cookieExp = expireTime - now - 5;
-  //   const newJWt: IJwt = {
-  //     accessToken: data.accessToken,
-  //     refreshToken: data.refreshToken,
-  //   };
-  //   await setUserCookie(newJWt, request.req, res, cookieExp);
 }
