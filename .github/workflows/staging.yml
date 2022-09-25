@@ -1,0 +1,59 @@
+name: 'Staging'
+on:
+  workflow_run:
+    workflows: ["Test"]
+    branches: [develop]
+    types:
+      - completed
+  workflow_dispatch:
+jobs:
+  on-success:
+    name: 'Deploy'
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        id: aws-creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.STAGING_AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: ecr-login
+        if: steps.aws-creds.outcome == 'success'
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push image to Amazon ECR
+        id: ecr
+        if: steps.ecr-login.outcome == 'success'
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          ECR_REPOSITORY: web-staging
+          IMAGE_TAG: latest
+          DOCKER_FILE: Dockerfile.ecs
+        run: |
+          docker build --platform=linux/amd64 -f $DOCKER_FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Restart WEB ECS services to enfore pulling latest/newest ECR image
+        if: steps.ecr.outcome == 'success'
+        env:
+          CLUSTER_NAME: jumpco-cluster-staging
+        run: |
+          aws ecs update-service --cluster $CLUSTER_NAME --service web-staging --force-new-deployment
+      - name: Slack Notification
+        if: ${{ always() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: jump-dev
+          SLACK_COLOR: ${{ job.status }}
+          SLACK_MESSAGE: |
+            Deploy ${{ job.status }}
+
+            Details: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
+
+            Code Deployed: https://github.com/${{github.repository}}/tree/develop
+          SLACK_TITLE: "Web Deployment: Staging Environment"
+          SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOYMENTS_WEBHOOK_URL }}
+          SLACK_FOOTER: "Powered by our GitHub automated deploys"
