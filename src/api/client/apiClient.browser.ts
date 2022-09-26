@@ -1,6 +1,5 @@
 import AwaitLock from 'await-lock';
 import { StatusCodes } from 'http-status-codes';
-import Router from 'next/router';
 import type { IApiRequest, IApiRequestWithBody, IApiResponse, IApiUrl } from './apiClient.base';
 import { BaseApiClient } from './apiClient.base';
 
