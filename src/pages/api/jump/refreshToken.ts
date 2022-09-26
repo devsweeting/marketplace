@@ -13,22 +13,21 @@ import type { NextApiRequest, NextApiResponse } from 'next';
  */
 const refreshToken = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req || !res) {
-    res.send(undefined);
+    res.status(StatusCodes.BAD_REQUEST).send(undefined);
     return;
   }
 
   const token = getUserCookie(req);
 
   if (!token || !token.accessToken) {
-    res.status(StatusCodes.OK);
-    res.send(undefined);
+    res.status(StatusCodes.OK).send(undefined);
     return;
   }
 
   const expireDate = getAccessExpFromJwtAsDate(token);
 
   if (!expireDate || expireDate > new Date()) {
-    res.status(StatusCodes.OK);
+    res.status(StatusCodes.OK).send(undefined);
     return;
   }
 
@@ -40,8 +39,7 @@ const refreshToken = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  res.status(response?.status ?? StatusCodes.INTERNAL_SERVER_ERROR);
-  res.send(undefined);
+  res.status(response?.status ?? StatusCodes.INTERNAL_SERVER_ERROR).send(undefined);
   return;
 };
 export const config = {
