@@ -29,7 +29,7 @@ export class BrowserApiClient extends BaseApiClient {
 
     if (response.status >= StatusCodes.MOVED_TEMPORARILY) {
       const data = response.data as unknown as any;
-      await Router.push(response.headers.Location ?? data.location ?? '/');
+      await Router.push(response.headers.Location ?? data.destination ?? '/');
     }
     if (!response) {
       return {
