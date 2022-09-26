@@ -22,6 +22,7 @@ export const setUserCookie = (
     req,
     res,
     httpOnly: true,
+    sameSite: 'strict',
     maxAge: age ?? 60 * 60 * 24 * 365,
   });
 };
