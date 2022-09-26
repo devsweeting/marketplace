@@ -18,12 +18,11 @@ export class BrowserApiClient extends BaseApiClient {
     await this._lock.acquireAsync();
     try {
       response = await super.send('/refreshToken', 'GET', {});
-
-      if (response.status !== StatusCodes.UNAUTHORIZED) {
-        response = await super.send(path, method, request);
-      }
     } finally {
       this._lock.release();
+    }
+    if (response.status !== StatusCodes.UNAUTHORIZED) {
+      response = await super.send(path, method, request);
     }
     if (!response) {
       return {
