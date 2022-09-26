@@ -27,10 +27,6 @@ export class BrowserApiClient extends BaseApiClient {
       response = await super.send(path, method, request);
     }
 
-    if (response.status >= StatusCodes.MOVED_TEMPORARILY) {
-      const data = response.data as unknown as any;
-      await Router.push(response.headers.Location ?? data.destination ?? '/');
-    }
     if (!response) {
       return {
         status: StatusCodes.INTERNAL_SERVER_ERROR,
