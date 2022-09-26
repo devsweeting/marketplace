@@ -1,5 +1,6 @@
 import AwaitLock from 'await-lock';
 import { StatusCodes } from 'http-status-codes';
+import Router from 'next/router';
 import type { IApiRequest, IApiRequestWithBody, IApiResponse, IApiUrl } from './apiClient.base';
 import { BaseApiClient } from './apiClient.base';
 
@@ -21,8 +22,14 @@ export class BrowserApiClient extends BaseApiClient {
     } finally {
       this._lock.release();
     }
+
     if (response.status !== StatusCodes.UNAUTHORIZED) {
       response = await super.send(path, method, request);
+    }
+
+    if (response.status >= StatusCodes.MOVED_TEMPORARILY) {
+      const data = response.data as unknown as any;
+      await Router.push(response.headers.Location ?? data.location ?? '/');
     }
     if (!response) {
       return {
