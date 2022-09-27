@@ -1,42 +1,30 @@
-import type { IncomingMessage } from 'http';
 import { unwrapString } from '@/helpers/unwrapString';
-import { getIpAddress } from '@/helpers/getIpAddress';
-import { parseLocale } from '@/helpers/parseLocale';
 import { apiClient } from '@/api/client';
-import type { IJwt } from '@/types/jwt';
-import type { NextServerResponse } from '@/types/next';
+import type { StatusCodes } from 'http-status-codes';
 
-export const loginConfirm = async ({
-  req,
-  token,
-}: {
-  req: IncomingMessage;
-  token?: string | string[];
-  res: NextServerResponse;
-}): Promise<IJwt | undefined> => {
+export const loginConfirm = async (
+  token: string | string[] | undefined,
+): Promise<StatusCodes | undefined> => {
+  console.log('token', token);
+  if (!token) {
+    throw new Error('No token provided');
+  }
   const parsedToken = unwrapString(token);
+
   if (!parsedToken) {
-    return;
+    throw new Error('No token provided');
   }
 
-  const response = await apiClient.post('/users/login/confirm', {
+  const response = await apiClient.post('/login/confirm', {
     body: {
       token: parsedToken,
-      metadata: {
-        ipAddress: getIpAddress(req),
-        browserUserAgent: req.headers['user-agent'],
-        localeInformation: parseLocale(req),
-      },
     },
   });
+  console.log(response);
 
   if (!response.ok) {
-    return;
+    throw new Error('Internal error');
   }
 
-  if (!response.isJson) {
-    return;
-  }
-
-  return response.data as unknown as IJwt;
+  return response.status;
 };

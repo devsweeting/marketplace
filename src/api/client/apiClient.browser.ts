@@ -17,7 +17,7 @@ export class BrowserApiClient extends BaseApiClient {
     let response;
     await this._lock.acquireAsync();
     try {
-      response = await super.send('/refreshToken', 'GET', {});
+      response = await super.send('/token/refresh', 'GET', {});
     } finally {
       this._lock.release();
     }
