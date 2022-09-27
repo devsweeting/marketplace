@@ -227,65 +227,34 @@ export const themeJump = createTheme(theme, {
           fontFamily: 'Inter',
           fontWeight: 500,
           boxSizing: 'border-box',
-          borderRadius: '.33rem',
-          padding: '.75rem 1rem',
+          borderRadius: theme.shape.borderRadius,
+          padding: '0.75rem 1rem',
           boxShadow: 'none',
-          '&.MuiButton-disabled': {
+          '&.MuiButton-contained': {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.secondary.main,
+            '&:hover': {
+              backgroundColor: '#1F2937',
+            },
+          },
+          '&.MuiButton-outlined': {
+            border: `2px solid ${theme.palette.primary.main}`,
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
+            },
+          },
+          '&.MuiButton-text': {
+            display: 'flex',
+          },
+          '&.Mui-disabled': {
             backgroundColor: '#E5E7EB',
             color: '#4B5563',
           },
-          '&.MuiButton-contained': {
-            backgroundColor: '#111827',
-            color: 'white',
-          },
-          '&.MuiButton-outlined': {
-            border: '2px solid #111827',
-            backgroundColor: 'transparent',
-          },
-          '&.MuiButton-text:hover': {
-            // backgroundColor: 'transparent',
-            // border: '2px solid red',
-          },
           '&:hover': {
-            // backgroundColor: '#111827',
             boxShadow: 'none',
           },
-        },
-        outlined: {
-          border: '2px solid #111827',
-        },
-        outlinedSizeMedium: {
-          width: 139.5,
-          height: 41,
-          fontWeight: 400,
-          fontSize: 24,
-          lieHeight: 29,
-          justifyContent: 'space-between',
-          padding: '0 16px',
-        },
-        containedSizeLarge: {
-          width: 280,
-        },
-        containedSizeMedium: {
-          fontWeight: 400,
-          fontSize: '24px',
-          lineHeight: '29.21px',
-          width: 280,
-          height: 41,
-          padding: '6px 16px',
-          display: 'flex',
-          justifyContent: 'space-between',
-        },
-        containedSizeSmall: {
-          width: 139.5,
-          height: 41,
-          fontWeight: 400,
-          fontSize: '24px',
-          lineHeight: '29.21px',
-          letterSpacing: '0.15px',
-          padding: '0 16px',
-          display: 'flex',
-          justifyContent: 'space-between',
         },
       },
     },
