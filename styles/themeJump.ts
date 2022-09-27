@@ -1,29 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import type { CSSProperties } from 'react';
 
-declare module '@mui/material/styles/createPalette' {
-  interface Palette {
-    customGray: Palette['primary'];
-    customBlue: Palette['primary'];
-    accent: Palette['primary'];
-    custom: {
-      accent: string;
-    };
-    accentSecondary: PaletteOptions['primary'];
-    textColor: Palette['primary'];
-  }
-  interface PaletteOptions {
-    customGray: PaletteOptions['primary'];
-    customBlue: PaletteOptions['primary'];
-    accent: PaletteOptions['primary'];
-    custom: {
-      accent: string;
-    };
-    accentSecondary: PaletteOptions['primary'];
-    textColor: PaletteOptions['primary'];
-  }
-}
-
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     lg: CSSProperties;
@@ -67,7 +44,17 @@ declare module '@mui/material/Typography' {
   }
 }
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#111827',
+      light: 'rgba(0, 0, 0, 0.23)',
+    },
+    secondary: {
+      main: '#fff',
+    },
+  },
+});
 
 /* Typography Theme Styles
 typography is mapped to values in the figmas to make implementations a bit simpler and consitent
@@ -82,37 +69,6 @@ typography is mapped to values in the figmas to make implementations a bit simpl
   */
 
 export const themeJump = createTheme(theme, {
-  palette: {
-    primary: {
-      main: '#000',
-      light: 'rgba(0, 0, 0, 0.23)',
-    },
-    secondary: {
-      main: '#000',
-    },
-    customBlue: {
-      main: '#3070CE',
-    },
-    customGray: {
-      main: '#ededed',
-      light: '#e5e5e5',
-      dark: '#8f9094',
-    },
-    accent: {
-      main: '#000',
-    },
-    accentSecondary: {
-      main: '#fff',
-    },
-    custom: {
-      accent: '#fff',
-    },
-    textColor: {
-      main: '#000',
-      light: '#000',
-      dark: '#000',
-    },
-  },
   typography: {
     h2: {
       fontFamily: 'League Gothic',
