@@ -6,6 +6,15 @@ import { loginRequest } from '@/api/endpoints/loginRequest';
 import { StatusCodes } from 'http-status-codes';
 
 import { Modal, ModalCard, Form, Label } from './LoginModal.styles';
+export const validate = (email: string) => {
+  if (email.length === 0) {
+    return false;
+  }
+  if (!email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)) {
+    return false;
+  }
+  return true;
+};
 
 export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
   const [emailState, setEmailState] = useState('');
@@ -28,16 +37,6 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
   useEffect(() => {
     //
   }, [emailState, buttonState, alertMessage]);
-
-  const validate = (email: string) => {
-    if (email.length === 0) {
-      return false;
-    }
-    if (!email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)) {
-      return false;
-    }
-    return true;
-  };
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
