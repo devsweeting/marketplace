@@ -1,5 +1,3 @@
-import { apiWithUser } from '@/helpers/auth/withUser';
-import type { IUser } from '../../types/user';
 import { withSentry } from '@sentry/nextjs';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import type { NextApiRequest, NextApiResponse } from 'next';
