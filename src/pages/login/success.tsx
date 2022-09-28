@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { NextApiRequest, NextPage } from 'next';
 import { useEffect } from 'react';
 import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
@@ -6,9 +6,9 @@ import { Box, Container, Typography } from '@mui/material';
 import classNames from 'classnames';
 import { Button } from '@/components/Button';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
 import { addToWatchlist } from '@/api/endpoints/watchlist';
 import type { ProductDataProps } from '@/components/ProductCard';
+import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 
 const Login: NextPage = (user) => {
   const classes = useLoginPageStyles();
@@ -68,7 +68,8 @@ const Login: NextPage = (user) => {
 
 export default Login;
 
-export const getServerSideProps = getServerSidePropsWithUser(async ({ user }) => {
+export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
+  const user = await getUserFromRequest(req);
   if (!user) {
     return {
       redirect: {
@@ -81,4 +82,4 @@ export const getServerSideProps = getServerSidePropsWithUser(async ({ user }) =>
   return {
     props: {},
   };
-});
+};

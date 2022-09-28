@@ -5,7 +5,7 @@ import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, Container, Typography } from '@mui/material';
 import classNames from 'classnames';
-import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
+import type { NextApiRequestQuery } from 'next/dist/server/api-utils';
 
 const Login: NextPage = () => {
   const classes = useLoginPageStyles();
@@ -39,8 +39,16 @@ const Login: NextPage = () => {
 
 export default Login;
 
-export const getServerSideProps = async (req: NextApiRequest, res: NextApiResponse) => {
-  const jwt = await loginConfirm({ req, token: req.query.token });
+export const getServerSideProps = async ({
+  req,
+  res,
+  query,
+}: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+  query: NextApiRequestQuery;
+}) => {
+  const jwt = await loginConfirm({ req, token: query.token });
 
   if (!jwt) {
     res.statusCode = 400;

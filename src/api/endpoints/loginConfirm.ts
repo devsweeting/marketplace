@@ -23,21 +23,18 @@ export const loginConfirm = async ({
       token: parsedToken,
       metadata: {
         ipAddress: getIpAddress(req),
-        browserUserAgent: req.headers['user-agent'],
+        browserUserAgent: req?.headers['user-agent'] ?? '',
         localeInformation: parseLocale(req),
       },
     },
   });
 
-  if (!response.ok) {
-    return;
-  }
-
-  if (!response.isJson) {
-    return;
-  }
-
-  if (!response.data.accessToken || !response.data.refreshToken) {
+  if (
+    !response.ok ||
+    !response.isJson ||
+    !response.data.accessToken ||
+    !response.data.refreshToken
+  ) {
     return;
   }
 
