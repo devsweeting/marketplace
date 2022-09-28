@@ -1,7 +1,14 @@
 import { Box, Card, Grid, Typography } from '@mui/material';
 import React from 'react';
 
-export const PortfolioHeader = () => {
+export const PortfolioHeader = ({
+  setActivePortfolioCategory,
+  activePortfolioCategory,
+}: {
+  setActivePortfolioCategory: React.Dispatch<React.SetStateAction<string>>;
+  activePortfolioCategory: string;
+}) => {
+  const tabs = ['Overview', 'Watchlist', 'Transactions'];
   return (
     <Grid
       sx={{
@@ -47,54 +54,35 @@ export const PortfolioHeader = () => {
           }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center', padding: '0 16px' }}>
-            <Box sx={{ padding: '24px 16px', borderBottom: '2px solid black' }}>
-              <Typography
-                component="h2"
-                variant="h2"
-                style={{
-                  margin: 0,
-                  padding: '0',
-                  fontWeight: '600',
-                  fontSize: '16px',
-                  lineHeight: '32px',
-                  color: '#6B7280',
+            {tabs.map((tab, index) => (
+              <Box
+                key={index}
+                sx={{
+                  padding: '24px 16px',
+                  borderBottom:
+                    activePortfolioCategory === tab ? '2px solid black' : '2px solid transparent',
+                  '&: hover': { cursor: 'pointer' },
+                }}
+                onClick={() => {
+                  setActivePortfolioCategory(tab);
                 }}
               >
-                Overview
-              </Typography>
-            </Box>
-            <Box sx={{ padding: '24px 16px', borderBottom: '2px solid transparent' }}>
-              <Typography
-                component="h2"
-                variant="h2"
-                style={{
-                  margin: 0,
-                  padding: '0',
-                  fontWeight: '600',
-                  fontSize: '16px',
-                  lineHeight: '32px',
-                  color: '#6B7280',
-                }}
-              >
-                Watchlist
-              </Typography>
-            </Box>
-            <Box sx={{ padding: '24px 16px', borderBottom: '2px solid transparent' }}>
-              <Typography
-                component="h2"
-                variant="h2"
-                style={{
-                  margin: 0,
-                  padding: '0',
-                  fontWeight: '600',
-                  fontSize: '16px',
-                  lineHeight: '32px',
-                  color: '#6B7280',
-                }}
-              >
-                Transactions
-              </Typography>
-            </Box>
+                <Typography
+                  component="h2"
+                  variant="h2"
+                  style={{
+                    margin: 0,
+                    padding: '0',
+                    fontWeight: '600',
+                    fontSize: '16px',
+                    lineHeight: '32px',
+                    color: activePortfolioCategory === tab ? 'black' : '#6B7280',
+                  }}
+                >
+                  {tab}
+                </Typography>
+              </Box>
+            ))}
           </Box>
         </Grid>
       </Card>

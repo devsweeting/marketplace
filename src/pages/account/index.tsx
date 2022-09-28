@@ -1,8 +1,8 @@
 import { OpenGraph } from '@/components/OpenGraph';
 import { Loader } from '@/components/Loader';
 import type { NextPage } from 'next/types';
-import { getPortfolioAssetsByUserId } from '@/api/endpoints/portfolio';
-import React, { useEffect, useReducer } from 'react';
+import { getPortfolioAssets, getPortfolioWatchlistAssets } from '@/api/endpoints/portfolio';
+import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { PortfolioHeader } from '@/components/PortfolioPage/PortfolioHeader';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
@@ -30,6 +30,7 @@ interface IPurchaseHistoryItem {
   userId?: string;
 }
 export interface IPortfolioData {
+  items?: any;
   totalValueInCents: number;
   totalUnits: number;
   purchaseHistory?: IPurchaseHistoryItem[] | [];
@@ -75,39 +76,87 @@ const PortfolioPage: NextPage = () => {
     portfolioReducer,
     initialPortfolioListState,
   );
+  const [activePortfolioCategory, setActivePortfolioCategory] = useState('Overview');
+  const [stats, setStats] = useState<IPortfolioData | undefined>();
 
-  const handlePortfolioDataFetch = () => {
+  const handlePortfolioDataFetch = (activePortfolioCategory: string) => {
     dispatch({ type: 'fetching' });
-    return getPortfolioAssetsByUserId()
+    switch (activePortfolioCategory) {
+      case 'Overview': {
+        return getPortfolioAssets()
+          .then((data) => {
+            dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
+          })
+          .catch((error) => {
+            dispatch({ type: 'error', error });
+          });
+        break;
+      }
+      case 'Watchlist': {
+        return getPortfolioWatchlistAssets()
+          .then((data) => {
+            dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
+          })
+          .catch((error) => {
+            dispatch({ type: 'error', error });
+          });
+        break;
+      }
+      default: {
+        return getPortfolioAssets()
+          .then((data) => {
+            dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
+          })
+          .catch((error) => {
+            dispatch({ type: 'error', error });
+          });
+        break;
+      }
+    }
+  };
+
+  const handleStatsDataFetch = () => {
+    getPortfolioAssets()
       .then((data) => {
-        dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
+        setStats(data as unknown as IPortfolioData);
       })
       .catch((error) => {
-        dispatch({ type: 'error', error });
+        // eslint-disable-next-line no-console
+        console.error(error);
       });
   };
 
   useEffect(() => {
-    void handlePortfolioDataFetch();
-  }, []);
+    void handlePortfolioDataFetch(activePortfolioCategory);
+    void handleStatsDataFetch();
+  }, [activePortfolioCategory]);
 
   const portfolioAssetsList = [];
-  if (portfolio?.purchaseHistory && !Object.keys(portfolio).includes('statusCode')) {
-    for (let i = 0; i < portfolio.purchaseHistory.length; i++) {
-      if (
-        Object.keys(portfolio).length > 0 &&
-        Object.keys(portfolio.purchaseHistory[i]).length > 0 &&
-        Object.keys(portfolio.purchaseHistory[i]).includes('asset')
-      ) {
-        portfolio.purchaseHistory[i].asset.fractionPriceCents =
-          portfolio.purchaseHistory[i].fractionPriceCents;
-        portfolio.purchaseHistory[i].asset.fractionQty = portfolio.purchaseHistory[i].fractionQty;
+  if (!Object.keys(portfolio).includes('meta')) {
+    if (portfolio?.purchaseHistory && !Object.keys(portfolio).includes('statusCode')) {
+      for (let i = 0; i < portfolio.purchaseHistory.length; i++) {
+        if (
+          Object.keys(portfolio).length > 0 &&
+          Object.keys(portfolio.purchaseHistory[i]).length > 0 &&
+          Object.keys(portfolio.purchaseHistory[i]).includes('asset')
+        ) {
+          portfolio.purchaseHistory[i].asset.fractionPriceCents =
+            portfolio.purchaseHistory[i].fractionPriceCents;
+          portfolio.purchaseHistory[i].asset.fractionQty = portfolio.purchaseHistory[i].fractionQty;
+        }
+        portfolioAssetsList.push(portfolio.purchaseHistory[i].asset);
       }
-      portfolioAssetsList.push(portfolio.purchaseHistory[i].asset);
     }
+  } else {
+    portfolioAssetsList.push(...portfolio.items);
   }
+
   if (isLoading) {
-    return <Loader />;
+    return (
+      <Box sx={{ height: '100vw' }}>
+        <Loader />;
+      </Box>
+    );
   }
 
   if (error !== '') {
@@ -116,7 +165,7 @@ const PortfolioPage: NextPage = () => {
         <p>{error}</p>
         <button
           onClick={() => {
-            void handlePortfolioDataFetch();
+            void handlePortfolioDataFetch(activePortfolioCategory);
           }}
         >
           Try again
@@ -128,9 +177,12 @@ const PortfolioPage: NextPage = () => {
     <>
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
-        <PortfolioHeader />
+        <PortfolioHeader
+          setActivePortfolioCategory={setActivePortfolioCategory}
+          activePortfolioCategory={activePortfolioCategory}
+        />
         <Box>
-          <PortFolioStats portfolio={portfolio} />
+          <PortFolioStats portfolio={stats} />
           <PortfolioAssetList portfolioAssetsList={portfolioAssetsList} />
         </Box>
       </Grid>

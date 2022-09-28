@@ -3,7 +3,7 @@ import { Box, Grid, Typography, useTheme, Skeleton } from '@mui/material';
 import React from 'react';
 import type { IPortfolioData } from '@/pages/account';
 
-export const PortFolioStats = ({ portfolio }: { portfolio: IPortfolioData }) => {
+export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) => {
   const theme = useTheme();
   return (
     <Grid
