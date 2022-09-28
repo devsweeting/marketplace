@@ -236,32 +236,56 @@ export const themeJump = createTheme(theme, {
       styleOverrides: {
         root: {
           fontFamily: 'Inter',
-          fontWeight: 500,
+          fontWeight: 600,
           boxSizing: 'border-box',
-          borderRadius: theme.shape.borderRadius,
+          borderRadius: '0.5rem',
           padding: '0.75rem 1rem',
           boxShadow: 'none',
-          '&.MuiButton-contained': {
+          '&.MuiButton-containedPrimary': {
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.secondary.main,
             '&:hover': {
-              backgroundColor: '#1F2937',
+              backgroundColor: theme.palette.grey[700],
             },
           },
-          '&.MuiButton-outlined': {
+          '&.MuiButton-containedSecondary': {
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.grey[200],
+            },
+          },
+          '&.MuiButton-outlinedPrimary': {
             border: `2px solid ${theme.palette.primary.main}`,
             backgroundColor: 'transparent',
+            color: theme.palette.primary.main,
             '&:hover': {
               backgroundColor: theme.palette.primary.main,
               color: theme.palette.secondary.main,
             },
           },
+          '&.MuiButton-outlinedSecondary': {
+            border: `2px solid ${theme.palette.secondary.main}`,
+            backgroundColor: 'transparent',
+            color: theme.palette.secondary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.main,
+              color: theme.palette.primary.main,
+            },
+          },
           '&.MuiButton-text': {
             display: 'flex',
+            fontSize: '1rem',
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.grey[100],
+            },
           },
           '&.Mui-disabled': {
-            backgroundColor: '#E5E7EB',
-            color: '#4B5563',
+            backgroundColor: theme.palette.grey[200],
+            color: theme.palette.grey[600],
           },
           '&:hover': {
             boxShadow: 'none',
