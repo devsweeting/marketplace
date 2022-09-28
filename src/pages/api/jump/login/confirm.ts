@@ -33,6 +33,7 @@ const confirm = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const jwt = response.data as unknown as IJwt;
   setUserCookie(jwt, req, res);
+
   return res.status(StatusCodes.OK).send({ data: 'test' });
 };
 export const config = {
