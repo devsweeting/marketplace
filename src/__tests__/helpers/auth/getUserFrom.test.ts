@@ -36,6 +36,7 @@ describe('getUserFromJWT', () => {
     expect(getUserFromJwt(mockValidJwt)).toEqual({
       id: 1337,
       email: 'test@test.com',
+      exp: new Date('2022-06-22T03:32:44.000Z'),
     });
   });
 });
@@ -43,6 +44,10 @@ describe('getUserFromJWT', () => {
 describe('getUserFromRequest', () => {
   test('should get user id from a request', () => {
     mockGetUserCookie.mockReturnValue(mockValidJwt);
-    expect(getUserFromRequest(mockReq)).toEqual({ id: 1337, email: 'test@test.com' });
+    expect(getUserFromRequest(mockReq)).toEqual({
+      id: 1337,
+      email: 'test@test.com',
+      exp: new Date('2022-06-22T03:32:44.000Z'),
+    });
   });
 });

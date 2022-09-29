@@ -122,7 +122,7 @@ describe('Asset Card', () => {
     const addToWatchListBtn = screen.getByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn).toBeInTheDocument();
     await user.click(addToWatchListBtn);
-    expect(mockFetch).toBeCalledTimes(4);
+    expect(mockFetch).toBeCalledTimes(2);
 
     const removeFromWatchListBtn = await screen.findByRole('button', {
       name: /remove from watchlist/i,
@@ -132,6 +132,6 @@ describe('Asset Card', () => {
 
     const addToWatchListBtn2 = await screen.findByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn2).toBeInTheDocument();
-    expect(mockFetch).toBeCalledTimes(6);
+    expect(mockFetch).toBeCalledTimes(3);
   });
 });

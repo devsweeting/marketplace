@@ -86,9 +86,15 @@ describe('ApiClient browser', () => {
   });
 
   test('should return 500 error if response is undefined', async () => {
+    jest.setSystemTime(new Date('2000-01-01T00:09:99.999Z'));
+
     global.fetch = jest.fn(() => Promise.resolve({ undefined })) as jest.Mock;
     const response = await client.get('/test');
-
+    expect(global.fetch).toHaveBeenCalledWith('/api/jump/test', {
+      body: undefined,
+      method: 'GET',
+      headers: {},
+    });
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(response.status).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
   });

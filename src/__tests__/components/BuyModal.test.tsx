@@ -122,7 +122,7 @@ describe('BuyModal', () => {
     const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
 
-    expect(global.fetch).toBeCalledTimes(2);
+    expect(global.fetch).toBeCalledTimes(1);
     const success = await screen.findByText(/success!/i);
     const closeBtn = await screen.findByRole('button', { name: /close/i });
     expect(closeBtn).toBeInTheDocument();
@@ -186,7 +186,7 @@ describe('BuyModal', () => {
     const errorMessage = await screen.findByText(/Something went wrong./i);
     expect(errorMessage).toBeInTheDocument();
 
-    expect(mockFetch).toBeCalledTimes(2);
+    expect(mockFetch).toBeCalledTimes(1);
   });
 
   test('should display message if user has reached their limit.', async () => {
@@ -217,7 +217,7 @@ describe('BuyModal', () => {
     );
     expect(errorMessage).toBeInTheDocument();
 
-    expect(mockFetch).toBeCalledTimes(2);
+    expect(mockFetch).toBeCalledTimes(1);
   });
 
   test('should display message if user tries to buy own asset.', async () => {
@@ -246,6 +246,6 @@ describe('BuyModal', () => {
     const errorMessage = await screen.findByText(/You cannot purchase your own order./i);
     expect(errorMessage).toBeInTheDocument();
 
-    expect(mockFetch).toBeCalledTimes(2);
+    expect(mockFetch).toBeCalledTimes(1);
   });
 });
