@@ -2,7 +2,7 @@ import { testApiHandler } from 'next-test-api-route-handler';
 import jumpApiProxy from '@/pages/api/jump/[...params]';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
-import type { IApiResponse } from '@/api/client';
+import type { IApiResponse } from '@/api/client/apiClient.base';
 jest.mock('../../../../api/client.ts');
 const mockApiClient = apiClient as unknown as jest.Mocked<typeof apiClient>;
 
