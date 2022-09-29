@@ -39,7 +39,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   useEffect(() => {
     setHasBeenAdded(isAssetInLocalStorage(assetData.id));
 
-    if (user?.id) {
+    if (user) {
       checkForAssetOnWatchlist(assetData.id)
         .then((isOnWatchlist: boolean) => {
           setHasBeenAdded(isOnWatchlist ?? false);
@@ -48,7 +48,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           return;
         });
     }
-  }, [assetData.id, user?.id]);
+  }, [assetData.id, user]);
 
   const handleAddToWatchlist = (id: string, name: string) => {
     if (!user) {

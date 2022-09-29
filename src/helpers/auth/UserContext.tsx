@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, useMemo } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { IUser } from '../../types/user';
+import AwaitLock from 'await-lock';
 
 export interface IUserContext {
   user?: IUser;
@@ -23,18 +24,39 @@ let currentUser: IUser | undefined;
 
 let globalSetUser: Dispatch<SetStateAction<IUser | undefined>> | undefined;
 
-export function getCurrentUser(): IUser | undefined {
+const _lock = new AwaitLock();
+
+export async function getCurrentUser(): Promise<IUser | undefined> {
+  await _lock.acquireAsync();
+
+  _lock.release();
+
   return currentUser;
 }
 
 export async function refreshUser(): Promise<void> {
+  await _lock.acquireAsync();
+
   try {
     const newUser = await fetch('/api/me').then((res) => res.json());
-    newUser.exp = new Date(newUser.exp);
-    currentUser = newUser;
-    globalSetUser?.(newUser);
+
+    if (newUser) {
+      newUser.exp = new Date(newUser.exp);
+    }
+
+    // If the user ids are the same we ensure that current user
+    // stays the same object instead of a new one being created
+    if (newUser && currentUser && newUser.id == currentUser.id) {
+      Object.assign(currentUser, newUser);
+    } else {
+      currentUser = newUser;
+    }
+
+    globalSetUser?.(currentUser);
   } catch {
     globalSetUser?.(undefined);
+  } finally {
+    _lock.release();
   }
 }
 
