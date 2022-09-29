@@ -1,3 +1,4 @@
+import { getCurrentUser, refreshUser } from '@/helpers/auth/UserContext';
 import AwaitLock from 'await-lock';
 import { StatusCodes } from 'http-status-codes';
 import type { IApiRequest, IApiRequestWithBody, IApiResponse, IApiUrl } from './apiClient.base';
@@ -17,12 +18,16 @@ export class BrowserApiClient extends BaseApiClient {
     let response;
     await this._lock.acquireAsync();
     try {
-      response = await super.send('/token/refresh', 'GET', {});
+      const user = getCurrentUser();
+      if (user?.exp && user.exp.getTime() - 10000 < new Date().getTime()) {
+        response = await super.send('/token/refresh', 'GET', {});
+        await refreshUser();
+      }
     } finally {
       this._lock.release();
     }
 
-    if (response.status !== StatusCodes.UNAUTHORIZED) {
+    if (!response || response.status !== StatusCodes.UNAUTHORIZED) {
       response = await super.send(path, method, request);
     }
 

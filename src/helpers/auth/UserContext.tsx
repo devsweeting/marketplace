@@ -1,12 +1,5 @@
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useState,
-  useMemo,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import { createContext, useEffect, useState, useMemo } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import type { IUser } from '../../types/user';
 
 export interface IUserContext {
@@ -37,6 +30,7 @@ export function getCurrentUser(): IUser | undefined {
 export async function refreshUser(): Promise<void> {
   try {
     const newUser = await fetch('/api/me').then((res) => res.json());
+    newUser.exp = new Date(newUser.exp);
     currentUser = newUser;
     globalSetUser?.(newUser);
   } catch {
@@ -69,7 +63,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       refreshUser,
       logout,
     }),
-    [user, refreshUser, logout],
+    [user],
   );
 
   return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;
