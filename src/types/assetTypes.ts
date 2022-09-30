@@ -1,4 +1,5 @@
 export interface IAsset {
+  isOnUserPortfolio?: boolean;
   id: string;
   refId: string;
   name: string;

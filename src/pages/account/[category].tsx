@@ -9,10 +9,14 @@ import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFo
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 import { Box, Grid } from '@mui/material';
 import { NoDismissLogin } from '@/components/LoginModal';
+import { useRouter } from 'next/router';
+import { TradePanel } from '@/components/TradePanel';
+import { getAssetById } from '@/api/endpoints/assets';
 
 export type IPorfolioAsset = IAsset & {
   fractionPriceCents: number | undefined;
   fractionQty: number | undefined;
+  isOnUserPortfolio: boolean;
 };
 interface IPurchaseHistoryItem {
   length: number;
@@ -72,12 +76,17 @@ const portfolioReducer = (state: IPortfolioDataState, action: PortfolioListActio
 };
 
 const PortfolioPage: NextPage = () => {
+  const router = useRouter();
+  const { query, isReady } = router;
   const [{ isLoading, error, portfolio }, dispatch] = useReducer(
     portfolioReducer,
     initialPortfolioListState,
   );
   const [activePortfolioCategory, setActivePortfolioCategory] = useState('Overview');
   const [stats, setStats] = useState<IPortfolioData | undefined>();
+  const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
+  const [isOpen, setIsOpen] = useState(false);
+  const [assets, setAssets] = useState<IAsset[]>([]);
 
   const handlePortfolioDataFetch = (activePortfolioCategory: string) => {
     dispatch({ type: 'fetching' });
@@ -126,10 +135,18 @@ const PortfolioPage: NextPage = () => {
       });
   };
 
+  const capitalizeFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   useEffect(() => {
-    void handlePortfolioDataFetch(activePortfolioCategory);
-    void handleStatsDataFetch();
-  }, [activePortfolioCategory]);
+    if (isReady && Object.keys(query).length > 0) {
+      const queryString = capitalizeFirstLetter(query.category as string);
+      setActivePortfolioCategory(queryString);
+      void handlePortfolioDataFetch(activePortfolioCategory);
+      void handleStatsDataFetch();
+    }
+  }, [activePortfolioCategory, isReady, query]);
 
   const portfolioAssetsList = [];
   if (!Object.keys(portfolio).includes('meta')) {
@@ -150,6 +167,35 @@ const PortfolioPage: NextPage = () => {
   } else {
     portfolioAssetsList.push(...portfolio.items);
   }
+
+  const updateAsset = (assetId: string): void => {
+    getAssetById(assetId)
+      .then((asset) => {
+        if (!asset) {
+          return;
+        }
+        const newAssetData = asset.data;
+        const tempAssets = assets;
+        tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;
+        setAssets(tempAssets);
+        setTradePanelData(newAssetData);
+      })
+      .catch(() => {
+        return;
+      });
+  };
+
+  const handleDrawer = (asset: IAsset) => {
+    if (!isOpen) {
+      setIsOpen(true);
+    } else if (isOpen && tradePanelData && asset.id === tradePanelData.id) {
+      setIsOpen(false);
+    }
+    if (Object.keys(portfolio).includes('statusCode')) {
+      setIsOpen(false);
+    }
+    setTradePanelData(asset);
+  };
 
   if (isLoading) {
     return (
@@ -183,9 +229,22 @@ const PortfolioPage: NextPage = () => {
         />
         <Box>
           <PortFolioStats portfolio={stats} />
-          <PortfolioAssetList portfolioAssetsList={portfolioAssetsList} />
+          <PortfolioAssetList
+            portfolioAssetsList={portfolioAssetsList}
+            handleDrawer={handleDrawer}
+          />
         </Box>
       </Grid>
+      {tradePanelData && (
+        <TradePanel
+          updateAsset={updateAsset}
+          open={isOpen}
+          asset={tradePanelData}
+          handleClose={() => {
+            setIsOpen(!isOpen);
+          }}
+        />
+      )}
       {Object.keys(portfolio).includes('statusCode') && <NoDismissLogin />}
     </>
   );

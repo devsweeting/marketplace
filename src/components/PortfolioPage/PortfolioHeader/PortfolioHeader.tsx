@@ -1,5 +1,6 @@
 import { Box, Card, Grid, Typography } from '@mui/material';
 import React from 'react';
+import { useRouter } from 'next/router';
 
 export const PortfolioHeader = ({
   setActivePortfolioCategory,
@@ -9,6 +10,21 @@ export const PortfolioHeader = ({
   activePortfolioCategory: string;
 }) => {
   const tabs = ['Overview', 'Watchlist', 'Transactions'];
+  const router = useRouter();
+
+  const handlePageChange = (tab: string) => {
+    const category = tab.toLowerCase();
+    void router.push(
+      {
+        pathname: `/account/[category]`,
+        query: {
+          category,
+        },
+      },
+      `/account/${category}`,
+      { shallow: true },
+    );
+  };
   return (
     <Grid
       sx={{
@@ -65,6 +81,7 @@ export const PortfolioHeader = ({
                 }}
                 onClick={() => {
                   setActivePortfolioCategory(tab);
+                  handlePageChange(tab);
                 }}
               >
                 <Typography

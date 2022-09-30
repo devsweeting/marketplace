@@ -1,16 +1,19 @@
 import { Box, Grid, Skeleton, useTheme } from '@mui/material';
-import type { IPorfolioAsset } from '@/pages/account';
+import type { IPorfolioAsset } from '@/pages/account/[category]';
 import React from 'react';
 import { PortfolioAssetCard } from '../PortfolioAssetCard';
+import type { IAsset } from '@/types/assetTypes';
 
 export const PortfolioAssetList = ({
   portfolioAssetsList,
+  handleDrawer,
 }: {
   portfolioAssetsList: (IPorfolioAsset | undefined)[];
+  handleDrawer: (asset: IAsset) => void;
 }) => {
   const theme = useTheme();
   return (
-    <Grid container direction="row" justifyContent="center" alignItems="stretch">
+    <Grid container direction="row" justifyContent="flex-end" alignItems="stretch">
       <Box
         sx={{
           display: 'block',
@@ -31,9 +34,20 @@ export const PortfolioAssetList = ({
         }}
       >
         {portfolioAssetsList.length > 0 ? (
-          portfolioAssetsList.map((asset) => (
-            <PortfolioAssetCard key={asset?.id} assetData={asset} onClick={undefined} />
-          ))
+          portfolioAssetsList.map((asset) => {
+            if (asset) {
+              asset.isOnUserPortfolio = true;
+              return (
+                <PortfolioAssetCard
+                  key={asset?.id}
+                  assetData={asset}
+                  onClick={() => {
+                    handleDrawer(asset);
+                  }}
+                />
+              );
+            }
+          })
         ) : (
           <>
             <Skeleton
