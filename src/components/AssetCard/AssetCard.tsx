@@ -52,6 +52,8 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   }, [assetData.id, user]);
 
   const handleAddToWatchlist = (id: string, name: string) => {
+    console.log('add to', user);
+
     if (!user) {
       addWatchlistToLocalStorage(id, name)
         .then(() => {

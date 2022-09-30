@@ -38,6 +38,7 @@ export async function refreshUser(): Promise<void> {
   await _lock.acquireAsync();
 
   try {
+    console.log(me);
     const newUser = await me();
 
     if (newUser) {

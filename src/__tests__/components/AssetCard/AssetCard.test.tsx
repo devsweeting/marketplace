@@ -13,7 +13,11 @@ import { MockUserProvider } from '@/__mocks__/mockUserProvider';
 const handleClick = jest.fn();
 
 const mockData = mockAssetResponse.items[0];
-const mockUser = { id: 'asdf', email: 'example@example.com' };
+const mockUser = {
+  id: 'asdf',
+  email: 'example@example.com',
+  exp: new Date('3000-01-01T00:10:00.000Z'),
+};
 const details = parseAssetAttributes(mockData.attributes);
 const MockAssetCard = ({ asset, user }: { asset: IAsset; user: IUser | undefined }) => {
   return (
@@ -47,13 +51,13 @@ describe('Asset Card', () => {
     global.fetch = globalFetch;
   });
 
-  test('should display card data', () => {
+  test('should display card data', async () => {
     render(<MockAssetCard asset={mockData} user={mockUser} />);
-    const title = screen.getByText(mockData.name);
-    const year = screen.getByText(`${details.year}`, { exact: false });
-    const price = screen.getByText(/price/i, { exact: false });
-    const valuation = screen.getByText(/valuation/i, { exact: false });
-    const image = screen.getByRole('img');
+    const title = await screen.findByText(mockData.name);
+    const year = await screen.findByText(`${details.year}`, { exact: false });
+    const price = await screen.findByText(/price/i, { exact: false });
+    const valuation = await screen.findByText(/valuation/i, { exact: false });
+    const image = await screen.findByRole('img');
 
     expect(title).toBeInTheDocument();
     expect(year).toBeInTheDocument();
@@ -64,7 +68,7 @@ describe('Asset Card', () => {
 
   test('should be clickable', async () => {
     render(<MockAssetCard asset={mockData} user={mockUser} />);
-    await user.click(screen.getByText(mockData.name));
+    await user.click(await screen.findByText(mockData.name));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
@@ -75,19 +79,19 @@ describe('Asset Card', () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  test('should display sold out when no sellOrders available', () => {
+  test('should display sold out when no sellOrders available', async () => {
     const { rerender } = render(<MockAssetCard asset={mockData} user={null as unknown as IUser} />);
     const notSoldOut = screen.queryByText(/sold out/i);
     expect(notSoldOut).toBeNull();
     rerender(<MockAssetCard asset={mockAssetSoldOut} user={null as unknown as IUser} />);
-    const soldOut = screen.getByText(/sold out/i);
+    const soldOut = await screen.findByText(/sold out/i);
     expect(soldOut).toBeInTheDocument();
   });
 
   test('should allow non auth user to add and remove item from watchlist ', async () => {
     render(<MockAssetCard asset={mockData} user={undefined} />);
 
-    const addToWatchListBtn = screen.getByRole('button', { name: /add to watchlist/i });
+    const addToWatchListBtn = await screen.findByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn).toBeInTheDocument();
     await user.click(addToWatchListBtn);
     const removeFromWatchListBtn = await screen.findByRole('button', {
@@ -96,7 +100,7 @@ describe('Asset Card', () => {
     expect(removeFromWatchListBtn).toBeInTheDocument();
     await user.click(removeFromWatchListBtn);
 
-    const addToWatchListBtn2 = screen.getByRole('button', { name: /add to watchlist/i });
+    const addToWatchListBtn2 = await screen.findByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn2).toBeInTheDocument();
     expect(global.fetch).toBeCalledTimes(0);
   });
@@ -114,7 +118,7 @@ describe('Asset Card', () => {
     ) as jest.Mock);
     render(<MockAssetCard asset={mockData} user={mockUser} />);
 
-    const addToWatchListBtn = screen.getByRole('button', { name: /add to watchlist/i });
+    const addToWatchListBtn = await screen.findByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn).toBeInTheDocument();
     await user.click(addToWatchListBtn);
     expect(mockFetch).toBeCalledTimes(2);

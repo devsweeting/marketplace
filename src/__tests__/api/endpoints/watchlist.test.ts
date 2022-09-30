@@ -5,22 +5,22 @@ import {
 } from '@/api/endpoints/watchlist';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { StatusCodes } from 'http-status-codes';
-jest.mock('@/api/client/apiClient.browser', () => ({
-  send: jest.fn().mockReturnValue(() => {
-    return Promise.resolve({
-      headers: new Headers({
-        'content-type': 'application/json',
-      }),
-      ok: true,
-      status: StatusCodes.CREATED,
-      json: () => Promise.resolve({ test: 'test' }),
-    });
-  }),
-}));
+
 const mockData = mockAssetResponse.items[0];
 const mockPoductData = { id: mockData.id, name: mockData.name };
 
 const globalFetch = global.fetch;
+
+jest.mock('@/helpers/auth/UserContext', () => ({
+  getCurrentUser: jest.fn().mockReturnValue(
+    Promise.resolve({
+      id: 1,
+      email: 'test@example.com',
+      exp: new Date('3000-01-01T00:10:00.000Z'),
+    }),
+  ),
+  refreshUser: jest.fn().mockReturnValue(Promise.resolve()),
+}));
 
 beforeEach(() => {
   jest.resetAllMocks();
