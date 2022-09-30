@@ -2,7 +2,7 @@ import { createContext, useEffect, useState, useMemo } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { IUser } from '../../types/user';
 import AwaitLock from 'await-lock';
-
+import { me } from '@/api/endpoints/me';
 export interface IUserContext {
   user?: IUser;
   refreshUser: () => Promise<void>;
@@ -38,7 +38,7 @@ export async function refreshUser(): Promise<void> {
   await _lock.acquireAsync();
 
   try {
-    const newUser = await fetch('/api/me').then((res) => res.json());
+    const newUser = await me();
 
     if (newUser) {
       newUser.exp = new Date(newUser.exp);

@@ -13,14 +13,17 @@ import type { IAsset } from '@/types/assetTypes';
 import type { IUser } from '@/types/user';
 import user from '@testing-library/user-event';
 
-import { UserContext } from '@/helpers/auth/UserContext';
 import { StatusCodes } from 'http-status-codes';
+import { MockUserProvider } from '@/__mocks__/mockUserProvider';
 const mockHandleClose = jest.fn();
 const mockUpdateAsset = jest.fn();
-const mockUserContextFunctions = jest.fn();
 
 const data: IAsset = mockAssetResponse.items[0];
-const mockUser = { id: 'asdf', email: 'example@example.com' };
+const mockUser = {
+  id: 'asdf',
+  email: 'example@example.com',
+  exp: new Date('3000-01-01T00:10:00.000Z'),
+};
 
 const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
@@ -38,15 +41,9 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
 
 const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser }) => {
   return (
-    <UserContext.Provider
-      value={{
-        user: user,
-        refreshUser: mockUserContextFunctions,
-        logout: mockUserContextFunctions,
-      }}
-    >
+    <MockUserProvider user={user}>
       <MockTradePanel asset={asset} />
-    </UserContext.Provider>
+    </MockUserProvider>
   );
 };
 

@@ -1,6 +1,7 @@
 import { purchaseSellOrder } from '@/api/endpoints/sellorders';
 import { Button } from '@/components/Button';
 import { TabPanel } from '@/components/TabPanel';
+import { useUser } from '@/helpers/hooks/useUser';
 import type { ISellOrder } from '@/types/assetTypes';
 import { Box, Modal, Typography } from '@mui/material';
 import classNames from 'classnames';
@@ -30,6 +31,7 @@ export const BuyModal = ({
   const [alertMessage, setAlertMessage] = useState('');
   const [fractionState, setFractionState] = useState<number | undefined>();
   const steps = ['Confirm', 'Success'];
+  const user = useUser();
 
   useEffect(() => {
     //
@@ -75,6 +77,9 @@ export const BuyModal = ({
     }
     onClose();
   };
+  if (!user) {
+    return null;
+  }
 
   return (
     <Modal open={isOpen} onClose={handleClose}>

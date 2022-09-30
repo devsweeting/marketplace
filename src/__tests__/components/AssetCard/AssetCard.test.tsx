@@ -7,27 +7,20 @@ import user from '@testing-library/user-event';
 import { mockAssetResponse, mockAssetSoldOut } from '@/__mocks__/mockAssetResponse';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
-import { UserContext } from '@/helpers/auth/UserContext';
 import type { IUser } from '@/types/user';
 import { StatusCodes } from 'http-status-codes';
+import { MockUserProvider } from '@/__mocks__/mockUserProvider';
 const handleClick = jest.fn();
-const mockUserContextFunctions = jest.fn();
 
 const mockData = mockAssetResponse.items[0];
 const mockUser = { id: 'asdf', email: 'example@example.com' };
 const details = parseAssetAttributes(mockData.attributes);
-const MockAssetCard = ({ asset, user }: { asset: IAsset; user: IUser }) => {
+const MockAssetCard = ({ asset, user }: { asset: IAsset; user: IUser | undefined }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <UserContext.Provider
-        value={{
-          user: user,
-          refreshUser: mockUserContextFunctions,
-          logout: mockUserContextFunctions,
-        }}
-      >
+      <MockUserProvider user={user}>
         <AssetCard onClick={handleClick} assetData={asset} />
-      </UserContext.Provider>
+      </MockUserProvider>
     </ThemeProvider>
   );
 };
@@ -45,7 +38,7 @@ describe('Asset Card', () => {
         }),
         ok: true,
         status: StatusCodes.OK,
-        json: () => Promise.resolve({ test: 'test' }),
+        json: () => Promise.resolve({ test: 'jimmy' }),
       }),
     ) as jest.Mock;
   });
@@ -92,12 +85,14 @@ describe('Asset Card', () => {
   });
 
   test('should allow non auth user to add and remove item from watchlist ', async () => {
-    render(<MockAssetCard asset={mockData} user={null as unknown as IUser} />);
+    render(<MockAssetCard asset={mockData} user={undefined} />);
 
     const addToWatchListBtn = screen.getByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn).toBeInTheDocument();
     await user.click(addToWatchListBtn);
-    const removeFromWatchListBtn = screen.getByRole('button', { name: /remove from watchlist/i });
+    const removeFromWatchListBtn = await screen.findByRole('button', {
+      name: /remove from watchlist/i,
+    });
     expect(removeFromWatchListBtn).toBeInTheDocument();
     await user.click(removeFromWatchListBtn);
 

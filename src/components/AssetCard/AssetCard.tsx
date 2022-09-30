@@ -37,6 +37,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
 
   const user = useUser();
   useEffect(() => {
+    console.log(user);
     setHasBeenAdded(isAssetInLocalStorage(assetData.id));
 
     if (user) {

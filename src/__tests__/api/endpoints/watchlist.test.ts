@@ -5,7 +5,18 @@ import {
 } from '@/api/endpoints/watchlist';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { StatusCodes } from 'http-status-codes';
-
+jest.mock('@/api/client/apiClient.browser', () => ({
+  send: jest.fn().mockReturnValue(() => {
+    return Promise.resolve({
+      headers: new Headers({
+        'content-type': 'application/json',
+      }),
+      ok: true,
+      status: StatusCodes.CREATED,
+      json: () => Promise.resolve({ test: 'test' }),
+    });
+  }),
+}));
 const mockData = mockAssetResponse.items[0];
 const mockPoductData = { id: mockData.id, name: mockData.name };
 
@@ -27,6 +38,7 @@ beforeEach(() => {
 
 afterAll(() => {
   global.fetch = globalFetch;
+  jest.resetAllMocks();
 });
 
 describe('watchlist checkForAssetOnWatchList', () => {
