@@ -14,7 +14,7 @@ const methods = {
   DELETE: 'delete',
 } as const;
 
-const jumpApiProxy: NextApiHandler = async (req, res) => {
+export const jumpApiProxy: NextApiHandler = async (req, res) => {
   const method = parseMethod(req.method);
   if (!method) {
     res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');

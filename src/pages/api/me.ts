@@ -2,7 +2,7 @@ import { withSentry } from '@sentry/nextjs';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const me = (req: NextApiRequest, res: NextApiResponse) => {
+export const me = (req: NextApiRequest, res: NextApiResponse) => {
   const user = getUserFromRequest(req);
   if (!user) {
     res.send(undefined);

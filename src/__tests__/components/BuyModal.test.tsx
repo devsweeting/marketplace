@@ -7,7 +7,13 @@ import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { StatusCodes } from 'http-status-codes';
 import type { IUser } from '@/types/user';
-import { MockUserProvider } from '@/__mocks__/mockUserProvider';
+import { apiClient } from '@/api/client';
+import { UserContext } from '@/helpers/auth/UserContext';
+import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
+
+jest.mock('@/api/client');
+const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
+
 interface IMockBuyModal extends IBuyModal {
   user: IUser | undefined;
 }
@@ -21,7 +27,7 @@ const MockBuyModal = ({
 }: IMockBuyModal) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <MockUserProvider user={user}>
+      <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
         <BuyModal
           isOpen={true}
           totalFractions={totalFractions}
@@ -30,7 +36,7 @@ const MockBuyModal = ({
           sellOrder={sellOrder}
           updateAsset={updateAsset}
         ></BuyModal>
-      </MockUserProvider>
+      </UserContext.Provider>
     </ThemeProvider>
   );
 };
@@ -47,28 +53,17 @@ const mockTotalPrice = 100;
 const mockData = mockAssetResponse.items[0];
 
 describe('BuyModal', () => {
-  const globalFetch = global.fetch;
-
   beforeEach(() => {
     jest.resetAllMocks();
 
-    // global.fetch = jest.fn(() =>
-    //   Promise.resolve({
-    //     headers: new Headers({
-    //       'content-type': 'application/json',
-    //     }),
-    //     ok: true,
-    //     status: StatusCodes.CREATED,
-    //     json: () => Promise.resolve({ test: 'test' }),
-    //   }),
-    // ) as jest.Mock;
+    mockApiClient.get.mockResolvedValue(mockJsonResponse());
   });
 
   afterAll(() => {
-    global.fetch = globalFetch;
+    jest.resetAllMocks();
   });
 
-  test('should display fractions and total price', () => {
+  test('should display fractions and total price', async () => {
     render(
       <MockBuyModal
         totalFractions={mockTotalFraction}
@@ -111,6 +106,8 @@ describe('BuyModal', () => {
   });
 
   test('should allow the user to confirm the buy', async () => {
+    mockApiClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.CREATED }));
+
     render(
       <MockBuyModal
         totalFractions={mockTotalFraction}
@@ -125,7 +122,7 @@ describe('BuyModal', () => {
     const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
 
-    expect(global.fetch).toBeCalledTimes(1);
+    expect(mockApiClient.post).toBeCalledTimes(1);
     const success = await screen.findByText(/success!/i);
     const closeBtn = await screen.findByRole('button', { name: /close/i });
     expect(closeBtn).toBeInTheDocument();
@@ -151,16 +148,8 @@ describe('BuyModal', () => {
   });
 
   test('should display an error message if something goes wrong', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.NOT_FOUND,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock);
+    mockApiClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.NOT_FOUND }));
+
     render(
       <MockBuyModal
         totalFractions={mockTotalFraction}
@@ -172,25 +161,20 @@ describe('BuyModal', () => {
         user={mockUser}
       ></MockBuyModal>,
     );
+
     const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
     const errorMessage = await screen.findByText(/Something went wrong./i);
     expect(errorMessage).toBeInTheDocument();
 
-    expect(mockFetch).toBeCalledTimes(2);
+    expect(mockApiClient.post).toBeCalledTimes(1);
   });
 
   test('should display message if user has reached their limit.', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.BAD_REQUEST,
-        json: () => Promise.resolve({ message: 'PURCHASE_LIMIT_REACHED' }),
-      }),
-    ) as jest.Mock);
+    mockApiClient.post.mockResolvedValue(
+      mockJsonResponse({ message: 'PURCHASE_LIMIT_REACHED' }, { status: StatusCodes.BAD_REQUEST }),
+    );
+
     render(
       <MockBuyModal
         totalFractions={mockTotalFraction}
@@ -202,6 +186,7 @@ describe('BuyModal', () => {
         user={mockUser}
       ></MockBuyModal>,
     );
+
     const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
     const errorMessage = await screen.findByText(
@@ -209,20 +194,17 @@ describe('BuyModal', () => {
     );
     expect(errorMessage).toBeInTheDocument();
 
-    expect(mockFetch).toBeCalledTimes(2);
+    expect(mockApiClient.post).toBeCalledTimes(1);
   });
 
   test('should display message if user tries to buy own asset.', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.BAD_REQUEST,
-        json: () => Promise.resolve({ message: 'USER_CANNOT_PURCHASE_OWN_ORDER' }),
-      }),
-    ) as jest.Mock);
+    mockApiClient.post.mockResolvedValue(
+      mockJsonResponse(
+        { message: 'USER_CANNOT_PURCHASE_OWN_ORDER' },
+        { status: StatusCodes.BAD_REQUEST },
+      ),
+    );
+
     render(
       <MockBuyModal
         totalFractions={mockTotalFraction}
@@ -234,10 +216,11 @@ describe('BuyModal', () => {
         user={mockUser}
       ></MockBuyModal>,
     );
+
     const confirmBtn = await screen.findByRole('button', { name: /confirm/i });
     await user.click(confirmBtn);
     const errorMessage = await screen.findByText(/You cannot purchase your own order./i);
     expect(errorMessage).toBeInTheDocument();
-    expect(mockFetch).toBeCalledTimes(2);
+    expect(mockApiClient.post).toBeCalledTimes(1);
   });
 });

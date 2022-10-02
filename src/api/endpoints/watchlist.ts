@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/client';
-import type { ProductDataProps } from '@/components/ProductCard';
+import type { IProductDataProps } from '@/components/ProductCard';
 import { StatusCodes } from 'http-status-codes';
 const WATCHLIST = 'watchList' as string;
 export const getWatchlist = async () => {
@@ -18,20 +18,20 @@ export const checkForAssetOnWatchlist = async (id: string) => {
   }
 };
 
-export const addToWatchlist = async (item: ProductDataProps) => {
-  try {
-    const addToWatchListResponse = await apiClient.post(`/watchlist/`, {
-      body: { assetId: item.id },
-    });
-    return addToWatchListResponse.status;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return StatusCodes.INTERNAL_SERVER_ERROR;
-  }
+export const addToWatchlist = async (item: IProductDataProps) => {
+  // try {
+  const addToWatchListResponse = await apiClient.post(`/watchlist/`, {
+    body: { assetId: item.id },
+  });
+  return addToWatchListResponse.status;
+  // } catch (error) {
+  //   // eslint-disable-next-line no-console
+  //   console.error(error);
+  //   return StatusCodes.INTERNAL_SERVER_ERROR;
+  // }
 };
 
-export const removeFromWatchlist = async (item: ProductDataProps) => {
+export const removeFromWatchlist = async (item: IProductDataProps) => {
   try {
     const deleteWatchListResponse = await apiClient.delete(`/watchlist/${item.id}`);
     return deleteWatchListResponse.status;
@@ -50,7 +50,7 @@ export const isAssetInLocalStorage = (assetId: string): boolean => {
   try {
     if (localStorage.getItem(WATCHLIST)) {
       const localWatchlist = getLocalWatchlist();
-      if (localWatchlist.some((watchItem: ProductDataProps) => watchItem.id === assetId)) {
+      if (localWatchlist.some((watchItem: IProductDataProps) => watchItem.id === assetId)) {
         return true;
       }
     }
@@ -64,7 +64,7 @@ export const isAssetInLocalStorage = (assetId: string): boolean => {
 
 export const addWatchlistToLocalStorage = async (id: string, name: string) => {
   try {
-    let localWatchlist: ProductDataProps[] = await getLocalWatchlist();
+    let localWatchlist: IProductDataProps[] = await getLocalWatchlist();
     if (localWatchlist) {
       localWatchlist.push({ id: id, name: name });
     } else {
@@ -81,7 +81,7 @@ export const addWatchlistToLocalStorage = async (id: string, name: string) => {
 export const removeWatchlistFromLocalStorage = async (id: string) => {
   try {
     const localWatchlist = await getLocalWatchlist();
-    const watchlist = localWatchlist.filter((watchlist: ProductDataProps) => watchlist.id !== id);
+    const watchlist = localWatchlist.filter((watchlist: IProductDataProps) => watchlist.id !== id);
     localStorage.setItem(WATCHLIST, JSON.stringify(watchlist));
   } catch (error) {
     // eslint-disable-next-line no-console

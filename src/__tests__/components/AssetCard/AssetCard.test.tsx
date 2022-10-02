@@ -1,7 +1,7 @@
 import { AssetCard } from '@/components/AssetCard';
 import { themeJump } from '@/styles/themeJump';
 import { ThemeProvider } from '@mui/styles';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import user from '@testing-library/user-event';
 import { mockAssetResponse, mockAssetSoldOut } from '@/__mocks__/mockAssetResponse';
@@ -9,7 +9,13 @@ import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
 import type { IUser } from '@/types/user';
 import { StatusCodes } from 'http-status-codes';
-import { MockUserProvider } from '@/__mocks__/mockUserProvider';
+import { apiClient } from '@/api/client';
+import { UserContext } from '@/helpers/auth/UserContext';
+import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
+
+jest.mock('@/api/client');
+const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
+
 const handleClick = jest.fn();
 
 const mockData = mockAssetResponse.items[0];
@@ -22,33 +28,21 @@ const details = parseAssetAttributes(mockData.attributes);
 const MockAssetCard = ({ asset, user }: { asset: IAsset; user: IUser | undefined }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <MockUserProvider user={user}>
+      <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
         <AssetCard onClick={handleClick} assetData={asset} />
-      </MockUserProvider>
+      </UserContext.Provider>
     </ThemeProvider>
   );
 };
 
 describe('Asset Card', () => {
-  const globalFetch = global.fetch;
-
   beforeEach(() => {
     jest.resetAllMocks();
-
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.OK,
-        json: () => Promise.resolve({ test: 'jimmy' }),
-      }),
-    ) as jest.Mock;
+    mockApiClient.get.mockResolvedValue(mockJsonResponse());
   });
 
   afterAll(() => {
-    global.fetch = globalFetch;
+    jest.resetAllMocks();
   });
 
   test('should display card data', async () => {
@@ -84,6 +78,7 @@ describe('Asset Card', () => {
     const notSoldOut = screen.queryByText(/sold out/i);
     expect(notSoldOut).toBeNull();
     rerender(<MockAssetCard asset={mockAssetSoldOut} user={null as unknown as IUser} />);
+    await act(() => Promise.resolve());
     const soldOut = await screen.findByText(/sold out/i);
     expect(soldOut).toBeInTheDocument();
   });
@@ -102,26 +97,21 @@ describe('Asset Card', () => {
 
     const addToWatchListBtn2 = await screen.findByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn2).toBeInTheDocument();
-    expect(global.fetch).toBeCalledTimes(0);
+    expect(mockApiClient.get).toBeCalledTimes(0);
   });
 
   test('should allow auth user to add and remove items', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.CREATED,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock);
+    mockApiClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.CREATED }));
+
+    mockApiClient.delete.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.OK }));
+
     render(<MockAssetCard asset={mockData} user={mockUser} />);
 
     const addToWatchListBtn = await screen.findByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn).toBeInTheDocument();
     await user.click(addToWatchListBtn);
-    expect(mockFetch).toBeCalledTimes(2);
+    expect(mockApiClient.post).toBeCalledTimes(1);
+    expect(mockApiClient.get).toBeCalledTimes(1);
 
     const removeFromWatchListBtn = await screen.findByRole('button', {
       name: /remove from watchlist/i,
@@ -131,6 +121,8 @@ describe('Asset Card', () => {
 
     const addToWatchListBtn2 = await screen.findByRole('button', { name: /add to watchlist/i });
     expect(addToWatchListBtn2).toBeInTheDocument();
-    expect(mockFetch).toBeCalledTimes(3);
+    expect(mockApiClient.post).toBeCalledTimes(1);
+    expect(mockApiClient.get).toBeCalledTimes(1);
+    expect(mockApiClient.delete).toBeCalledTimes(1);
   });
 });

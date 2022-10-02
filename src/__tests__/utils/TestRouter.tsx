@@ -20,6 +20,10 @@ export function withTestRouter(tree: React.ReactElement, router: Partial<NextRou
       off: () => null,
       emit: () => null,
     },
+    basePath = '/',
+    isLocaleDomain = false,
+    isReady = false,
+    isPreview = false,
   } = router;
 
   return (
@@ -37,6 +41,10 @@ export function withTestRouter(tree: React.ReactElement, router: Partial<NextRou
         beforePopState,
         isFallback,
         events,
+        basePath,
+        isLocaleDomain,
+        isReady,
+        isPreview,
       }}
     >
       {tree}

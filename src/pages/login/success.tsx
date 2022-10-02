@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { Button } from '@/components/Button';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import { addToWatchlist } from '@/api/endpoints/watchlist';
-import type { ProductDataProps } from '@/components/ProductCard';
+import type { IProductDataProps } from '@/components/ProductCard';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 
 const Login: NextPage = (user) => {
@@ -25,7 +25,7 @@ const Login: NextPage = (user) => {
     const addWatchListItems = async () => {
       const watchList = getWatchList();
 
-      await Promise.all(watchList.map((item: ProductDataProps) => addToWatchlist(item)));
+      await Promise.all(watchList.map((item: IProductDataProps) => addToWatchlist(item)));
     };
 
     addWatchListItems()

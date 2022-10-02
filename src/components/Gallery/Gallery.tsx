@@ -6,7 +6,11 @@ import { useGalleryStyles } from './Gallery.styles';
 import Image from 'next/image';
 import type { IMedia } from '@/types/assetTypes';
 
-export const Gallery = ({ images }: { images: IMedia[] }) => {
+export interface IGalleryProps {
+  images: IMedia[];
+}
+
+export const Gallery = ({ images }: IGalleryProps) => {
   const router = useRouter();
   const classes = useGalleryStyles();
 
