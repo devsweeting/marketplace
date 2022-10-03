@@ -11,6 +11,7 @@ export interface IBrowserApiRequest extends IApiRequest {
 export interface IBrowserApiRequestWithBody extends IBrowserApiRequest, IApiRequestWithBody {}
 
 export class BrowserApiClient extends BaseApiClient {
+  private _TEN_SECONDS = 10000;
   getBaseUrl() {
     return '/api/jump';
   }
@@ -54,7 +55,8 @@ export class BrowserApiClient extends BaseApiClient {
           );
         }
 
-        if (user.exp && user.exp.getTime() - 10000 < new Date().getTime()) {
+        //Check if the token is going to expire in ten seconds
+        if (user.exp && user.exp.getTime() - this._TEN_SECONDS < new Date().getTime()) {
           response = await super.send('/token/refresh', 'GET', {});
           await refreshUser();
         }
