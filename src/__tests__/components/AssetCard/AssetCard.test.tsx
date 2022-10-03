@@ -7,7 +7,6 @@ import user from '@testing-library/user-event';
 import { mockAssetResponse, mockAssetSoldOut } from '@/__mocks__/mockAssetResponse';
 import type { IAsset } from '@/types/assetTypes';
 import type { IUser } from '@/types/user';
-import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
 import {
