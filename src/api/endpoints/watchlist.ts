@@ -8,22 +8,29 @@ export const getWatchlist = async () => {
   return addToWatchListResponse.data;
 };
 
-export const checkForAssetOnWatchlist = async ({ id }: IAsset) => {
+export const isAssetOnWatchlist = async ({ id }: IAsset): Promise<boolean> => {
   try {
     const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`);
     return isOnWatchlist.data?.inWatchlist ?? false;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);
-    return;
+    return false;
   }
 };
 
-export const addToWatchlist = async ({ id }: IAsset | WatchlistAsset) => {
+interface IAddToWatchlistResult {
+  success: boolean;
+}
+export const addToWatchlist = async ({
+  id,
+}: IAsset | WatchlistAsset): Promise<IAddToWatchlistResult> => {
   const addToWatchListResponse = await apiClient.post(`/watchlist/`, {
     body: { assetId: id },
   });
-  return addToWatchListResponse.status;
+
+  const isAdded = await hasBeenAddedWatchlist(addToWatchListResponse.status);
+  return { success: isAdded };
 };
 
 export const removeFromWatchlist = async ({ id }: IAsset) => {
@@ -57,7 +64,10 @@ export const isAssetInLocalStorage = ({ id }: IAsset): boolean => {
   }
 };
 
-export const addWatchlistToLocalStorage = async ({ id, name }: IAsset): Promise<void> => {
+export const addWatchlistToLocalStorage = async ({
+  id,
+  name,
+}: IAsset): Promise<IAddToWatchlistResult> => {
   try {
     let localWatchlist = await getLocalWatchlist();
     if (localWatchlist) {
@@ -66,10 +76,11 @@ export const addWatchlistToLocalStorage = async ({ id, name }: IAsset): Promise<
       localWatchlist = [{ id, name }];
     }
     localStorage.setItem(WATCHLIST, JSON.stringify(localWatchlist));
+    return { success: true };
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);
-    return;
+    return { success: false };
   }
 };
 
