@@ -17,12 +17,13 @@ import {
   removeFromWatchlist,
   removeWatchlistFromLocalStorage,
 } from '@/api/endpoints/watchlist';
-export interface ProductDataProps {
+
+export interface IProductDataProps {
   name: string;
   id: string;
 }
 
-export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
+export const ProductCard = ({ name, id }: IProductDataProps) => {
   const { setIsModalOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
   const user = useUser();
@@ -82,6 +83,7 @@ export const ProductCard: React.FC<ProductDataProps> = ({ name, id }) => {
   };
 
   const classes = useProductStyles();
+
   return (
     <Card className={classes.productContainer}>
       <CardContent sx={{ padding: '0' }}>

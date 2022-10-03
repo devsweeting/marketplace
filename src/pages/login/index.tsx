@@ -1,11 +1,11 @@
-import type { NextPage } from 'next';
+import type { NextApiRequest, NextApiResponse, NextPage } from 'next';
 import { loginConfirm } from '@/api/endpoints/loginConfirm';
 import { setUserCookie } from '@/helpers/auth/userCookie';
 import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, Container, Typography } from '@mui/material';
 import classNames from 'classnames';
-import { getServerSidePropsWithUser } from '@/helpers/auth/withUser';
+import type { NextApiRequestQuery } from 'next/dist/server/api-utils';
 
 const Login: NextPage = () => {
   const classes = useLoginPageStyles();
@@ -39,10 +39,18 @@ const Login: NextPage = () => {
 
 export default Login;
 
-export const getServerSideProps = getServerSidePropsWithUser(async ({ req, res, query, user }) => {
+export const getServerSideProps = async ({
+  req,
+  res,
+  query,
+}: {
+  req: NextApiRequest;
+  res: NextApiResponse;
+  query: NextApiRequestQuery;
+}) => {
   const jwt = await loginConfirm({ req, token: query.token });
 
-  if (!jwt && !user) {
+  if (!jwt) {
     res.statusCode = 400;
     return {
       props: {},
@@ -66,4 +74,4 @@ export const getServerSideProps = getServerSidePropsWithUser(async ({ req, res, 
       destination: '/login/success',
     },
   };
-});
+};

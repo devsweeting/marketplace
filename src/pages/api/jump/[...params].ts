@@ -1,10 +1,10 @@
 import type { NextApiHandler } from 'next';
 import { StatusCodes } from 'http-status-codes';
-import type { IApiRequest, IApiRequestWithBody } from '@/api/client';
 import type { IncomingHttpHeaders } from 'http';
 import { unwrapString } from '@/helpers/unwrapString';
 import { apiClient } from '@/api/client';
 import { withSentry } from '@sentry/nextjs';
+import type { IApiRequest, IApiRequestWithBody } from '@/api/client/apiClient.base';
 
 const methods = {
   GET: 'get',
@@ -14,7 +14,7 @@ const methods = {
   DELETE: 'delete',
 } as const;
 
-const jumpApiProxy: NextApiHandler = async (req, res) => {
+export const jumpApiProxy: NextApiHandler = async (req, res) => {
   const method = parseMethod(req.method);
   if (!method) {
     res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');

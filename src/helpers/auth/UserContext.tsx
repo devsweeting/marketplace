@@ -1,5 +1,7 @@
-import { createContext, useCallback, useEffect, useState, useMemo } from 'react';
-import type { IUser } from '../../types/user';
+import { createContext, useEffect, useState, useMemo } from 'react';
+import type { Dispatch, SetStateAction, ReactNode } from 'react';
+import type { IUser } from '@/types/user';
+import AwaitLock from 'await-lock';
 
 export interface IUserContext {
   user?: IUser;
@@ -7,45 +9,72 @@ export interface IUserContext {
   logout: () => void;
 }
 
-export interface IUserProvider {
-  children?: React.ReactNode;
+let globalCurrentUser: IUser | undefined;
+
+let globalSetUser: Dispatch<SetStateAction<IUser | undefined>> | undefined;
+
+const _userRefreshLock = new AwaitLock();
+
+export async function getCurrentUser(): Promise<IUser | undefined> {
+  await _userRefreshLock.acquireAsync();
+
+  _userRefreshLock.release();
+
+  return globalCurrentUser;
+}
+
+export async function refreshUser(): Promise<void> {
+  await _userRefreshLock.acquireAsync();
+
+  try {
+    const newUser: IUser | undefined = await fetch('/api/me').then((res) => res.json());
+
+    if (newUser?.exp) {
+      newUser.exp = new Date(newUser.exp);
+    }
+
+    // If the user ids are the same we ensure that current user
+    // stays the same object instead of a new one being created
+    if (newUser && globalCurrentUser && newUser.id == globalCurrentUser.id) {
+      Object.assign(globalCurrentUser, newUser);
+    } else {
+      globalCurrentUser = newUser;
+    }
+  } catch {
+    globalCurrentUser = undefined;
+  } finally {
+    _userRefreshLock.release();
+  }
+
+  globalSetUser?.(globalCurrentUser);
+}
+
+export function logout() {
+  globalSetUser?.(undefined);
 }
 
 export const UserContext = createContext<IUserContext>({
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  refreshUser: async () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  logout: () => {},
+  refreshUser,
+  logout,
 });
+
+export interface IUserProviderProps {
+  children: ReactNode;
+}
 
 /**
  * Custom provider for {@link UserContext} that loads the user from the `/api/me`
  * endpoint on initial mount and then provides the loaded value to all consumers
  */
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}: IUserProvider) => {
+export const UserProvider = ({ children }: IUserProviderProps) => {
   const [user, setUser] = useState<IUser | undefined>();
-
-  const refreshUser = useCallback(async () => {
-    try {
-      const newUser = await fetch('/api/me').then((res) => res.json());
-
-      setUser(newUser);
-    } catch {
-      setUser(undefined);
-    }
-  }, []);
-
-  const logout = useCallback(() => {
-    setUser(undefined);
-  }, []);
+  globalSetUser = setUser;
 
   useEffect(() => {
     refreshUser().catch(() => {
       return;
     });
-  }, [refreshUser]);
+  }, []);
 
   const contextValue = useMemo(
     () => ({
@@ -53,7 +82,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       refreshUser,
       logout,
     }),
-    [user, refreshUser, logout],
+    [user],
   );
 
   return <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>;

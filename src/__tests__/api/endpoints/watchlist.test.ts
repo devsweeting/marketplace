@@ -5,120 +5,72 @@ import {
 } from '@/api/endpoints/watchlist';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { StatusCodes } from 'http-status-codes';
+import { apiClient } from '@/api/client';
+import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
+
+jest.mock('@/api/client');
+const mockedClient = apiClient as jest.Mocked<typeof apiClient>;
 
 const mockData = mockAssetResponse.items[0];
-const mockPoductData = { id: mockData.id, name: mockData.name };
-
-const globalFetch = global.fetch;
+const mockProductData = { id: mockData.id, name: mockData.name };
 
 beforeEach(() => {
   jest.resetAllMocks();
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      headers: new Headers({
-        'content-type': 'application/json',
-      }),
-      ok: true,
-      status: StatusCodes.CREATED,
-      json: () => Promise.resolve({ test: 'test' }),
-    }),
-  ) as jest.Mock;
 });
 
 afterAll(() => {
-  global.fetch = globalFetch;
+  jest.resetAllMocks();
 });
 
 describe('watchlist checkForAssetOnWatchList', () => {
   test('should return true if on watchlist', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.CREATED,
-        json: () => Promise.resolve({ assetId: mockData.id, inWatchlist: true }),
-      }),
-    ) as jest.Mock);
+    mockedClient.get.mockResolvedValue(
+      mockJsonResponse({ assetId: mockData.id, inWatchlist: true }),
+    );
 
     const res = await checkForAssetOnWatchlist(mockData.id);
 
     expect(res).toBeTruthy();
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockedClient.get).toBeCalledTimes(1);
   });
 
   test('should return false if not on watchlist', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.CREATED,
-        json: () => Promise.resolve({ assetId: mockData.id, inWatchlist: false }),
-      }),
-    ) as jest.Mock);
+    mockedClient.get.mockResolvedValue(
+      mockJsonResponse({ assetId: mockData.id, inWatchlist: false }),
+    );
 
     const res = await checkForAssetOnWatchlist(mockData.id);
 
     expect(res).toBeFalsy();
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockedClient.get).toBeCalledTimes(1);
   });
 });
 
 describe('watchlist addToWatchlist', () => {
   test('should return 201 on successful watchlist addition', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.CREATED,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock);
+    mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.CREATED }));
 
-    const res = await addToWatchlist(mockPoductData);
+    const res = await addToWatchlist(mockProductData);
     expect(res).toBe(StatusCodes.CREATED);
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockedClient.post).toBeCalledTimes(1);
   });
 });
 
 describe('watchlist removeFromWatchList', () => {
   test('should return 204 on successful watchlist removal', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.NO_CONTENT,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock);
+    mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.NO_CONTENT }));
 
-    const res = await addToWatchlist(mockPoductData);
+    const res = await addToWatchlist(mockProductData);
     expect(res).toBe(StatusCodes.NO_CONTENT);
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockedClient.post).toBeCalledTimes(1);
   });
 
   test('should return 404 if watchlist item is not found', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.NOT_FOUND,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock);
+    mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.NOT_FOUND }));
 
-    const res = await addToWatchlist(mockPoductData);
+    const res = await addToWatchlist(mockProductData);
     expect(res).toBe(StatusCodes.NOT_FOUND);
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(mockedClient.post).toBeCalledTimes(1);
   });
 });
 

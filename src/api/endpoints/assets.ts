@@ -7,7 +7,7 @@ export const loadListAssetByPage = async ({
   queryString: string;
 }): Promise<{ items: IAsset[]; meta: IMeta }> => {
   try {
-    const res = await apiClient.get(`/assets?${queryString}`);
+    const res = await apiClient.get(`/assets?${queryString}`, { requireAuth: false });
     if (res.status !== 200 || !res.data) {
       return {
         meta: { currentPage: 1, itemCount: 0, itemsPerPage: 0, totalItems: 0, totalPages: 1 },
@@ -37,7 +37,7 @@ export const latestDropAssets = async ({
   const query = `page=${page}&limit=${limit}`;
 
   try {
-    const res = await apiClient.get(`/assets?${query}`);
+    const res = await apiClient.get(`/assets?${query}`, { requireAuth: false });
     if (res.status !== 200 || !res.data) {
       return {
         items: [],
@@ -56,7 +56,7 @@ export const latestDropAssets = async ({
 
 export const trendingMarkets = async (): Promise<{ markets: IMarket[] }> => {
   try {
-    const res = await apiClient.get(`/trending`);
+    const res = await apiClient.get(`/trending`, { requireAuth: false });
 
     if (res.status !== 200 || !res.data) {
       return {
@@ -76,7 +76,7 @@ export const trendingMarkets = async (): Promise<{ markets: IMarket[] }> => {
 
 export const getAssetById = async (id: string) => {
   try {
-    const res = await apiClient.get(`/assets/${id}`);
+    const res = await apiClient.get(`/assets/${id}`, { requireAuth: false });
     if (res.status !== 200 || !res.data) {
       return;
     }

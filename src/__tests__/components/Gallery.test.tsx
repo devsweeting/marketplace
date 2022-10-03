@@ -6,17 +6,19 @@ import { themeJump } from '@/styles/themeJump';
 import { mockGalleryImages } from '@/__mocks__/mockApiData';
 import { withTestRouter } from '../utils/TestRouter';
 import user from '@testing-library/user-event';
+import type { IGalleryProps } from '@/components/Gallery/Gallery';
+import type { IMedia } from '@/types/assetTypes';
 
-type Image = {
-  title: string;
-  description?: string;
-  sortOrder: number;
-  assetId: string;
-  fileId: string;
-  absoluteUrl: string;
-};
+const mockMedia = mockGalleryImages.map(
+  (image, index): IMedia => ({
+    id: index.toString(),
+    description: `description ${index}`,
+    file: `filename${index}`,
+    ...image,
+  }),
+);
 
-const MockGallery = ({ images }: { images: Image[] }) => {
+const MockGallery = ({ images }: IGalleryProps) => {
   return withTestRouter(
     <ThemeProvider theme={themeJump}>
       <Gallery images={images} />
@@ -28,7 +30,7 @@ const MockGallery = ({ images }: { images: Image[] }) => {
 };
 describe('Gallery', () => {
   test('Gallery should have images with src and alt', async () => {
-    render(<MockGallery images={mockGalleryImages} />);
+    render(<MockGallery images={mockMedia} />);
     const images = screen.getAllByRole('img');
     images.map((image) => {
       expect(image).toBeTruthy();
@@ -40,14 +42,18 @@ describe('Gallery', () => {
   });
 
   test('Gallery image switches on click', async () => {
-    render(<MockGallery images={mockGalleryImages} />);
+    render(<MockGallery images={mockMedia} />);
     const images = screen.getAllByRole('img') as HTMLImageElement[];
 
-    await images.map(async (image) => {
-      await user.click(image);
-      const mainImage = screen.getByRole('img', { name: 'main-gallery-image' }) as HTMLImageElement;
-      expect(mainImage).toBeVisible();
-      expect(mainImage.src).toBe(image.src);
-    });
+    await Promise.all([
+      images.map(async (image) => {
+        await user.click(image);
+        const mainImage = screen.getByRole('img', {
+          name: 'main-gallery-image',
+        }) as HTMLImageElement;
+        expect(mainImage).toBeVisible();
+        expect(mainImage.src).toBe(image.src);
+      }),
+    ]);
   });
 });

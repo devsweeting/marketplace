@@ -74,7 +74,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   };
 
   const handleRemoveFromWatchlist = (id: string, name: string) => {
-    if (!user) {
+    if (!user?.id) {
       removeWatchlistFromLocalStorage(id)
         .then(() => {
           setHasBeenAdded(false);

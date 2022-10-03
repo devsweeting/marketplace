@@ -127,7 +127,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     void handleUpdateBuyLimit();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sellOrderData]);
+  }, [sellOrderData, user]);
 
   useEffect(() => {
     if ((sliderValue as number) < 1) {

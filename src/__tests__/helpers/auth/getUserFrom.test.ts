@@ -20,8 +20,12 @@ const mockReq = {} as unknown as Request;
 //   "iat": 1655760764,
 //   "exp": 1655868764
 // }
-const mockValidJwt =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWQiOjEzMzcsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1NTc2MDc2NCwiZXhwIjoxNjU1ODY4NzY0fQ.sbsnnXF4pygn92GeJ5FMmQjy4HHEFkWZGdldjSxvdQ0';
+const mockValidJwt = {
+  accessToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWQiOjEzMzcsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1NTc2MDc2NCwiZXhwIjoxNjU1ODY4NzY0fQ.sbsnnXF4pygn92GeJ5FMmQjy4HHEFkWZGdldjSxvdQ0',
+  refreshToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJJZCI6MTMzNywiaWQiOjEzMzcsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1NTc2MDc2NCwiZXhwIjoxNjU1ODY4NzY0fQ.sbsnnXF4pygn92GeJ5FMmQjy4HHEFkWZGdldjSxvdQ0',
+};
 
 describe('getUserFromJWT', () => {
   test('Should return undefined if no JWT is supplied', () => {
@@ -32,6 +36,7 @@ describe('getUserFromJWT', () => {
     expect(getUserFromJwt(mockValidJwt)).toEqual({
       id: 1337,
       email: 'test@test.com',
+      exp: new Date('2022-06-22T03:32:44.000Z'),
     });
   });
 });
@@ -39,6 +44,10 @@ describe('getUserFromJWT', () => {
 describe('getUserFromRequest', () => {
   test('should get user id from a request', () => {
     mockGetUserCookie.mockReturnValue(mockValidJwt);
-    expect(getUserFromRequest(mockReq)).toEqual({ id: 1337, email: 'test@test.com' });
+    expect(getUserFromRequest(mockReq)).toEqual({
+      id: 1337,
+      email: 'test@test.com',
+      exp: new Date('2022-06-22T03:32:44.000Z'),
+    });
   });
 });

@@ -1,18 +1,24 @@
 import { testApiHandler } from 'next-test-api-route-handler';
-import jumpApiProxy from '@/pages/api/jump/[...params]';
+import { jumpApiProxy } from '@/pages/api/jump/[...params]';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
-import type { IApiResponse } from '@/api/client';
-jest.mock('../../../../api/client.ts');
-const mockApiClient = apiClient as unknown as jest.Mocked<typeof apiClient>;
+import type { IApiResponse } from '@/api/client/apiClient.base';
+jest.mock('@/api/client');
+const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
 
-const handler: typeof jumpApiProxy = jumpApiProxy;
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
+afterAll(() => {
+  jest.resetAllMocks();
+});
 
 describe('api/jump/[..params]', () => {
   test('should return unsupported method from incorrect method', async () => {
     await testApiHandler({
-      handler,
-      url: '/test',
+      handler: jumpApiProxy,
+      url: '/api/jump/test',
       test: async ({ fetch }) => {
         const res = await fetch({ method: 'HEAD' });
         await expect(res.status).toStrictEqual(StatusCodes.METHOD_NOT_ALLOWED);
@@ -22,7 +28,7 @@ describe('api/jump/[..params]', () => {
 
   test('should return unsupported method from incorrect url', async () => {
     await testApiHandler({
-      handler,
+      handler: jumpApiProxy,
       url: 'test',
       test: async ({ fetch }) => {
         const res = await fetch({ method: 'GET' });
@@ -40,8 +46,8 @@ describe('api/jump/[..params]', () => {
 
     await testApiHandler({
       rejectOnHandlerError: true,
-      handler,
-      url: '/test',
+      handler: jumpApiProxy,
+      url: '/api/jump/test',
       test: async ({ fetch }) => {
         const res = await fetch({ method: 'GET' });
         await expect(res.status).toStrictEqual(StatusCodes.OK);
@@ -55,8 +61,8 @@ describe('api/jump/[..params]', () => {
     } as unknown as IApiResponse);
     await testApiHandler({
       rejectOnHandlerError: true,
-      handler,
-      url: '/test',
+      handler: jumpApiProxy,
+      url: '/api/jump/test',
       test: async ({ fetch }) => {
         const res = await fetch({ method: 'GET' });
         await expect(res.status).toStrictEqual(StatusCodes.OK);
@@ -70,8 +76,8 @@ describe('api/jump/[..params]', () => {
     } as unknown as IApiResponse);
     await testApiHandler({
       rejectOnHandlerError: true,
-      handler,
-      url: '/test',
+      handler: jumpApiProxy,
+      url: '/api/jump/test',
       test: async ({ fetch }) => {
         const res = await fetch({ method: 'GET', header: { head: 'test' } });
         await expect(res.head).toStrictEqual(undefined);

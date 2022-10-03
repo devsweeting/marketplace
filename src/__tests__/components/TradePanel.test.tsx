@@ -12,15 +12,22 @@ import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
 import type { IUser } from '@/types/user';
 import user from '@testing-library/user-event';
-
+import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
-import { StatusCodes } from 'http-status-codes';
+import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
+
 const mockHandleClose = jest.fn();
 const mockUpdateAsset = jest.fn();
-const mockUserContextFunctions = jest.fn();
+
+jest.mock('@/api/client');
+const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
 
 const data: IAsset = mockAssetResponse.items[0];
-const mockUser = { id: 'asdf', email: 'example@example.com' };
+const mockUser = {
+  id: 'asdf',
+  email: 'example@example.com',
+  exp: new Date('3000-01-01T00:10:00.000Z'),
+};
 
 const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
@@ -38,38 +45,21 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
 
 const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser }) => {
   return (
-    <UserContext.Provider
-      value={{
-        user: user,
-        refreshUser: mockUserContextFunctions,
-        logout: mockUserContextFunctions,
-      }}
-    >
+    <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
       <MockTradePanel asset={asset} />
     </UserContext.Provider>
   );
 };
 
 describe('TradePanel', () => {
-  const globalFetch = global.fetch;
-
   beforeEach(() => {
     jest.resetAllMocks();
 
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.CREATED,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock;
+    mockApiClient.get.mockResolvedValue(mockJsonResponse());
   });
 
   afterAll(() => {
-    global.fetch = globalFetch;
+    jest.resetAllMocks();
   });
 
   test('should contain all the content', async () => {
@@ -195,43 +185,27 @@ describe('TradePanel', () => {
 });
 
 describe('TradePanel asset:Drop', () => {
-  const globalFetch = global.fetch;
-
   beforeEach(() => {
     jest.resetAllMocks();
 
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.CREATED,
-        json: () => Promise.resolve({ test: 'test' }),
-      }),
-    ) as jest.Mock;
+    mockApiClient.get.mockResolvedValue(mockJsonResponse());
   });
 
   afterAll(() => {
-    global.fetch = globalFetch;
+    jest.resetAllMocks();
   });
 
   test('should only allow user buy the allotted amount of shares', async () => {
-    const mockFetch = (global.fetch = jest.fn(() =>
-      Promise.resolve({
-        headers: new Headers({
-          'content-type': 'application/json',
-        }),
-        ok: true,
-        status: StatusCodes.OK,
-        json: () => Promise.resolve({ fractionsAvailableToPurchase: 10, fractionsPurchased: 10 }),
-      }),
-    ) as jest.Mock);
+    mockApiClient.get.mockResolvedValue(
+      mockJsonResponse({ fractionsAvailableToPurchase: 10, fractionsPurchased: 10 }),
+    );
+
     render(<MockTradePanelWithUser asset={mockAssetResponse.items[2]} user={mockUser} />);
+
     const buyBtn = await screen.findByRole('button', { name: /buy/i });
     const maxSliderValue = await screen.findByText('10');
     expect(maxSliderValue).toBeInTheDocument();
-    expect(buyBtn).toBeDisabled;
-    expect(mockFetch).toBeCalledTimes(1);
+    expect(buyBtn).toBeDisabled();
+    expect(mockApiClient.get).toBeCalledTimes(1);
   });
 });

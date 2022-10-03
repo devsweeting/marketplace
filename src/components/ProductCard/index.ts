@@ -1,2 +1,2 @@
 export { ProductCard } from './ProductCard';
-export type { ProductDataProps } from './ProductCard';
+export type { IProductDataProps } from './ProductCard';

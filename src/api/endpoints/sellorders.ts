@@ -12,7 +12,7 @@ export const purchaseSellOrder = async (
 };
 
 export const getSellOrderById = async (id: string) => {
-  const response = await apiClient.get(`/sellorders/${id}`);
+  const response = await apiClient.get(`/sellorders/${id}`, { requireAuth: false });
   return response;
 };
 

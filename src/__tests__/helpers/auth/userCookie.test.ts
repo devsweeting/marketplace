@@ -16,6 +16,7 @@ type Request = IncomingMessage & {
 };
 
 const mockReq = {} as unknown as Request;
+
 const res = {} as unknown as ServerResponse;
 
 describe('setUserCookie', () => {
@@ -24,8 +25,8 @@ describe('setUserCookie', () => {
   });
 
   test('should set user cookies', () => {
-    setUserCookie('some data', mockReq, res);
-    expect(mockCookiesNext.setCookies).toHaveBeenCalledTimes(1);
+    setUserCookie({ accessToken: 'test-string', refreshToken: 'refresh-token' }, mockReq, res);
+    expect(mockCookiesNext.setCookie).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -41,9 +42,13 @@ describe('getUserCookie', () => {
   });
 
   test('should return decrypted token if token does exist', () => {
-    mockCookiesNext.getCookie.mockImplementation(() => encrypt('test-string'));
+    mockCookiesNext.getCookie.mockImplementation(() => {
+      const token = encrypt('test-string');
+      const refresh = encrypt('refresh');
+      return JSON.stringify({ accessToken: token, refreshToken: refresh });
+    });
     const result = getUserCookie(mockReq);
-    expect(result).toBe('test-string');
+    expect(result).toStrictEqual({ accessToken: 'test-string', refreshToken: 'refresh' });
   });
 });
 
@@ -54,6 +59,6 @@ describe('removeUserCookie', () => {
 
   test('should call removeCookies once', () => {
     removeUserCookie(mockReq, res);
-    expect(mockCookiesNext.removeCookies).toHaveBeenCalledTimes(1);
+    expect(mockCookiesNext.deleteCookie).toHaveBeenCalledTimes(1);
   });
 });
