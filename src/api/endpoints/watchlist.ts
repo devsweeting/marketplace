@@ -17,8 +17,6 @@ export const isAssetOnWatchlist = async ({ id }: IAsset): Promise<boolean> => {
     const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`);
     return isOnWatchlist.data?.inWatchlist ?? false;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
     return false;
   }
 };
@@ -44,16 +42,11 @@ const hasBeenAddedWatchlist = (status: StatusCodes): boolean => {
 export const removeFromWatchlist = async (item: IWatchList): Promise<IWatchlistResponse> => {
   try {
     const deleteWatchListResponse = await apiClient.delete(`/watchlist/${item.id}`);
-    if (deleteWatchListResponse.isJson) {
-      return { success: false };
-    }
     if (deleteWatchListResponse.status === StatusCodes.OK) {
       return { success: true };
     }
     return { success: false };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
     return { success: false };
   }
 };
@@ -68,8 +61,6 @@ export const isAssetInLocalStorage = ({ id }: IAsset): boolean => {
     }
     return false;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
     return false;
   }
 };

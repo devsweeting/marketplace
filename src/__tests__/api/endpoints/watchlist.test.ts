@@ -1,8 +1,4 @@
-import {
-  addToWatchlist,
-  checkForAssetOnWatchlist,
-  hasBeenAddedWatchlist,
-} from '@/api/endpoints/watchlist';
+import { addToWatchlist, isAssetOnWatchlist, removeFromWatchlist } from '@/api/endpoints/watchlist';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
@@ -28,7 +24,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
       mockJsonResponse({ assetId: mockData.id, inWatchlist: true }),
     );
 
-    const res = await checkForAssetOnWatchlist(mockData.id);
+    const res = await isAssetOnWatchlist(mockData.id);
 
     expect(res).toBeTruthy();
     expect(mockedClient.get).toBeCalledTimes(1);
@@ -39,7 +35,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
       mockJsonResponse({ assetId: mockData.id, inWatchlist: false }),
     );
 
-    const res = await checkForAssetOnWatchlist(mockData.id);
+    const res = await isAssetOnWatchlist(mockData.id);
 
     expect(res).toBeFalsy();
     expect(mockedClient.get).toBeCalledTimes(1);
@@ -47,39 +43,29 @@ describe('watchlist checkForAssetOnWatchList', () => {
 });
 
 describe('watchlist addToWatchlist', () => {
-  test('should return 201 on successful watchlist addition', async () => {
+  test('should return true on successful watchlist addition', async () => {
     mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.CREATED }));
 
     const res = await addToWatchlist(mockProductData);
-    expect(res).toBe(StatusCodes.CREATED);
+    expect(res.success).toBe(true);
     expect(mockedClient.post).toBeCalledTimes(1);
   });
 });
 
 describe('watchlist removeFromWatchList', () => {
-  test('should return 204 on successful watchlist removal', async () => {
-    mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.NO_CONTENT }));
+  test('should return true on successful watchlist removal', async () => {
+    mockedClient.delete.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.OK }));
 
-    const res = await addToWatchlist(mockProductData);
-    expect(res).toBe(StatusCodes.NO_CONTENT);
-    expect(mockedClient.post).toBeCalledTimes(1);
+    const res = await removeFromWatchlist(mockProductData);
+    expect(res.success).toBe(true);
+    expect(mockedClient.delete).toBeCalledTimes(1);
   });
 
-  test('should return 404 if watchlist item is not found', async () => {
+  test('should return false if watchlist item is not found', async () => {
     mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.NOT_FOUND }));
 
     const res = await addToWatchlist(mockProductData);
-    expect(res).toBe(StatusCodes.NOT_FOUND);
+    expect(res.success).toBeFalsy;
     expect(mockedClient.post).toBeCalledTimes(1);
-  });
-});
-
-describe('watchlist hasBeenAddedWatchList', () => {
-  test('should return true for status CREATED and CONFLICT', async () => {
-    expect(hasBeenAddedWatchlist(StatusCodes.CREATED)).toBeTruthy();
-    expect(hasBeenAddedWatchlist(StatusCodes.CONFLICT)).toBeTruthy();
-    expect(hasBeenAddedWatchlist(StatusCodes.INTERNAL_SERVER_ERROR)).toBeFalsy();
-    expect(hasBeenAddedWatchlist(StatusCodes.NOT_FOUND)).toBeFalsy();
-    expect(hasBeenAddedWatchlist(StatusCodes.UNAUTHORIZED)).toBeFalsy();
   });
 });
