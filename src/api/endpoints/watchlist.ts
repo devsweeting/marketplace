@@ -19,16 +19,10 @@ export const checkForAssetOnWatchlist = async (id: string) => {
 };
 
 export const addToWatchlist = async (item: IProductDataProps) => {
-  // try {
   const addToWatchListResponse = await apiClient.post(`/watchlist/`, {
     body: { assetId: item.id },
   });
   return addToWatchListResponse.status;
-  // } catch (error) {
-  //   // eslint-disable-next-line no-console
-  //   console.error(error);
-  //   return StatusCodes.INTERNAL_SERVER_ERROR;
-  // }
 };
 
 export const removeFromWatchlist = async (item: IProductDataProps) => {
