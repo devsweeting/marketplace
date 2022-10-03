@@ -5,7 +5,7 @@ import type { IMedia } from '@/types/assetTypes';
 import { useEffect, useState } from 'react';
 
 export const AssetGallery = ({ images }: IAssetGallery) => {
-  const [currentImage, setCurrentImage] = useState<IMedia>(images[0]);
+  const [currentImage, setCurrentImage] = useState<IMedia>(images[0].file);
   const [imageId, setImageId] = useState(images[0].assetId);
 
   const handleImageSwitch = (image: IMedia) => {
@@ -31,7 +31,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
           objectFit={'contain'}
           alt={currentImage.title}
           style={{ textAlign: 'center', lineHeight: '325px' }}
-        ></Image>
+        />
       </Box>
       {images.length > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>

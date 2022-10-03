@@ -143,7 +143,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
             anchor="right"
             open={open}
             transitionDuration={300}
-            className={classes.Drawer}
+            className={classes.portfolioDrawer}
           >
             <Box>
               <Box className={classes.card_header}>
@@ -217,27 +217,20 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               )`
                   : 'No Units Available'}
               </Typography>
-              {sellOrderData && !!buyLimit && (
-                <Box>
-                  <Box sx={{ display: 'flex', marginTop: '20px' }}>
-                    <Typography>Order Book</Typography>
-                  </Box>
-                  <Slider
-                    defaultValue={0}
-                    value={sliderValue}
-                    max={buyLimit}
-                    step={1}
-                    valueLabelDisplay="auto"
-                    onChange={handleSliderChange}
-                    className={classes.slider_styles}
-                    marks={marks}
-                  />
-                </Box>
-              )}
-              <Box sx={{ margin: '40px 0' }}>
+              <Box sx={{ margin: '20px 0' }}>
                 {sellOrderData && !!buyLimit && (
                   <Box>
                     <Typography>Order Summary</Typography>
+                    <Slider
+                      defaultValue={0}
+                      value={sliderValue}
+                      max={buyLimit}
+                      step={1}
+                      valueLabelDisplay="auto"
+                      onChange={handleSliderChange}
+                      className={classes.slider_styles}
+                      marks={marks}
+                    />
                     <Box sx={{ display: 'flex', marginTop: '10px' }}>
                       <Typography>{formatNumber(sliderValue)} units</Typography>
                       <Typography sx={{ marginLeft: 'auto' }}>
@@ -251,29 +244,18 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                       variant="contained"
                       className={classes.fullWidthButton}
                     >
-                      Buy Now
+                      {`+ ${sliderValue} units`}
                     </Button>
+                    <Button variant="contained" className={classes.fullWidthButton}>
+                      {`Sell Now`}
+                    </Button>
+                    <Box display="flex" justifyContent="center" margin="30px 0 0 0">
+                      <Typography textAlign="center" textTransform="uppercase">
+                        Buy soon to make sure they’re not sold while you shop
+                      </Typography>
+                    </Box>
                   </Box>
                 )}
-                <Typography sx={{ padding: '10px 0', marginTop: '20px' }}>Card details</Typography>
-                <Box className={classes.detailsInfo}>
-                  <Typography>Date minted</Typography>
-                  <Typography>Oct 1 2022</Typography>
-                </Box>
-
-                <Divider className={classes.fullWidthDivider} />
-                <Box className={classes.detailsInfo}>
-                  <Typography>Number of Cards of same grade in PWCCNFT</Typography>
-                  <Typography>#</Typography>
-                </Box>
-
-                <Divider className={classes.fullWidthDivider} />
-                <Box className={classes.detailsInfo}>
-                  <Typography>Number of people who co-own this card</Typography>
-                  <Typography>#</Typography>
-                </Box>
-
-                <Divider className={classes.fullWidthDivider} />
               </Box>
             </Box>
           </Drawer>

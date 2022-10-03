@@ -51,6 +51,7 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
       marginLeft: '4px',
       marginBottom: '5px',
     },
+    multiFontWrapper: {},
   };
   const formatLargeValues = (value: number) => {
     if (isNaN(value)) return value;
@@ -267,8 +268,10 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                   >
                     Unit price paid
                   </Typography>
-                  <Typography sx={classes.largeTypography}>
-                    {'$' + assetData.fractionPriceCents / 100}
+                  <Box display="flex" alignItems="flex-end">
+                    <Typography sx={classes.largeTypography}>
+                      {'$' + assetData.fractionPriceCents / 100}
+                    </Typography>
                     <Typography style={classes.fineTypography}>
                       @{' '}
                       {formatLargeValues(
@@ -276,7 +279,7 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                       )}{' '}
                       Valuation
                     </Typography>
-                  </Typography>
+                  </Box>
                 </Box>
                 <Box sx={classes.textWrapper}>
                   <Typography
