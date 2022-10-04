@@ -65,6 +65,9 @@ const theme = createTheme({
       900: '#111827',
     },
   },
+  shape: {
+    borderRadius: 8,
+  },
 });
 
 /* Typography Theme Styles
@@ -238,7 +241,6 @@ export const themeJump = createTheme(theme, {
           fontFamily: 'Inter',
           fontWeight: 600,
           boxSizing: 'border-box',
-          borderRadius: '0.5rem',
           padding: '0.75rem 1rem',
           boxShadow: 'none',
           '&.MuiButton-containedPrimary': {
@@ -279,8 +281,10 @@ export const themeJump = createTheme(theme, {
             textTransform: 'none',
             backgroundColor: 'transparent',
             color: theme.palette.primary.main,
+            padding: 0,
             '&:hover': {
-              backgroundColor: theme.palette.grey[100],
+              backgroundColor: 'inherit',
+              color: theme.palette.grey[500],
             },
           },
           '&.Mui-disabled': {
@@ -289,6 +293,18 @@ export const themeJump = createTheme(theme, {
           },
           '&:hover': {
             boxShadow: 'none',
+          },
+        },
+      },
+    },
+    MuiLinearProgress: {
+      styleOverrides: {
+        root: {
+          '&.MuiLinearProgress-determinate': {
+            backgroundColor: theme.palette.grey[200],
+          },
+          '& > .MuiLinearProgress-bar1Determinate': {
+            borderRadius: '100vw',
           },
         },
       },
