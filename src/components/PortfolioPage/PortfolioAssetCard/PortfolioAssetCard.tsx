@@ -1,9 +1,12 @@
 import { formatNumber } from '@/helpers/formatNumber';
+import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { Card, CardActionArea, lighten, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import Image from 'next/image';
 
 export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; assetData: any }) => {
+  const details = parseAssetAttributes(assetData.attributes);
+
   const handleKeyDownOnCard = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
       onClick();
@@ -112,16 +115,16 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                 },
               }}
             >
-              {assetData.media && assetData.media[0] && assetData.media[0].file.absoluteUrl && (
+              {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
                 <Image
                   placeholder="blur"
-                  blurDataURL={`/_next/image?url=${assetData.media[0].file.absoluteUrl}&w=16&q=1`}
-                  src={assetData.media[0].file.absoluteUrl}
+                  blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
+                  src={assetData.media[0].absoluteUrl}
                   alt={assetData.media[0].title}
                   width={200}
                   height={340}
                   style={{ textAlign: 'center', lineHeight: '60px', maxWidth: '100px' }}
-                ></Image>
+                />
               )}
             </Box>
             <Box
@@ -175,11 +178,11 @@ export const PortfolioAssetCard = ({ onClick, assetData }: { onClick: any; asset
                     },
                   }}
                 >
-                  <Typography>{assetData.attributes.year[0]}</Typography>
+                  <Typography>{details.year}</Typography>
                   <Typography>#xxx</Typography>
                   <Typography>Set Topps</Typography>
                   <Typography>
-                    {assetData.attributes['grading service'][0]} {assetData.attributes['grade'][0]}
+                    {details.grading_service} {details.grading}
                   </Typography>
                 </Box>
               </Box>

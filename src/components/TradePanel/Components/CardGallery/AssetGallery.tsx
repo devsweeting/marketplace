@@ -5,7 +5,7 @@ import type { IMedia } from '@/types/assetTypes';
 import { useEffect, useState } from 'react';
 
 export const AssetGallery = ({ images }: IAssetGallery) => {
-  const [currentImage, setCurrentImage] = useState<IMedia>(images[0].file);
+  const [currentImage, setCurrentImage] = useState<IMedia>(images[0]);
   const [imageId, setImageId] = useState(images[0].assetId);
 
   const handleImageSwitch = (image: IMedia) => {

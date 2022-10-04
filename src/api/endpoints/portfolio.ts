@@ -1,7 +1,7 @@
 import { apiClient } from '@/api/client';
 
 export const getPortfolioAssets = async () => {
-  const response = await apiClient.get(`/users/portfolio/`);
+  const response = await apiClient.get(`/portfolio/`);
   return response.data;
 };
 

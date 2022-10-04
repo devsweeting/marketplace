@@ -1,5 +1,5 @@
 import { Box, Grid, Skeleton, useTheme } from '@mui/material';
-import type { IPorfolioAsset } from '@/pages/account/[category]';
+import type { IPorfolioAsset } from '@/pages/account';
 import React from 'react';
 import { PortfolioAssetCard } from '../PortfolioAssetCard';
 import type { IAsset } from '@/types/assetTypes';
@@ -37,6 +37,9 @@ export const PortfolioAssetList = ({
           portfolioAssetsList.map((asset) => {
             if (asset) {
               asset.isOnUserPortfolio = true;
+              if (!asset.fractionPriceCents || !asset.fractionQty) {
+                asset.isOnWatchlist = true;
+              }
               return (
                 <PortfolioAssetCard
                   key={asset?.id}

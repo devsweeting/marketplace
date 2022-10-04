@@ -1,7 +1,7 @@
 import { formatNumber } from '@/helpers/formatNumber';
 import { Box, Grid, Typography, useTheme, Skeleton } from '@mui/material';
 import React from 'react';
-import type { IPortfolioData } from '@/pages/account/[category]';
+import type { IPortfolioData } from '@/pages/account';
 
 export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) => {
   const theme = useTheme();
