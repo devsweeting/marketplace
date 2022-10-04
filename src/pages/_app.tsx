@@ -32,8 +32,8 @@ export default function MyApp(props: MyAppProps) {
   // Known issue change when https://github.com/vercel/next.js/issues/36019 fixed
   const { emotionCache = clientSideEmotionCache, pageProps } = props;
 
-  const [skin, setSkin] = React.useState(skins.pwcc);
-  const choosenTheme = skin === skins.pwcc ? themePWCC : themeJump;
+  const [skin, setSkin] = React.useState(skins.jump);
+  const chosenTheme = skin === skins.pwcc ? themePWCC : themeJump;
 
   const headerType: Record<string, any> = {
     faqPages: 'relative',
@@ -49,7 +49,7 @@ export default function MyApp(props: MyAppProps) {
         <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
       </Head>
-      <ThemeProvider theme={choosenTheme}>
+      <ThemeProvider theme={chosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
           <UserProvider>
             <ModalProvider>
