@@ -21,7 +21,7 @@ export const useSelectInput = makeStyles(
       padding: `0 ${theme.spacing(2)}`,
       border: 'none',
       boxSizing: 'border-box',
-      borderRight: `2px solid ${theme.palette.customGray.dark}`,
+      borderRight: `2px solid ${theme.palette.primary.main}`,
     },
     selectLeftPart: {
       height: '46px',
@@ -93,7 +93,7 @@ export const useSelectInput = makeStyles(
       width: '100%',
     },
     fixedSelectIcon: {
-      color: theme.palette.accent.main,
+      color: theme.palette.primary.main,
       marginRight: theme.spacing(2),
     },
   }),

@@ -60,7 +60,7 @@ export const useGalleryStyles = makeStyles(
       height: 64,
       width: 64,
       [theme.breakpoints.down('md')]: {
-        backgroundColor: theme.palette.accent.main,
+        backgroundColor: theme.palette.primary.main,
         height: 42,
         width: 42,
         padding: theme.spacing(0.5),
@@ -89,7 +89,7 @@ export const useGalleryStyles = makeStyles(
       textTransform: 'uppercase',
       letter: '0,4px',
       [theme.breakpoints.down('md')]: {
-        color: theme.palette.accent.main,
+        color: theme.palette.primary.main,
       },
     },
     carousel: {

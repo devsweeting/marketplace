@@ -19,7 +19,7 @@ export const useTableStyles = makeStyles(
       border: 0,
     },
     blueText: {
-      color: theme.palette.customBlue.main,
+      color: theme.palette.primary.main,
     },
   }),
   { name: 'accordionTableItem' },

@@ -21,7 +21,7 @@ export const Hero: React.FC<HeroProps> = ({ imgSrc, imgFit, imgHeight, imgAlt })
           height: `${imgHeight}px`,
         }),
         width: `100vw`,
-        background: themePWCC.palette.customGray.main,
+        background: themePWCC.palette.grey[100],
         overflow: `hidden`,
         zIndex: -100,
         // mb: 15,

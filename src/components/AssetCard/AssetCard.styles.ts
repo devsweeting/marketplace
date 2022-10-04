@@ -97,7 +97,7 @@ export const useAssetCardStyles = makeStyles((theme) => ({
     },
   },
   starWatchlisted: {
-    color: theme.palette.accent.main,
+    color: theme.palette.primary.main,
   },
   soldOutWrapper: {
     position: 'absolute',

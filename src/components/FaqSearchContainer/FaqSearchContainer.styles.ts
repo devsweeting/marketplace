@@ -6,7 +6,7 @@ export const useFaqSearchContainerStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(1),
     width: '100%',
     minHeight: '500px',
-    backgroundColor: theme.palette.accent.main,
+    backgroundColor: theme.palette.grey[100],
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
