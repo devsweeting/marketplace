@@ -32,6 +32,7 @@ export type IApiUrl = `/${string}`;
 
 export abstract class BaseApiClient {
   abstract getBaseUrl(): string;
+  abstract getHeaderFilters(): string[];
 
   get(url: IApiUrl, request: IApiRequest = {}) {
     return this.send(url, 'GET', request);
@@ -93,9 +94,11 @@ export abstract class BaseApiClient {
       } else {
         options?.onError(response);
       }
-
+      const headerFilters = this.getHeaderFilters();
       response.headers.forEach((value, key) => {
-        responseHeaders[key] = value.toLowerCase();
+        if (!headerFilters.includes(key)) {
+          responseHeaders[key] = value.toLowerCase();
+        }
       });
 
       const responseIsJson = responseHeaders['content-type']?.includes('application/json') ?? false;
