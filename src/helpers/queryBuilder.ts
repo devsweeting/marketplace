@@ -11,7 +11,7 @@ export const queryBuilder = async ({
   limit?: number;
   sortType?: string;
   checkedFilters?: Array<IFilter>;
-  rangeFilters?: null | RangeFilters
+  rangeFilters?: null | RangeFilters;
   search?: string | undefined;
 }) => {
   const queryString = await queryStringBuilder({
