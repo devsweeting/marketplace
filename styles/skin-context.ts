@@ -11,7 +11,7 @@ export const skins = {
     header: {
       searchTextColor: '#000 !important',
       searchIconColor: '#000',
-      searchInconBorderRadius: '4px !important',
+      searchIconBorderRadius: '4px !important',
       headerBackground: '#fff',
       navLink: {
         fontSize: '24px',
@@ -77,7 +77,7 @@ export const skins = {
 };
 
 export const SkinContext = React.createContext({
-  skin: skins.pwcc,
+  skin: skins.jump,
   setSkin: (item: any) => {
     item;
   },
