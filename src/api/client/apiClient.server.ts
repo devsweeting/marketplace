@@ -10,6 +10,10 @@ export class ServerApiClient extends BaseApiClient {
   getBaseUrl() {
     return process.env.NEXT_PUBLIC_BACKEND_URL ?? '';
   }
+
+  getHeaderFilters(): string[] {
+    return ['host'];
+  }
   async send(
     path: IApiUrl,
     method: string,
