@@ -4,6 +4,7 @@ import { OpenGraph } from '@/components/OpenGraph';
 import { Container, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { addToWatchlist, getLocalWatchlist } from '@/api/endpoints/watchlist';
+import type { IWatchList } from '@/api/endpoints/watchlist';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import Link from 'next/link';
 import { LoginTextContainer } from '@/styles/LoginPage.styles';
@@ -17,7 +18,7 @@ const Login: NextPage = (user) => {
     const addWatchListItems = async () => {
       const watchList = getLocalWatchlist();
 
-      await Promise.all(watchList.map((item) => addToWatchlist(item)));
+      await Promise.all(watchList.map((item: IWatchList) => addToWatchlist(item)));
     };
 
     addWatchListItems()
