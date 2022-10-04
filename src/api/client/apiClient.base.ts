@@ -94,7 +94,9 @@ export abstract class BaseApiClient {
       } else {
         options?.onError(response);
       }
-      const headerFilters = this.getHeaderFilters();
+      const headerFilters = this.getHeaderFilters().map((string) => {
+        return string.toLowerCase();
+      });
       response.headers.forEach((value, key) => {
         if (!headerFilters.includes(key)) {
           responseHeaders[key] = value.toLowerCase();
