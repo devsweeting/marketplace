@@ -11,9 +11,7 @@ export class ServerApiClient extends BaseApiClient {
     return process.env.NEXT_PUBLIC_BACKEND_URL ?? '';
   }
 
-  getHeaderFilters(): string[] {
-    return ['host'];
-  }
+  disallowHeader = ['host'];
   async send(
     path: IApiUrl,
     method: string,
@@ -51,7 +49,7 @@ export class ServerApiClient extends BaseApiClient {
     };
 
     const onError = (response: Response) => {
-      logger.info(
+      logger.error(
         `${host ?? '-'} ${authUser ?? '-'} [${time} ${timeZone}]  ${method} ${response.url} ${
           response.status
         } ${response.statusText} ${returnedByteSize ?? '-'}`,

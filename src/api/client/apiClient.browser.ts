@@ -15,9 +15,8 @@ export class BrowserApiClient extends BaseApiClient {
   getBaseUrl() {
     return '/api/jump';
   }
-  getHeaderFilters(): string[] {
-    return ['host'];
-  }
+  disallowHeader = ['host'];
+
   private _lock = new AwaitLock();
 
   get(url: IApiUrl, request: IBrowserApiRequest = {}) {
