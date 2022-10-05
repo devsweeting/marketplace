@@ -133,6 +133,7 @@ describe('ApiClient', () => {
     expect(global.fetch).toHaveBeenCalledWith(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test`, {
       body: undefined,
       method: 'GET',
+
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
   });
