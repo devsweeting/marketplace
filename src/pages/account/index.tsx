@@ -7,7 +7,7 @@ import type { IAsset } from '@/types/assetTypes';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 import { Box, Card, Grid, Typography } from '@mui/material';
-import { NoDismissLogin } from '@/components/LoginModal';
+import { LoginModal } from '@/components/LoginModal';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
 import { getAssetById } from '@/api/endpoints/assets';
@@ -98,7 +98,7 @@ const PortfolioPage: NextPage = () => {
     dispatch({ type: 'fetching' });
 
     switch (tab) {
-      case 'overview': {
+      case 'overview' || null: {
         return getPortfolioAssets()
           .then((data) => {
             dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
@@ -145,9 +145,9 @@ const PortfolioPage: NextPage = () => {
   useEffect(() => {
     if (user) {
       void handleStatsDataFetch();
-      if (isReady && Object.keys(query).length > 0) {
+      if (isReady) {
         const queryString = tab as string;
-        setActivePortfolioCategory(queryString);
+        setActivePortfolioCategory(queryString ? queryString : 'overview');
         void handlePortfolioDataFetch(queryString);
       }
     }
@@ -201,6 +201,17 @@ const PortfolioPage: NextPage = () => {
     }
     setTradePanelData(asset);
   };
+
+  if (!user) {
+    return (
+      <>
+        <Box height="35vw">
+          <Loader />;
+        </Box>
+        <LoginModal open={true} noDismiss={true} />
+      </>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -310,13 +321,7 @@ const PortfolioPage: NextPage = () => {
       </div>
     );
   }
-  if (!user) {
-    return (
-      <>
-        <NoDismissLogin />
-      </>
-    );
-  }
+
   return (
     <>
       <Grid>
@@ -422,7 +427,7 @@ const PortfolioPage: NextPage = () => {
           }}
         />
       )}
-      {Object.keys(portfolio).includes('statusCode') && <NoDismissLogin />}
+      {Object.keys(portfolio).includes('statusCode') && <LoginModal open={true} noDismiss={true} />}
     </>
   );
 };
