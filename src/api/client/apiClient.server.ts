@@ -51,7 +51,7 @@ export class ServerApiClient extends BaseApiClient {
     };
 
     const onError = (response: Response) => {
-      logger.error(
+      logger.info(
         `${host ?? '-'} ${authUser ?? '-'} [${time} ${timeZone}]  ${method} ${response.url} ${
           response.status
         } ${response.statusText} ${returnedByteSize ?? '-'}`,

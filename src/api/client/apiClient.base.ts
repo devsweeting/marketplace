@@ -84,6 +84,13 @@ export abstract class BaseApiClient {
 
     const url = `${this.getBaseUrl()}${path}`;
     try {
+      // console.log(
+      //   'sending fetch',
+      //   url,
+      //   { method, headers: request.headers, body },
+      //   request.headers,
+      // );
+      console.log('host', request.headers.host);
       const response = await fetch(url, {
         method,
         headers: request.headers,

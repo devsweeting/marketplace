@@ -16,6 +16,7 @@ const methods = {
 
 export const jumpApiProxy: NextApiHandler = async (req, res) => {
   const method = parseMethod(req.method);
+  console.log('proxy', method, req.url);
   if (!method) {
     res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');
     return;
