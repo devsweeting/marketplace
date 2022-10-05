@@ -7,7 +7,7 @@ import { unwrapString } from './unwrapString';
  * @param disallowHeaders array of headers to remove
  * @returns Request header with headers removed
  */
-export const parseHeaders = (
+export const parseAndFilterHeaders = (
   headers: IncomingHttpHeaders,
   disallowHeaders: string[] = [],
 ): Record<string, string> => {

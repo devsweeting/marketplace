@@ -126,13 +126,14 @@ describe('ApiClient', () => {
     await client.get('/test', {
       headers: {
         host: 'test',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
 
     expect(global.fetch).toHaveBeenCalledWith(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test`, {
       body: undefined,
       method: 'GET',
-      headers: {},
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
   });
 

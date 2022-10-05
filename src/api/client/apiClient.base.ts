@@ -1,7 +1,7 @@
 import type { NextServerRequest } from '@/types/next';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
-import { parseHeaders } from '@/helpers/parseHeaders';
+import { parseAndFilterHeaders } from '@/helpers/parseAndFilterHeaders';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -81,7 +81,7 @@ export abstract class BaseApiClient {
       }
     }
 
-    const requestHeaders = parseHeaders(request.headers, this.disallowHeader);
+    const requestHeaders = parseAndFilterHeaders(request.headers, this.disallowHeader);
     const responseHeaders: Record<string, string> = {};
 
     const url = `${this.getBaseUrl()}${path}`;
