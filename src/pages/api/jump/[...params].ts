@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
 import { withSentry } from '@sentry/nextjs';
 import type { IApiRequest, IApiRequestWithBody } from '@/api/client/apiClient.base';
-import { parseAndFilterHeaders } from '@/helpers/parseAndFilterHeaders';
+import { processHeaders } from '@/helpers/processHeaders';
 
 const methods = {
   GET: 'get',
@@ -19,7 +19,7 @@ export const jumpApiProxy: NextApiHandler = async (req, res) => {
     res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');
     return;
   }
-  const headers = parseAndFilterHeaders(req.headers);
+  const headers = processHeaders(req.headers);
   const body = parseBody(headers, req.body);
 
   const apiRequest: IApiRequestWithBody | IApiRequest = {
