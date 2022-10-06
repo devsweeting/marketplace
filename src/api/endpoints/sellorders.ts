@@ -1,4 +1,5 @@
 import { apiClient } from '@/api/client';
+import type { IUserBuyLimit } from '@/types/assetTypes';
 
 export const purchaseSellOrder = async (
   id: string,
@@ -6,7 +7,7 @@ export const purchaseSellOrder = async (
   fractionPriceCents: number,
 ) => {
   const response = await apiClient.post(`/sellorders/${id}/purchase`, {
-    body: { fractionsToPurchase: fractionsToPurchase, fractionPriceCents: fractionPriceCents },
+    body: { fractionsToPurchase, fractionPriceCents },
   });
   return response;
 };
@@ -21,7 +22,15 @@ export const getSellOrderById = async (id: string) => {
  * @param id Id of the sell order
  * @returns object
  */
-export const getNumSellordersUserCanBuy = async (id: string) => {
-  const response = await apiClient.get(`/sellorders/${id}/check`);
-  return response;
+export const getNumSellordersUserCanBuy = async (id: string): Promise<IUserBuyLimit> => {
+  try {
+    const res = await apiClient.get(`/sellorders/${id}/check`);
+
+    return res.data as unknown as IUserBuyLimit;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e);
+
+    throw e;
+  }
 };
