@@ -74,17 +74,15 @@ export const trendingMarkets = async (): Promise<{ markets: IMarket[] }> => {
   }
 };
 
-export const getAssetById = async (id: string) => {
+export const getAssetById = async (id: string): Promise<IAsset> => {
   try {
     const res = await apiClient.get(`/assets/${id}`, { requireAuth: false });
-    if (res.status !== 200 || !res.data) {
-      return;
-    }
-    return res as unknown as Promise<{ data: IAsset }>;
+
+    return res.data as unknown as IAsset;
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
 
-    return;
+    throw err;
   }
 };
