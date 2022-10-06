@@ -1,24 +1,27 @@
-import React from 'react';
-// import classNames from 'classnames';
 import type { ButtonProps as MaterialButtonProps } from '@mui/material/Button';
 import MaterialButton from '@mui/material/Button';
-// import { useButtonStyles } from './Button.styles';
+import { styled } from '@mui/material';
+import type { Theme } from '@mui/material';
+import { forwardRef } from 'react';
 
-export interface ButtonProps extends Omit<MaterialButtonProps, 'variant'> {
-  variant: 'outlined' | 'contained' | 'grayed' | 'link' | 'flat';
+export interface ButtonProps extends MaterialButtonProps {
+  rounded?: boolean;
 }
 
-export const Button: React.FC<MaterialButtonProps> = ({
-  children,
-  variant = 'contained',
-  startIcon = null,
-  endIcon = null,
-  ...props
-}) => {
-  // const classes = useButtonStyles();
-  return (
-    <MaterialButton variant={variant} startIcon={startIcon} endIcon={endIcon} {...props}>
-      {children}
-    </MaterialButton>
-  );
+type ButtonStyleProps = {
+  theme: Theme;
+  rounded?: boolean;
 };
+
+/* eslint-disable react/display-name */
+export const Button = styled(
+  forwardRef((props: ButtonProps, ref: any) => (
+    <MaterialButton ref={ref} {...props}>
+      {props.children}
+    </MaterialButton>
+  )),
+)(({ theme, rounded }: ButtonStyleProps) => ({
+  borderRadius: rounded ? '100vw' : theme.shape.borderRadius,
+}));
+
+Button.displayName = 'Button';
