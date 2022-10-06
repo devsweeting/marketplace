@@ -1,30 +1,30 @@
 import { useInterval } from '@/helpers/hooks/useInterval';
-import type { SxProps, Theme } from '@mui/material';
+import type { SxProps, Theme, TypographyTypeMap } from '@mui/material';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 
-export const CountdownTimer = ({
-  startTime,
-  sx = [],
-}: {
+interface CountdownProps {
   startTime: number;
+  variant?: TypographyTypeMap['props']['variant'];
   sx?: SxProps<Theme>;
-}) => {
+}
+
+export const CountdownTimer = ({ startTime, variant = 'body1', sx = {} }: CountdownProps) => {
   const [secondsRemaining, setSecondsRemaining] = useState(startTime);
 
-  const secondsToDisplay = secondsRemaining % 60;
+  const secondsToDisplay = Math.ceil(secondsRemaining % 60);
   const minutesRemaining = (secondsRemaining - secondsToDisplay) / 60;
-  const minutesToDisplay = minutesRemaining % 60;
-  const hoursToDisplay = (minutesRemaining - minutesToDisplay) / 60;
+  const minutesToDisplay = Math.ceil(minutesRemaining % 60);
+  const hoursToDisplay = Math.ceil((minutesRemaining - minutesToDisplay) / 60);
 
   useInterval(() => {
     if (secondsRemaining > 0) {
-      setSecondsRemaining(secondsRemaining - 1);
+      setSecondsRemaining((prev) => prev - 1);
     }
   }, 1000);
 
   return (
-    <Typography sx={sx}>
+    <Typography variant={variant} sx={sx}>
       {twoDigits(hoursToDisplay)}:{twoDigits(minutesToDisplay)}:{twoDigits(secondsToDisplay)}
     </Typography>
   );
