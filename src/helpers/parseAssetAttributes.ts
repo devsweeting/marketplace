@@ -18,19 +18,19 @@ export const parseAssetAttributes = (attributes: IAttribute[]): IAssetDetails =>
     attributes.flatMap((attribute) => {
       const value = attribute.value ?? '';
       switch (attribute.trait) {
-        case 'Year':
+        case 'year':
           details.year = value;
           break;
-        case 'Category':
+        case 'category':
           details.categories.push(value);
           break;
-        case 'Grade':
+        case 'grade':
           details.grading = value;
           break;
-        case 'Grading Service':
+        case 'grading service':
           details.grading_service = value;
           break;
-        case 'Set':
+        case 'set':
           details.set = value;
           break;
       }
