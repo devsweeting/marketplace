@@ -43,13 +43,15 @@ export const BuyModal = ({
     setValue(0);
   };
 
-  const handleBuyFractions = async () => {
+  const handleBuyFractions = async (): Promise<void> => {
     const response: any = await purchaseSellOrder(
       sellOrder.id,
       totalFractions,
       sellOrder.fractionPriceCents,
     );
+
     updateAsset(sellOrder.assetId);
+
     switch (response.status) {
       case StatusCodes.CREATED:
         setValue(1);
@@ -71,12 +73,14 @@ export const BuyModal = ({
         break;
     }
   };
+
   const handleClose = () => {
     if (value > 0) {
       resetState();
     }
     onClose();
   };
+
   if (!user) {
     return null;
   }
@@ -90,13 +94,7 @@ export const BuyModal = ({
             Buy {totalFractions} fractions for ${totalPrice}?
           </Typography>
           <Box className={classNames(modalClasses.content, modalClasses.flex)}>
-            <Button
-              id="confirm"
-              className={modalClasses.button}
-              onClick={() => {
-                void handleBuyFractions();
-              }}
-            >
+            <Button id="confirm" className={modalClasses.button} onClick={handleBuyFractions}>
               confirm
             </Button>
             <Button
