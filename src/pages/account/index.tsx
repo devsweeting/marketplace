@@ -6,7 +6,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
-import { Box, Card, Grid, Typography } from '@mui/material';
+import { Box, Card, Grid, Typography, useTheme } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
@@ -93,6 +93,7 @@ const PortfolioPage: NextPage = () => {
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const [isOpen, setIsOpen] = useState(false);
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const theme = useTheme();
 
   const handlePortfolioDataFetch = (tab: string | string[] | undefined) => {
     dispatch({ type: 'fetching' });
@@ -234,6 +235,10 @@ const PortfolioPage: NextPage = () => {
               width: '100%',
               alignItems: 'center',
               justifyContent: 'flex-start',
+              [theme.breakpoints.down('sm')]: {
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              },
             }}
           >
             <Box>
@@ -258,6 +263,10 @@ const PortfolioPage: NextPage = () => {
                 justifyContent: 'space-between',
                 width: '100%',
                 marginRight: '20px',
+                [theme.breakpoints.down('sm')]: {
+                  marginRight: '0px',
+                  justifyContent: 'space-evenly',
+                },
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', padding: '0 16px' }}>
@@ -300,7 +309,7 @@ const PortfolioPage: NextPage = () => {
             </Grid>
           </Card>
         </Grid>
-        <Box height="35vw">
+        <Box sx={{ height: '30vw' }}>
           <Loader />;
         </Box>
       </Grid>
@@ -343,6 +352,10 @@ const PortfolioPage: NextPage = () => {
               width: '100%',
               alignItems: 'center',
               justifyContent: 'flex-start',
+              [theme.breakpoints.down('sm')]: {
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              },
             }}
           >
             <Box>
@@ -367,6 +380,10 @@ const PortfolioPage: NextPage = () => {
                 justifyContent: 'space-between',
                 width: '100%',
                 marginRight: '20px',
+                [theme.breakpoints.down('sm')]: {
+                  marginRight: '0px',
+                  justifyContent: 'space-evenly',
+                },
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', padding: '0 16px' }}>
