@@ -11,9 +11,7 @@ export class ServerApiClient extends BaseApiClient {
     return process.env.NEXT_PUBLIC_BACKEND_URL ?? '';
   }
 
-  getHeaderFilters(): string[] {
-    return ['host'];
-  }
+  disallowHeader = ['host'];
   async send(
     path: IApiUrl,
     method: string,

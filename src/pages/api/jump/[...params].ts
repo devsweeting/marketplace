@@ -1,10 +1,9 @@
 import type { NextApiHandler } from 'next';
 import { StatusCodes } from 'http-status-codes';
-import type { IncomingHttpHeaders } from 'http';
-import { unwrapString } from '@/helpers/unwrapString';
 import { apiClient } from '@/api/client';
 import { withSentry } from '@sentry/nextjs';
 import type { IApiRequest, IApiRequestWithBody } from '@/api/client/apiClient.base';
+import { processHeaders } from '@/helpers/processHeaders';
 
 const methods = {
   GET: 'get',
@@ -20,7 +19,7 @@ export const jumpApiProxy: NextApiHandler = async (req, res) => {
     res.status(StatusCodes.METHOD_NOT_ALLOWED).send('Unsupported method type');
     return;
   }
-  const headers = parseHeaders(req.headers);
+  const headers = processHeaders(req.headers);
   const body = parseBody(headers, req.body);
 
   const apiRequest: IApiRequestWithBody | IApiRequest = {
@@ -52,23 +51,6 @@ const parseMethod = (str?: string): typeof methods[keyof typeof methods] | undef
   }
 
   return methods[str as keyof typeof methods];
-};
-
-const parseHeaders = (headers: IncomingHttpHeaders): Record<string, string> => {
-  const updatedHeaders: Record<string, string> = {};
-
-  for (const [key, value] of Object.entries(headers)) {
-    if (key.toLowerCase() === 'host') {
-      continue;
-    }
-    const updatedValue = unwrapString(value);
-
-    if (updatedValue) {
-      updatedHeaders[key] = updatedValue;
-    }
-  }
-
-  return updatedHeaders;
 };
 
 const parseBody = (

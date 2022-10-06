@@ -122,6 +122,21 @@ describe('ApiClient', () => {
     });
   });
 
+  test('should remove host header', async () => {
+    await client.get('/test', {
+      headers: {
+        host: 'test',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(`${process.env.NEXT_PUBLIC_BACKEND_URL}/test`, {
+      body: undefined,
+      method: 'GET',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+  });
+
   test('it handles return data as text or json', async () => {
     const jsonRes = await client.get('/test');
 

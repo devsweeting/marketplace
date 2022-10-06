@@ -1,6 +1,7 @@
 import type { NextServerRequest } from '@/types/next';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
+import { processHeaders } from '@/helpers/processHeaders';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
@@ -32,7 +33,7 @@ export type IApiUrl = `/${string}`;
 
 export abstract class BaseApiClient {
   abstract getBaseUrl(): string;
-  abstract getHeaderFilters(): string[];
+  disallowHeader: string[] = [];
 
   get(url: IApiUrl, request: IApiRequest = {}) {
     return this.send(url, 'GET', request);
@@ -80,13 +81,14 @@ export abstract class BaseApiClient {
       }
     }
 
+    const requestHeaders = processHeaders(request.headers, this.disallowHeader);
     const responseHeaders: Record<string, string> = {};
 
     const url = `${this.getBaseUrl()}${path}`;
     try {
       const response = await fetch(url, {
         method,
-        headers: request.headers,
+        headers: requestHeaders,
         body,
       });
       if (response.ok) {
@@ -94,13 +96,8 @@ export abstract class BaseApiClient {
       } else {
         options?.onError(response);
       }
-      const headerFilters = this.getHeaderFilters().map((string) => {
-        return string.toLowerCase();
-      });
       response.headers.forEach((value, key) => {
-        if (!headerFilters.includes(key)) {
-          responseHeaders[key] = value.toLowerCase();
-        }
+        responseHeaders[key] = value.toLowerCase();
       });
 
       const responseIsJson = responseHeaders['content-type']?.includes('application/json') ?? false;
