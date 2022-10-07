@@ -13,6 +13,7 @@ declare module '@mui/material/styles' {
     xl7: CSSProperties;
     xl8: CSSProperties;
     xl9: CSSProperties;
+    nav: CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -26,6 +27,7 @@ declare module '@mui/material/styles' {
     xl7?: CSSProperties;
     xl8?: CSSProperties;
     xl9?: CSSProperties;
+    nav?: CSSProperties;
   }
 }
 
@@ -41,6 +43,13 @@ declare module '@mui/material/Typography' {
     xl7: true;
     xl8: true;
     xl9: true;
+    nav: true;
+    h1: false;
+    h2: false;
+    h3: false;
+    h4: false;
+    h5: false;
+    h6: false;
   }
 }
 
@@ -84,37 +93,7 @@ typography is mapped to values in the figmas to make implementations a bit simpl
 
 export const themeJump = createTheme(theme, {
   typography: {
-    h2: {
-      fontFamily: 'League Gothic',
-      fontWeight: 400,
-      fontSize: '60px',
-      letter: '-0.5px',
-    },
-    h3: {
-      fontFamily: 'League Gothic',
-      fontWeight: 400,
-      fontSize: '24px',
-    },
-    // navlinks
-    h4: {
-      fontFamily: 'League Gothic',
-      fontWeight: 400,
-      fontSize: '24px',
-      lineHeight: '19px',
-      letter: '5%',
-      color: '#000',
-      textTransform: 'uppercase',
-      '@media (max-width:900px)': {
-        fontSize: '18px',
-      },
-    },
-    h5: {
-      fontFamily: 'League Gothic',
-      fontWeight: 400,
-      fontSize: '24px',
-      lineHeight: '29px',
-      letterSpacing: '0.05em',
-    },
+    fontFamily: 'Inter',
     lg: {
       fontSize: 'clamp(1rem, 0.42735042735042733vw + 0.8397435897435898rem, 1.25rem)',
       lineHeight: '1.75rem',
@@ -185,6 +164,17 @@ export const themeJump = createTheme(theme, {
     },
     button: {
       fontFamily: 'Inter',
+    },
+    nav: {
+      fontFamily: 'Inter',
+      fontWeight: 700,
+      fontSize: '1rem',
+      lineHeight: '1.5rem',
+      color: theme.palette.primary.main,
+      textTransform: 'uppercase',
+      '@media (max-width:900px)': {
+        fontSize: '18px',
+      },
     },
   },
   components: {

@@ -51,7 +51,7 @@ export const SortMenu = ({ handleSortType }: { handleSortType: (id: string) => v
           endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
           className={open ? classes.open : classes.MenuButton}
         >
-          <Typography variant="h3" component="h3" className={classes.MenuTitle}>
+          <Typography variant="lg" component="h3" className={classes.MenuTitle}>
             SORT BY
           </Typography>
         </Button>

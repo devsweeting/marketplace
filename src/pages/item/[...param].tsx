@@ -165,7 +165,7 @@ const DetailPage = ({ nftData }: { nftData: IAsset }) => {
           </Grid>
         </Box>
       ) : (
-        <Typography variant="h5" component="p" sx={{ paddingTop: '150px' }}>
+        <Typography variant="xl2" component="p" sx={{ paddingTop: '150px' }}>
           Error, please refresh the page
         </Typography>
       )}

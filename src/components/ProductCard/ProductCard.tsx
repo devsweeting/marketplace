@@ -90,7 +90,7 @@ export const ProductCard = ({ name, id }: IProductDataProps) => {
         <Box className={classes.shareWrapper}>
           <ShareButton />
         </Box>
-        <Typography className={classes.productTitle} variant="h2" component="h2">
+        <Typography className={classes.productTitle} variant="xl5" component="h2">
           {name}
         </Typography>
 

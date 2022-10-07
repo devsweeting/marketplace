@@ -35,7 +35,7 @@ export const Testimonials = () => {
   return (
     <Box className={classes.testimonialsWrapper}>
       <div className={classes.testimonialHeaderWrapper}>
-        <Typography variant="h2" component="h2" className={classes.testimonialsHeader}>
+        <Typography variant="xl5" component="h2" className={classes.testimonialsHeader}>
           What our collectors say
         </Typography>
         <Typography variant="subtitle1" component="p" className={classes.testimonialsSubHeader}>
@@ -77,7 +77,7 @@ export const Testimonials = () => {
                   />
                 </Box>
                 <Box>
-                  <Typography variant="h3" component="h2">
+                  <Typography variant="lg" component="h2">
                     {testimony.name}
                   </Typography>
                   <Typography variant="subtitle1" component="h2" style={{ color: 'black' }}>

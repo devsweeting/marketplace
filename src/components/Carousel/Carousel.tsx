@@ -17,7 +17,7 @@ export const Carousel = () => {
   if (error)
     return (
       <Box sx={{ padding: '20px 0' }}>
-        <Typography variant="h2" component="h2">
+        <Typography variant="xl5" component="h2">
           Something went wrong...
         </Typography>
         <Typography variant="body1" component="p">
@@ -29,7 +29,7 @@ export const Carousel = () => {
   return (
     <Grid item xs={12} className={classes.wrapper}>
       <Box className={classes.header}>
-        <Typography variant="h2" component="h4" className={classes.title}>
+        <Typography variant="xl5" component="h4" className={classes.title}>
           More to explore
         </Typography>
       </Box>

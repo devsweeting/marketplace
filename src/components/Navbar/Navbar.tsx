@@ -45,7 +45,7 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
           </div>
         ))}
         <Typography
-          variant="h4"
+          variant="nav"
           component="span"
           className={`${classes.searchIcon} ${classes.mobileNavMenuItem}`}
           ml={matchesMobile ? 1 : 2}

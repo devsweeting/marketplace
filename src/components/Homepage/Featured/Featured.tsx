@@ -15,11 +15,11 @@ export const Featured = () => {
   };
   return (
     <Box sx={classes.wrapper}>
-      <Typography variant="h2" component="h2">
+      <Typography variant="xl5" component="h2">
         Featured in
       </Typography>
       <Box>
-        <Typography variant="h2" component="h2" style={{ display: 'flex' }}>
+        <Typography variant="xl5" component="h2" style={{ display: 'flex' }}>
           {/* Companies */}
         </Typography>
       </Box>

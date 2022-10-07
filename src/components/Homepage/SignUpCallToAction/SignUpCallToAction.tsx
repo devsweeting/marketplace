@@ -97,7 +97,7 @@ export const SignUpCallToAction = () => {
           zIndex: 6,
         }}
       >
-        <Typography variant="h2" component="h2" sx={classes.CTAHeader}>
+        <Typography variant="xl5" component="h2" sx={classes.CTAHeader}>
           New Drops every week
         </Typography>
         <Typography variant="subtitle1" component="p" sx={classes.CTASubHeader}>

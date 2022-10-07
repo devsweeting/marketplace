@@ -179,7 +179,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               </Grid>
               <Grid item xs={5} sx={{ textAlign: 'right' }}>
                 <Typography className={classes.card_valuation}>Card Valuation</Typography>
-                <Typography variant="h3">
+                <Typography variant="lg">
                   {'$' +
                     formatNumber(
                       calcValuation(

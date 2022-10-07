@@ -67,7 +67,7 @@ export const FeaturedMarketCarousel = ({
   if (!assets || !width) return <Loader />;
   return (
     <Grid item xs={12} className={classes.wrapper}>
-      <Typography variant="h2" component="h2" className={classes.title}>
+      <Typography variant="xl5" component="h2" className={classes.title}>
         {title}
       </Typography>
       <Box

@@ -137,7 +137,7 @@ const FaqTopicPage = () => {
                 />
               </Box>
               <Box className={classes.showOnDesktop}>
-                <Typography variant="h2" component="h2" className={classes.menuTitle}>
+                <Typography variant="xl5" component="h2" className={classes.menuTitle}>
                   Topics
                 </Typography>
                 {articles &&
@@ -152,7 +152,7 @@ const FaqTopicPage = () => {
                       >
                         <Typography
                           className={classes.topicLink}
-                          variant="h5"
+                          variant="xl2"
                           component="h4"
                           id={a.category}
                           onClick={changeTopicOnDekstop}
@@ -179,7 +179,7 @@ const FaqTopicPage = () => {
                   articles.map((a, i) => {
                     return (
                       <div key={a.category} id={a.category} ref={myRefs.current[i]}>
-                        <Typography variant="h2" component="h1" className={classes.topicTitle}>
+                        <Typography variant="xl5" component="h1" className={classes.topicTitle}>
                           {a.name}
                         </Typography>
                         <Box className={classes.accordionWrapper}>
@@ -205,7 +205,7 @@ const FaqTopicPage = () => {
               <Box className={classes.showOnDesktop}>
                 {activeTopic && (
                   <Box>
-                    <Typography variant="h2" component="h1" className={classes.topicTitle}>
+                    <Typography variant="xl5" component="h1" className={classes.topicTitle}>
                       {activeTopic.name}
                     </Typography>
                     <Box className={classes.accordionWrapper}>

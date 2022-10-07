@@ -34,10 +34,10 @@ export const Hero = () => {
   };
   return (
     <Box sx={classes.wrapper}>
-      <Typography variant="h2" component="h2" sx={classes.title}>
+      <Typography variant="xl5" component="h2" sx={classes.title}>
         Physical trading cards
       </Typography>
-      <Typography variant="h2" component="h2" sx={classes.title}>
+      <Typography variant="xl5" component="h2" sx={classes.title}>
         NFT marketplace
       </Typography>
       <Box sx={classes.searchBox}>

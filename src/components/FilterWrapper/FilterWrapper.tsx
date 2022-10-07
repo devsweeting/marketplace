@@ -141,7 +141,7 @@ export const FilterWrapper = () => {
               }}
             >
               <Typography
-                variant="h3"
+                variant="lg"
                 component={'h3'}
                 sx={{ marginLeft: 1.2, marginRight: 1.2, fontSize: '1.3rem', whiteSpace: 'nowrap' }}
               >
@@ -187,7 +187,7 @@ export const FilterWrapper = () => {
               }}
             >
               <div className={classes.mobileFilterHead}>
-                <Typography variant="h3" component={'h3'} className={classes.mobileHeader}>
+                <Typography variant="lg" component={'h3'} className={classes.mobileHeader}>
                   Explore Drops
                 </Typography>
                 <ClearAllFilter

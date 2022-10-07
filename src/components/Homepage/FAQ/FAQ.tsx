@@ -38,7 +38,7 @@ export const FAQ = () => {
   return (
     <Grid sx={classes.wrapper}>
       <Box sx={classes.container}>
-        <Typography variant="h2" component="h2" sx={classes.header}>
+        <Typography variant="xl5" component="h2" sx={classes.header}>
           {'Frequently Asked Questions'}
         </Typography>
         <Box>

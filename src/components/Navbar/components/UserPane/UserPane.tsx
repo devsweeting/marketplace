@@ -76,7 +76,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
       >
         <div onMouseLeave={handleClose}>
           <MenuItem sx={{ pointerEvents: 'none' }}>
-            <Typography variant="h4" component="span" className={classes.userPanelText}>
+            <Typography variant="nav" component="span" className={classes.userPanelText}>
               Signed in as {user.email ?? 'foo@bar.com'}
             </Typography>
           </MenuItem>
@@ -86,7 +86,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
             <Link href={path} className={classes.userPanelText} key={`${title}-${index}`}>
               <a style={{ textDecoration: 'none' }}>
                 <MenuItem>
-                  <Typography variant="h4" component="span" className={classes.userPanelText}>
+                  <Typography variant="nav" component="span" className={classes.userPanelText}>
                     {title}
                   </Typography>
                 </MenuItem>

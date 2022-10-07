@@ -18,7 +18,7 @@ export const NavLink: React.FC<NavLinksProps> = ({ href, children }) => {
     <Link href={href}>
       <a style={{ textDecoration: 'none' }}>
         <Typography
-          variant="h4"
+          variant="nav"
           component="span"
           className={classNames(href === router.asPath && classes.navLinkActive, classes.navLink)}
         >

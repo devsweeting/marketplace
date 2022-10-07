@@ -116,7 +116,7 @@ export const HowItWorks = () => {
   return (
     <Box sx={classes.wrapper}>
       <Box sx={classes.howItWorksHeader}>
-        <Typography variant="h2" component="h2">
+        <Typography variant="xl5" component="h2">
           How it works
         </Typography>
         <Typography variant="body1" component="p" sx={classes.text}>
@@ -144,7 +144,7 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="h3" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
             Digitize
           </Typography>
           <Typography variant="body1" component="p">
@@ -161,7 +161,7 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="h3" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
             Collect
           </Typography>
           <Typography variant="body1" component="p">
@@ -178,7 +178,7 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="h3" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
             Sell
           </Typography>
           <Typography variant="body1" component="p">
@@ -207,7 +207,7 @@ export const HowItWorks = () => {
             }}
           >
             <div style={classes.heroBox}>
-              <Typography variant="h3" component="h3" sx={classes.heroTitle} style={{}}>
+              <Typography variant="lg" component="h3" sx={classes.heroTitle} style={{}}>
                 1. Digitize
               </Typography>
               <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
@@ -280,7 +280,7 @@ export const HowItWorks = () => {
             }}
           >
             <div style={classes.heroBox}>
-              <Typography variant="h3" component="h3" sx={classes.heroTitle} style={{}}>
+              <Typography variant="lg" component="h3" sx={classes.heroTitle} style={{}}>
                 2. Collect
               </Typography>
               <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
@@ -319,7 +319,7 @@ export const HowItWorks = () => {
           >
             <div style={classes.heroBox}>
               <Typography
-                variant="h3"
+                variant="lg"
                 component="h3"
                 sx={classes.heroTitle}
                 style={{ color: 'white' }}

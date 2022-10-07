@@ -43,7 +43,7 @@ export const Card = ({ item }: CardProps) => {
           <Typography variant="body2" component="p" mt={3} className={classes.itemType}>
             {item.name}
           </Typography>
-          <Typography variant="h3" component="p" mb={1} mt={1} className={classes.itemTitle}>
+          <Typography variant="lg" component="p" mb={1} mt={1} className={classes.itemTitle}>
             {item.description}
           </Typography>
           <Divider />

@@ -17,7 +17,7 @@ export const DescriptionText: React.FC<BorderBoxProps> = ({ text }) => {
       <Box mb={6} sx={{ display: { xs: 'none', md: 'block' } }}>
         <Divider />
       </Box>
-      <Typography variant="h4" component="h2" className={classes.title}>
+      <Typography variant="nav" component="h2" className={classes.title}>
         Description
       </Typography>
       <Typography id={'description'} variant="body1" component="h2" sx={{ fontSize: '16px' }}>

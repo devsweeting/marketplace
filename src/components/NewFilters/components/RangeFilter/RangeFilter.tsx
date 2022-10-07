@@ -113,7 +113,7 @@ export const RangeFilter = ({
         onClick={handleClick}
         endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
       >
-        <Typography variant="h3" component="h3" className={classes.MenuTitle}>
+        <Typography variant="lg" component="h3" className={classes.MenuTitle}>
           {filter.categoryId}
         </Typography>
       </Button>
@@ -129,7 +129,7 @@ export const RangeFilter = ({
         className={classes.MenuBackground}
       >
         <Box sx={{ p: 1 }}>
-          <Typography variant="h3" component="h4" sx={{ fontSize: '14px', marginLeft: 2 }}>
+          <Typography variant="lg" component="h4" sx={{ fontSize: '14px', marginLeft: 2 }}>
             {filter.categoryId}
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

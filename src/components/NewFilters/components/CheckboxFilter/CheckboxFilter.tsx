@@ -82,7 +82,7 @@ export const CheckboxFilter = ({
         onClick={handleClick}
         endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
       >
-        <Typography variant="h3" component="h3" className={classes.MenuTitle}>
+        <Typography variant="lg" component="h3" className={classes.MenuTitle}>
           {filter.categoryId}
         </Typography>
       </Button>

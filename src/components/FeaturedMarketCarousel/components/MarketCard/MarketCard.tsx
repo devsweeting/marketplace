@@ -48,7 +48,7 @@ export const MarketCard = ({
         </Box>
         <Box className={classes.assetTextContainer}>
           {asset.name && (
-            <Typography variant="h2" component="h4" className={classes.cardTitle} id="cardTitle">
+            <Typography variant="xl5" component="h4" className={classes.cardTitle} id="cardTitle">
               {asset.name}
             </Typography>
           )}
