@@ -50,10 +50,6 @@ export const TitleContainer = styled('div')(({ theme }) => ({
   },
 }));
 
-export const Category = styled(Typography)({
-  fontWeight: 500,
-});
-
 export const DetailsContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',

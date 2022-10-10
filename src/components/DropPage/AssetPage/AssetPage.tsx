@@ -9,7 +9,6 @@ import {
   DetailsContainer,
   ActionContainer,
   UnitContainer,
-  Category,
   IconContainer,
 } from './AssetPage.styles';
 import { ShareOutlined, StarBorderRounded, StarRounded } from '@mui/icons-material';
@@ -21,17 +20,17 @@ const CountdownTimer = dynamic(
 );
 import { BuyModal } from '@/components/BuyModal';
 
-import type { IAsset, ISellOrder, IAssetDetails } from '@/types/assetTypes';
+import type { IAsset, ISellOrder } from '@/types/assetTypes';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, LinearProgress, Slider, Typography } from '@mui/material';
 import Link from 'next/link';
 import { Button } from '@/components/Button';
 import type { InfoRow } from '../DropDetails/DropDetails';
+import { Attributes } from '@/components/Attributes';
 
 export interface AssetPageProps {
   asset: IAsset;
   sellOrder: ISellOrder;
-  attributes: IAssetDetails;
   info: InfoRow[];
   watched: boolean;
   unitQty: number;
@@ -50,7 +49,6 @@ export function AssetPage(props: AssetPageProps) {
   const {
     asset,
     sellOrder,
-    attributes,
     info,
     watched,
     unitQty,
@@ -136,22 +134,7 @@ export function AssetPage(props: AssetPageProps) {
                 <Typography variant="xl3" sx={{ fontWeight: 600 }}>
                   {asset.name}
                 </Typography>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    gap: 1,
-                  }}
-                >
-                  <Category variant="body2">{attributes.year ? attributes.year : '--'}</Category>
-                  <Category variant="body2">{attributes.year ? '#000' : '--'}</Category>
-                  <Category variant="body2">{attributes.year ? 'Panini' : '--'}</Category>
-                  <Category variant="body2">
-                    {attributes.grading_service ? attributes.grading_service : '--'}
-                  </Category>
-                  <Category variant="body2">
-                    {attributes.grading ? attributes.grading : '--'}
-                  </Category>
-                </Box>
+                <Attributes attributes={asset.attributes} />
               </div>
               <div>
                 <Typography variant="body2" sx={{ fontWeight: 500, color: '#4B5563' }}>

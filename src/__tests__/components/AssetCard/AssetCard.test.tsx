@@ -5,7 +5,6 @@ import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import user from '@testing-library/user-event';
 import { mockAssetResponse, mockAssetSoldOut } from '@/__mocks__/mockAssetResponse';
-import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
 import type { IUser } from '@/types/user';
 import { StatusCodes } from 'http-status-codes';
@@ -24,7 +23,6 @@ const mockUser = {
   email: 'example@example.com',
   exp: new Date('3000-01-01T00:10:00.000Z'),
 };
-const details = parseAssetAttributes(mockData.attributes);
 const MockAssetCard = ({ asset, user }: { asset: IAsset; user: IUser | undefined }) => {
   return (
     <ThemeProvider theme={themeJump}>
@@ -48,13 +46,11 @@ describe('Asset Card', () => {
   test('should display card data', async () => {
     render(<MockAssetCard asset={mockData} user={mockUser} />);
     const title = await screen.findByText(mockData.name);
-    const year = await screen.findByText(`${details.year}`, { exact: false });
     const price = await screen.findByText(/price/i, { exact: false });
     const valuation = await screen.findByText(/valuation/i, { exact: false });
     const image = await screen.findByRole('img');
 
     expect(title).toBeInTheDocument();
-    expect(year).toBeInTheDocument();
     expect(valuation).toBeInTheDocument();
     expect(price).toBeInTheDocument();
     expect(image).toBeInTheDocument();

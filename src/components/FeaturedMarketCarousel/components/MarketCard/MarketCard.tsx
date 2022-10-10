@@ -3,8 +3,7 @@ import { Box, Typography, Card } from '@mui/material';
 import Image from 'next/image';
 import { useMarketCardStyles } from './MarketCard.styles';
 import type { IAsset } from '@/types/assetTypes';
-import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
-import { getMainSellOrder } from '@/helpers/getMainSellOrder';
+import { Attributes } from '@/components/Attributes';
 
 export const MarketCard = ({
   asset,
@@ -16,8 +15,6 @@ export const MarketCard = ({
   tabIndex?: number;
 }) => {
   const classes = useMarketCardStyles();
-  const sellOrderData = getMainSellOrder(asset);
-  const details = parseAssetAttributes(asset.attributes);
 
   if (!handleDrawer) {
     return null;
@@ -53,32 +50,7 @@ export const MarketCard = ({
             </Typography>
           )}
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
-            <Typography variant="subtitle2" className={classes.cardSubTitle}>
-              {sellOrderData ? `FP $${sellOrderData.fractionPriceCents / 100}` : 'Not Available'}
-            </Typography>
-
-            {details.year && (
-              <Typography variant="subtitle2" className={classes.cardSubTitle}>
-                Year: {details.year}
-              </Typography>
-            )}
-            {details.grading && (
-              <Typography variant="subtitle2" className={classes.cardSubTitle}>
-                Grade: {details.grading}
-              </Typography>
-            )}
-            {details.grading_service && (
-              <Typography variant="subtitle2" className={classes.cardSubTitle}>
-                Grading: {details.grading_service}
-              </Typography>
-            )}
-            {details.set && (
-              <Typography variant="subtitle2" className={classes.cardSubTitle}>
-                Set: {details.set}
-              </Typography>
-            )}
-          </div>
+          <Attributes attributes={asset.attributes} />
           <div style={{ display: 'flex' }}></div>
           {asset.description && (
             <Typography variant="body1" className={classes.cardDescription}>
