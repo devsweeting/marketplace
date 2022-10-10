@@ -11,7 +11,7 @@ export const FaqSearchContainer = ({ articles }: { articles: Article[] }) => {
   return (
     <Box className={classes.wrapper}>
       <Box className={classes.innerWrapper}>
-        <Typography variant="h2" component="h1" sx={{ lineHeight: '57px' }}>
+        <Typography variant="xl5" sx={{ fontWeight: 700 }}>
           How can we help you?
         </Typography>
         <Box my={3} sx={{ width: '100%' }}>
@@ -19,7 +19,7 @@ export const FaqSearchContainer = ({ articles }: { articles: Article[] }) => {
         </Box>
 
         <Stack className={classes.flexWrapper}>
-          <Typography variant="body1" component="p" className={classes.topicsLegend}>
+          <Typography variant="body1" className={classes.topicsLegend}>
             Most viewed topics:
           </Typography>
           <>

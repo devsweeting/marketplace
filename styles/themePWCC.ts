@@ -1,29 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import type {} from '@mui/lab/themeAugmentation';
 
-declare module '@mui/material/styles/createPalette' {
-  interface Palette {
-    customGray: Palette['primary'];
-    customBlue: Palette['primary'];
-    accent: Palette['primary'];
-    custom: {
-      accent: string;
-    };
-    accentSecondary: PaletteOptions['primary'];
-    textColor: Palette['primary'];
-  }
-  interface PaletteOptions {
-    customGray: PaletteOptions['primary'];
-    customBlue: PaletteOptions['primary'];
-    accent: PaletteOptions['primary'];
-    custom: {
-      accent: string;
-    };
-    accentSecondary: PaletteOptions['primary'];
-    textColor: PaletteOptions['primary'];
-  }
-}
-
 export const themePWCC = createTheme({
   palette: {
     primary: {
@@ -32,28 +9,6 @@ export const themePWCC = createTheme({
     },
     secondary: {
       main: '#fff',
-    },
-    customBlue: {
-      main: '#3070CE',
-    },
-    customGray: {
-      main: '#ededed',
-      light: '#e5e5e5',
-      dark: '#8f9094',
-    },
-    accent: {
-      main: '#ffdd00',
-    },
-    accentSecondary: {
-      main: '#2c2c2c',
-    },
-    custom: {
-      accent: '#2c2c2c',
-    },
-    textColor: {
-      main: '#000',
-      light: '#000',
-      dark: '#000',
     },
   },
   typography: {

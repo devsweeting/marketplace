@@ -57,7 +57,7 @@ export const TrendingMarketCard = ({
 
         <Box className={classes.assetTextContainer}>
           {brand.brand && (
-            <Typography variant="h2" component="h4" className={classes.cardTitle} id="cardTitle">
+            <Typography variant="xl5" component="h4" className={classes.cardTitle} id="cardTitle">
               {brand.brand}
             </Typography>
           )}
@@ -71,7 +71,7 @@ export const TrendingMarketCard = ({
             }}
           >
             {brand.value_dollars && (
-              <Typography variant="h2" component="h4" className={classes.cardSubTitle}>
+              <Typography variant="xl5" component="h4" className={classes.cardSubTitle}>
                 Valuation: {'$' + formatNumber(brand.value_dollars)}
               </Typography>
             )}

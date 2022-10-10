@@ -52,11 +52,11 @@ const Login: NextPage = (user) => {
       >
         <Box className={classNames(classes.loginSuccessBox)}>
           <>
-            <Typography variant="h2" className={classNames(classes.loginSuccessText)}>
+            <Typography variant="xl5" className={classNames(classes.loginSuccessText)}>
               Logged in successfully
             </Typography>
             <Button href="/explore" className={classNames(classes.loginSuccessButton)}>
-              <Typography variant="h3">Go Explore</Typography>
+              <Typography variant="lg">Go Explore</Typography>
               <StorefrontIcon />
             </Button>
           </>

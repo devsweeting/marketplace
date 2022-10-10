@@ -8,7 +8,7 @@ export const FaqCta = () => {
   const classes = useFaqCtaStyles();
   return (
     <Grid container item xs={12} mt={9} mb={{ xs: 9.5, md: 0 }} className={classes.ctaWrapper}>
-      <Typography variant="h3" component="p" className={classes.ctaTitle}>
+      <Typography variant="lg" component="p" className={classes.ctaTitle}>
         Couldn’t find answer?
       </Typography>
       <Box sx={{ padding: { md: '0 16px', xs: '16px' } }}>

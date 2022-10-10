@@ -30,7 +30,7 @@ export const useRangeStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: theme.palette.accent.main,
+    backgroundColor: theme.palette.primary.main,
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'flex-end',
       width: '100%',

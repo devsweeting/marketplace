@@ -97,7 +97,7 @@ export const LoginModal = ({ open: isOpen }: { open: boolean }) => {
       className={customModalClasses.container}
     >
       <Box sx={modal} className={`${customModalClasses.modal}`} id="modal">
-        <Typography id="modal-modal-title" variant="h6" component="h2" sx={title}>
+        <Typography id="modal-modal-title" variant="lg" component="h2" sx={title}>
           Login
         </Typography>
 

@@ -38,7 +38,7 @@ const FaqPage = () => {
           </Grid>
           <Grid container item mt={{ md: 12, xs: 0 }}>
             <Grid item md={3} xs={12} mb={3}>
-              <Typography variant="h3" component="h3" className={classes.sectionHeading}>
+              <Typography variant="lg" component="h3" className={classes.sectionHeading}>
                 Topics
               </Typography>
             </Grid>
@@ -66,7 +66,7 @@ const FaqPage = () => {
       </Box>
       <Grid container item mt={12} className={classes.blackContainer}>
         <Grid item md={12}>
-          <Typography variant="h3" component="h3" className={classes.heading}>
+          <Typography variant="lg" component="h3" className={classes.heading}>
             Frequently asked questions
           </Typography>
         </Grid>

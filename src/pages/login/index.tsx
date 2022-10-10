@@ -24,7 +24,7 @@ const Login: NextPage = () => {
       >
         <Box className={classNames(classes.loginSuccessBox)}>
           <>
-            <Typography variant="h2" className={classNames(classes.loginFailText)}>
+            <Typography variant="xl5" className={classNames(classes.loginFailText)}>
               Invalid Token
             </Typography>
             <Typography variant="subtitle2" className={classNames(classes.loginFailSubtext)}>

@@ -16,7 +16,7 @@ export const Properties = ({ attributes }: { attributes: AttributeProps }) => {
       <Box my={6} sx={{ display: { xs: 'none', md: 'block' } }}>
         <Divider />
       </Box>
-      <Typography variant="h4" component="h2" className={classes.title}>
+      <Typography variant="nav" component="h2" className={classes.title}>
         Properties
       </Typography>
 

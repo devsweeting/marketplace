@@ -16,7 +16,7 @@ export const Login = () => {
   return (
     <div>
       <a style={{ textDecoration: 'none' }} onClick={handleOpen}>
-        <Typography variant="h4" component="span" className={classNames(classes.navLink)}>
+        <Typography variant="nav" component="span" className={classNames(classes.navLink)}>
           Login
         </Typography>
       </a>

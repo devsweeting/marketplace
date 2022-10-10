@@ -86,7 +86,7 @@ export const BuyModal = ({
       <Box sx={modal} className={modalClasses.modal}>
         <DotStepper value={value} steps={steps} />
         <TabPanel value={value} index={0} className={modalClasses.center}>
-          <Typography variant="h6" component="h2" className={modalClasses.title}>
+          <Typography variant="xl5" className={modalClasses.title}>
             Buy {totalFractions} fractions for ${totalPrice}?
           </Typography>
           <Box className={classNames(modalClasses.content, modalClasses.flex)}>
@@ -113,7 +113,7 @@ export const BuyModal = ({
         </TabPanel>
         <TabPanel value={value} index={1} className={modalClasses.center}>
           <Box>
-            <Typography variant="h6" component="h2" className={modalClasses.title}>
+            <Typography variant="xl2" className={modalClasses.title}>
               Success!
             </Typography>
             <Box className={modalClasses.content}>
@@ -135,7 +135,7 @@ export const BuyModal = ({
         </TabPanel>
         <TabPanel value={value} index={2} className={modalClasses.center}>
           <Box>
-            <Typography variant="h6" component="h2" className={modalClasses.title}>
+            <Typography variant="lg" component="h2" className={modalClasses.title}>
               {alertMessage ?? 'Something Went Wrong'}
             </Typography>
             <Box className={modalClasses.content}>

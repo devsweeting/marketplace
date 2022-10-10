@@ -12,12 +12,12 @@ export const PropertyBox = ({ attribute }: { attribute: IAttribute }) => {
   return (
     <Box className={classes.wrapper}>
       <Tooltip title={trait}>
-        <Typography variant="h4" component="h3" className={classes.title}>
+        <Typography variant="nav" component="h3" className={classes.title}>
           {truncateName(trait, 14)}
         </Typography>
       </Tooltip>
       <Tooltip title={value ?? ''}>
-        <Typography variant="h5" component="p" className={classes.propertyValue}>
+        <Typography variant="xl2" component="p" className={classes.propertyValue}>
           {truncateName(value ?? '', 8)}
         </Typography>
       </Tooltip>

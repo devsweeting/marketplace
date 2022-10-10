@@ -1,17 +1,125 @@
 import React from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { useHowItWorks } from './HowItWorks.styles';
+import { Box, Button, Grid, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 
 export const HowItWorks = () => {
-  const classes = useHowItWorks();
+  const theme = useTheme();
+  const classes = {
+    wrapper: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '50vh',
+    },
+    howItWorksHeader: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: '160px',
+      marginBottom: '80px',
+      [theme.breakpoints.down('sm')]: {
+        marginTop: '80px',
+        marginBottom: '20px',
+      },
+    },
+    text: {
+      fontSize: '2rem',
+      margin: '20px',
+      width: '70%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1.2rem',
+        width: '90%',
+      },
+    },
+    heroWrapper: {
+      width: '50%',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1.2rem',
+        width: '100%',
+      },
+    },
+    rightHeroWrapper: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '50%',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1.2rem',
+        width: '100%',
+      },
+    },
+    heroBoxContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      height: '100%',
+    },
+    heroBox: {
+      margin: '0 100px',
+      [theme.breakpoints.down('sm')]: {
+        margin: '0 20px',
+        padding: '30px 0',
+      },
+    },
+    heroTitle: {
+      fontSize: '3rem',
+      margin: '0 0 25px 0',
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        align: 'center',
+        margin: 0,
+        justifyContent: 'center',
+        padding: '30px 0',
+      },
+    },
+    imageWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '15%',
+      width: '50vw',
+      height: '50vw',
+      [theme.breakpoints.down('sm')]: {
+        width: '100vw',
+        height: '100vw',
+      },
+    },
+    nextImageHolder: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      position: 'relative',
+    },
+    button: {
+      borderRadius: '50px',
+      width: '200px',
+      height: '55px',
+      marginTop: '25px',
+      fontSize: '1.3rem',
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        margin: '25px auto 5px auto',
+      },
+    },
+  };
   return (
-    <Box className={classes.wrapper}>
-      <Box className={classes.howItWorksHeader}>
-        <Typography variant="h2" component="h2">
+    <Box sx={classes.wrapper}>
+      <Box sx={classes.howItWorksHeader}>
+        <Typography variant="xl5" component="h2">
           How it works
         </Typography>
-        <Typography variant="body1" component="p" className={classes.text}>
+        <Typography variant="body1" component="p" sx={classes.text}>
           All assets are stored safely in a vault. All collectibles are vaulted and insured. We
           procure, store, and insure iconic collectibles in third-party custodial vaults at no added
           costs.
@@ -36,7 +144,7 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="h3" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
             Digitize
           </Typography>
           <Typography variant="body1" component="p">
@@ -53,7 +161,7 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="h3" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
             Collect
           </Typography>
           <Typography variant="body1" component="p">
@@ -70,7 +178,7 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="h3" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
             Sell
           </Typography>
           <Typography variant="body1" component="p">
@@ -88,9 +196,9 @@ export const HowItWorks = () => {
           width: '100%',
         }}
       >
-        <Grid item className={classes.heroWrapper}>
+        <Grid item sx={classes.heroWrapper}>
           <Box
-            className={classes.heroBoxContainer}
+            sx={classes.heroBoxContainer}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -98,8 +206,8 @@ export const HowItWorks = () => {
               height: '100%',
             }}
           >
-            <div className={classes.heroBox}>
-              <Typography variant="h3" component="h3" className={classes.heroTitle} style={{}}>
+            <div style={classes.heroBox}>
+              <Typography variant="lg" component="h3" sx={classes.heroTitle} style={{}}>
                 1. Digitize
               </Typography>
               <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
@@ -113,7 +221,7 @@ export const HowItWorks = () => {
                 }}
               >
                 <Button
-                  className={classes.button}
+                  sx={classes.button}
                   style={{
                     color: 'white',
                     backgroundColor: 'black',
@@ -126,14 +234,14 @@ export const HowItWorks = () => {
             </div>
           </Box>
         </Grid>
-        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
+        <Grid item sx={classes.rightHeroWrapper}>
           <Box
             style={{
               backgroundColor: 'black',
             }}
-            className={classes.imageWrapper}
+            sx={classes.imageWrapper}
           >
-            <Box className={classes.nextImageHolder}>
+            <Box sx={classes.nextImageHolder}>
               <Image
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
@@ -145,9 +253,9 @@ export const HowItWorks = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
-          <Box style={{}} className={classes.imageWrapper}>
-            <Box className={classes.nextImageHolder}>
+        <Grid item sx={classes.rightHeroWrapper}>
+          <Box style={{}} sx={classes.imageWrapper}>
+            <Box sx={classes.nextImageHolder}>
               <Image
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
@@ -159,9 +267,9 @@ export const HowItWorks = () => {
             </Box>
           </Box>
         </Grid>
-        <Grid item className={classes.heroWrapper}>
+        <Grid item sx={classes.heroWrapper}>
           <Box
-            className={classes.heroBoxContainer}
+            sx={classes.heroBoxContainer}
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -171,8 +279,8 @@ export const HowItWorks = () => {
               backgroundColor: 'whitesmoke',
             }}
           >
-            <div className={classes.heroBox}>
-              <Typography variant="h3" component="h3" className={classes.heroTitle} style={{}}>
+            <div style={classes.heroBox}>
+              <Typography variant="lg" component="h3" sx={classes.heroTitle} style={{}}>
                 2. Collect
               </Typography>
               <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
@@ -186,7 +294,7 @@ export const HowItWorks = () => {
                 }}
               >
                 <Button
-                  className={classes.button}
+                  sx={classes.button}
                   style={{
                     color: 'white',
                     backgroundColor: 'black',
@@ -199,7 +307,7 @@ export const HowItWorks = () => {
             </div>
           </Box>
         </Grid>
-        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
+        <Grid item sx={classes.rightHeroWrapper}>
           <Box
             style={{
               backgroundColor: 'black',
@@ -209,11 +317,11 @@ export const HowItWorks = () => {
               height: '100%',
             }}
           >
-            <div className={classes.heroBox}>
+            <div style={classes.heroBox}>
               <Typography
-                variant="h3"
+                variant="lg"
                 component="h3"
-                className={classes.heroTitle}
+                sx={classes.heroTitle}
                 style={{ color: 'white' }}
               >
                 3. Sell
@@ -233,7 +341,7 @@ export const HowItWorks = () => {
                 }}
               >
                 <Button
-                  className={classes.button}
+                  sx={classes.button}
                   style={{
                     color: 'black',
                     backgroundColor: 'white',
@@ -246,9 +354,9 @@ export const HowItWorks = () => {
             </div>
           </Box>
         </Grid>
-        <Grid item className={`${classes.heroWrapper} ${classes.right}`}>
-          <Box style={{}} className={classes.imageWrapper}>
-            <Box className={classes.nextImageHolder}>
+        <Grid item sx={classes.rightHeroWrapper}>
+          <Box style={{}} sx={classes.imageWrapper}>
+            <Box sx={classes.nextImageHolder}>
               <Image
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'

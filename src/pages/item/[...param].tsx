@@ -42,7 +42,7 @@ const DetailPage = ({ nftData }: { nftData: IAsset }) => {
           sx={{
             maxWidth: 1440,
             margin: '0 auto',
-            backgroundColor: theme.palette.custom.accent,
+            backgroundColor: theme.palette.secondary.main,
           }}
         >
           <Grid
@@ -62,7 +62,7 @@ const DetailPage = ({ nftData }: { nftData: IAsset }) => {
               className={classes.leftColumn}
               sx={{
                 backgroundColor: {
-                  xs: theme.palette.custom.accent,
+                  xs: theme.palette.secondary.main,
                   md: theme.palette.secondary.main,
                 },
               }}
@@ -165,7 +165,7 @@ const DetailPage = ({ nftData }: { nftData: IAsset }) => {
           </Grid>
         </Box>
       ) : (
-        <Typography variant="h5" component="p" sx={{ paddingTop: '150px' }}>
+        <Typography variant="xl2" component="p" sx={{ paddingTop: '150px' }}>
           Error, please refresh the page
         </Typography>
       )}

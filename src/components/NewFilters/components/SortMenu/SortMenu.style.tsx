@@ -20,7 +20,7 @@ export const useSortMenuStyles = makeStyles((theme) => ({
     },
   },
   open: {
-    backgroundColor: theme.palette.accent.main,
+    backgroundColor: theme.palette.primary.main,
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
       justifyContent: 'flex-end',

@@ -1,106 +1,180 @@
 import { createTheme } from '@mui/material/styles';
-import type {} from '@mui/lab/themeAugmentation';
+import type { CSSProperties } from 'react';
 
-declare module '@mui/material/styles/createPalette' {
-  interface Palette {
-    customGray: Palette['primary'];
-    customBlue: Palette['primary'];
-    accent: Palette['primary'];
-    custom: {
-      accent: string;
-    };
-    accentSecondary: PaletteOptions['primary'];
-    textColor: Palette['primary'];
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    lg: CSSProperties;
+    xl: CSSProperties;
+    xl2: CSSProperties;
+    xl3: CSSProperties;
+    xl4: CSSProperties;
+    xl5: CSSProperties;
+    xl6: CSSProperties;
+    xl7: CSSProperties;
+    xl8: CSSProperties;
+    xl9: CSSProperties;
+    nav: CSSProperties;
   }
-  interface PaletteOptions {
-    customGray: PaletteOptions['primary'];
-    customBlue: PaletteOptions['primary'];
-    accent: PaletteOptions['primary'];
-    custom: {
-      accent: string;
-    };
-    accentSecondary: PaletteOptions['primary'];
-    textColor: PaletteOptions['primary'];
+
+  interface TypographyVariantsOptions {
+    lg?: CSSProperties;
+    xl?: CSSProperties;
+    xl2?: CSSProperties;
+    xl3?: CSSProperties;
+    xl4?: CSSProperties;
+    xl5?: CSSProperties;
+    xl6?: CSSProperties;
+    xl7?: CSSProperties;
+    xl8?: CSSProperties;
+    xl9?: CSSProperties;
+    nav?: CSSProperties;
   }
 }
 
-export const themeJump = createTheme({
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    lg: true;
+    xl: true;
+    xl2: true;
+    xl3: true;
+    xl4: true;
+    xl5: true;
+    xl6: true;
+    xl7: true;
+    xl8: true;
+    xl9: true;
+    nav: true;
+    h1: false;
+    h2: false;
+    h3: false;
+    h4: false;
+    h5: false;
+    h6: false;
+  }
+}
+
+const theme = createTheme({
   palette: {
     primary: {
-      main: '#000',
-      light: 'rgba(0, 0, 0, 0.23)',
+      main: '#111827',
     },
     secondary: {
-      main: '#000',
-    },
-    customBlue: {
-      main: '#3070CE',
-    },
-    customGray: {
-      main: '#ededed',
-      light: '#e5e5e5',
-      dark: '#8f9094',
-    },
-    accent: {
-      main: '#000',
-    },
-    accentSecondary: {
       main: '#fff',
     },
-    custom: {
-      accent: '#fff',
-    },
-    textColor: {
-      main: '#000',
-      light: '#000',
-      dark: '#000',
+    grey: {
+      50: '#F9FAFB',
+      100: '#F3F4F6',
+      200: '#E5E7EB',
+      300: '#D1D5DB',
+      400: '#9CA3AF',
+      500: '#6B7280',
+      600: '#4B5563',
+      700: '#374151',
+      800: '#1F2937',
+      900: '#111827',
     },
   },
+  shape: {
+    borderRadius: 8,
+  },
+});
+
+/* Typography Theme Styles
+typography is mapped to values in the figmas to make implementations a bit simpler and consitent
+  - xl9 -> text-9xl
+  - xl8 -> text-8xl
+  - xl7 -> text-7xl
+  ...
+
+  body1 -> base
+  body2 -> sm
+  caption -> xs
+  */
+
+export const themeJump = createTheme(theme, {
   typography: {
-    h2: {
-      fontFamily: 'League Gothic',
-      fontWeight: 400,
-      fontSize: '60px',
-      letter: '-0.5px',
+    fontFamily: 'Inter',
+    lg: {
+      fontSize: 'clamp(1rem, 0.42735042735042733vw + 0.8397435897435898rem, 1.25rem)',
+      lineHeight: '1.75rem',
     },
-    h3: {
-      fontFamily: 'League Gothic',
-      fontWeight: 400,
-      fontSize: '24px',
+    xl: {
+      fontSize: 'clamp(1.125rem, 0.42735042735042733vw + 0.9647435897435898rem, 1.375rem)',
+      lineHeight: '1.75rem',
     },
-    // navlinks
-    h4: {
-      fontFamily: 'League Gothic',
+    xl2: {
+      fontSize: 'clamp(1.125rem, 0.42735042735042733vw + 0.9647435897435898rem, 1.375rem)',
+      lineHeight: '2rem',
+    },
+    xl3: {
+      fontSize: 'clamp(1.375rem, 0.42735042735042733vw + 1.2147435897435896rem, 1.625rem)',
+      lineHeight: '2.25rem',
+    },
+    xl4: {
+      fontSize: 'clamp(1.625rem, 0.8547008547008547vw + 1.3044871794871795rem, 2.125rem)',
+      lineHeight: '2.5rem',
+    },
+    xl5: {
+      fontSize: 'clamp(2rem, 0.8547008547008547vw + 1.6794871794871795rem, 2.5rem)',
+      lineHeight: '3rem',
+    },
+    xl6: {
+      fontSize: 'clamp(2.75rem, 0.8547008547008547vw + 2.4294871794871793rem, 3.25rem)',
+      lineHeight: '3.75rem',
+    },
+    xl7: {
+      fontSize: 'clamp(3.375rem, 1.2820512820512822vw + 2.894230769230769rem, 4.125rem)',
+      lineHeight: '4.5rem',
+    },
+    xl8: {
+      fontSize: 'clamp(3.875rem, 1.7094017094017093vw + 3.233974358974359rem, 4.875rem)',
+      lineHeight: '6rem',
+    },
+    xl9: {
+      fontSize: 'clamp(5.5rem, 1.7094017094017093vw + 4.858974358974359rem, 6.5rem)',
+      lineHeight: '8rem',
+    },
+    body1: {
+      fontFamily: 'Inter',
+      fontSize: '0.875rem',
+      lineHeight: '1.25rem',
+      [theme.breakpoints.up('sm')]: {
+        fontSize: '1rem',
+        lineHeight: '1.5rem',
+      },
       fontWeight: 400,
-      fontSize: '24px',
-      lineHeight: '19px',
-      letter: '5%',
-      color: '#000',
+    },
+    body2: {
+      fontFamily: 'Inter',
+      fontSize: '0.75rem',
+      lineHeight: '1.125rem',
+      fontWeight: 400,
+      [theme.breakpoints.up('sm')]: {
+        fontSize: '.875rem',
+        lineHeight: '1.25rem',
+      },
+    },
+    caption: {
+      fontSize: '0.6rem',
+      lineHeight: '0.875rem',
+      [theme.breakpoints.up('sm')]: {
+        fontSize: '0.75rem',
+        lineHeight: '1rem',
+      },
+    },
+    button: {
+      fontFamily: 'Inter',
+    },
+    nav: {
+      fontFamily: 'Inter',
+      fontWeight: 700,
+      fontSize: '1rem',
+      lineHeight: '1.5rem',
+      color: theme.palette.primary.main,
       textTransform: 'uppercase',
       '@media (max-width:900px)': {
         fontSize: '18px',
       },
-    },
-    h5: {
-      fontFamily: 'League Gothic',
-      fontWeight: 400,
-      fontSize: '24px',
-      lineHeight: '29px',
-      letterSpacing: '0.05em',
-    },
-    body1: {
-      fontFamily: 'Rubik',
-      fontWeight: 400,
-      fontSize: '14px',
-      letter: '0.17px',
-    },
-    body2: {
-      fontFamily: 'Rubik',
-      fontWeight: 400,
-      fontSize: '12px',
-      lineHeight: '175%',
-      letterSpacing: '0.15px',
-      textDecoration: 'underline',
     },
   },
   components: {
@@ -142,72 +216,86 @@ export const themeJump = createTheme({
     //     },
     //   },
     // },
-    MuiButton: {
+    MuiAccordion: {
       styleOverrides: {
-        outlined: {
-          height: 41,
-          fontFamily: 'League Gothic',
-          fontSize: 24,
-          lieHeight: 29,
-          fontWeight: 400,
-          backgroundColor: 'transparent',
-          boxSizing: 'border-box',
-          color: '#000',
-          padding: '0 8px',
-          border: '2px solid rgba(0,0,0,0.5) !important',
-        },
-        outlinedSizeMedium: {
-          width: 139.5,
-          height: 41,
-          fontWeight: 400,
-          fontSize: 24,
-          lieHeight: 29,
-          justifyContent: 'space-between',
-          padding: '0 16px',
-        },
-        contained: {
-          fontFamily: 'League Gothic',
-          backgroundColor: '#000',
-          borderColor: '#000',
-          color: '#fff',
-          boxShadow:
-            '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12)',
-          borderRadius: 4,
-          transition: 'backgroundColor 0.3s ease, color 0.3s ease',
-          padding: '6px 25px',
-          height: 55,
-          fontStyle: 'normal',
-          fontWeight: 400,
-          fontSize: 32,
-          lineHeight: 39,
-          '&:hover': {
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            borderColor: 'rgba(0,0,0,0.8)',
+        root: {
+          '&::before': {
+            display: 'none',
           },
         },
-        containedSizeLarge: {
-          width: 280,
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Inter',
+          fontWeight: 600,
+          boxSizing: 'border-box',
+          padding: '0.75rem 1rem',
+          boxShadow: 'none',
+          '&.MuiButton-containedPrimary': {
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.secondary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.grey[700],
+            },
+          },
+          '&.MuiButton-containedSecondary': {
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.grey[200],
+            },
+          },
+          '&.MuiButton-outlinedPrimary': {
+            border: `2px solid ${theme.palette.primary.main}`,
+            backgroundColor: 'transparent',
+            color: theme.palette.primary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.secondary.main,
+            },
+          },
+          '&.MuiButton-outlinedSecondary': {
+            border: `2px solid ${theme.palette.secondary.main}`,
+            backgroundColor: 'transparent',
+            color: theme.palette.secondary.main,
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.main,
+              color: theme.palette.primary.main,
+            },
+          },
+          '&.MuiButton-text': {
+            display: 'flex',
+            fontSize: '1rem',
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            color: theme.palette.primary.main,
+            padding: 0,
+            '&:hover': {
+              backgroundColor: 'inherit',
+              color: theme.palette.grey[500],
+            },
+          },
+          '&.Mui-disabled': {
+            backgroundColor: theme.palette.grey[200],
+            color: theme.palette.grey[600],
+          },
+          '&:hover': {
+            boxShadow: 'none',
+          },
         },
-        containedSizeMedium: {
-          fontWeight: 400,
-          fontSize: '24px',
-          lineHeight: '29.21px',
-          width: 280,
-          height: 41,
-          padding: '6px 16px',
-          display: 'flex',
-          justifyContent: 'space-between',
-        },
-        containedSizeSmall: {
-          width: 139.5,
-          height: 41,
-          fontWeight: 400,
-          fontSize: '24px',
-          lineHeight: '29.21px',
-          letterSpacing: '0.15px',
-          padding: '0 16px',
-          display: 'flex',
-          justifyContent: 'space-between',
+      },
+    },
+    MuiLinearProgress: {
+      styleOverrides: {
+        root: {
+          '&.MuiLinearProgress-determinate': {
+            backgroundColor: theme.palette.grey[200],
+          },
+          '& > .MuiLinearProgress-bar1Determinate': {
+            borderRadius: '100vw',
+          },
         },
       },
     },

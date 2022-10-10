@@ -16,7 +16,7 @@ export const usePropertyBoxStyle = makeStyles(
     },
     title: {
       color: theme.palette.primary.main,
-      background: theme.palette.accent.main,
+      background: theme.palette.primary.main,
       borderRadius: `${theme.spacing(2)} ${theme.spacing(2)} 0 0`,
       fontSize: '12px',
       lineHeight: '26px',

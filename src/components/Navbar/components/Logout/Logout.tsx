@@ -19,7 +19,7 @@ export const Logout = ({
 
   return (
     <a style={{ textDecoration: 'none' }} onClick={handleLogoutClick} className={className}>
-      <Typography variant="h4" component="span" className={className}>
+      <Typography variant="nav" component="span" className={className}>
         {children}
       </Typography>
     </a>

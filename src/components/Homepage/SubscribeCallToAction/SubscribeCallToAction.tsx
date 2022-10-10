@@ -7,7 +7,7 @@ export const SubscribeCallToAction = () => {
   const styles = useSubscribeCTAStyles();
   return (
     <Box className={styles.ctaWrapper}>
-      <Typography variant="h2" component="h2" className={styles.ctaHeader}>
+      <Typography variant="xl5" component="h2" className={styles.ctaHeader}>
         Get weekly drops
       </Typography>
       <form className={styles.submitForm}>
