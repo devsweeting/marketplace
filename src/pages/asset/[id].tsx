@@ -1,7 +1,6 @@
 import type { IAsset } from '@/types/assetTypes';
 import type { ParsedUrlQuery } from 'querystring';
 
-import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { calcTimeDifference } from '@/helpers/time';
 import { useEffect, useMemo, useState } from 'react';
 import { getAssetById } from '@/api/endpoints/assets';
@@ -38,24 +37,40 @@ const mockInfo = [
 
 const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   const [asset, setAsset] = useState<IAsset>(initialAsset);
-  const sellOrder = useMemo(() => asset?.sellOrders[0] ?? {}, [asset?.sellOrders]);
-  const attributes = parseAssetAttributes(asset?.attributes ?? []);
+  const sellOrder = useMemo(() => {
+    if (asset?.sellOrders && asset?.sellOrders.length > 0) return asset.sellOrders[0];
+
+    return undefined;
+  }, [asset?.sellOrders]);
+
+  const sellOrderCalculations = useMemo(() => {
+    if (sellOrder) {
+      const unitDollarPrice = Math.floor(sellOrder.fractionPriceCents * 0.01);
+
+      return {
+        unitQty: Math.floor(sellOrder.fractionQty * 0.01),
+        unitQtyAvailable: sellOrder.fractionQtyAvailable,
+        unitDollarPrice,
+        marketValuation: formatNumber(Math.floor(unitDollarPrice * sellOrder.fractionQty)),
+        percentClaimed:
+          100 - Math.floor((sellOrder.fractionQtyAvailable / sellOrder.fractionQty) * 100),
+        timeToPurchasable: calcTimeDifference(
+          new Date(),
+          sellOrder.userFractionLimitEndTime ?? new Date(),
+        ),
+      };
+    }
+
+    return {
+      unitQty: 0,
+      unitQtyAvailable: 0,
+      unitDollarPrice: 0,
+      marketValuation: '0',
+      percentClaimed: 100,
+      timeToPurchasable: 0,
+    };
+  }, [sellOrder]);
   const [watched, setWatched] = useState<boolean>(false);
-
-  const unitQty = Math.floor((sellOrder?.fractionQty ?? 0) * 0.01);
-  const unitDollarPrice = Math.floor((sellOrder?.fractionPriceCents ?? 0) * 0.01);
-  const marketValuation = formatNumber(Math.floor(unitDollarPrice * sellOrder.fractionQty));
-
-  const percentClaimed =
-    100 -
-    Math.floor(
-      (asset?.sellOrders[0].fractionQtyAvailable / asset?.sellOrders[0].fractionQty) * 100,
-    );
-
-  const timeToPurchasable = calcTimeDifference(
-    new Date(),
-    sellOrder.userFractionLimitEndTime ?? new Date(),
-  );
 
   const [purchaseLimit, setPurchaseLimit] = useState<number>(0);
 
@@ -113,25 +128,23 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     }
   }, [asset]);
 
-  const assetProps: AssetPageProps = {
-    asset,
-    sellOrder,
-    attributes,
-    info: mockInfo,
-    watched,
-    unitQty,
-    unitQtyAvailable: sellOrder.fractionQtyAvailable,
-    unitDollarPrice,
-    marketValuation,
-    percentClaimed,
-    timeToPurchasable,
-    purchaseLimit,
-    updateAsset,
-    handleWatch,
-    handleRemoveWatch,
-  };
+  if (asset && sellOrder) {
+    const assetProps: AssetPageProps = {
+      asset,
+      sellOrder,
+      info: mockInfo,
+      watched,
+      ...sellOrderCalculations,
+      purchaseLimit,
+      updateAsset,
+      handleWatch,
+      handleRemoveWatch,
+    };
 
-  return <>{asset ? <AssetPage {...assetProps} /> : <AssetErrorPage />}</>;
+    return <AssetPage {...assetProps} />;
+  }
+
+  return <AssetErrorPage />;
 };
 
 export default AssetPageContainer;
