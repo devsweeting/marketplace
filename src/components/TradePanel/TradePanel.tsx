@@ -10,7 +10,7 @@ import {
   Slider,
   Typography,
 } from '@mui/material';
-import type { ISellOrder, IUserBuyLimit } from '@/types/assetTypes';
+import type { ISellOrder } from '@/types/assetTypes';
 import type { ITradePanel } from './ITradePanel';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
@@ -24,7 +24,6 @@ import { useModal } from '@/helpers/hooks/useModal';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
-import { StatusCodes } from 'http-status-codes';
 import { calcTimeDifference } from '@/helpers/time';
 import { CountdownTimer } from '../coundownTimer';
 
@@ -105,16 +104,11 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       return userBuyLimit;
     }
 
-    await getNumSellordersUserCanBuy(sellOrderData.id)
-      .then((res) => {
-        if (res.status === StatusCodes.OK) {
-          const data = res.data as unknown as IUserBuyLimit;
-          return (userBuyLimit = data?.fractionsAvailableToPurchase ?? 0);
-        } else {
-          return (userBuyLimit = 0);
-        }
-      })
-      .catch();
+    const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(sellOrderData.id);
+
+    if (fractionsAvailableToPurchase) {
+      userBuyLimit = fractionsAvailableToPurchase || 0;
+    }
 
     return userBuyLimit;
   };
