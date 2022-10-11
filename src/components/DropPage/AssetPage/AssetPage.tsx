@@ -14,7 +14,7 @@ import {
 import { ShareOutlined, StarBorderRounded, StarRounded } from '@mui/icons-material';
 import { ImgGallery } from '@/components/ImgGallery';
 import { DropDetails } from '@/components/DropPage/DropDetails';
-const CountdownTimer = dynamic(
+const CountdownTimer = dynamic<CountdownProps>(
   () => import('@/components/coundownTimer').then((module) => module.CountdownTimer),
   { ssr: false },
 );
@@ -27,6 +27,7 @@ import Link from 'next/link';
 import { Button } from '@/components/Button';
 import type { InfoRow } from '../DropDetails/DropDetails';
 import { Attributes } from '@/components/Attributes';
+import type { CountdownProps } from '@/components/coundownTimer';
 
 export interface AssetPageProps {
   asset: IAsset;

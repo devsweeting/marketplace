@@ -3,7 +3,7 @@ import type { SxProps, Theme, TypographyTypeMap } from '@mui/material';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 
-interface CountdownProps {
+export interface CountdownProps {
   startTime: number;
   variant?: TypographyTypeMap['props']['variant'];
   sx?: SxProps<Theme>;

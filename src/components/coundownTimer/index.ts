@@ -1,1 +1,1 @@
-export { CountdownTimer } from './CountdownTimer';
+export * from './CountdownTimer';
