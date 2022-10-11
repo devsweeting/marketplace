@@ -85,21 +85,21 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   const handleWatch = async (id: string, name: string): Promise<void> => {
     await addWatchlistToLocalStorage(id, name)
       .then(() => setWatched(true))
-      .catch(console.error);
+      .catch();
 
     await addToWatchlist({ id, name })
       .then((status) => setWatched(hasBeenAddedWatchlist(status)))
-      .catch(console.error);
+      .catch();
   };
 
   const handleRemoveWatch = async (id: string, name: string): Promise<void> => {
     await removeWatchlistFromLocalStorage(id)
       .then(() => setWatched(false))
-      .catch(console.error);
+      .catch();
 
     await removeFromWatchlist({ id, name })
       .then(() => setWatched(false))
-      .catch(console.error);
+      .catch();
   };
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     };
 
     if (sellOrder) {
-      fetchBuyLimit(sellOrder.id).catch(console.error);
+      fetchBuyLimit(sellOrder.id).catch((e) => console.error(e));
     }
   }, [asset, sellOrder]);
 
@@ -124,7 +124,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     };
 
     if (asset) {
-      fetchIsWatched(asset.id).catch(console.error);
+      fetchIsWatched(asset.id).catch((e) => console.error(e));
     }
   }, [asset]);
 

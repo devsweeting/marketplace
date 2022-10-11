@@ -40,6 +40,7 @@ export const InfoContainer = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   backgroundColor: theme.palette.grey[50],
   overflow: 'auto',
+  overflowX: 'hidden',
 }));
 
 export const TitleContainer = styled('div')(({ theme }) => ({

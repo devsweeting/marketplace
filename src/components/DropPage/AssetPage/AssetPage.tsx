@@ -83,8 +83,8 @@ export function AssetPage(props: AssetPageProps) {
 
   const marks = [
     {
-      value: 0,
-      label: '0',
+      value: 1,
+      label: '1',
     },
     {
       value: purchaseLimit,
