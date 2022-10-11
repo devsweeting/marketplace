@@ -26,7 +26,7 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
         }}
       >
         <Typography
-          variant="h3"
+          variant="lg"
           component="h3"
           style={{
             fontSize: '16px',
@@ -38,7 +38,7 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
           Portfolio Value
         </Typography>
         <Typography
-          variant="h2"
+          variant="xl"
           component="p"
           style={{
             fontSize: '3.75rem',
@@ -69,7 +69,7 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
         }}
       >
         <Typography
-          variant="h3"
+          variant="lg"
           component="h3"
           style={{
             fontSize: '16px',
@@ -81,7 +81,7 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
           Cash Balance
         </Typography>
         <Typography
-          variant="h2"
+          variant="xl"
           component="p"
           style={{
             fontSize: '3.75rem',
@@ -104,7 +104,7 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
         }}
       >
         <Typography
-          variant="h3"
+          variant="lg"
           component="h3"
           style={{
             fontSize: '16px',
@@ -116,7 +116,7 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
           Total Units
         </Typography>
         <Typography
-          variant="h2"
+          variant="xl"
           component="p"
           style={{
             fontSize: '3.75rem',

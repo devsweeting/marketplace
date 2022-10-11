@@ -6,12 +6,14 @@ import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
-import { Box, Card, Grid, Typography, useTheme } from '@mui/material';
+import type { CardProps } from '@mui/material';
+import { Box, Card, Grid, styled, Typography, useTheme } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
 import { getAssetById } from '@/api/endpoints/assets';
 import { useUser } from '@/helpers/hooks/useUser';
+import { PageContainer, PortfolioContainer } from '@/styles/AccountPage.styles';
 import Link from 'next/link';
 export type IPorfolioAsset = IAsset & {
   fractionPriceCents: number | undefined;
@@ -57,6 +59,17 @@ const initialPortfolioListState: IPortfolioDataState = {
   portfolio: [] as unknown as IPortfolioData,
   error: '',
 };
+
+const PortfolioCard = styled((props: CardProps) => <Card {...props} />)(({ theme }) => ({
+  display: 'flex',
+  width: '100%',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  [theme.breakpoints.down('sm')]: {
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+}));
 
 const portfolioReducer = (state: IPortfolioDataState, action: PortfolioListAction) => {
   switch (action.type) {
@@ -205,12 +218,12 @@ const PortfolioPage: NextPage = () => {
 
   if (!user) {
     return (
-      <>
+      <PageContainer>
         <Box height="35vw">
           <Loader />;
         </Box>
         <LoginModal open={true} noDismiss={true} />
-      </>
+      </PageContainer>
     );
   }
 
@@ -218,33 +231,12 @@ const PortfolioPage: NextPage = () => {
     return (
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
-        <Grid
-          sx={{
-            marginTop: 10,
-            backgroundColor: '#fff',
-            width: '100%',
-
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-          container
-        >
-          <Card
-            sx={{
-              display: 'flex',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              [theme.breakpoints.down('sm')]: {
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-              },
-            }}
-          >
+        <PortfolioContainer>
+          <PortfolioCard>
             <Box>
               <Typography
                 component="h2"
-                variant="h2"
+                variant="xl"
                 style={{
                   margin: 0,
                   padding: '24px',
@@ -287,7 +279,7 @@ const PortfolioPage: NextPage = () => {
                     >
                       <Typography
                         component="h2"
-                        variant="h2"
+                        variant="xl"
                         style={{
                           margin: 0,
                           padding: '0',
@@ -307,8 +299,8 @@ const PortfolioPage: NextPage = () => {
                 ))}
               </Box>
             </Grid>
-          </Card>
-        </Grid>
+          </PortfolioCard>
+        </PortfolioContainer>
         <Box sx={{ height: '30vw' }}>
           <Loader />;
         </Box>
@@ -335,33 +327,12 @@ const PortfolioPage: NextPage = () => {
     <>
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
-        <Grid
-          sx={{
-            marginTop: 10,
-            backgroundColor: '#fff',
-            width: '100%',
-
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-          container
-        >
-          <Card
-            sx={{
-              display: 'flex',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              [theme.breakpoints.down('sm')]: {
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-              },
-            }}
-          >
+        <PortfolioContainer>
+          <PortfolioCard>
             <Box>
               <Typography
                 component="h2"
-                variant="h2"
+                variant="xl"
                 style={{
                   margin: 0,
                   padding: '24px',
@@ -404,7 +375,7 @@ const PortfolioPage: NextPage = () => {
                     >
                       <Typography
                         component="h2"
-                        variant="h2"
+                        variant="xl"
                         style={{
                           margin: 0,
                           padding: '0',
@@ -424,8 +395,8 @@ const PortfolioPage: NextPage = () => {
                 ))}
               </Box>
             </Grid>
-          </Card>
-        </Grid>
+          </PortfolioCard>
+        </PortfolioContainer>
         <Box>
           <PortFolioStats portfolio={stats} />
           <PortfolioAssetList
