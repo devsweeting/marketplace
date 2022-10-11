@@ -82,21 +82,20 @@ const SearchPage: NextPage = () => {
     return null;
   }
 
-  const updateAsset = (assetId: string): void => {
-    getAssetById(assetId)
-      .then((asset) => {
-        if (!asset) {
-          return;
-        }
-        const newAssetData = asset.data;
-        const tempAssets = assets;
-        tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = newAssetData;
-        setAssets(tempAssets);
-        setTradePanelData(newAssetData);
-      })
-      .catch(() => {
-        return;
-      });
+  const updateAsset = async (assetId: string): Promise<void> => {
+    try {
+      const asset = await getAssetById(assetId);
+
+      if (!asset) return;
+
+      const tempAssets = assets;
+      tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = asset;
+      setAssets(tempAssets);
+      setTradePanelData(asset);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
   };
 
   return (
