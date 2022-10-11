@@ -14,4 +14,6 @@ export const TextContainer = styled('div')({
   display: 'flex',
   alignItems: 'start',
   flexDirection: 'column',
+  maxWidth: '70ch',
+  margin: '2rem',
 });
