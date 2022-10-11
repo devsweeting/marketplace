@@ -159,6 +159,11 @@ export const getServerSideProps = async ({ query }: { query: ParsedUrlQuery }) =
 
     const asset = await getAssetById(id as string);
 
+    if (!asset)
+      return {
+        props: { initialAsset: null },
+      };
+
     return {
       props: { initialAsset: asset },
     };
