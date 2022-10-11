@@ -54,10 +54,8 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
         marketValuation: formatNumber(Math.floor(unitDollarPrice * sellOrder.fractionQty)),
         percentClaimed:
           100 - Math.floor((sellOrder.fractionQtyAvailable / sellOrder.fractionQty) * 100),
-        timeToPurchasable: calcTimeDifference(
-          new Date(),
-          sellOrder.userFractionLimitEndTime ?? new Date(),
-        ),
+        timeToPurchasable:
+          calcTimeDifference(new Date(), sellOrder.userFractionLimitEndTime ?? new Date()) ?? 0,
       };
     }
 
