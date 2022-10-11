@@ -27,7 +27,7 @@ export const parseAssetAttributes = (attributes: IAttribute[]): IAssetDetails =>
         case 'grade':
           details.grading = value;
           break;
-        case 'grading Service':
+        case 'grading service':
           details.grading_service = value;
           break;
         case 'set':

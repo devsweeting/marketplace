@@ -1,5 +1,5 @@
 export interface IAsset {
-  isOnWatchlist: boolean;
+  isOnWatchlist?: boolean;
   isOnUserPortfolio?: boolean;
   id: string;
   refId: string;
