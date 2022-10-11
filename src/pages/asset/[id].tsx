@@ -110,6 +110,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     };
 
     if (sellOrder) {
+      // eslint-disable-next-line no-console
       fetchBuyLimit(sellOrder.id).catch((e) => console.error(e));
     }
   }, [asset, sellOrder]);
@@ -124,6 +125,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     };
 
     if (asset) {
+      // eslint-disable-next-line no-console
       fetchIsWatched(asset.id).catch((e) => console.error(e));
     }
   }, [asset]);
@@ -168,6 +170,7 @@ export const getServerSideProps = async ({ query }: { query: ParsedUrlQuery }) =
       props: { initialAsset: asset },
     };
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
   }
 };

@@ -1,4 +1,4 @@
-import { styled, Typography } from '@mui/material';
+import { styled } from '@mui/material';
 
 export const PageContainer = styled('div')(({ theme }) => ({
   paddingTop: '80px',
