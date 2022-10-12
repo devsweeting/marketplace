@@ -72,32 +72,47 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
 
   const [purchaseLimit, setPurchaseLimit] = useState<number>(0);
 
-  const updateAsset = async (assetId: string) => {
-    const data = await getAssetById(assetId);
+  const updateAsset = (assetId: string): void => {
+    const fetchAsset = async (id: string): Promise<void> => {
+      const data = await getAssetById(id);
 
-    if (data) {
-      setAsset(data);
-    }
+      if (data) {
+        setAsset(data);
+      }
+    };
+
+    // eslint-disable-next-line no-console
+    fetchAsset(assetId).catch(console.error);
   };
 
   const handleWatch = async (id: string, name: string): Promise<void> => {
-    await addWatchlistToLocalStorage(id, name)
-      .then(() => setWatched(true))
-      .catch();
+    try {
+      await addWatchlistToLocalStorage(id, name);
 
-    await addToWatchlist({ id, name })
-      .then((status) => setWatched(hasBeenAddedWatchlist(status)))
-      .catch();
+      setWatched(true);
+
+      const status = await addToWatchlist({ id, name });
+
+      if (status) {
+        setWatched(hasBeenAddedWatchlist(status));
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
   };
 
   const handleRemoveWatch = async (id: string, name: string): Promise<void> => {
-    await removeWatchlistFromLocalStorage(id)
-      .then(() => setWatched(false))
-      .catch();
+    try {
+      await removeWatchlistFromLocalStorage(id);
 
-    await removeFromWatchlist({ id, name })
-      .then(() => setWatched(false))
-      .catch();
+      await removeFromWatchlist({ id, name });
+
+      setWatched(false);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
   };
 
   useEffect(() => {

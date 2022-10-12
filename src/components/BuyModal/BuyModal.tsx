@@ -94,7 +94,11 @@ export const BuyModal = ({
             Buy {totalFractions} fractions for ${totalPrice}?
           </Typography>
           <Box className={classNames(modalClasses.content, modalClasses.flex)}>
-            <Button id="confirm" className={modalClasses.button} onClick={handleBuyFractions}>
+            <Button
+              id="confirm"
+              className={modalClasses.button}
+              onClick={() => void handleBuyFractions()}
+            >
               confirm
             </Button>
             <Button

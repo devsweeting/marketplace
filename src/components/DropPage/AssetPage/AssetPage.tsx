@@ -41,7 +41,7 @@ export interface AssetPageProps {
   timeToPurchasable: number;
   percentClaimed: number;
   purchaseLimit: number;
-  updateAsset: (assetId: string) => Promise<void>;
+  updateAsset: (assetId: string) => void;
   handleWatch: (id: string, name: string) => Promise<void>;
   handleRemoveWatch: (id: string, name: string) => Promise<void>;
 }
@@ -70,7 +70,14 @@ export function AssetPage(props: AssetPageProps) {
 
   const purchasable = timeToPurchasable === 0;
 
-  const copyLink = async () => await navigator.clipboard.writeText(window.location.href);
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  };
 
   const toggleBuyModal = () => setModalState((prev) => !prev);
 
@@ -108,15 +115,15 @@ export function AssetPage(props: AssetPageProps) {
       <PageContainer>
         <ImgContainer>
           <IconContainer>
-            <ShareOutlined onClick={copyLink} fontSize="large" />
+            <ShareOutlined onClick={() => void copyLink()} fontSize="large" />
             {watched ? (
               <StarRounded
-                onClick={() => handleRemoveWatch(asset.id, asset.name)}
+                onClick={() => void handleRemoveWatch(asset.id, asset.name)}
                 fontSize="large"
               />
             ) : (
               <StarBorderRounded
-                onClick={() => handleWatch(asset.id, asset.name)}
+                onClick={() => void handleWatch(asset.id, asset.name)}
                 fontSize="large"
               />
             )}
