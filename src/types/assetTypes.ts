@@ -20,7 +20,7 @@ export interface IMarket {
 export interface IAttribute {
   display: string | null;
   trait: string;
-  value: string | null;
+  value: string | string[] | null;
 }
 
 export interface IMedia {
@@ -40,14 +40,6 @@ export interface IMeta {
   itemsPerPage: number;
   totalItems: number;
   totalPages: number;
-}
-
-export interface IAssetDetails {
-  year: string;
-  categories: string[];
-  set: string;
-  grading: string;
-  grading_service: string;
 }
 
 export interface IFilter {

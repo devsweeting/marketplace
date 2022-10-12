@@ -8,7 +8,6 @@ import {
   mockAssetResponse,
   mockAssetSoldOut,
 } from '@/__mocks__/mockAssetResponse';
-import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import type { IAsset } from '@/types/assetTypes';
 import type { IUser } from '@/types/user';
 import user from '@testing-library/user-event';
@@ -29,7 +28,6 @@ const mockUser = {
   exp: new Date('3000-01-01T00:10:00.000Z'),
 };
 
-const details = parseAssetAttributes(data.attributes);
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
@@ -68,9 +66,6 @@ describe('TradePanel', () => {
     const closeBtn = await screen.findByRole('button', { name: /close/i });
     const name = await screen.findByText(data.name);
     const images = await screen.findAllByRole('img');
-    const detail = await screen.findByText(
-      `${details.year} #xxx ${details.grading_service} ${details.grading}`,
-    );
     const slider = await screen.findByRole('slider');
     const buyBtn = await screen.findByRole('button', { name: /buy now/i });
     const orderSummary = await screen.findByText(/order summary/i);
@@ -78,7 +73,6 @@ describe('TradePanel', () => {
     expect(cardTitle).toBeInTheDocument();
     expect(closeBtn).toBeInTheDocument();
     expect(name).toBeInTheDocument();
-    expect(detail).toBeInTheDocument();
     expect(images[0]).toBeInTheDocument();
     expect(slider).toBeInTheDocument();
     expect(buyBtn).toBeInTheDocument();

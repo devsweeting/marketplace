@@ -6,12 +6,15 @@ import { padTo2Digits } from './padTo2Digits';
  * @param endDate the end date
  * @returns amount of time before the 2 dates in seconds
  */
-export function calcTimeDifference(startDate: Date | string, endDate: Date | string) {
+export function calcTimeDifference(
+  startDate: Date | string,
+  endDate: Date | string,
+): number | undefined {
   const start = new Date(startDate);
   const end = new Date(endDate);
-  const result = (end.getTime() - start.getTime()) / 1000;
+  const difference = (end.getTime() - start.getTime()) / 1000;
 
-  return isNaN(result) ? undefined : result;
+  return isNaN(difference) ? undefined : difference;
 }
 
 /**

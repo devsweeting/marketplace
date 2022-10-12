@@ -10,23 +10,22 @@ import {
   Slider,
   Typography,
 } from '@mui/material';
-import type { ISellOrder, IUserBuyLimit } from '@/types/assetTypes';
+import type { ISellOrder } from '@/types/assetTypes';
 import type { ITradePanel } from './ITradePanel';
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { BuyModal } from '../BuyModal/BuyModal';
 import { useTradePanelStyles } from './TradePanel.styles';
 import { AssetGallery } from './Components/CardGallery';
-import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
 import { useModal } from '@/helpers/hooks/useModal';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
-import { StatusCodes } from 'http-status-codes';
 import { calcTimeDifference } from '@/helpers/time';
 import { CountdownTimer } from '../coundownTimer';
+import { Attributes } from '../Attributes';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const classes = useTradePanelStyles();
@@ -105,16 +104,11 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       return userBuyLimit;
     }
 
-    await getNumSellordersUserCanBuy(sellOrderData.id)
-      .then((res) => {
-        if (res.status === StatusCodes.OK) {
-          const data = res.data as unknown as IUserBuyLimit;
-          return (userBuyLimit = data?.fractionsAvailableToPurchase ?? 0);
-        } else {
-          return (userBuyLimit = 0);
-        }
-      })
-      .catch();
+    const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(sellOrderData.id);
+
+    if (fractionsAvailableToPurchase) {
+      userBuyLimit = fractionsAvailableToPurchase || 0;
+    }
 
     return userBuyLimit;
   };
@@ -143,7 +137,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliderValue, disableBuyBTN, totalPrice, assetId, asset]);
-  const details = parseAssetAttributes(asset.attributes);
 
   return (
     <Box>
@@ -173,9 +166,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
             <Grid container sx={{ marginTop: '20px' }}>
               <Grid item xs={7}>
                 <Typography className={classes.title}>{asset.name}</Typography>
-                <Typography variant="subtitle2">
-                  {details.year} #xxx {details.set} {details.grading_service} {details.grading}
-                </Typography>
+                <Attributes attributes={asset.attributes} />
               </Grid>
               <Grid item xs={5} sx={{ textAlign: 'right' }}>
                 <Typography className={classes.card_valuation}>Card Valuation</Typography>

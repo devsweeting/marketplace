@@ -1,5 +1,3 @@
-import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
-
 import { Card, CardActionArea, IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import Image from 'next/image';
@@ -22,6 +20,7 @@ import { useUser } from '@/helpers/hooks/useUser';
 import { Star } from '@mui/icons-material';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
+import { Attributes } from '../Attributes';
 
 export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   const sellOrderData = getMainSellOrder(assetData);
@@ -96,7 +95,6 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       });
   };
 
-  const details = parseAssetAttributes(assetData.attributes);
   return (
     <Card
       className={`${classes.card} ${activeCardId === assetData.id ? classes.active : ''}`}
@@ -124,14 +122,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
                 <Box className={classes.essanceInfo}>
                   <Typography className={classes.essanceTitle}>{assetData.name}</Typography>
                   <Box sx={{ display: 'flex', width: '100%' }}>
-                    <Box>
-                      <Typography>{details.year}</Typography>
-                      <Typography>#xxx</Typography>
-                      <Typography>Set Topps</Typography>
-                      <Typography>
-                        {details.grading} {details.grading_service}
-                      </Typography>
-                    </Box>
+                    <Attributes attributes={assetData.attributes} />
                     <Box className={classes.cardPriceSection}>
                       <Box className={classes.CardPriceItem}>
                         <Typography>Valuation</Typography>
