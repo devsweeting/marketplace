@@ -10,11 +10,3 @@ export const PageContainer = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
 });
-
-export const PortfolioContainer = styled('div')({
-  marginTop: '80px',
-  backgroundColor: '#fff',
-  width: '100%',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-});

@@ -6,15 +6,14 @@ import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
-import type { CardProps } from '@mui/material';
-import { Box, Card, Grid, styled, Typography, useTheme } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
 import { getAssetById } from '@/api/endpoints/assets';
 import { useUser } from '@/helpers/hooks/useUser';
-import { PageContainer, PortfolioContainer } from '@/styles/AccountPage.styles';
-import Link from 'next/link';
+import { PageContainer } from '@/styles/AccountPage.styles';
+import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderTabs/PortfolioHeaderTabs';
 export type IPorfolioAsset = IAsset & {
   fractionPriceCents: number | undefined;
   fractionQty: number | undefined;
@@ -60,17 +59,6 @@ const initialPortfolioListState: IPortfolioDataState = {
   error: '',
 };
 
-const PortfolioCard = styled((props: CardProps) => <Card {...props} />)(({ theme }) => ({
-  display: 'flex',
-  width: '100%',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  [theme.breakpoints.down('sm')]: {
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-}));
-
 const portfolioReducer = (state: IPortfolioDataState, action: PortfolioListAction) => {
   switch (action.type) {
     case 'fetching': {
@@ -106,7 +94,6 @@ const PortfolioPage: NextPage = () => {
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const [isOpen, setIsOpen] = useState(false);
   const [assets, setAssets] = useState<IAsset[]>([]);
-  const theme = useTheme();
 
   const handlePortfolioDataFetch = (tab: string | string[] | undefined) => {
     dispatch({ type: 'fetching' });
@@ -186,7 +173,6 @@ const PortfolioPage: NextPage = () => {
   } else {
     portfolioAssetsList.push(...portfolio.items);
   }
-
   const updateAsset = (assetId: string): void => {
     getAssetById(assetId)
       .then((asset) => {
@@ -231,76 +217,7 @@ const PortfolioPage: NextPage = () => {
     return (
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
-        <PortfolioContainer>
-          <PortfolioCard>
-            <Box>
-              <Typography
-                component="h2"
-                variant="xl"
-                style={{
-                  margin: 0,
-                  padding: '24px',
-                  fontWeight: '600',
-                  fontSize: '24px',
-                  lineHeight: '32px',
-                }}
-              >
-                Portfolio
-              </Typography>
-            </Box>
-            <Grid
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                marginRight: '20px',
-                [theme.breakpoints.down('sm')]: {
-                  marginRight: '0px',
-                  justifyContent: 'space-evenly',
-                },
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', padding: '0 16px' }}>
-                {tabs.map((header, index) => (
-                  <Link
-                    key={index}
-                    href={{ pathname: '/account', query: { tab: header.toLocaleLowerCase() } }}
-                  >
-                    <Box
-                      sx={{
-                        padding: '24px 16px',
-                        borderBottom:
-                          activePortfolioCategory === header.toLocaleLowerCase()
-                            ? '2px solid black'
-                            : '2px solid transparent',
-                        '&: hover': { cursor: 'pointer' },
-                      }}
-                    >
-                      <Typography
-                        component="h2"
-                        variant="xl"
-                        style={{
-                          margin: 0,
-                          padding: '0',
-                          fontWeight: '600',
-                          fontSize: '16px',
-                          lineHeight: '32px',
-                          color:
-                            activePortfolioCategory === header.toLocaleLowerCase()
-                              ? 'black'
-                              : '#6B7280',
-                        }}
-                      >
-                        {header}
-                      </Typography>
-                    </Box>
-                  </Link>
-                ))}
-              </Box>
-            </Grid>
-          </PortfolioCard>
-        </PortfolioContainer>
+        <PortfolioHeaderTabs tabs={tabs} activePortfolioCategory={activePortfolioCategory} />
         <Box sx={{ height: '30vw' }}>
           <Loader />;
         </Box>
@@ -311,14 +228,20 @@ const PortfolioPage: NextPage = () => {
   if (error !== '') {
     return (
       <div>
-        <p>{error}</p>
-        <button
-          onClick={() => {
-            void handlePortfolioDataFetch(activePortfolioCategory);
-          }}
-        >
-          Try again
-        </button>
+        <Grid>
+          <OpenGraph title={'List view'} description={'List view page description'} />
+          <PortfolioHeaderTabs tabs={tabs} activePortfolioCategory={activePortfolioCategory} />
+          <Box>
+            <PortFolioStats portfolio={stats} />
+            <button
+              onClick={() => {
+                void handlePortfolioDataFetch(activePortfolioCategory);
+              }}
+            >
+              Try again
+            </button>
+          </Box>
+        </Grid>
       </div>
     );
   }
@@ -327,76 +250,7 @@ const PortfolioPage: NextPage = () => {
     <>
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
-        <PortfolioContainer>
-          <PortfolioCard>
-            <Box>
-              <Typography
-                component="h2"
-                variant="xl"
-                style={{
-                  margin: 0,
-                  padding: '24px',
-                  fontWeight: '600',
-                  fontSize: '24px',
-                  lineHeight: '32px',
-                }}
-              >
-                Portfolio
-              </Typography>
-            </Box>
-            <Grid
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                width: '100%',
-                marginRight: '20px',
-                [theme.breakpoints.down('sm')]: {
-                  marginRight: '0px',
-                  justifyContent: 'space-evenly',
-                },
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', padding: '0 16px' }}>
-                {tabs.map((header, index) => (
-                  <Link
-                    key={index}
-                    href={{ pathname: '/account', query: { tab: header.toLocaleLowerCase() } }}
-                  >
-                    <Box
-                      sx={{
-                        padding: '24px 16px',
-                        borderBottom:
-                          activePortfolioCategory === header.toLocaleLowerCase()
-                            ? '2px solid black'
-                            : '2px solid transparent',
-                        '&: hover': { cursor: 'pointer' },
-                      }}
-                    >
-                      <Typography
-                        component="h2"
-                        variant="xl"
-                        style={{
-                          margin: 0,
-                          padding: '0',
-                          fontWeight: '600',
-                          fontSize: '16px',
-                          lineHeight: '32px',
-                          color:
-                            activePortfolioCategory === header.toLocaleLowerCase()
-                              ? 'black'
-                              : '#6B7280',
-                        }}
-                      >
-                        {header}
-                      </Typography>
-                    </Box>
-                  </Link>
-                ))}
-              </Box>
-            </Grid>
-          </PortfolioCard>
-        </PortfolioContainer>
+        <PortfolioHeaderTabs tabs={tabs} activePortfolioCategory={activePortfolioCategory} />
         <Box>
           <PortFolioStats portfolio={stats} />
           <PortfolioAssetList
