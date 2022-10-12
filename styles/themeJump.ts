@@ -1,6 +1,16 @@
 import { createTheme } from '@mui/material/styles';
 import type { CSSProperties } from 'react';
 
+declare module '@mui/material/styles/createPalette' {
+  interface Palette {
+    accent: Palette['primary'];
+  }
+
+  interface PaletteOptions {
+    accent: PaletteOptions['primary'];
+  }
+}
+
 declare module '@mui/material/styles' {
   interface TypographyVariants {
     lg: CSSProperties;
@@ -61,6 +71,9 @@ const theme = createTheme({
     secondary: {
       main: '#fff',
     },
+    accent: {
+      main: '#ffdf00',
+    },
     grey: {
       50: '#F9FAFB',
       100: '#F3F4F6',
@@ -73,6 +86,7 @@ const theme = createTheme({
       800: '#1F2937',
       900: '#111827',
     },
+    divider: '#4B5563',
   },
   shape: {
     borderRadius: 8,
@@ -270,12 +284,17 @@ export const themeJump = createTheme(theme, {
             fontSize: '1rem',
             textTransform: 'none',
             backgroundColor: 'transparent',
-            color: theme.palette.primary.main,
+            // color: theme.palette.primary.main,
             padding: 0,
-            '&:hover': {
-              backgroundColor: 'inherit',
-              color: theme.palette.grey[500],
+            '&.MuiButton-textSecondary': {
+              '&:hover': {
+                color: theme.palette.accent.main,
+              },
             },
+            // '&:hover': {
+            //   // backgroundColor: 'inherit',
+            //   // color: theme.palette.accent.main,
+            // },
           },
           '&.Mui-disabled': {
             backgroundColor: theme.palette.grey[200],

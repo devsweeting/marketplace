@@ -10,6 +10,9 @@ export const themePWCC = createTheme({
     secondary: {
       main: '#fff',
     },
+    accent: {
+      main: '#ffdf00',
+    },
   },
   typography: {
     h2: {
