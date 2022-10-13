@@ -12,6 +12,54 @@ export const PortfolioAssetList = ({
   handleDrawer: (asset: IAsset) => void;
 }) => {
   const theme = useTheme();
+  const organizeAssetTraits = (portfolioAssetsList: any[]) => {
+    const newAssetList: IPorfolioAsset[] = [];
+    portfolioAssetsList.map((asset) => {
+      const newAsset = {
+        attributes: [],
+        createdAt: '',
+        description: '',
+        fractionPriceCents: 0,
+        fractionQty: 0,
+        id: '',
+        isOnUserPortfolio: true,
+        media: [],
+        sellOrders: [],
+        name: '',
+        partner: '',
+        refId: '',
+        slug: '',
+        updatedAt: '',
+      };
+      let key: string;
+      let value: any | any[];
+      for ([key, value] of Object.entries(asset)) {
+        switch (key) {
+          case 'purchaseHistory': {
+            if (value.length > 0) {
+              console.log(value[0]);
+              newAsset.fractionPriceCents = value[0].fractionPriceCents;
+              newAsset.fractionQty = value[0].fractionQty;
+            }
+            break;
+          }
+          case 'attributes': {
+            if (value.length > 0) {
+              newAsset.attributes.push(...value);
+            }
+            break;
+          }
+          case 'sellOrders': {
+            if (value && value.length > 0) {
+            }
+            break;
+          }
+        }
+      }
+      return newAssetList.push(newAsset);
+    });
+  };
+  organizeAssetTraits(portfolioAssetsList);
   return (
     <Grid container direction="row" justifyContent="flex-end" alignItems="stretch">
       <Box
@@ -37,9 +85,6 @@ export const PortfolioAssetList = ({
           portfolioAssetsList.map((asset) => {
             if (asset) {
               asset.isOnUserPortfolio = true;
-              if (!asset.fractionPriceCents || !asset.fractionQty) {
-                asset.isOnWatchlist = true;
-              }
               return (
                 <PortfolioAssetCard
                   key={asset?.id}

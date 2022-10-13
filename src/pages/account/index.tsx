@@ -35,6 +35,7 @@ interface IPurchaseHistoryItem {
   userId?: string;
 }
 export interface IPortfolioData {
+  length: number;
   items?: any;
   totalValueInCents: number;
   totalUnits: number;
@@ -190,10 +191,14 @@ const PortfolioPage: NextPage = () => {
       });
   };
 
-  const handleDrawer = (asset: IAsset) => {
+  const handleTabClosingDrawer = () => {
+    setIsOpen(false);
+  };
+
+  const handleDrawer = (asset?: IAsset) => {
     if (!isOpen) {
       setIsOpen(true);
-    } else if (isOpen && tradePanelData && asset.id === tradePanelData.id) {
+    } else if (isOpen && tradePanelData && asset?.id === tradePanelData.id) {
       setIsOpen(false);
     }
     if (Object.keys(portfolio).includes('statusCode')) {
@@ -217,7 +222,11 @@ const PortfolioPage: NextPage = () => {
     return (
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
-        <PortfolioHeaderTabs tabs={tabs} activePortfolioCategory={activePortfolioCategory} />
+        <PortfolioHeaderTabs
+          tabs={tabs}
+          activePortfolioCategory={activePortfolioCategory}
+          OnClick={handleTabClosingDrawer}
+        />
         <Box sx={{ height: '30vw' }}>
           <Loader />;
         </Box>
@@ -230,7 +239,11 @@ const PortfolioPage: NextPage = () => {
       <div>
         <Grid>
           <OpenGraph title={'List view'} description={'List view page description'} />
-          <PortfolioHeaderTabs tabs={tabs} activePortfolioCategory={activePortfolioCategory} />
+          <PortfolioHeaderTabs
+            tabs={tabs}
+            activePortfolioCategory={activePortfolioCategory}
+            OnClick={handleDrawer}
+          />
           <Box>
             <PortFolioStats portfolio={stats} />
             <button
@@ -250,7 +263,11 @@ const PortfolioPage: NextPage = () => {
     <>
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
-        <PortfolioHeaderTabs tabs={tabs} activePortfolioCategory={activePortfolioCategory} />
+        <PortfolioHeaderTabs
+          tabs={tabs}
+          activePortfolioCategory={activePortfolioCategory}
+          OnClick={handleTabClosingDrawer}
+        />
         <Box>
           <PortFolioStats portfolio={stats} />
           <PortfolioAssetList

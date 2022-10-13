@@ -12,9 +12,11 @@ import {
 export const PortfolioHeaderTabs = ({
   activePortfolioCategory,
   tabs,
+  OnClick,
 }: {
   activePortfolioCategory: string;
   tabs: string[];
+  OnClick: () => void;
 }) => {
   useEffect(() => {
     //
@@ -39,6 +41,9 @@ export const PortfolioHeaderTabs = ({
                       activePortfolioCategory === header.toLocaleLowerCase()
                         ? '2px solid black'
                         : '2px solid transparent',
+                  }}
+                  onClick={() => {
+                    OnClick();
                   }}
                 >
                   <TabHeader

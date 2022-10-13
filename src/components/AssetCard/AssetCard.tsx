@@ -40,6 +40,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   const sellOrderData = getMainSellOrder(assetData);
   const { setIsModalOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
+  console.log(assetData);
 
   const handleKeyDownOnCard = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
