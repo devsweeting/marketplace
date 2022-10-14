@@ -26,6 +26,7 @@ import {
   TradePanelButton,
 } from './TradePanel.styles';
 import Link from 'next/link';
+import { addAssetOnLocalCart } from '@/components/Checkout/addToLocalStorageCart';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
@@ -64,6 +65,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
 
   const handleOpenBuyModal = () => {
     if (!user) {
+      void addAssetOnLocalCart(asset.id, sliderValue);
       setIsModalOpen(true);
       return;
     }
