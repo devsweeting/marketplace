@@ -1,4 +1,4 @@
-import { styled, Modal as MuiModal, Card, lighten, TextField } from '@mui/material';
+import { Card, lighten, styled, TextField, Modal as MuiModal, Button } from '@mui/material';
 
 export const Modal = styled(MuiModal)({
   display: 'flex',
@@ -51,9 +51,9 @@ export const ModalCard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: 'center',
+
   width: '800px',
-  height: '470px',
+  height: '570px',
   backgroundColor: 'white',
   borderRadius: '10px',
   boxShadow: `0px 2px 4px -1px ${lighten(
@@ -67,9 +67,9 @@ export const ModalCard = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '500px',
+
     width: '100%',
-    height: '470px',
+    height: '80%',
   },
 }));
 
@@ -110,5 +110,24 @@ export const InputTextField = styled(TextField)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     margin: '10px 0px',
     width: '95%',
+  },
+}));
+
+export const LoginButton = styled(Button)(({ theme }) => ({
+  '&.MuiButtonBase-root': {
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
+    width: '100%',
+    height: '56px',
+    margin: '40px 0',
+    fontSize: '1.3rem',
+    border: `3px solid ${theme.palette.primary.main}`,
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.secondary.main,
+    },
+    [theme.breakpoints.down('sm')]: {
+      margin: '10px auto',
+    },
   },
 }));

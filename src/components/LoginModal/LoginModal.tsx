@@ -1,14 +1,13 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
-import { Typography, useTheme, Button, alpha } from '@mui/material';
 import { Box } from '@mui/system';
-import type { Theme } from '@mui/material';
+import { Typography, useTheme, alpha, Link } from '@mui/material';
 import { useModal } from '@/helpers/hooks/useModal';
 import { loginRequest } from '@/api/endpoints/loginRequest';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/router';
 import { apiClient } from '@/api/client';
 
-import { Modal, ModalCard, InputTextField } from './LoginModal.styles';
+import { Modal, ModalCard, InputTextField, LoginButton } from './LoginModal.styles';
 
 interface ILoginState {
   isLoading: boolean;
@@ -39,7 +38,6 @@ export const validate = (email: string) => {
 };
 
 const LoginInput = ({
-  theme,
   statCode,
   loginInputValue,
   setLoginInputValue,
@@ -48,7 +46,6 @@ const LoginInput = ({
   handleLoginSubmit,
   handleTokenSubmit,
 }: {
-  theme: Theme;
   statCode: number;
   loginInputValue: any;
   setLoginInputValue: any;
@@ -108,32 +105,15 @@ const LoginInput = ({
               justifyContent: 'center',
             }}
           >
-            <Button
+            <LoginButton
               id={'loginButton'}
               role="button"
-              sx={{
-                '&.MuiButtonBase-root': {
-                  color: 'white',
-                  backgroundColor: 'black',
-                  width: '100%',
-                  height: '56px',
-                  margin: '20px 0px',
-                  fontSize: '1.3rem',
-                  border: '3px solid black',
-                  '&:hover': {
-                    color: 'black',
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    margin: '10px auto',
-                  },
-                },
-              }}
               onClick={() => {
                 handleLoginSubmit(loginInputValue);
               }}
             >
               Submit
-            </Button>
+            </LoginButton>
           </Box>
         </div>
       )}
@@ -146,7 +126,7 @@ const LoginInput = ({
             InputProps={{ disableUnderline: true }}
             id="outlined-basic"
             variant="standard"
-            placeholder="Code"
+            placeholder="XXXXXX-XXXXX-XXXX-XXXX-XXXXXXXX"
             value={tokenInputValue}
             onChange={(newValue: { target: { value: string } }) =>
               setTokenInputValue(newValue.target.value)
@@ -168,32 +148,14 @@ const LoginInput = ({
               justifyContent: 'center',
             }}
           >
-            <Button
+            <LoginButton
               id={'loginButton'}
-              sx={{
-                '&.MuiButtonBase-root': {
-                  color: 'white',
-                  backgroundColor: 'black',
-                  borderRadius: '50px',
-                  width: '175px',
-                  height: '56px',
-                  margin: '20px 10px',
-                  fontSize: '1.3rem',
-                  border: '3px solid black',
-                  '&:hover': {
-                    color: 'black',
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    margin: '10px auto',
-                  },
-                },
-              }}
               onClick={() => {
                 void handleTokenSubmit(tokenInputValue);
               }}
             >
               Submit
-            </Button>
+            </LoginButton>
           </Box>
         </form>
       )}
@@ -254,7 +216,7 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
   const handleLoginSubmit = (value: string) => {
     if (!validate(value)) {
       setHeaderText('Enter a valid email');
-      setAlertMessage('Example: john.smith@example.com');
+
       return;
     }
     dispatch({ type: 'fetching' });
@@ -348,11 +310,11 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
             <Box
               sx={{
                 width: '100%',
+                marginBottom: '40px',
               }}
             >
               {!isLoading && !error && (
                 <LoginInput
-                  theme={theme}
                   statCode={statCode}
                   loginInputValue={loginInputValue}
                   setLoginInputValue={setLoginInputValue}
@@ -363,6 +325,45 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
                 />
               )}
             </Box>
+            <Typography
+              variant="lg"
+              sx={{
+                marginTop: '60px',
+                fontSize: '16px',
+                lineHeight: '20px',
+                fontWeight: '500',
+                [theme.breakpoints.down('md')]: {
+                  marginTop: '40px',
+                },
+              }}
+            >
+              {`By signing up you agree to our `}
+              <Link
+                href="/site-policy/privacy-policy"
+                sx={{
+                  fontSize: '16px',
+                  lineHeight: '20px',
+                  fontWeight: '500',
+                  color: theme.palette.primary.main,
+                  textDecorationColor: theme.palette.primary.main,
+                }}
+              >
+                privacy policy
+              </Link>
+              {` and `}
+              <Link
+                href="/site-policy/terms-of-service"
+                sx={{
+                  fontSize: '16px',
+                  lineHeight: '20px',
+                  fontWeight: '500',
+                  color: theme.palette.primary.main,
+                  textDecorationColor: theme.palette.primary.main,
+                }}
+              >
+                terms and conditions
+              </Link>
+            </Typography>
           </>
         ) : (
           <>
@@ -373,6 +374,8 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
                 sx={{
                   fontSize: '72px',
                   lineHeight: '72px',
+                  marginBottom: '40px',
+                  color: theme.palette.primary.main,
                   [theme.breakpoints.down('md')]: {
                     fontSize: '56px',
                   },
@@ -392,7 +395,6 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
             >
               {!isLoading && !error && (
                 <LoginInput
-                  theme={theme}
                   statCode={statCode}
                   loginInputValue={loginInputValue}
                   setLoginInputValue={setLoginInputValue}
