@@ -26,11 +26,14 @@ import {
   TradePanelButton,
 } from './TradePanel.styles';
 import Link from 'next/link';
-import { addAssetOnLocalCart } from '@/components/Checkout/addToLocalStorageCart';
+import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
+import type { CartItem } from '@/helpers/auth/CartContext';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
   const { setIsModalOpen } = useModal();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -65,7 +68,32 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
 
   const handleOpenBuyModal = () => {
     if (!user) {
-      void addAssetOnLocalCart(asset.id, sliderValue);
+      setCartItems((currItems: CartItem[]) => {
+        if (currItems.find((item) => item.id === asset.id) == null) {
+          return [
+            ...currItems,
+            {
+              id: asset.id,
+              quantity: sliderValue,
+              fractionPriceCents: sellOrderData?.fractionPriceCents as number,
+              totalPrice: totalPrice,
+            },
+          ];
+        } else {
+          return currItems.map((item) => {
+            if (item.id === asset.id) {
+              return {
+                ...item,
+                quantity: sliderValue,
+                fractionPriceCents: sellOrderData?.fractionPriceCents as number,
+                totalPrice: totalPrice,
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      });
       setIsModalOpen(true);
       return;
     }

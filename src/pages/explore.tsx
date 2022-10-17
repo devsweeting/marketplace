@@ -19,15 +19,21 @@ import { useFilters } from '@/helpers/hooks/useFilters';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
 import { FilterWrapper } from '@/components/FilterWrapper';
+<<<<<<< HEAD
 import { AssetListFooter } from '@/styles/explorePage.styles';
 
+=======
+import { useUser } from '@/helpers/hooks/useUser';
+import { useCart } from '@/helpers/auth/CartContext';
+>>>>>>> 44ac365 (added modal if user has items in cart)
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-
+  const { openCart, cartItems } = useCart();
+  const user = useUser();
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
@@ -78,6 +84,14 @@ const ExplorePage: NextPage = () => {
     const { markets }: { markets: IMarket[] } = await trendingMarkets();
     setTrendingMarket(markets);
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (user !== undefined && cartItems.length > 0) {
+        openCart();
+      }
+    }
+  }, [cartItems.length, openCart, user]);
 
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
