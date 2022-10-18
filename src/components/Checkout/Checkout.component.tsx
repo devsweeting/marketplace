@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { alpha, Button, Card, Modal, useTheme } from '@mui/material';
+import { alpha, Button, Card, IconButton, lighten, Modal, useTheme } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { useCart } from '@/helpers/auth/CartContext';
+import { useEffect, useState } from 'react';
+import { getAssetById } from '@/api/endpoints/assets';
+import { Attributes } from '@/components/Attributes';
+import type { IAsset } from '@/types/assetTypes';
+import Image from 'next/image';
 
 const style = {
   position: 'absolute' as const,
@@ -17,14 +22,21 @@ const style = {
 };
 
 export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
-  const { cartItems } = useCart();
+  const { cartItems, removeFromCart } = useCart();
+  const [orderSummary, setOrderSummary] = useState<IAsset>();
 
+  const item = cartItems[0];
   useEffect(() => {
-    //
-  }, [cartItems]);
+    if (!item) {
+      return;
+    }
+    void getAssetById(item.id).then((asset) => setOrderSummary(asset));
+  }, [item]);
 
-  const { totalPrice, quantity } = cartItems[0];
   const theme = useTheme();
+  if (orderSummary === undefined || !(cartItems.length > 0)) {
+    return null;
+  }
   return (
     <Modal
       open={isOpen}
@@ -50,6 +62,33 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
           >
             Cart
           </Typography>
+          <Box
+            sx={{
+              position: 'absolute',
+              zIndex: 1,
+              top: '10px',
+              right: '10px',
+            }}
+          >
+            <Typography
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                [theme.breakpoints.down('sm')]: {
+                  flexDirection: 'column',
+                },
+              }}
+            >
+              <IconButton
+                aria-label="remove from watchlist"
+                onClick={() => {
+                  removeFromCart(item.id);
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </Typography>
+          </Box>
         </Box>
         <Box
           display="grid"
@@ -60,7 +99,97 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
             margin: '0 auto',
           }}
         >
-          <Box>1</Box>
+          <Box position="relative">
+            <Card
+              sx={{
+                height: '345px',
+                borderRadius: '0px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                width="100%"
+                height="200.5px"
+                minWidth="152px"
+                justifyContent="space-between"
+                display="flex"
+                flexDirection="column"
+                position="relative"
+              >
+                <Box display="flex">
+                  <Box
+                    sx={{
+                      maxWidth: '152px',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: lighten(theme.palette.primary.main, 0.95),
+                      padding: '40px',
+                    }}
+                  >
+                    {orderSummary.media &&
+                      orderSummary.media[0] &&
+                      orderSummary.media[0].absoluteUrl && (
+                        <Image
+                          placeholder="blur"
+                          blurDataURL={`/_next/image?url=${orderSummary.media[0].absoluteUrl}&w=16&q=1`}
+                          src={orderSummary.media[0].absoluteUrl}
+                          alt={orderSummary.media[0].title}
+                          width={72}
+                          height={120.5}
+                          style={{ textAlign: 'center', lineHeight: '60px', maxWidth: '100px' }}
+                        ></Image>
+                      )}
+                  </Box>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                    sx={{ width: '100%', marginLeft: '20px' }}
+                  >
+                    <Typography
+                      id="modal-modal-title"
+                      variant="xl"
+                      component="h2"
+                      sx={{ fontSize: '24px', lineHeight: '32px', fontWeight: '600' }}
+                    >
+                      {orderSummary && orderSummary.name}
+                    </Typography>
+                    <Attributes attributes={orderSummary.attributes} />
+                  </Box>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  zIndex: 1,
+                  top: '10px',
+                  right: '10px',
+                }}
+              >
+                <Typography
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    [theme.breakpoints.down('sm')]: {
+                      flexDirection: 'column',
+                    },
+                  }}
+                >
+                  <IconButton
+                    aria-label="remove from watchlist"
+                    onClick={() => {
+                      removeFromCart(item.id);
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Typography>
+              </Box>
+            </Card>
+          </Box>
           <Box
             sx={{
               backgroundColor: theme.palette.grey[50],
@@ -97,8 +226,8 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
                   component="p"
                   sx={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
                 >
-                  {quantity > 1 ? 'Units: ' : 'Unit: '}
-                  {quantity}
+                  {Object.keys(item).length > 0 && item.quantity}
+                  {Object.keys(item).length > 0 && item.quantity > 1 ? ' Units' : ' Unit'}
                 </Typography>
                 <Typography
                   id="modal-modal-title"
@@ -106,7 +235,7 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
                   component="p"
                   sx={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
                 >
-                  ${totalPrice}
+                  {Object.keys(item).length > 0 && '$' + item.totalPrice}
                 </Typography>
               </Box>
               <Card
@@ -153,7 +282,8 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
                     backgroundColor: theme.palette.primary.main,
                     height: '40px',
                     margin: '10px 24px',
-                    fontSize: '1.3rem',
+                    fontSize: '16px',
+                    lineHeight: '24px',
                     border: `1px solid ${theme.palette.primary.main}`,
                     '&:hover': {
                       color: theme.palette.primary.main,

@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
 import { useState, useContext, createContext } from 'react';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
-import type { IAsset } from '@/types/assetTypes';
-import { getAssetById } from '@/api/endpoints/assets';
 import { Checkout } from '@/components/Checkout';
 
 type CartProviderProps = {
@@ -19,12 +17,6 @@ export type CartItem = {
 type CartContext = {
   openCart: () => void;
   closeCart: () => void;
-  getItem: () => Promise<{
-    data: IAsset | undefined;
-    quantity: number;
-    fractionPriceCents: number;
-    totalPrice: number;
-  }>[];
   increaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
   decreaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
   removeFromCart: (id: string) => void;
@@ -102,16 +94,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     });
   }
 
-  function getItem() {
-    const Items = cartItems.map(async (item) => {
-      const asset = await getAssetById(item.id);
-      const { quantity, fractionPriceCents, totalPrice } = item;
-      const data = asset?.data;
-      return { data, quantity, fractionPriceCents, totalPrice };
-    });
-    return Items;
-  }
-
   function removeFromCart(id: string) {
     setCartItems((currItems) => {
       return currItems.filter((item) => item.id !== id);
@@ -121,7 +103,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   return (
     <CartContext.Provider
       value={{
-        getItem,
         increaseCartQuantity,
         decreaseCartQuantity,
         removeFromCart,
