@@ -42,7 +42,10 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   );
 
   const openCart = () => setIsOpen(true);
-  const closeCart = () => setIsOpen(false);
+  const closeCart = () => {
+    setIsOpen(false);
+    setCartItems([]);
+  };
 
   function increaseCartQuantity(id: string, quantity: number, fractionPriceCents: number) {
     setCartItems((currItems) => {
