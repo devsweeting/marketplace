@@ -85,13 +85,13 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     fetchAsset(assetId).catch(console.error);
   };
 
-  const handleWatch = async (id: string, name: string): Promise<void> => {
+  const handleWatch = async (asset: IAsset): Promise<void> => {
     try {
-      await addWatchlistToLocalStorage(id, name);
+      await addWatchlistToLocalStorage(asset);
 
       setWatched(true);
 
-      const status = await addToWatchlist({ id, name });
+      const status = await addToWatchlist(asset);
 
       if (status) {
         setWatched(hasBeenAddedWatchlist(status));
@@ -102,11 +102,11 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     }
   };
 
-  const handleRemoveWatch = async (id: string, name: string): Promise<void> => {
+  const handleRemoveWatch = async (asset: IAsset): Promise<void> => {
     try {
-      await removeWatchlistFromLocalStorage(id);
+      await removeWatchlistFromLocalStorage(asset);
 
-      await removeFromWatchlist({ id, name });
+      await removeFromWatchlist(asset);
 
       setWatched(false);
     } catch (e) {
@@ -129,17 +129,17 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   }, [asset, sellOrder]);
 
   useEffect(() => {
-    const fetchIsWatched = async (id: string) => {
-      setWatched(isAssetInLocalStorage(id));
+    const fetchIsWatched = async (asset: IAsset) => {
+      setWatched(isAssetInLocalStorage(asset));
 
-      const watchlistCheck = await checkForAssetOnWatchlist(id);
+      const watchlistCheck = await checkForAssetOnWatchlist(asset);
 
       setWatched(watchlistCheck.inWatchlist ?? false);
     };
 
     if (asset) {
       // eslint-disable-next-line no-console
-      fetchIsWatched(asset.id).catch((e) => console.error(e));
+      fetchIsWatched(asset).catch((e) => console.error(e));
     }
   }, [asset]);
 

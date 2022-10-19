@@ -83,3 +83,8 @@ export interface ISellOrder {
   userFractionLimit: number | null;
   userFractionLimitEndTime: string | null;
 }
+
+export interface WatchlistAsset {
+  id: string;
+  name: string;
+}
