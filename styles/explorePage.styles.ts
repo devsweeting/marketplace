@@ -1,21 +1,10 @@
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material';
 
-export const useExplorePageStyles = makeStyles((theme) => ({
-  assetListClosed: {
-    flexGrow: 1,
-
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  assetListOpen: {
-    flexGrow: 1,
-
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    margin: '0 500px 0 0',
-  },
-}));
+export const AssetListFooter = styled('div')({
+  padding: '2rem',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '2rem',
+});
