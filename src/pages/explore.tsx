@@ -19,13 +19,9 @@ import { useFilters } from '@/helpers/hooks/useFilters';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
 import { FilterWrapper } from '@/components/FilterWrapper';
-<<<<<<< HEAD
 import { AssetListFooter } from '@/styles/explorePage.styles';
-
-=======
 import { useUser } from '@/helpers/hooks/useUser';
 import { useCart } from '@/helpers/auth/CartContext';
->>>>>>> 44ac365 (added modal if user has items in cart)
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
