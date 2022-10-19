@@ -1,7 +1,7 @@
-import { Box, Card, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
-import { useTestimonialStyles } from './Testimomials.styles';
+import { Container, TextContainer, Slider, CardContainer, Card } from './Testimomials.styles';
 
 export const Testimonials = () => {
   const mockTestimonies = [
@@ -30,22 +30,21 @@ export const Testimonials = () => {
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. ',
     },
   ];
-  const classes = useTestimonialStyles();
 
   return (
-    <Box className={classes.testimonialsWrapper}>
-      <div className={classes.testimonialHeaderWrapper}>
-        <Typography variant="xl5" component="h2" className={classes.testimonialsHeader}>
+    <Container>
+      <TextContainer>
+        <Typography variant="xl5" fontWeight={800}>
           What our collectors say
         </Typography>
-        <Typography variant="subtitle1" component="p" className={classes.testimonialsSubHeader}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incid
+        <Typography variant="body1">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit
         </Typography>
-      </div>
-      <Grid className={classes.slider} container>
-        <Box className={classes.cardWrapper}>
+      </TextContainer>
+      <Slider container>
+        <CardContainer>
           {mockTestimonies.map((testimony, index) => (
-            <Card key={index} className={classes.card}>
+            <Card key={index}>
               <Box
                 style={{
                   display: 'flex',
@@ -90,8 +89,8 @@ export const Testimonials = () => {
               </Typography>
             </Card>
           ))}
-        </Box>
-      </Grid>
-    </Box>
+        </CardContainer>
+      </Slider>
+    </Container>
   );
 };
