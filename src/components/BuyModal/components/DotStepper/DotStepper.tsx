@@ -2,22 +2,14 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import type { StepIconProps } from '@mui/material/StepIcon';
 import React from 'react';
-import { Check } from '@mui/icons-material';
-import { useDotStepperStyles } from './DotStepper.styles';
 import { StepLabel } from '@mui/material';
+import { StepIconRoot, CompleteIcon, IncompleteIcon } from './DotStepper.styles';
 
 function QontoStepIcon(props: StepIconProps) {
   const { active, completed } = props;
-  const iconStyles = useDotStepperStyles();
 
   return (
-    <div className={iconStyles.ontoStepIconRoot} style={{ color: active ? '#784af4' : '' }}>
-      {completed ? (
-        <Check className={iconStyles.completedIcon} />
-      ) : (
-        <div className={iconStyles.circleIcon} />
-      )}
-    </div>
+    <StepIconRoot active={active}>{completed ? <CompleteIcon /> : <IncompleteIcon />}</StepIconRoot>
   );
 }
 export interface IDotStepper {
