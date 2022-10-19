@@ -1,13 +1,10 @@
-import { useNavLinkStyles } from '../NavLink/NavLink.styles';
-import Typography from '@mui/material/Typography';
-import classNames from 'classnames';
 import { LoginModal } from '@/components/LoginModal';
 import { useModal } from '@/helpers/hooks/useModal';
 
+import { NavText } from '../NavLink/NavLink.styles';
+
 export const Login = () => {
   const { isModalOpen, setIsModalOpen } = useModal();
-
-  const classes = useNavLinkStyles();
 
   const handleOpen = () => {
     setIsModalOpen(!isModalOpen);
@@ -16,9 +13,7 @@ export const Login = () => {
   return (
     <div>
       <a style={{ textDecoration: 'none' }} onClick={handleOpen}>
-        <Typography variant="nav" component="span" className={classNames(classes.navLink)}>
-          Login
-        </Typography>
+        <NavText variant="nav">Login</NavText>
       </a>
       <LoginModal open={isModalOpen} />
     </div>
