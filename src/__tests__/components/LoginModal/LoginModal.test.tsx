@@ -30,7 +30,7 @@ describe('Login modal flow', () => {
     const input = screen.getByRole('textbox', { name: /email/i });
     const inputLabel = within(modal).getByText(/email/i);
     const button = screen.getByRole('button', { name: /login/i });
-    const form = within(modal).getByRole('form');
+    const form = screen.getByTestId('form');
     const formViolations = await axe(form ?? '');
     const alert = screen.getByRole('alert');
     expect(form).toBeTruthy();
