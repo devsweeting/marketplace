@@ -1,14 +1,12 @@
 import type { NextApiRequest, NextApiResponse, NextPage } from 'next';
 import { loginConfirm } from '@/api/endpoints/loginConfirm';
 import { setUserCookie } from '@/helpers/auth/userCookie';
-import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
-import { Box, Container, Typography } from '@mui/material';
-import classNames from 'classnames';
+import { Container, Typography } from '@mui/material';
 import type { NextApiRequestQuery } from 'next/dist/server/api-utils';
+import { LoginTextContainer } from '@/styles/LoginPage.styles';
 
 const Login: NextPage = () => {
-  const classes = useLoginPageStyles();
   return (
     <>
       <OpenGraph title={'Login'} description={'Login page description'} />
@@ -20,18 +18,15 @@ const Login: NextPage = () => {
           alignItems: 'center',
           textAlign: 'center',
         }}
-        maxWidth="xl"
       >
-        <Box className={classNames(classes.loginSuccessBox)}>
-          <>
-            <Typography variant="xl5" className={classNames(classes.loginFailText)}>
-              Invalid Token
-            </Typography>
-            <Typography variant="subtitle2" className={classNames(classes.loginFailSubtext)}>
-              Please Try Again. If you continue to have issues, please contact us
-            </Typography>
-          </>
-        </Box>
+        <LoginTextContainer>
+          <Typography variant="xl3" fontWeight={700}>
+            Invalid Token
+          </Typography>
+          <Typography variant="body1">
+            Please Try Again. If you continue to have issues, please contact us
+          </Typography>
+        </LoginTextContainer>
       </Container>
     </>
   );

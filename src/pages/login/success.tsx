@@ -1,31 +1,23 @@
 import type { NextApiRequest, NextPage } from 'next';
 import { useEffect } from 'react';
-import { useLoginPageStyles } from '@/styles/LoginPage.styles';
 import { OpenGraph } from '@/components/OpenGraph';
-import { Box, Container, Typography } from '@mui/material';
-import classNames from 'classnames';
+import { Container, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import { addToWatchlist } from '@/api/endpoints/watchlist';
-import type { IProductDataProps } from '@/components/ProductCard';
+import { addToWatchlist, getLocalWatchlist } from '@/api/endpoints/watchlist';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
+import Link from 'next/link';
+import { LoginTextContainer } from '@/styles/LoginPage.styles';
 
 const Login: NextPage = (user) => {
-  const classes = useLoginPageStyles();
-
-  const getWatchList = () => {
-    return JSON.parse(localStorage.getItem('watchList') as string) ?? [];
-  };
-
   useEffect(() => {
     if (!user) {
       return;
     }
 
     const addWatchListItems = async () => {
-      const watchList = getWatchList();
+      const watchList = getLocalWatchlist();
 
-      await Promise.all(watchList.map((item: IProductDataProps) => addToWatchlist(item)));
+      await Promise.all(watchList.map((item) => addToWatchlist(item)));
     };
 
     addWatchListItems()
@@ -48,19 +40,17 @@ const Login: NextPage = (user) => {
           alignItems: 'center',
           textAlign: 'center',
         }}
-        maxWidth="xl"
       >
-        <Box className={classNames(classes.loginSuccessBox)}>
-          <>
-            <Typography variant="xl5" className={classNames(classes.loginSuccessText)}>
-              Logged in successfully
-            </Typography>
-            <Button href="/explore" className={classNames(classes.loginSuccessButton)}>
+        <LoginTextContainer>
+          <Typography variant="xl3" fontWeight={700}>
+            Logged in successfully
+          </Typography>
+          <Link href="/explore">
+            <Button>
               <Typography variant="lg">Go Explore</Typography>
-              <StorefrontIcon />
             </Button>
-          </>
-        </Box>
+          </Link>
+        </LoginTextContainer>
       </Container>
     </>
   );
