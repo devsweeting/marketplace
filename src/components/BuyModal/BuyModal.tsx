@@ -3,12 +3,12 @@ import { Button } from '@/components/Button';
 import { TabPanel } from '@/components/TabPanel';
 import { useUser } from '@/helpers/hooks/useUser';
 import type { ISellOrder } from '@/types/assetTypes';
-import { Box, Modal, Typography } from '@mui/material';
-import classNames from 'classnames';
+import { Box, Typography } from '@mui/material';
 import { StatusCodes } from 'http-status-codes';
 import React, { useEffect, useState } from 'react';
-import { modal, useBuyModalStyles } from './BuyModal.styles';
 import { DotStepper } from './components/DotStepper';
+
+import { Modal, ModalContainer, Title, ButtonContainer } from './BuyModal.styles';
 
 export interface IBuyModal {
   isOpen: boolean;
@@ -26,7 +26,6 @@ export const BuyModal = ({
   sellOrder,
   updateAsset,
 }: IBuyModal) => {
-  const modalClasses = useBuyModalStyles();
   const [value, setValue] = useState(0);
   const [alertMessage, setAlertMessage] = useState('');
   const [fractionState, setFractionState] = useState<number | undefined>();
@@ -87,74 +86,62 @@ export const BuyModal = ({
 
   return (
     <Modal open={isOpen} onClose={handleClose}>
-      <Box sx={modal} className={modalClasses.modal}>
+      <ModalContainer>
         <DotStepper value={value} steps={steps} />
-        <TabPanel value={value} index={0} className={modalClasses.center}>
-          <Typography variant="xl5" className={modalClasses.title}>
+        <TabPanel value={value} index={0}>
+          <Title variant="xl3">
             Buy {totalFractions} fractions for ${totalPrice}?
-          </Typography>
-          <Box className={classNames(modalClasses.content, modalClasses.flex)}>
-            <Button
-              id="confirm"
-              className={modalClasses.button}
-              onClick={() => void handleBuyFractions()}
-            >
+          </Title>
+          <ButtonContainer>
+            <Button id="confirm" onClick={() => void handleBuyFractions()}>
               confirm
             </Button>
             <Button
               id="back"
-              className={modalClasses.button}
-              sx={{ marginLeft: '10px' }}
               onClick={() => {
                 handleClose();
               }}
             >
               Cancel
             </Button>
-          </Box>
+          </ButtonContainer>
         </TabPanel>
-        <TabPanel value={value} index={1} className={modalClasses.center}>
-          <Box>
-            <Typography variant="xl2" className={modalClasses.title}>
-              Success!
+        <TabPanel value={value} index={1}>
+          <Title variant="xl3">Success!</Title>
+          <Box sx={{ marginTop: '1rem' }}>
+            <Typography sx={{ textAlign: 'center' }}>
+              You successfully bought {totalFractions} fractions for ${totalPrice}!
             </Typography>
-            <Box className={modalClasses.content}>
-              <Typography sx={{ textAlign: 'center' }}>
-                You successfully bought {totalFractions} fractions for ${totalPrice}!
-              </Typography>
+            <ButtonContainer>
               <Button
                 id="close"
-                className={modalClasses.button}
-                sx={{ width: '100%' }}
                 onClick={() => {
                   handleClose();
                 }}
+                fullWidth
+              >
+                close
+              </Button>
+            </ButtonContainer>
+          </Box>
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Box>
+            <Title variant="xl3">{alertMessage ?? 'Something Went Wrong'}</Title>
+            <Box sx={{ marginTop: '1rem' }}>
+              <Button
+                id="close"
+                onClick={() => {
+                  handleClose();
+                }}
+                fullWidth
               >
                 close
               </Button>
             </Box>
           </Box>
         </TabPanel>
-        <TabPanel value={value} index={2} className={modalClasses.center}>
-          <Box>
-            <Typography variant="lg" component="h2" className={modalClasses.title}>
-              {alertMessage ?? 'Something Went Wrong'}
-            </Typography>
-            <Box className={modalClasses.content}>
-              <p></p>
-              <Button
-                id="close"
-                className={modalClasses.button}
-                onClick={() => {
-                  handleClose();
-                }}
-              >
-                close
-              </Button>
-            </Box>
-          </Box>
-        </TabPanel>
-      </Box>
+      </ModalContainer>
     </Modal>
   );
 };
