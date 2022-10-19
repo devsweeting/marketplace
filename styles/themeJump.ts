@@ -208,9 +208,29 @@ export const themeJump = createTheme(theme, {
     MuiAccordion: {
       styleOverrides: {
         root: {
+          padding: '1rem 0',
           '&::before': {
             display: 'none',
           },
+        },
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+        content: {
+          margin: 0,
+        },
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+          marginTop: '1rem',
+          color: theme.palette.grey[500],
         },
       },
     },
