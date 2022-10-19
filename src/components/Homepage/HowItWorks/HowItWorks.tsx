@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Button, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
+import { Button } from '@/components/Button';
 
 export const HowItWorks = () => {
   const theme = useTheme();
@@ -70,8 +71,8 @@ export const HowItWorks = () => {
       },
     },
     heroTitle: {
-      fontSize: '3rem',
-      margin: '0 0 25px 0',
+      fontWeight: 800,
+      marginBottom: '.25rem',
       [theme.breakpoints.down('sm')]: {
         display: 'flex',
         align: 'center',
@@ -79,6 +80,10 @@ export const HowItWorks = () => {
         justifyContent: 'center',
         padding: '30px 0',
       },
+    },
+    heroBody: {
+      maxWidth: '80ch',
+      marginBottom: '1.5rem',
     },
     imageWrapper: {
       display: 'flex',
@@ -207,30 +212,17 @@ export const HowItWorks = () => {
             }}
           >
             <div style={classes.heroBox}>
-              <Typography variant="lg" component="h3" sx={classes.heroTitle} style={{}}>
+              <Typography variant="xl5" sx={classes.heroTitle}>
                 1. Digitize
               </Typography>
-              <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
+              <Typography variant="xl" sx={classes.heroBody}>
                 All assets are stored safely in a vault. All collectibles are vaulted and insured.
                 We procure, store, and insure iconic collectibles in third-party custodial vaults at
                 no added costs.
               </Typography>
-              <div
-                style={{
-                  justifyContent: 'flex-start',
-                }}
-              >
-                <Button
-                  sx={classes.button}
-                  style={{
-                    color: 'white',
-                    backgroundColor: 'black',
-                    border: '3px solid black',
-                  }}
-                >
-                  Learn More
-                </Button>
-              </div>
+              <Button variant="contained" rounded>
+                Learn More
+              </Button>
             </div>
           </Box>
         </Grid>
@@ -280,10 +272,10 @@ export const HowItWorks = () => {
             }}
           >
             <div style={classes.heroBox}>
-              <Typography variant="lg" component="h3" sx={classes.heroTitle} style={{}}>
+              <Typography variant="xl5" sx={classes.heroTitle}>
                 2. Collect
               </Typography>
-              <Typography variant="body1" component="p" style={{ fontSize: '1.25rem' }}>
+              <Typography variant="xl" sx={classes.heroBody}>
                 All assets are stored safely in a vault. All collectibles are vaulted and insured.
                 We procure, store, and insure iconic collectibles in third-party custodial vaults at
                 no added costs.
@@ -293,14 +285,7 @@ export const HowItWorks = () => {
                   justifyContent: 'flex-start',
                 }}
               >
-                <Button
-                  sx={classes.button}
-                  style={{
-                    color: 'white',
-                    backgroundColor: 'black',
-                    border: '3px solid black',
-                  }}
-                >
+                <Button variant="contained" rounded>
                   Learn More
                 </Button>
               </div>
@@ -318,19 +303,10 @@ export const HowItWorks = () => {
             }}
           >
             <div style={classes.heroBox}>
-              <Typography
-                variant="lg"
-                component="h3"
-                sx={classes.heroTitle}
-                style={{ color: 'white' }}
-              >
+              <Typography variant="xl5" sx={classes.heroTitle} style={{ color: 'white' }}>
                 3. Sell
               </Typography>
-              <Typography
-                variant="body1"
-                component="p"
-                style={{ fontSize: '1.25rem', color: 'white' }}
-              >
+              <Typography variant="xl" sx={classes.heroBody} style={{ color: 'white' }}>
                 All assets are stored safely in a vault. All collectibles are vaulted and insured.
                 We procure, store, and insure iconic collectibles in third-party custodial vaults at
                 no added costs.
@@ -340,14 +316,7 @@ export const HowItWorks = () => {
                   justifyContent: 'flex-start',
                 }}
               >
-                <Button
-                  sx={classes.button}
-                  style={{
-                    color: 'black',
-                    backgroundColor: 'white',
-                    border: '3px solid white',
-                  }}
-                >
+                <Button variant="contained" color="secondary" rounded>
                   Learn More
                 </Button>
               </div>

@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 function RefundsReturns() {
   return (
     <PageContainer>
-      <Typography variant="xl4" sx={{ fontWeight: 800 }}>
+      <Typography variant="xl4" fontWeight={800}>
         Refunds & Returns
       </Typography>
     </PageContainer>

@@ -30,6 +30,7 @@ export const BottomContainer = styled('div')({
   width: '100%',
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   flexWrap: 'wrap',
   gap: '1rem',
 });
