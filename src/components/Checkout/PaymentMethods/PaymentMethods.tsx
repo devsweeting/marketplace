@@ -6,7 +6,6 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  Radio,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -16,6 +15,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
+import { CustomRadio } from './PaymentMethods.styles';
 
 export const PaymentMethods = ({
   setPage,
@@ -191,19 +191,11 @@ export const PaymentMethods = ({
                 display: 'flex',
               }}
             >
-              0.00 USD (Insufficient funds)
+              {` 0.00 USD (Insufficient funds)`}
             </Typography>
           </Box>
           <Box>
-            <Radio
-              sx={{
-                color: theme.palette.grey[400],
-                backgroundColor: theme.palette.grey[100],
-                '& .MuiSvgIcon-root': {
-                  fontSize: 24,
-                },
-              }}
-            />
+            <CustomRadio />
           </Box>
         </Card>
         <Box
@@ -308,7 +300,63 @@ export const PaymentMethods = ({
             flexDirection: 'row',
             alignItems: 'center',
           }}
-        ></Card>
+        >
+          {' '}
+          <Box
+            sx={{
+              backgroundColor: '#D9D9D9',
+              height: '48px',
+              width: '48px',
+              margin: 'auto 0',
+              borderRadius: '24px',
+            }}
+          ></Box>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              margin: '0 16px',
+              width: '376px',
+            }}
+          >
+            <Typography
+              style={{
+                fontStyle: 'normal',
+                fontWeight: '600',
+                fontSize: '18px',
+                lineHeight: '28px',
+                display: 'flex',
+              }}
+            >
+              Credit/Debit cards
+            </Typography>
+            <Typography
+              style={{
+                fontStyle: 'normal',
+                fontWeight: '500',
+                fontSize: '14px',
+                lineHeight: '20px',
+                display: 'flex',
+              }}
+            >
+              {`-5% + 0.25 service fee`}
+            </Typography>
+            <Typography
+              style={{
+                fontStyle: 'normal',
+                fontWeight: '500',
+                fontSize: '14px',
+                lineHeight: '20px',
+                display: 'flex',
+              }}
+            >
+              {`Recommended`}
+            </Typography>
+          </Box>
+          <Box>
+            <CustomRadio />
+          </Box>
+        </Card>
       </Box>
       <Box height="max-content" width="576px" bgcolor={theme.palette.grey[50]}>
         <Box

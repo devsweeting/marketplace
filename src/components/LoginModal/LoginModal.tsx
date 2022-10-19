@@ -394,15 +394,28 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
               }}
             >
               {!isLoading && !error && (
-                <LoginInput
-                  statCode={statCode}
-                  loginInputValue={loginInputValue}
-                  setLoginInputValue={setLoginInputValue}
-                  tokenInputValue={tokenInputValue}
-                  setTokenInputValue={setTokenInputValue}
-                  handleLoginSubmit={handleLoginSubmit}
-                  handleTokenSubmit={handleTokenSubmit}
-                />
+                <>
+                  <LoginInput
+                    statCode={statCode}
+                    loginInputValue={loginInputValue}
+                    setLoginInputValue={setLoginInputValue}
+                    tokenInputValue={tokenInputValue}
+                    setTokenInputValue={setTokenInputValue}
+                    handleLoginSubmit={handleLoginSubmit}
+                    handleTokenSubmit={handleTokenSubmit}
+                  />
+                  <Typography>
+                    {"Didn't get it? "}
+                    <span
+                      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                      onClick={() => {
+                        dispatch({ type: 'fail', payload: 0 });
+                      }}
+                    >
+                      Try again
+                    </span>
+                  </Typography>
+                </>
               )}
             </Box>
           </>
