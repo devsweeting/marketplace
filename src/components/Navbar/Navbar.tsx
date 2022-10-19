@@ -1,64 +1,62 @@
-import * as React from 'react';
 import Stack from '@mui/material/Stack';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import SearchIcon from '@mui/icons-material/Search';
 import { NavLink } from './components/NavLink';
-import { useNavbarStyles } from './Navbar.styles';
 import { Login } from './components/Login';
 import { useUser } from '@/helpers/hooks/useUser';
 import { UserPane } from './components/UserPane';
 import { SearchModal } from '../SearchModal';
 import { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
+import { SearchIcon } from './Navbar.styles';
 
 type NavLink = {
   title: string;
   path: string;
 };
 
+type NavBarProps = {
+  navLinks: NavLink[];
+};
+
 export type NavLinksProps = NavLink[];
 
-export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
+export const Navbar = ({ navLinks }: NavBarProps) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [isOpen, setIsOpen] = useState(false);
-  const classes = useNavbarStyles();
   const user = useUser();
 
   return (
-    <Toolbar component="nav" sx={{ display: { xs: `flex` }, justifyContent: 'center' }}>
+    <>
       <Stack
-        direction={`${matchesMobile ? 'column-reverse' : 'row'}`}
+        direction={`${matchesMobile ? 'column' : 'row'}`}
         sx={{
+          flex: 1,
+          margin: '0 1.5rem',
           display: 'flex',
-          alignItems: matchesMobile ? 'flex-start' : 'center',
-          textAlign: 'center',
+          justifyContent: !matchesMobile ? 'flex-end' : '',
+          alignItems: 'center',
+          gap: '2rem',
         }}
-        className={classes.mobileNavBar}
       >
         {navLinks.map(({ title, path }: { title: string; path: string }, i: any) => (
-          <div key={i} className={classes.mobileNavMenuItem}>
-            <NavLink key={`${title}${i}`} href={path}>
-              {title}
-            </NavLink>
-          </div>
+          <NavLink key={`${title}${i}`} href={path}>
+            {title}
+          </NavLink>
         ))}
-        <Typography
-          variant="nav"
-          component="span"
-          className={`${classes.searchIcon} ${classes.mobileNavMenuItem}`}
-          ml={matchesMobile ? 1 : 2}
-          onClick={() => {
-            setIsOpen(!isOpen);
-          }}
-        >
-          {matchesMobile ? 'Search' : ''}
-          <SearchIcon />
-        </Typography>
-        <div className={classes.mobileNavMenuItem}>
-          {!user ? <Login /> : <UserPane user={user} />}
-        </div>
+        {matchesMobile && (
+          <Typography
+            variant="nav"
+            component="span"
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            Search
+          </Typography>
+        )}
+        <SearchIcon onClick={() => setIsOpen(!isOpen)} />
+        {!user ? <Login /> : <UserPane user={user} />}
       </Stack>
       <SearchModal
         isOpen={isOpen}
@@ -66,6 +64,6 @@ export const Navbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
           setIsOpen(!isOpen);
         }}
       />
-    </Toolbar>
+    </>
   );
 };

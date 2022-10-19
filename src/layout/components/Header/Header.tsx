@@ -1,27 +1,34 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import Drawer from '@mui/material/Drawer';
+import { Close } from '@mui/icons-material';
 import { Navbar } from '@/components/Navbar';
 import { SearchBox } from '@/components/SearchBox';
-import { SkinContext } from '@/styles/skin-context';
-import { useHeaderStyles } from './Header.styles';
 import { Routes } from '@/domain/Routes';
-import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  IconButton,
+  Drawer,
+  Divider,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import {
+  Container,
+  LogoWrapper,
+  LogoText,
+  SearchContainer,
+  CloseContainer,
+  NavContainer,
+} from './Header.styles';
 
 export type HeaderPosition = 'fixed' | 'absolute' | 'relative' | 'static' | 'sticky' | undefined;
 
 export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) => {
-  const classes = useHeaderStyles();
   const [clientWindowHeight, setClientWindowHeight] = useState(0);
-  const { skin /*, setSkin */ } = useContext(SkinContext);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   const [openState, setOpenState] = useState(false);
@@ -29,15 +36,6 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
   const toggleDrawer = (open: boolean | ((prevState: boolean) => boolean)) => () => {
     setOpenState(open);
   };
-
-  // disabled theme toggling
-  // const handleClick = () => {
-  //   if (skin === skins.pwcc) {
-  //     setSkin(skins.jump);
-  //   } else {
-  //     setSkin(skins.pwcc);
-  //   }
-  // };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -50,49 +48,46 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
 
   return (
     <>
-      <AppBar position={headerPosition} elevation={clientWindowHeight > 10 ? 6 : 0}>
+      <AppBar position={headerPosition} elevation={clientWindowHeight > 10 ? 1 : 0}>
         <Toolbar
-          disableGutters={false}
+          disableGutters
           sx={{
-            backgroundColor: skin.header.headerBackground,
+            backgroundColor: theme.palette.secondary.main,
             height: '80px',
           }}
         >
-          <Container className={classes.container}>
+          <Container>
             <Link href="/">
-              <a className={classes.anchorWrapper}>
-                <Box className={classes.logoWrapper}>
-                  <Image src={skin.logo.image} alt={'logo'} layout="fill" objectFit="contain" />
-                </Box>
-                <Typography className={classes.nftTextWrapper}>NFT</Typography>
-              </a>
+              <LogoWrapper>
+                <LogoText variant="xl4" color="primary">
+                  COA Marketplace
+                </LogoText>
+                <Typography variant="body2" color="primary" fontWeight={500}>
+                  Powered by Jump
+                </Typography>
+              </LogoWrapper>
             </Link>
-            <Divider orientation="vertical" className={classes.vertivalDivider} />
             {matchesDesktop ? (
               <>
-                <Box className={classes.searchBoxContainer}>
+                <Divider orientation="vertical" />
+                <SearchContainer>
                   <SearchBox
-                    iconColor={skin.header.searchIconColor}
                     borderRadius={false}
                     placeholder={'Sport, player, set...'}
                     reverseTextColor={false}
                   />
-                </Box>
+                </SearchContainer>
+                <Divider orientation="vertical" />
 
                 <Navbar navLinks={Routes} />
               </>
             ) : (
               <>
-                <IconButton
-                  edge={'end'}
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={toggleDrawer(true)}
-                  sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }}
-                  style={{ marginRight: '10px' }}
-                >
-                  <MenuIcon />
-                </IconButton>
+                <NavContainer>
+                  <IconButton color="inherit" aria-label="open drawer" onClick={toggleDrawer(true)}>
+                    <MenuIcon />
+                  </IconButton>
+                </NavContainer>
                 <Drawer
                   anchor="right" //from which side the drawer slides in
                   variant="temporary" //if and how easily the drawer can be closed
@@ -103,28 +98,21 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
-                      justifyContent: 'space-evenly',
-
-                      width: '50vw',
+                      width: '100vw',
+                      maxWidth: '300px',
                       height: '100vh',
                     }}
                   >
-                    <IconButton
-                      edge={'end'}
-                      color="inherit"
-                      aria-label="Close drawer"
-                      onClick={toggleDrawer(false)}
-                      sx={{ mr: 1 }}
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        marginTop: '30%',
-                        marginLeft: '10%',
-                      }}
-                    >
-                      <CloseIcon style={{ justifyContent: 'center', alignItems: 'center' }} />
-                    </IconButton>
+                    <CloseContainer>
+                      <IconButton
+                        edge="start"
+                        color="inherit"
+                        aria-label="Close drawer"
+                        onClick={toggleDrawer(false)}
+                      >
+                        <Close />
+                      </IconButton>
+                    </CloseContainer>
 
                     <Navbar navLinks={Routes} />
                   </Box>

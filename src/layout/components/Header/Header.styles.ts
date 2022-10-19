@@ -1,74 +1,47 @@
-import { makeStyles } from '@mui/styles';
+import { Container as MuiContainer, styled, Typography } from '@mui/material';
 
-export const useHeaderStyles = makeStyles(
-  (theme) => ({
-    container: {
-      maxWidth: `calc(1440px - ${theme.spacing(1)})`,
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      margin: '0 auto',
-      width: '100%',
-      padding: `0 15px`,
-      boxSizing: 'border-box',
-      borderImageSlice: 1,
-      color: theme.palette.primary.light,
-      '@media (max-width: 900px)': {
-        padding: `0 41px`,
-      },
-      [theme.breakpoints.down('sm')]: {
-        padding: `0px`,
-      },
-      '& .MuiToolbar-root': {
-        boxShadow: '0px rgba(0, 0, 0, 0)',
-        '@media (min-width: 600px)': {
-          paddingRight: 0,
-        },
-      },
-    },
-    logoWrapper: {
-      position: 'relative',
-      width: 134,
-      height: 33,
-      [theme.breakpoints.down('md')]: {
-        width: 97,
-        height: 23,
-      },
-    },
-    nftTextWrapper: {
-      fontSize: 40,
-      textAlign: 'center',
-      marginLeft: '5px',
-      fontWeight: 900,
-      '@media (max-width: 900px)': {
-        fontSize: 30,
-      },
-    },
-    anchorWrapper: {
-      display: 'flex',
-      color: 'black',
-      alignItems: 'center',
-      textDecoration: 'none',
-    },
-    vertivalDivider: {
-      paddingLeft: '20px',
-      '@media (max-width: 900px)': {
-        display: 'none',
-        marginRight: 'auto',
-      },
-    },
-    searchBoxContainer: {
-      width: '100%',
-      margin: `0 ${theme.spacing(1)}`,
-      '@media (max-width: 1200px)': {
-        margin: `0 0 0 ${theme.spacing(3)}`,
-      },
-      '@media (max-width: 900px)': {
-        display: 'none',
-      },
-    },
-  }),
-  { name: 'header' },
-);
+export const Container = styled(MuiContainer)(({ theme }) => ({
+  minWidth: '100%',
+  height: '100%',
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  boxSizing: 'border-box',
+  color: theme.palette.primary.main,
+  '&.MuiContainer-root': {
+    padding: 0,
+  },
+}));
+
+export const LogoWrapper = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  margin: '0 1.5rem',
+  whiteSpace: 'nowrap',
+});
+
+export const LogoText = styled(Typography)({
+  fontFamily: 'League Gothic',
+  fontSize: 40,
+});
+
+export const SearchContainer = styled('div')(({ theme }) => ({
+  width: '100%',
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
+}));
+
+export const NavContainer = styled('div')({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  margin: '0 1.5rem',
+});
+
+export const CloseContainer = styled('div')({
+  height: 80,
+  display: 'flex',
+  alignItems: 'center',
+  padding: '1rem',
+});
