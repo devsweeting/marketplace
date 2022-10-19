@@ -1,25 +1,25 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
-import { useTextfieldStyles, useSubscribeCTAStyles } from './SubscribeCallToAction.styles';
+import { Typography, TextField } from '@mui/material';
+import { Wrapper, InputContainer } from './SubscribeCallToAction.styles';
 import React from 'react';
+import { Button } from '@/components/Button';
 
 export const SubscribeCallToAction = () => {
-  const classes = useTextfieldStyles();
-  const styles = useSubscribeCTAStyles();
   return (
-    <Box className={styles.ctaWrapper}>
-      <Typography variant="xl5" component="h2" className={styles.ctaHeader}>
+    <Wrapper>
+      <Typography variant="xl5" fontWeight={700}>
         Get weekly drops
       </Typography>
-      <form className={styles.submitForm}>
+      <InputContainer>
         <TextField
-          InputProps={{ classes, disableUnderline: true }}
+          inputProps={{ disableUnderline: true }}
           id="outlined-basic"
-          variant="standard"
+          variant="outlined"
           placeholder="Email"
-          className={styles.textfieldInput}
         />
-        <Button className={styles.button}>Subscribe</Button>
-      </form>
-    </Box>
+        <Button variant="contained" rounded>
+          Subscribe
+        </Button>
+      </InputContainer>
+    </Wrapper>
   );
 };
