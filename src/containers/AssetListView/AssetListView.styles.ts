@@ -1,20 +1,9 @@
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material';
 
-export const useAssetListViewStyles = makeStyles((theme) => ({
-  listWrapper: {
-    display: 'block',
-    width: '100%',
-    [theme.breakpoints.down('md')]: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      width: 'auto',
-    },
-    [theme.breakpoints.down('sm')]: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      maxWidth: '600px',
-    },
-  },
+export const Container = styled('div')(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+  borderTop: `1px solid ${theme.palette.divider}`,
 }));
