@@ -1,1 +1,0 @@
-export { AccordionTableItem } from './AccordionTableItem';

@@ -1,25 +1,11 @@
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material';
+import { Search as MuiSearch } from '@mui/icons-material';
 
-export const useNavbarStyles = makeStyles((theme) => ({
-  searchIcon: {
-    cursor: 'pointer',
+export const SearchIcon = styled(MuiSearch)(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.only('sm')]: {
     color: theme.palette.primary.main,
+    cursor: 'pointer',
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '60px',
-    '@media (min-width: 900px)': {
-      display: 'none',
-    },
-  },
-  mobileNavBar: {
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '120px',
-    },
-  },
-  mobileNavMenuItem: {
-    [theme.breakpoints.down('sm')]: {
-      marginTop: '30px',
-    },
   },
 }));

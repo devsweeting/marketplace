@@ -19,7 +19,7 @@ export const Footer = () => {
     <Container>
       <TopContainer>
         <Img src="/images/logoPWCC.svg" alt="Footer Logo" />
-        <Typography variant="xl" sx={{ fontWeight: 600 }}>
+        <Typography variant="xl" fontWeight={600}>
           PWCC Powered by Jump
         </Typography>
         <SocialLinks>

@@ -2,7 +2,8 @@ import { styled, Typography } from '@mui/material';
 
 export const Container = styled('div')({
   display: 'flex',
-  gap: '1rem',
+  flexWrap: 'wrap',
+  gap: '0.25rem 0.5rem',
 });
 
 export const Attribute = styled(Typography)({

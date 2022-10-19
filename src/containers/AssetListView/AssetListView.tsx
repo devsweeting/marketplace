@@ -1,12 +1,10 @@
 import { AssetCard } from '@/components/AssetCard';
 import type { IAssetListView } from './IAssetListView';
-import { Box } from '@mui/material';
-import { useAssetListViewStyles } from './AssetListView.styles';
+import { Container } from './AssetListView.styles';
 
 export const AssetListView = ({ assets, handleDrawer, activeCardId }: IAssetListView) => {
-  const classes = useAssetListViewStyles();
   return (
-    <Box className={classes.listWrapper}>
+    <Container>
       {assets &&
         assets.map((asset) => (
           <AssetCard
@@ -18,6 +16,6 @@ export const AssetListView = ({ assets, handleDrawer, activeCardId }: IAssetList
             }}
           />
         ))}
-    </Box>
+    </Container>
   );
 };

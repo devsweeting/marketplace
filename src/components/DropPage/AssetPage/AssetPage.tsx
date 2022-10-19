@@ -42,8 +42,8 @@ export interface AssetPageProps {
   percentClaimed: number;
   purchaseLimit: number;
   updateAsset: (assetId: string) => void;
-  handleWatch: (id: string, name: string) => Promise<void>;
-  handleRemoveWatch: (id: string, name: string) => Promise<void>;
+  handleWatch: (asset: IAsset) => Promise<void>;
+  handleRemoveWatch: (asset: IAsset) => Promise<void>;
 }
 
 export function AssetPage(props: AssetPageProps) {
@@ -117,49 +117,37 @@ export function AssetPage(props: AssetPageProps) {
           <IconContainer>
             <ShareOutlined onClick={() => void copyLink()} fontSize="large" />
             {watched ? (
-              <StarRounded
-                onClick={() => void handleRemoveWatch(asset.id, asset.name)}
-                fontSize="large"
-              />
+              <StarRounded onClick={() => void handleRemoveWatch(asset)} fontSize="large" />
             ) : (
-              <StarBorderRounded
-                onClick={() => void handleWatch(asset.id, asset.name)}
-                fontSize="large"
-              />
+              <StarBorderRounded onClick={() => void handleWatch(asset)} fontSize="large" />
             )}
           </IconContainer>
           {asset?.media && <ImgGallery images={asset.media} />}
         </ImgContainer>
         <InfoContainer>
           <TitleContainer>
-            <Typography variant="lg" sx={{ fontWeight: 600 }}>
+            <Typography variant="lg" fontWeight={600}>
               Drop details
             </Typography>
           </TitleContainer>
           <Box sx={{ padding: '1rem' }}>
             <DetailsContainer>
               <div>
-                <Typography variant="xl3" sx={{ fontWeight: 600 }}>
+                <Typography variant="xl3" fontWeight={600}>
                   {asset.name}
                 </Typography>
                 <Attributes attributes={asset.attributes} />
               </div>
               <div>
-                <Typography variant="body2" sx={{ fontWeight: 500, color: '#4B5563' }}>
+                <Typography variant="body2" color="#4B5563" fontWeight={500}>
                   Pwcc market valuation
                 </Typography>
-                <Typography variant="xl2" sx={{ fontWeight: 600 }}>
+                <Typography variant="xl2" fontWeight={600}>
                   ${marketValuation}
                 </Typography>
               </div>
             </DetailsContainer>
-            <UnitContainer
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+            <UnitContainer>
               <LinearProgress
                 variant="determinate"
                 value={percentClaimed}

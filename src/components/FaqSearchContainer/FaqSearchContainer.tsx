@@ -11,7 +11,7 @@ export const FaqSearchContainer = ({ articles }: { articles: Article[] }) => {
   return (
     <Box className={classes.wrapper}>
       <Box className={classes.innerWrapper}>
-        <Typography variant="xl5" sx={{ fontWeight: 700 }}>
+        <Typography variant="xl5" fontWeight={700}>
           How can we help you?
         </Typography>
         <Box my={3} sx={{ width: '100%' }}>

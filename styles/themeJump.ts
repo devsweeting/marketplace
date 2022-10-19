@@ -86,7 +86,7 @@ const theme = createTheme({
       800: '#1F2937',
       900: '#111827',
     },
-    divider: '#4B5563',
+    divider: '#E5E7EB',
   },
   shape: {
     borderRadius: 8,
@@ -109,42 +109,52 @@ export const themeJump = createTheme(theme, {
   typography: {
     fontFamily: 'Inter',
     lg: {
+      display: 'block',
       fontSize: 'clamp(1rem, 0.42735042735042733vw + 0.8397435897435898rem, 1.25rem)',
       lineHeight: '1.75rem',
     },
     xl: {
+      display: 'block',
       fontSize: 'clamp(1.125rem, 0.42735042735042733vw + 0.9647435897435898rem, 1.375rem)',
       lineHeight: '1.75rem',
     },
     xl2: {
+      display: 'block',
       fontSize: 'clamp(1.125rem, 0.42735042735042733vw + 0.9647435897435898rem, 1.375rem)',
       lineHeight: '2rem',
     },
     xl3: {
+      display: 'block',
       fontSize: 'clamp(1.375rem, 0.42735042735042733vw + 1.2147435897435896rem, 1.625rem)',
       lineHeight: '2.25rem',
     },
     xl4: {
+      display: 'block',
       fontSize: 'clamp(1.625rem, 0.8547008547008547vw + 1.3044871794871795rem, 2.125rem)',
       lineHeight: '2.5rem',
     },
     xl5: {
+      display: 'block',
       fontSize: 'clamp(2rem, 0.8547008547008547vw + 1.6794871794871795rem, 2.5rem)',
       lineHeight: '3rem',
     },
     xl6: {
+      display: 'block',
       fontSize: 'clamp(2.75rem, 0.8547008547008547vw + 2.4294871794871793rem, 3.25rem)',
       lineHeight: '3.75rem',
     },
     xl7: {
+      display: 'block',
       fontSize: 'clamp(3.375rem, 1.2820512820512822vw + 2.894230769230769rem, 4.125rem)',
       lineHeight: '4.5rem',
     },
     xl8: {
+      display: 'block',
       fontSize: 'clamp(3.875rem, 1.7094017094017093vw + 3.233974358974359rem, 4.875rem)',
       lineHeight: '6rem',
     },
     xl9: {
+      display: 'block',
       fontSize: 'clamp(5.5rem, 1.7094017094017093vw + 4.858974358974359rem, 6.5rem)',
       lineHeight: '8rem',
     },
@@ -181,14 +191,10 @@ export const themeJump = createTheme(theme, {
     },
     nav: {
       fontFamily: 'Inter',
-      fontWeight: 700,
+      fontWeight: 500,
       fontSize: '1rem',
       lineHeight: '1.5rem',
       color: theme.palette.primary.main,
-      textTransform: 'uppercase',
-      '@media (max-width:900px)': {
-        fontSize: '18px',
-      },
     },
   },
   components: {
@@ -199,37 +205,6 @@ export const themeJump = createTheme(theme, {
         },
       },
     },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          color: 'rgba(0, 0, 0, 0.6)',
-          fontfamily: 'League Gothic !important',
-          fontSize: '18px',
-          fontWeight: 400,
-          lineHeight: '22px',
-          letterspacing: 0,
-          marginTop: 5,
-          '& .MuiSelect-select': {
-            color: '#fff',
-          },
-        },
-      },
-    },
-
-    // MuiInputBase: {
-    //   styleOverrides: {
-    //     root: {
-    //       borderRadius: '4px !important',
-    //       height: '56px',
-    //       fontFamily: 'League Gothic !important',
-    //       color: '#000 !important',
-    //       fontSize: '18px !important',
-    //       fontWeight: '400 !important',
-    //       lineHeight: '22 !important',
-    //       letterSpacing: '0.15px !important',
-    //     },
-    //   },
-    // },
     MuiAccordion: {
       styleOverrides: {
         root: {
@@ -243,65 +218,65 @@ export const themeJump = createTheme(theme, {
       styleOverrides: {
         root: {
           fontFamily: 'Inter',
+          fontSize: '1rem',
           fontWeight: 600,
           boxSizing: 'border-box',
-          padding: '0.75rem 1rem',
+          padding: '0.75rem 1.25rem',
+          [theme.breakpoints.up('lg')]: {
+            padding: '1rem 1.5rem',
+          },
+          lineHeight: '1.5rem',
           boxShadow: 'none',
-          '&.MuiButton-containedPrimary': {
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.secondary.main,
-            '&:hover': {
-              backgroundColor: theme.palette.grey[700],
-            },
-          },
-          '&.MuiButton-containedSecondary': {
-            backgroundColor: theme.palette.secondary.main,
-            color: theme.palette.primary.main,
-            '&:hover': {
-              backgroundColor: theme.palette.grey[200],
-            },
-          },
-          '&.MuiButton-outlinedPrimary': {
-            border: `2px solid ${theme.palette.primary.main}`,
-            backgroundColor: 'transparent',
-            color: theme.palette.primary.main,
-            '&:hover': {
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.secondary.main,
-            },
-          },
-          '&.MuiButton-outlinedSecondary': {
-            border: `2px solid ${theme.palette.secondary.main}`,
-            backgroundColor: 'transparent',
-            color: theme.palette.secondary.main,
-            '&:hover': {
-              backgroundColor: theme.palette.secondary.main,
-              color: theme.palette.primary.main,
-            },
-          },
-          '&.MuiButton-text': {
-            display: 'flex',
-            fontSize: '1rem',
-            textTransform: 'none',
-            backgroundColor: 'transparent',
-            // color: theme.palette.primary.main,
-            padding: 0,
-            '&.MuiButton-textSecondary': {
-              '&:hover': {
-                color: theme.palette.accent.main,
-              },
-            },
-            // '&:hover': {
-            //   // backgroundColor: 'inherit',
-            //   // color: theme.palette.accent.main,
-            // },
+          '&:hover': {
+            boxShadow: 'none',
           },
           '&.Mui-disabled': {
             backgroundColor: theme.palette.grey[200],
             color: theme.palette.grey[600],
           },
+        },
+        containedPrimary: {
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.secondary.main,
           '&:hover': {
-            boxShadow: 'none',
+            backgroundColor: theme.palette.grey[700],
+          },
+        },
+        containedSecondary: {
+          backgroundColor: theme.palette.secondary.main,
+          color: theme.palette.primary.main,
+          '&:hover': {
+            backgroundColor: theme.palette.grey[200],
+          },
+        },
+        outlinedPrimary: {
+          border: `2px solid ${theme.palette.primary.main}`,
+          backgroundColor: 'transparent',
+          color: theme.palette.primary.main,
+          '&:hover': {
+            border: `2px solid ${theme.palette.primary.main}`,
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.secondary.main,
+          },
+        },
+        outlinedSecondary: {
+          border: `2px solid ${theme.palette.secondary.main}`,
+          backgroundColor: 'transparent',
+          color: theme.palette.secondary.main,
+          '&:hover': {
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.primary.main,
+          },
+        },
+        text: {
+          display: 'flex',
+          fontSize: '1rem',
+          textTransform: 'none',
+          backgroundColor: 'transparent',
+        },
+        textSecondary: {
+          '&:hover': {
+            color: theme.palette.accent.main,
           },
         },
       },
@@ -315,6 +290,36 @@ export const themeJump = createTheme(theme, {
           '& > .MuiLinearProgress-bar1Determinate': {
             borderRadius: '100vw',
           },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'white',
+          '& > *': {
+            transition: 'all 250ms ease-in-out',
+          },
+        },
+        notchedOutline: {
+          borderWidth: '2px',
+        },
+        input: {
+          padding: '0.75rem 1.25rem',
+          lineHeight: '1.5rem',
+          height: 'auto',
+          [theme.breakpoints.up('md')]: {
+            padding: '1rem 1.5rem',
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          width: 'min-content',
+          margin: 0,
+          display: 'inline-flex',
         },
       },
     },

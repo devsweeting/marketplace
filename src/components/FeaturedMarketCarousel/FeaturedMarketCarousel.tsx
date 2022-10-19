@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useWindowDimensions } from '@/helpers/hooks/useWindowDimensions';
-import { useFeaturedMarketCarouselStyles } from './FeaturedMarketCarousel.styles';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { Loader } from '../Loader';
 import { MarketCard } from './components/MarketCard';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import type { IAsset, IMarket } from '@/types/assetTypes';
 import { TrendingMarketCard } from './components/TrendingMarketCard';
+
+import { Container, Title, Slider, Button } from './FeaturedMarketCarousel.styles';
 
 export const FeaturedMarketCarousel = ({
   assets,
@@ -22,7 +23,6 @@ export const FeaturedMarketCarousel = ({
   handleApplyBrandFilter?: (string: string, brand: IMarket) => void;
   activeBrandCard?: string;
 }) => {
-  const classes = useFeaturedMarketCarouselStyles();
   const scroll = useRef<HTMLDivElement>(null);
   const { width } = useWindowDimensions();
   const [scrollX, setScrollX] = useState(0);
@@ -66,69 +66,59 @@ export const FeaturedMarketCarousel = ({
 
   if (!assets || !width) return <Loader />;
   return (
-    <Grid item xs={12} className={classes.wrapper}>
-      <Typography variant="xl5" component="h2" className={classes.title}>
-        {title}
-      </Typography>
+    <Container item xs={12}>
+      <Title variant="xl3">{title}</Title>
       <Box
-        style={{
+        sx={{
           display: 'flex',
           position: 'relative',
         }}
       >
-        {
-          <button
-            aria-label="previous"
-            role="button"
-            className={`${classes.button} ${classes.prev}  ${
-              scrollX < 1 ? classes.disabledButton : ''
-            }`}
-            onClick={() => {
-              if (scrollX === 0) {
-                return;
-              }
-              switch (true) {
-                case width <= 599.95:
-                  return slide(-300);
-                case width < 899.95 && width >= 600:
-                  return slide(-350);
-                default:
-                  return slide(-300);
-              }
-            }}
-          >
-            <>
-              <ArrowBackIosNewIcon />
-            </>
-          </button>
-        }
-        {
-          <button
-            aria-label="next"
-            role="button"
-            className={`${classes.button} ${classes.next} ${
-              scrollEnd ? classes.disabledButton : ''
-            }`}
-            onClick={() => {
-              if (scrollEnd) {
-                return;
-              }
-              switch (true) {
-                case width <= 599.95:
-                  return slide(300);
-                case width < 899.95 && width >= 600:
-                  return slide(360);
-                default:
-                  return slide(300);
-              }
-            }}
-          >
-            <>
-              <ArrowForwardIosIcon />
-            </>
-          </button>
-        }
-        <Box className={`${classes.slider} ${classes.snap}`} ref={scroll} onScroll={scrollCheck}>
+        <Button
+          aria-label="previous"
+          role="button"
+          sx={{ right: '70px' }}
+          disabled={scrollX < 1}
+          disableRipple
+          onClick={() => {
+            if (scrollX === 0) {
+              return;
+            }
+            switch (true) {
+              case width <= 599.95:
+                return slide(-300);
+              case width < 899.95 && width >= 600:
+                return slide(-350);
+              default:
+                return slide(-300);
+            }
+          }}
+        >
+          <ArrowBackIosNewIcon />
+        </Button>
+        <Button
+          aria-label="next"
+          role="button"
+          sx={{ right: '10px' }}
+          disabled={scrollEnd}
+          disableRipple
+          onClick={() => {
+            if (scrollEnd) {
+              return;
+            }
+            switch (true) {
+              case width <= 599.95:
+                return slide(300);
+              case width < 899.95 && width >= 600:
+                return slide(360);
+              default:
+                return slide(300);
+            }
+          }}
+        >
+          <ArrowForwardIosIcon />
+        </Button>
+        <Slider ref={scroll} onScroll={scrollCheck}>
           {assets && handleDrawer
             ? assets.map((card: any, index: number) => (
                 <MarketCard
@@ -151,8 +141,8 @@ export const FeaturedMarketCarousel = ({
                   tabIndex={index}
                 />
               ))}
-        </Box>
+        </Slider>
       </Box>
-    </Grid>
+    </Container>
   );
 };

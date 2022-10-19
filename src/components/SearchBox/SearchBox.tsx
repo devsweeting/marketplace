@@ -4,8 +4,7 @@ import SearchIcon from '@mui/icons-material/Search';
 // import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import { IconButton, Input } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import { useSearchboxStyles } from './Searchbox.styles';
+import { Wrapper } from './Searchbox.styles';
 
 interface SearchBoxProps {
   placeholder?: string;
@@ -22,7 +21,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   reverseTextColor = false,
   className,
 }) => {
-  const classes = useSearchboxStyles();
   const [value, setValue] = useState('');
   const { skin } = useContext(SkinContext);
 
@@ -49,7 +47,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
       id="searchBar"
       role="search"
     >
-      <FormControl className={className ? className : classes.wrapper}>
+      <Wrapper className={className}>
         <Input
           role={'textbox'}
           aria-label={'search'}
@@ -72,7 +70,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
             </InputAdornment>
           }
         />
-      </FormControl>
+      </Wrapper>
     </form>
   );
 };

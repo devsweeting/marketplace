@@ -1,12 +1,13 @@
-import { Button, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Link from 'next/link';
 import { PageContainer, TextContainer } from './AssetErrorPage.styles';
+import { Button } from '@/components/Button';
 
 export function AssetErrorPage() {
   return (
     <PageContainer>
       <TextContainer>
-        <Typography variant="xl6" sx={{ fontWeight: 800 }}>
+        <Typography variant="xl6" fontWeight={800}>
           Failed to retrieve this asset
         </Typography>
         <Typography variant="xl3" sx={{ marginBottom: '2rem' }}>

@@ -1,65 +1,41 @@
-import { makeStyles } from '@mui/styles';
+import { styled, Card as MuiCard } from '@mui/material';
 
-export const useMarketCardStyles = makeStyles((theme) => ({
-  marketCardContainer: {
-    'scroll-snap-align': 'start',
-  },
-  card: {
-    height: '430px',
-    width: '310px',
-    flexDirection: 'column',
-    display: 'flex',
-    flexWrap: 'nowrap',
-    cursor: 'pointer',
-    transition: 'all .2s ease-in',
-    whiteApace: 'nowrap',
-    [theme.breakpoints.down('sm')]: {
-      width: '270px',
-      margin: '10px 30px 10px 5px',
-    },
-  },
-  assetTextContainer: {
-    width: '260px',
-    display: 'flex',
-    flexDirection: 'column',
-    margin: '10px 25px',
-    [theme.breakpoints.down('sm')]: { width: '235px', margin: ' 5px 17px' },
-  },
-
-  cardTitle: {
-    fontSize: '14px',
-    [theme.breakpoints.down('md')]: {
-      fontSize: '12px',
-    },
-  },
-  cardDescription: {
-    fontSize: '14px',
-    [theme.breakpoints.down('md')]: {
-      fontSize: '12px',
-    },
-  },
-  cardSubTitle: {
-    fontSize: '14px',
-    flexWrap: 'wrap',
-    marginRight: '16px',
-    [theme.breakpoints.down('md')]: {
-      fontSize: '12px',
-    },
-  },
-  assetImageInnerContainer: {
-    filter: 'drop-shadow(0 6px 14px #8F959988)',
-    width: '140px',
-    height: '220px',
-    margin: '10px auto',
-    position: 'relative',
-  },
-  assetImageOutterContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    width: '100%',
-    height: '60%',
-    padding: '0px',
-    background: 'linear-gradient(90deg,#fff 24.48%,#f2f3f4 101.77%)',
-    position: 'relative',
+export const Card = styled(MuiCard)(({ theme }) => ({
+  borderRadius: 0,
+  borderColor: theme.palette.grey[200],
+  height: '430px',
+  width: '310px',
+  flexDirection: 'column',
+  display: 'flex',
+  flexWrap: 'nowrap',
+  cursor: 'pointer',
+  transition: 'all .2s ease-in-out',
+  whiteApace: 'nowrap',
+  [theme.breakpoints.down('sm')]: {
+    width: '270px',
   },
 }));
+
+export const ImgContainer = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  width: '100%',
+  height: '60%',
+  padding: 0,
+  position: 'relative',
+});
+
+export const ImgWrapper = styled('div')({
+  width: '140px',
+  height: '220px',
+  margin: 'auto',
+  position: 'relative',
+});
+
+export const TextContainer = styled('div')({
+  flex: 1,
+  padding: '1rem',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.75rem',
+});

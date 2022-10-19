@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 function TermsOfService() {
   return (
     <PageContainer>
-      <Typography variant="xl4" sx={{ fontWeight: 800 }}>
+      <Typography variant="xl4" fontWeight={800}>
         Terms of Service
       </Typography>
     </PageContainer>

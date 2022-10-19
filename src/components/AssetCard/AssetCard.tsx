@@ -1,7 +1,5 @@
-import { Card, CardActionArea, IconButton, Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import Image from 'next/image';
-import { useAssetCardStyles } from './AssetCard.styles';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import type { IAssetCard } from './IAssetCard';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
@@ -17,14 +15,29 @@ import {
 import { useEffect, useState } from 'react';
 import { useModal } from '@/helpers/hooks/useModal';
 import { useUser } from '@/helpers/hooks/useUser';
-import { Star } from '@mui/icons-material';
+import { Star as MuiStar } from '@mui/icons-material';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { Attributes } from '../Attributes';
+import type { IAsset } from '@/types/assetTypes';
+
+import {
+  CardContainer,
+  ImageWrapper,
+  Img,
+  CardDetails,
+  Title,
+  PriceSection,
+  PriceItem,
+  StarWrapper,
+  Star,
+  SoldOutContainer,
+  SoldOutText,
+  Watched,
+} from './AssetCard.styles';
 
 export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   const sellOrderData = getMainSellOrder(assetData);
-  const classes = useAssetCardStyles();
   const { setIsModalOpen } = useModal();
   const [hasBeenAdded, setHasBeenAdded] = useState(false);
 
@@ -36,10 +49,10 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
 
   const user = useUser();
   useEffect(() => {
-    setHasBeenAdded(isAssetInLocalStorage(assetData.id));
+    setHasBeenAdded(isAssetInLocalStorage(assetData));
 
     if (user) {
-      checkForAssetOnWatchlist(assetData.id)
+      checkForAssetOnWatchlist(assetData)
         .then((isOnWatchlist: boolean) => {
           setHasBeenAdded(isOnWatchlist ?? false);
         })
@@ -47,11 +60,11 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
           return;
         });
     }
-  }, [assetData.id, user]);
+  }, [assetData, user]);
 
-  const handleAddToWatchlist = (id: string, name: string) => {
+  const handleAddToWatchlist = (asset: IAsset) => {
     if (!user) {
-      addWatchlistToLocalStorage(id, name)
+      addWatchlistToLocalStorage(asset)
         .then(() => {
           setIsModalOpen(true);
           setHasBeenAdded(true);
@@ -63,7 +76,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       return;
     }
 
-    addToWatchlist({ id, name })
+    addToWatchlist(asset)
       .then((status) => {
         setHasBeenAdded(hasBeenAddedWatchlist(status));
       })
@@ -72,9 +85,9 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       });
   };
 
-  const handleRemoveFromWatchlist = (id: string, name: string) => {
+  const handleRemoveFromWatchlist = (asset: IAsset) => {
     if (!user?.id) {
-      removeWatchlistFromLocalStorage(id)
+      removeWatchlistFromLocalStorage(asset)
         .then(() => {
           setHasBeenAdded(false);
           return;
@@ -85,7 +98,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       return;
     }
 
-    removeFromWatchlist({ id, name })
+    removeFromWatchlist(asset)
       .then(() => {
         setHasBeenAdded(false);
         return;
@@ -96,92 +109,79 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
   };
 
   return (
-    <Card
-      className={`${classes.card} ${activeCardId === assetData.id ? classes.active : ''}`}
+    <CardContainer
       tabIndex={0}
       onKeyDown={handleKeyDownOnCard}
+      active={activeCardId === assetData.id}
+      onClick={onClick}
     >
-      <Box sx={{ width: '100%', height: '100%', display: 'flex', position: 'relative' }}>
-        <CardActionArea>
-          <Box onClick={onClick} className={classes.cardBody}>
-            <Box className={classes.ImageWrapper}>
-              {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
-                <Image
-                  placeholder="blur"
-                  blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
-                  src={assetData.media[0].absoluteUrl}
-                  alt={assetData.media[0].title}
-                  width={200}
-                  height={340}
-                  className={classes.cardImage}
-                ></Image>
-              )}
-            </Box>
-            <Box sx={{ width: '100%' }}>
-              <Box className={classes.cardDetailsWrapper}>
-                <Box className={classes.essanceInfo}>
-                  <Typography className={classes.essanceTitle}>{assetData.name}</Typography>
-                  <Box sx={{ display: 'flex', width: '100%' }}>
-                    <Attributes attributes={assetData.attributes} />
-                    <Box className={classes.cardPriceSection}>
-                      <Box className={classes.CardPriceItem}>
-                        <Typography>Valuation</Typography>
-                        <Typography className={classes.price}>
-                          {'$' +
-                            formatNumber(
-                              calcValuation(
-                                sellOrderData?.fractionQty ?? 0,
-                                sellOrderData?.fractionPriceCents ?? 0,
-                              ),
-                            )}
-                        </Typography>
-                      </Box>
-                      <Box className={classes.CardPriceItem}>
-                        <Typography>Unit Price</Typography>
-                        <Typography className={classes.price}>
-                          {sellOrderData
-                            ? `$${sellOrderData.fractionPriceCents / 100}`
-                            : 'Not Available'}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </CardActionArea>
-        <Box className={classes.starWrapper}>
-          <Typography className={classes.star}>
-            {!hasBeenAdded ? (
-              <IconButton
-                aria-label="add to watchlist"
-                onClick={() => {
-                  handleAddToWatchlist(assetData.id, assetData.name);
-                }}
-              >
-                <StarBorderIcon />
-              </IconButton>
-            ) : (
-              <IconButton
-                aria-label="remove from watchlist"
-                onClick={() => {
-                  handleRemoveFromWatchlist(assetData.id, assetData.name);
-                }}
-                className={classes.starWatchlisted}
-              >
-                <Star />
-              </IconButton>
-            )}
-            {hasBeenAdded ? 1 : ''}
-          </Typography>
-        </Box>
-        {sellOrderData?.fractionQtyAvailable === 0 && (
-          <Box className={classes.soldOutWrapper}>
-            <Typography className={classes.soldOutText}>SOLD OUT</Typography>
-          </Box>
+      <ImageWrapper>
+        {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
+          <Img
+            placeholder="blur"
+            blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
+            src={assetData.media[0].absoluteUrl}
+            alt={assetData.media[0].title}
+            width={200}
+            height={340}
+          />
         )}
-      </Box>
-    </Card>
+      </ImageWrapper>
+      <CardDetails>
+        <Box>
+          <Title fontWeight={700}>{assetData.name}</Title>
+          <Attributes attributes={assetData.attributes} />
+        </Box>
+        <PriceSection>
+          <PriceItem>
+            <Typography>Valuation</Typography>
+            <Typography variant="xl2" fontWeight={700}>
+              {'$' +
+                formatNumber(
+                  calcValuation(
+                    sellOrderData?.fractionQty ?? 0,
+                    sellOrderData?.fractionPriceCents ?? 0,
+                  ),
+                )}
+            </Typography>
+          </PriceItem>
+          <PriceItem>
+            <Typography>Unit Price</Typography>
+            <Typography variant="xl2" fontWeight={700}>
+              {sellOrderData ? `$${sellOrderData.fractionPriceCents / 100}` : 'Not Available'}
+            </Typography>
+          </PriceItem>
+        </PriceSection>
+      </CardDetails>
+      <StarWrapper>
+        <Star>
+          {!hasBeenAdded ? (
+            <IconButton
+              aria-label="add to watchlist"
+              onClick={() => {
+                handleAddToWatchlist(assetData);
+              }}
+            >
+              <StarBorderIcon />
+            </IconButton>
+          ) : (
+            <Watched
+              aria-label="remove from watchlist"
+              onClick={() => {
+                handleRemoveFromWatchlist(assetData);
+              }}
+            >
+              <MuiStar />
+            </Watched>
+          )}
+          {hasBeenAdded ? 1 : ''}
+        </Star>
+      </StarWrapper>
+      {sellOrderData?.fractionQtyAvailable === 0 && (
+        <SoldOutContainer>
+          <SoldOutText>SOLD OUT</SoldOutText>
+        </SoldOutContainer>
+      )}
+    </CardContainer>
   );
 };

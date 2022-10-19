@@ -1,21 +1,9 @@
-import {
-  Box,
-  Button,
-  DialogContent,
-  Divider,
-  Drawer,
-  Grid,
-  IconButton,
-  LinearProgress,
-  Slider,
-  Typography,
-} from '@mui/material';
+import { Box, DialogContent, Divider, LinearProgress, Slider, Typography } from '@mui/material';
+import { Button } from '@/components/Button';
 import type { ISellOrder } from '@/types/assetTypes';
 import type { ITradePanel } from './ITradePanel';
-import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useState } from 'react';
 import { BuyModal } from '../BuyModal/BuyModal';
-import { useTradePanelStyles } from './TradePanel.styles';
 import { AssetGallery } from './Components/CardGallery';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
@@ -26,9 +14,17 @@ import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
 import { calcTimeDifference } from '@/helpers/time';
 import { CountdownTimer } from '../coundownTimer';
 import { Attributes } from '../Attributes';
+import { Close } from '@mui/icons-material';
+import {
+  Drawer,
+  Header,
+  CloseIcon,
+  AssetContainer,
+  AssetHeaderContainer,
+  FlexTextWrapper,
+} from './TradePanel.styles';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
-  const classes = useTradePanelStyles();
   const user = useUser();
   const { setIsModalOpen } = useModal();
 
@@ -147,81 +143,78 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
           anchor="right"
           open={open}
           transitionDuration={300}
-          className={classes.Drawer}
+          hideBackdrop={true}
         >
           <Box>
-            <Box className={classes.card_header}>
-              <Typography className={classes.card_header_text}>Research Drawer</Typography>
-
-              <IconButton onClick={handleClose} aria-label="Close" sx={{ marginLeft: 'auto' }}>
-                {<CloseIcon />}
-              </IconButton>
-            </Box>
-            <Divider className={classes.fullWidthDivider} />
-
-            <Box className={classes.galleryWrapper}>
+            <Header>
+              <Typography variant="lg" fontWeight={500}>
+                Research Drawer
+              </Typography>
+              <CloseIcon onClick={handleClose} aria-label="Close">
+                <Close />
+              </CloseIcon>
+            </Header>
+            <Divider />
+            <AssetContainer>
               {asset.media && asset.media[0] && <AssetGallery images={asset.media} />}
-            </Box>
-
-            <Grid container sx={{ marginTop: '20px' }}>
-              <Grid item xs={7}>
-                <Typography className={classes.title}>{asset.name}</Typography>
-                <Attributes attributes={asset.attributes} />
-              </Grid>
-              <Grid item xs={5} sx={{ textAlign: 'right' }}>
-                <Typography className={classes.card_valuation}>Card Valuation</Typography>
-                <Typography variant="lg">
-                  {'$' +
-                    formatNumber(
-                      calcValuation(
-                        sellOrderData?.fractionQty ?? 0,
-                        sellOrderData?.fractionPriceCents ?? 0,
-                      ),
-                    )}
-                </Typography>
-              </Grid>
-            </Grid>
-
-            <Box className={classes.assetClaimedWrapper}>
-              <LinearProgress
-                variant="determinate"
-                value={100 - getPercentClaimed(sellOrderData)}
-                className={classes.progressBar}
-              />
-              <Box className={classes.detailsInfo}>
-                <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
-                  {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
-                </Typography>
-                {sellOrderData?.type === 'drop' &&
-                  sellOrderData?.userFractionLimitEndTime !== null && (
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
-                        Buy more units in
-                      </Typography>
-                      <CountdownTimer
-                        sx={{ fontSize: '10px' }}
-                        startTime={Math.ceil(
-                          calcTimeDifference(new Date(), sellOrderData.userFractionLimitEndTime) ??
-                            0,
-                        )}
-                      />
-                    </Box>
-                  )}
-              </Box>
-            </Box>
-            <Typography className={classes.available_instances}>
-              {sellOrderData?.fractionQtyAvailable
-                ? `${formatNumber(sellOrderData.fractionQtyAvailable)} Units Available ( ${
-                    getPercentClaimed(sellOrderData) + '%'
-                  }
-              )`
-                : 'No Units Available'}
-            </Typography>
-            {sellOrderData && !!buyLimit && (
-              <Box>
-                <Box sx={{ display: 'flex', marginTop: '20px' }}>
-                  <Typography>Order Book</Typography>
+              <AssetHeaderContainer>
+                <Box>
+                  <Typography variant="xl3" fontWeight={700}>
+                    {asset.name}
+                  </Typography>
+                  <Attributes attributes={asset.attributes} />
                 </Box>
+                <Box sx={{ textAlign: 'right' }}>
+                  <Typography variant="caption" fontWeight={500}>
+                    Card Valuation
+                  </Typography>
+                  <Typography variant="xl2" fontWeight={600}>
+                    {'$' +
+                      formatNumber(
+                        calcValuation(
+                          sellOrderData?.fractionQty ?? 0,
+                          sellOrderData?.fractionPriceCents ?? 0,
+                        ),
+                      )}
+                  </Typography>
+                </Box>
+              </AssetHeaderContainer>
+              <div>
+                <LinearProgress
+                  variant="determinate"
+                  value={100 - getPercentClaimed(sellOrderData)}
+                  sx={{
+                    height: 8,
+                    width: '100%',
+                    borderRadius: 2,
+                    backgroundColor: '#E5E7EB',
+                  }}
+                />
+                <FlexTextWrapper>
+                  <Typography variant="body2">
+                    {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
+                  </Typography>
+                  <Typography variant="body2">
+                    {sellOrderData?.fractionQtyAvailable &&
+                      formatNumber(sellOrderData.fractionQtyAvailable)}
+                    units left
+                  </Typography>
+                </FlexTextWrapper>
+              </div>
+              {sellOrderData?.type === 'drop' && sellOrderData?.userFractionLimitEndTime !== null && (
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
+                    Buy more units in
+                  </Typography>
+                  <CountdownTimer
+                    sx={{ fontSize: '10px' }}
+                    startTime={Math.ceil(
+                      calcTimeDifference(new Date(), sellOrderData.userFractionLimitEndTime) ?? 0,
+                    )}
+                  />
+                </Box>
+              )}
+              {sellOrderData && !!buyLimit && (
                 <Slider
                   defaultValue={0}
                   value={sliderValue}
@@ -229,52 +222,48 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                   step={1}
                   valueLabelDisplay="auto"
                   onChange={handleSliderChange}
-                  className={classes.slider_styles}
                   marks={marks}
                 />
-              </Box>
-            )}
-            <Box sx={{ margin: '40px 0' }}>
-              {sellOrderData && !!buyLimit && (
-                <Box>
-                  <Typography>Order Summary</Typography>
-                  <Box sx={{ display: 'flex', marginTop: '10px' }}>
-                    <Typography>{formatNumber(sliderValue)} units</Typography>
-                    <Typography sx={{ marginLeft: 'auto' }}>
-                      {'$' + formatNumber(totalPrice)}
-                    </Typography>
-                  </Box>
-
-                  <Button
-                    onClick={handleOpenBuyModal}
-                    disabled={disableBuyBTN}
-                    variant="contained"
-                    className={classes.fullWidthButton}
-                  >
-                    Buy Now
-                  </Button>
-                </Box>
               )}
-              <Typography sx={{ padding: '10px 0', marginTop: '20px' }}>Card details</Typography>
-              <Box className={classes.detailsInfo}>
-                <Typography>Date minted</Typography>
-                <Typography>Oct 1 2022</Typography>
-              </Box>
+              <div>
+                {sellOrderData && !!buyLimit && (
+                  <div>
+                    <Typography>Order Summary</Typography>
+                    <FlexTextWrapper>
+                      <Typography>{formatNumber(sliderValue)} units</Typography>
+                      <Typography>{'$' + formatNumber(totalPrice)}</Typography>
+                    </FlexTextWrapper>
 
-              <Divider className={classes.fullWidthDivider} />
-              <Box className={classes.detailsInfo}>
-                <Typography>Number of Cards of same grade in PWCCNFT</Typography>
-                <Typography>#</Typography>
-              </Box>
-
-              <Divider className={classes.fullWidthDivider} />
-              <Box className={classes.detailsInfo}>
-                <Typography>Number of people who co-own this card</Typography>
-                <Typography>#</Typography>
-              </Box>
-
-              <Divider className={classes.fullWidthDivider} />
-            </Box>
+                    <Button
+                      onClick={handleOpenBuyModal}
+                      disabled={disableBuyBTN}
+                      variant="contained"
+                      fullWidth
+                    >
+                      Buy Now
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <div>
+                <Typography>Card details</Typography>
+                <FlexTextWrapper>
+                  <Typography>Date minted</Typography>
+                  <Typography>Oct 1 2022</Typography>
+                </FlexTextWrapper>
+                <Divider />
+                <FlexTextWrapper>
+                  <Typography>Number of Cards of same grade in PWCCNFT</Typography>
+                  <Typography>#</Typography>
+                </FlexTextWrapper>
+                <Divider />
+                <FlexTextWrapper>
+                  <Typography>Number of people who co-own this card</Typography>
+                  <Typography>#</Typography>
+                </FlexTextWrapper>
+                <Divider />
+              </div>
+            </AssetContainer>
           </Box>
         </Drawer>
       </DialogContent>

@@ -2,18 +2,19 @@ import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
 import type { IMeta, IAsset } from 'src/types';
-import { Box, Divider, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
 import { loadListAssetByPage, getAssetById } from '@/api/endpoints/assets';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
 import { AssetListView } from '@/containers/AssetListView';
-import { useExplorePageStyles } from '@/styles/explorePage.styles';
 import { useFilters } from '@/helpers/hooks/useFilters';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
 import { FilterWrapper } from '@/components/FilterWrapper';
+import { AssetListFooter } from '@/styles/explorePage.styles';
+
 const SearchPage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
@@ -25,7 +26,6 @@ const SearchPage: NextPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const { checkedFilters, rangeFilters, sortByOrder } = useFilters();
-  const classes = useExplorePageStyles();
 
   useEffect(() => {
     if (!assets.length) {
@@ -100,7 +100,7 @@ const SearchPage: NextPage = () => {
 
   return (
     <ClientOnly>
-      <OpenGraph title={'List view'} description={'List view page description'} />
+      <OpenGraph title="Search" description={'List view page description'} />
 
       <Grid
         sx={{
@@ -113,7 +113,7 @@ const SearchPage: NextPage = () => {
         container
       >
         <Grid container item>
-          <Box className={isOpen ? classes.assetListOpen : classes.assetListClosed}>
+          <Box>
             <FilterWrapper />
             <Grid container direction="row" justifyContent="center" alignItems="stretch">
               {assets && (
@@ -124,13 +124,9 @@ const SearchPage: NextPage = () => {
                 />
               )}
             </Grid>
-            <Grid item xs={12} sx={{ textAlign: 'center' }}>
+            <AssetListFooter>
               {assets.length < (currentMeta?.totalItems || 0) && (
-                <Button
-                  sx={{ marginTop: { xs: '36px', md: '95px' } }}
-                  size="large"
-                  onClick={handleButtonClick}
-                >
+                <Button size="large" onClick={handleButtonClick} variant="contained">
                   LOAD MORE
                 </Button>
               )}
@@ -139,7 +135,6 @@ const SearchPage: NextPage = () => {
                 variant="body2"
                 component="p"
                 sx={{
-                  margin: '24px 0 54px',
                   textDecoration: 'none',
                   color: 'rgba(0,0,0,0.6)',
                 }}
@@ -149,10 +144,7 @@ const SearchPage: NextPage = () => {
                   {assets.length} of {currentMeta?.totalItems}
                 </Box>
               </Typography>
-              <Divider
-                sx={{ borderBottomWidth: 'medium', borderColor: '#000', paddingTop: '297px' }}
-              />
-            </Grid>
+            </AssetListFooter>
           </Box>
         </Grid>
         {tradePanelData && (

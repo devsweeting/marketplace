@@ -1,22 +1,16 @@
-import { lighten } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { lighten, styled, Typography } from '@mui/material';
+import type { Theme } from '@mui/material';
 
-export const useNavLinkStyles = makeStyles(
-  (theme) => ({
-    navLink: {
-      color: theme.palette.primary.main,
-      cursor: 'pointer',
-      marginRight: theme.spacing(2),
-      '@media (max-width:900px)': {
-        marginLeft: theme.spacing(1),
-      },
-      '&:hover': {
-        color: lighten(theme.palette.primary.main, 0.3),
-      },
-    },
-    navLinkActive: {
-      textDecoration: 'underline',
-    },
+export const NavText = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'active',
+})<{ active?: boolean }>(({ theme, active }: { theme: Theme; active?: boolean }) => ({
+  color: theme.palette.primary.main,
+  cursor: 'pointer',
+  transition: 'all 250ms ease-in-out',
+  '&:hover': {
+    color: lighten(theme.palette.primary.main, 0.4),
+  },
+  ...(active && {
+    color: theme.palette.accent.main,
   }),
-  { name: 'navlink' },
-);
+}));

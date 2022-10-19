@@ -1,54 +1,41 @@
-import makeStyles from '@mui/styles/makeStyles';
+import { styled, Typography } from '@mui/material';
 
-export const useFilterWrapperStyles = makeStyles(() => ({
-  mobileFilterStyles: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-  },
-  mobileHeader: {
-    marginRight: 0,
-    fontSize: '1.5rem',
-    display: 'inline',
-    whiteSpace: 'nowrap',
-    margin: '0 10px',
-  },
-  mobileFilterHead: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: '32px',
-    margin: '10px 0px',
-  },
-  mobileFilterCard: {
-    width: '100%',
-    marginTop: '10px',
-    backgroundColor: 'white',
-    maxWidth: '1200px',
-    margin: 'auto',
-    borderRadius: '0',
-  },
-  desktopFilterCard: {
-    width: '100%',
-    padding: '10px 0',
-    backgroundColor: 'white',
-    borderRadius: '0',
-    borderBottom: '1px solid rgba(0,0,0,0.2)',
-  },
-  mobileFilterWrapperWrapper: {
-    display: 'flex',
-    alignItems: 'stretch',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    width: '100vw',
-  },
-  desktopFilterWrapperWrapper: {
-    display: 'flex',
-    alignItems: 'stretch',
-    justifyContent: 'space-between',
-    width: '100%',
+export const MobileFilterContainer = styled('div')({
+  display: 'flex',
+  alignItems: 'stretch',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  width: '100vw',
+});
+
+export const MobileFilterHead = styled('div')({
+  padding: '1rem',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+});
+
+export const FilterContainer = styled('div')({
+  display: 'flex',
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  gap: '0.5rem',
+});
+
+export const DesktopFilterContainer = styled('div')({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+  padding: '1rem 2rem',
+  gap: '1rem',
+});
+
+export const Header = styled(Typography)(({ theme }) => ({
+  display: 'inline',
+  fontWeight: 700,
+  [theme.breakpoints.only('sm')]: {
+    display: 'none',
   },
 }));
