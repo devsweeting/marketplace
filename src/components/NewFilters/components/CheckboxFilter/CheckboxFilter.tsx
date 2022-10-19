@@ -1,20 +1,10 @@
-import {
-  Box,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, Typography } from '@mui/material';
 import type { IFilter } from '@/types/assetTypes';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Popover from '@mui/material/Popover';
-import Button from '@mui/material/Button';
 import React, { useState } from 'react';
-import { useCheckboxStyles } from './CheckboxFilter.styles';
+import { FilterButton } from './CheckboxFilter.styles';
 
 interface ICheckBoxStuff {
   categoryId: string;
@@ -46,12 +36,9 @@ export const CheckboxFilter = ({
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [checkedBoxes, setCheckedBoxes] = useState<ICheckBoxStuff[]>([]);
-  const classes = useCheckboxStyles();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const theme = useTheme();
-  const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -74,18 +61,17 @@ export const CheckboxFilter = ({
   const id = open ? `${filter.categoryId}` : undefined;
 
   return (
-    <Box className={classes.wrapper}>
-      <Button
-        className={open ? classes.open : classes.popoverButton}
+    <>
+      <FilterButton
         aria-describedby={id}
         variant="text"
         onClick={handleClick}
         endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
       >
-        <Typography variant="lg" component="h3" className={classes.MenuTitle}>
+        <Typography variant="body1" fontWeight={500}>
           {filter.categoryId}
         </Typography>
-      </Button>
+      </FilterButton>
 
       <Popover
         id={id}
@@ -94,9 +80,8 @@ export const CheckboxFilter = ({
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: !matchesDesktop ? 'right' : 'left',
+          horizontal: 'left',
         }}
-        className={classes.MenuBackground}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', p: 2 }}>
           {filter.filters &&
@@ -121,6 +106,6 @@ export const CheckboxFilter = ({
             ))}
         </Box>
       </Popover>
-    </Box>
+    </>
   );
 };

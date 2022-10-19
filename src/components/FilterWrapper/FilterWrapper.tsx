@@ -5,11 +5,6 @@ import { mockCategoryFilters } from '@/__mocks__/mockCategoryViewApiData';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import {
-  Box,
-  Card,
-  Divider,
-  Grid,
-  Typography,
   useMediaQuery,
   useTheme,
   Accordion,
@@ -20,12 +15,17 @@ import type { DisabledRanges, DisabledRangesKey, IFilter } from '@/types/assetTy
 import { NewFilters } from '@/components/NewFilters/NewFilters';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { SortMenu } from '@/components/NewFilters/components/SortMenu';
-import { useFilterWrapperStyles } from './FilterWrapper.styles';
+import {
+  MobileFilterContainer,
+  MobileFilterHead,
+  FilterContainer,
+  DesktopFilterContainer,
+  Header,
+} from './FilterWrapper.styles';
 
 export const FilterWrapper = () => {
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
-  const classes = useFilterWrapperStyles();
   const router = useRouter();
   const { isReady, query } = router;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -130,34 +130,60 @@ export const FilterWrapper = () => {
   return (
     <>
       {matchesDesktop ? (
-        <Grid container className={classes.desktopFilterWrapperWrapper}>
-          <Card className={classes.desktopFilterCard}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 10px',
-                width: '100%',
-              }}
-            >
-              <Typography
-                variant="lg"
-                component={'h3'}
-                sx={{ marginLeft: 1.2, marginRight: 1.2, fontSize: '1.3rem', whiteSpace: 'nowrap' }}
-              >
-                {router.asPath.includes('/search') ? 'Search Results' : 'Explore Drops'}
-              </Typography>
+        <DesktopFilterContainer>
+          <Header variant="xl" sx={{ margin: 0 }}>
+            {router.asPath.includes('/search') ? 'Search Results' : 'Explore Drops'}
+          </Header>
 
-              <Box
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
+          <FilterContainer>
+            {mockCategoryFilters.map((filter, index) => (
+              <NewFilters
+                filterType={filter.filterType}
+                filter={filter}
+                {...filterProps}
+                key={index}
+              />
+            ))}
+            <ClearAllFilter
+              clearSelectedFilters={clearAllSelectedFilters}
+              isFilterButtonVisible={checkedFilters.length || Object.keys(rangeFilters).length > 0}
+            />
+          </FilterContainer>
+          <SortMenu {...sortListProps} />
+        </DesktopFilterContainer>
+      ) : (
+        <MobileFilterContainer>
+          <MobileFilterHead>
+            <Header variant="xl">Explore Drops</Header>
+            <ClearAllFilter
+              clearSelectedFilters={clearAllSelectedFilters}
+              isFilterButtonVisible={checkedFilters.length || Object.keys(rangeFilters).length > 0}
+            />
+          </MobileFilterHead>
+          <Accordion
+            expanded={expanded === 'panel1'}
+            onChange={handleChange('panel1')}
+            TransitionProps={{ unmountOnExit: true }}
+          >
+            <AccordionSummary
+              sx={{
+                background: expanded !== 'panel1' ? 'whitesmoke' : 'white',
+                '.Mui-expanded': {
+                  margin: 0,
+                },
+              }}
+              expandIcon={
+                expanded === 'panel1' ? (
+                  <RemoveIcon sx={{ color: theme.palette.primary.main }} />
+                ) : (
+                  <AddIcon sx={{ color: theme.palette.primary.main }} />
+                )
+              }
+            >
+              Filter Menu
+            </AccordionSummary>
+            <AccordionDetails>
+              <FilterContainer>
                 {mockCategoryFilters.map((filter, index) => (
                   <NewFilters
                     filterType={filter.filterType}
@@ -166,78 +192,12 @@ export const FilterWrapper = () => {
                     key={index}
                   />
                 ))}
-                <ClearAllFilter
-                  clearSelectedFilters={clearAllSelectedFilters}
-                  isFilterButtonVisible={
-                    checkedFilters.length || Object.keys(rangeFilters).length > 0
-                  }
-                />
-                <SortMenu {...sortListProps} />
-              </Box>
-            </Box>
-          </Card>
-        </Grid>
-      ) : (
-        <Grid className={classes.mobileFilterWrapperWrapper}>
-          <Card className={classes.mobileFilterCard}>
-            <Box
-              sx={{
-                paddingTop: '20px',
-                width: '100%',
-              }}
-            >
-              <div className={classes.mobileFilterHead}>
-                <Typography variant="lg" component={'h3'} className={classes.mobileHeader}>
-                  Explore Drops
-                </Typography>
-                <ClearAllFilter
-                  clearSelectedFilters={clearAllSelectedFilters}
-                  isFilterButtonVisible={
-                    checkedFilters.length || Object.keys(rangeFilters).length > 0
-                  }
-                />
-              </div>
-              <Accordion
-                expanded={expanded === 'panel1'}
-                onChange={handleChange('panel1')}
-                TransitionProps={{ unmountOnExit: true }}
-              >
-                <AccordionSummary
-                  sx={{
-                    background: expanded !== 'panel1' ? 'whitesmoke' : 'white',
-                    '.Mui-expanded': {
-                      margin: 0,
-                    },
-                  }}
-                  expandIcon={
-                    expanded === 'panel1' ? (
-                      <RemoveIcon sx={{ color: theme.palette.primary.main }} />
-                    ) : (
-                      <AddIcon sx={{ color: theme.palette.primary.main }} />
-                    )
-                  }
-                >
-                  Filter Menu
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Box className={classes.mobileFilterStyles}>
-                    {mockCategoryFilters.map((filter, index) => (
-                      <NewFilters
-                        filterType={filter.filterType}
-                        filter={filter}
-                        {...filterProps}
-                        key={index}
-                      />
-                    ))}
 
-                    <SortMenu {...sortListProps} />
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
-            </Box>
-            <Divider />
-          </Card>
-        </Grid>
+                <SortMenu {...sortListProps} />
+              </FilterContainer>
+            </AccordionDetails>
+          </Accordion>
+        </MobileFilterContainer>
       )}
     </>
   );
