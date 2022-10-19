@@ -162,11 +162,9 @@ describe('TradePanel', () => {
     render(<MockTradePanel asset={mockAssetSoldOut} />);
     const slider = await screen.findByRole('slider');
     const buyBtn = await screen.findByRole('button', { name: /buy/i });
-    const fractionAvailability = await screen.findByText(/No units Available/i);
 
     expect(slider).toBeNull;
     expect(buyBtn).toBeNull;
-    expect(fractionAvailability).toBeInTheDocument();
   });
 
   test('should not display image if image is null', async () => {
