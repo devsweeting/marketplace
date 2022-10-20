@@ -9,8 +9,8 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
   const [page, setPage] = useState(0);
   const [height, setHeight] = useState<number>(0);
   const [modalScrollHeight, setModalScrollHeight] = useState<number>(0);
-  const ref = useRef<HTMLElement>(null);
-  const modalRef = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (ref.current != null && modalRef.current != null) {

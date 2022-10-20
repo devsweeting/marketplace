@@ -4,30 +4,29 @@ import { Typography, IconButton, Card, lighten, Button, Box, useTheme } from '@m
 import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { useCart } from '@/helpers/auth/CartContext';
-import { getAssetById } from '@/api/endpoints/assets';
 
 export const Cart = ({
   page,
   setPage,
   ref,
+  orderSummary,
 }: {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   ref: any;
+  orderSummary: IAsset;
 }) => {
   const { cartItems, removeFromCart, closeCart } = useCart();
-  const [orderSummary, setOrderSummary] = useState<IAsset>();
   const theme = useTheme();
   const item = cartItems[0];
   useEffect(() => {
     if (!item) {
       return;
     }
-    void getAssetById(item.id).then((asset) => setOrderSummary(asset));
-  }, [item]);
+  }, [item, orderSummary]);
   if (orderSummary === undefined || !(cartItems.length > 0)) {
     return null;
   }

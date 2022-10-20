@@ -5,6 +5,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  Link,
   OutlinedInput,
   Typography,
   useTheme,
@@ -20,19 +21,28 @@ import { CustomRadio } from './PaymentMethods.styles';
 export const PaymentMethods = ({
   setPage,
   page,
+  ref,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
   page: number;
+  ref: React.RefObject<HTMLDivElement>;
 }) => {
   const { closeCart, cartItems } = useCart();
   const [isDismissed, setIsDismissed] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('b');
+
+  const funds = 0;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+  };
   const item = cartItems[0];
   const theme = useTheme();
   if (!(cartItems.length > 0)) {
     return null;
   }
   return (
-    <Box height="max-content" width="576px">
+    <Box height="max-content" maxWidth="576px" width="100%" ref={ref}>
       <Box
         sx={{
           height: '80px',
@@ -52,8 +62,8 @@ export const PaymentMethods = ({
           sx={{
             position: 'absolute',
             zIndex: 1,
-            top: '10px',
-            right: '10px',
+            top: '20px',
+            right: '20px',
           }}
         >
           <Typography
@@ -78,7 +88,8 @@ export const PaymentMethods = ({
       </Box>
       <Box
         height="max-content"
-        width="576px"
+        maxWidth="576px"
+        width="100%"
         display="flex"
         alignItems="flex-start"
         flexDirection="column"
@@ -87,7 +98,7 @@ export const PaymentMethods = ({
         <Card
           sx={{
             height: '188px',
-            width: '528px',
+            width: '100%',
             backgroundColor: theme.palette.grey[100],
             marginBottom: '16px',
             padding: '24px',
@@ -120,7 +131,7 @@ export const PaymentMethods = ({
             component="p"
             variant="body1"
           >
-            View and increase your limits here.
+            View and increase your limits <Link href="/account/balance">here.</Link>
           </Typography>
           <Typography
             style={{
@@ -144,7 +155,6 @@ export const PaymentMethods = ({
         <Card
           sx={{
             height: '100px',
-            width: '528px',
             backgroundColor: theme.palette.grey[100],
             margin: '16px 0',
             padding: '24px',
@@ -191,11 +201,19 @@ export const PaymentMethods = ({
                 display: 'flex',
               }}
             >
-              {` 0.00 USD (Insufficient funds)`}
+              {`$${formatNumber(funds.toFixed(2) as unknown as number)} USD ${
+                funds < item.totalPrice ? '(Insufficient funds)' : ''
+              }`}
             </Typography>
           </Box>
           <Box>
-            <CustomRadio />
+            <CustomRadio
+              checked={selectedValue === 'a'}
+              onChange={handleChange}
+              value="a"
+              name="radio-buttons"
+              inputProps={{ 'aria-label': 'A' }}
+            />
           </Box>
         </Card>
         <Box
@@ -261,13 +279,11 @@ export const PaymentMethods = ({
                   fontSize: '16px',
                   lineHeight: '24px',
                   borderRadius: '8px',
+                  padding: 0,
                   border: `1px solid ${theme.palette.primary.main}`,
                   '&:hover': {
                     color: theme.palette.primary.main,
                     backgroundColor: theme.palette.secondary.main,
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    margin: '10px auto',
                   },
                 },
                 fontWeight: '500',
@@ -292,7 +308,7 @@ export const PaymentMethods = ({
         <Card
           sx={{
             height: '124px',
-            width: '528px',
+            maxidth: '528px',
             backgroundColor: theme.palette.grey[100],
             margin: '24px 0',
             padding: '24px',
@@ -301,7 +317,6 @@ export const PaymentMethods = ({
             alignItems: 'center',
           }}
         >
-          {' '}
           <Box
             sx={{
               backgroundColor: '#D9D9D9',
@@ -354,7 +369,13 @@ export const PaymentMethods = ({
             </Typography>
           </Box>
           <Box>
-            <CustomRadio />
+            <CustomRadio
+              checked={selectedValue === 'b'}
+              onChange={handleChange}
+              value="b"
+              name="radio-buttons"
+              inputProps={{ 'aria-label': 'B' }}
+            />
           </Box>
         </Card>
       </Box>
@@ -463,36 +484,70 @@ export const PaymentMethods = ({
           >
             Cancel Payment
           </Button>
-          <Button
-            sx={{
-              '&.MuiButtonBase-root': {
-                color: 'white',
-                backgroundColor: theme.palette.primary.main,
-                height: '40px',
+          {selectedValue === 'a' && (
+            <Button
+              sx={{
+                '&.MuiButtonBase-root': {
+                  color: 'white',
+                  backgroundColor: theme.palette.primary.main,
+                  height: '40px',
 
-                margin: '8px 0',
-                fontSize: '16px',
-                lineHeight: '24px',
-                borderRadius: '8px',
-                border: `1px solid ${theme.palette.primary.main}`,
-                '&:hover': {
-                  color: theme.palette.primary.main,
-                  backgroundColor: theme.palette.secondary.main,
+                  margin: '8px 0',
+                  fontSize: '16px',
+                  lineHeight: '24px',
+                  borderRadius: '8px',
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  '&:hover': {
+                    color: theme.palette.primary.main,
+                    backgroundColor: theme.palette.secondary.main,
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    margin: '10px auto',
+                  },
                 },
-                [theme.breakpoints.down('sm')]: {
-                  margin: '10px auto',
+                fontWeight: '500',
+                fontSize: '14px',
+                lineHeight: '20px',
+              }}
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              Pay with Jump balance
+            </Button>
+          )}
+          {selectedValue === 'b' && (
+            <Button
+              sx={{
+                '&.MuiButtonBase-root': {
+                  color: 'white',
+                  backgroundColor: theme.palette.primary.main,
+                  height: '40px',
+
+                  margin: '8px 0',
+                  fontSize: '16px',
+                  lineHeight: '24px',
+                  borderRadius: '8px',
+                  border: `1px solid ${theme.palette.primary.main}`,
+                  '&:hover': {
+                    color: theme.palette.primary.main,
+                    backgroundColor: theme.palette.secondary.main,
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                    margin: '10px auto',
+                  },
                 },
-              },
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
-            }}
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          >
-            Add Credit Card
-          </Button>
+                fontWeight: '500',
+                fontSize: '14px',
+                lineHeight: '20px',
+              }}
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            >
+              Add Credit Card
+            </Button>
+          )}
         </Box>
       </Box>
     </Box>
