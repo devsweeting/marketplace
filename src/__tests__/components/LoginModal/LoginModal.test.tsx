@@ -14,7 +14,7 @@ const mockLoginRequest = loginRequest as unknown as jest.MockedFn<typeof loginRe
 const MockLoginModal = () => {
   return (
     <ThemeProvider theme={themeJump}>
-      <LoginModal open={true} />
+      <LoginModal open={true} noDismiss={false} />
     </ThemeProvider>
   );
 };

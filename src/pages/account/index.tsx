@@ -6,7 +6,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
@@ -156,22 +156,11 @@ const PortfolioPage: NextPage = () => {
   }, [activePortfolioCategory, isReady, query, tab, user]);
 
   const portfolioAssetsList = [];
-  if (!Object.keys(portfolio).includes('meta')) {
-    if (portfolio?.purchaseHistory && !Object.keys(portfolio).includes('statusCode')) {
-      for (let i = 0; i < portfolio.purchaseHistory.length; i++) {
-        if (
-          Object.keys(portfolio).length > 0 &&
-          Object.keys(portfolio.purchaseHistory[i]).length > 0 &&
-          Object.keys(portfolio.purchaseHistory[i]).includes('asset')
-        ) {
-          portfolio.purchaseHistory[i].asset.fractionPriceCents =
-            portfolio.purchaseHistory[i].fractionPriceCents;
-          portfolio.purchaseHistory[i].asset.fractionQty = portfolio.purchaseHistory[i].fractionQty;
-        }
-        portfolioAssetsList.push(portfolio.purchaseHistory[i].asset);
-      }
-    }
-  } else {
+
+  if (Object.keys(portfolio).includes('meta')) {
+    portfolio.items.flatMap((item: { category: string }) => {
+      item.category = activePortfolioCategory;
+    });
     portfolioAssetsList.push(...portfolio.items);
   }
   const updateAsset = (assetId: string): void => {
@@ -191,7 +180,7 @@ const PortfolioPage: NextPage = () => {
       });
   };
 
-  const handleTabClosingDrawer = () => {
+  const handleClosingDrawer = () => {
     setIsOpen(false);
   };
 
@@ -225,7 +214,7 @@ const PortfolioPage: NextPage = () => {
         <PortfolioHeaderTabs
           tabs={tabs}
           activePortfolioCategory={activePortfolioCategory}
-          OnClick={handleTabClosingDrawer}
+          OnClick={handleClosingDrawer}
         />
         <Box sx={{ height: '30vw' }}>
           <Loader />;
@@ -258,7 +247,28 @@ const PortfolioPage: NextPage = () => {
       </div>
     );
   }
-
+  if (!(portfolioAssetsList.length > 0)) {
+    return (
+      <>
+        <PortfolioHeaderTabs
+          tabs={tabs}
+          activePortfolioCategory={activePortfolioCategory}
+          OnClick={handleClosingDrawer}
+        />
+        <PortFolioStats portfolio={stats} />
+        <Box
+          display="flex"
+          height="15vh"
+          justifyContent="center"
+          alignItems="center"
+          margin="auto"
+          padding="150px"
+        >
+          <Typography variant="xl3"> Nothing on Watchlist</Typography>
+        </Box>
+      </>
+    );
+  }
   return (
     <>
       <Grid>
@@ -266,13 +276,14 @@ const PortfolioPage: NextPage = () => {
         <PortfolioHeaderTabs
           tabs={tabs}
           activePortfolioCategory={activePortfolioCategory}
-          OnClick={handleTabClosingDrawer}
+          OnClick={handleClosingDrawer}
         />
         <Box>
           <PortFolioStats portfolio={stats} />
           <PortfolioAssetList
             portfolioAssetsList={portfolioAssetsList}
             handleDrawer={handleDrawer}
+            closeDrawer={handleClosingDrawer}
           />
         </Box>
       </Grid>

@@ -1,4 +1,13 @@
-import { Box, DialogContent, Divider, LinearProgress, Slider, Typography } from '@mui/material';
+import {
+  Box,
+  DialogContent,
+  Divider,
+  Grid,
+  IconButton,
+  LinearProgress,
+  Slider,
+  Typography,
+} from '@mui/material';
 import { Button } from '@/components/Button';
 import type { ISellOrder } from '@/types/assetTypes';
 import type { ITradePanel } from './ITradePanel';
@@ -142,31 +151,28 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
             anchor="right"
             open={open}
             transitionDuration={300}
-            className={classes.portfolioDrawer}
           >
             <Box>
-              <Box className={classes.card_header}>
-                <Typography className={classes.card_header_text}>Research Drawer</Typography>
+              <Box>
+                <Typography>Research Drawer</Typography>
 
                 <IconButton onClick={handleClose} aria-label="Close" sx={{ marginLeft: 'auto' }}>
                   {<CloseIcon />}
                 </IconButton>
               </Box>
-              <Divider className={classes.fullWidthDivider} />
+              <Divider />
 
-              <Box className={classes.galleryWrapper}>
-                {asset.media && asset.media[0] && <AssetGallery images={asset.media} />}
-              </Box>
+              <Box>{asset.media && asset.media[0] && <AssetGallery images={asset.media} />}</Box>
 
               <Grid container sx={{ marginTop: '20px' }}>
                 <Grid item xs={7}>
-                  <Typography className={classes.title}>{asset.name}</Typography>
+                  <Typography>{asset.name}</Typography>
                   <Typography variant="subtitle2">
                     <Attributes attributes={asset.attributes} />
                   </Typography>
                 </Grid>
                 <Grid item xs={5} sx={{ textAlign: 'right' }}>
-                  <Typography className={classes.card_valuation}>Card Valuation</Typography>
+                  <Typography>Card Valuation</Typography>
                   <Typography variant="lg">
                     {'$' +
                       formatNumber(
@@ -179,13 +185,12 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 </Grid>
               </Grid>
 
-              <Box className={classes.assetClaimedWrapper}>
+              <Box>
                 <LinearProgress
                   variant="determinate"
                   value={100 - getPercentClaimed(sellOrderData)}
-                  className={classes.progressBar}
                 />
-                <Box className={classes.detailsInfo}>
+                <Box>
                   <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
                     {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
                   </Typography>
@@ -208,7 +213,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                     )}
                 </Box>
               </Box>
-              <Typography className={classes.available_instances}>
+              <Typography>
                 {sellOrderData?.fractionQtyAvailable
                   ? `${formatNumber(sellOrderData.fractionQtyAvailable)} Units Available ( ${
                       getPercentClaimed(sellOrderData) + '%'
@@ -227,7 +232,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                       step={1}
                       valueLabelDisplay="auto"
                       onChange={handleSliderChange}
-                      className={classes.slider_styles}
                       marks={marks}
                     />
                     <Box sx={{ display: 'flex', marginTop: '10px' }}>
@@ -241,13 +245,10 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                       onClick={handleOpenBuyModal}
                       disabled={disableBuyBTN}
                       variant="contained"
-                      className={classes.fullWidthButton}
                     >
                       {`+ ${sliderValue} units`}
                     </Button>
-                    <Button variant="contained" className={classes.fullWidthButton}>
-                      {`Sell Now`}
-                    </Button>
+                    <Button variant="contained">{`Sell Now`}</Button>
                     <Box display="flex" justifyContent="center" margin="30px 0 0 0">
                       <Typography textAlign="center" textTransform="uppercase">
                         Buy soon to make sure they’re not sold while you shop

@@ -1,4 +1,10 @@
 export interface IAsset {
+  userAsset: {
+    assetId: string;
+    id: string;
+    quantityOwned: number;
+  };
+  data?: any;
   isOnWatchlist?: boolean;
   isOnUserPortfolio?: boolean;
   id: string;
