@@ -297,6 +297,7 @@ export const themeJump = createTheme(theme, {
       styleOverrides: {
         root: {
           backgroundColor: 'white',
+          borderRadius: '100vh',
           '& > *': {
             transition: 'all 250ms ease-in-out',
           },
@@ -320,6 +321,13 @@ export const themeJump = createTheme(theme, {
           width: 'min-content',
           margin: 0,
           display: 'inline-flex',
+          transition: 'all 250ms ease-in-out',
+          cursor: 'pointer',
+        },
+        colorPrimary: {
+          '&:hover': {
+            color: theme.palette.grey[500],
+          },
         },
       },
     },
