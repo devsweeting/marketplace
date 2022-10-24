@@ -297,7 +297,6 @@ export const themeJump = createTheme(theme, {
       styleOverrides: {
         root: {
           backgroundColor: 'white',
-          borderRadius: '100vh',
           '& > *': {
             transition: 'all 250ms ease-in-out',
           },
