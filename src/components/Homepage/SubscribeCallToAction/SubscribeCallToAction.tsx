@@ -1,7 +1,8 @@
-import { Typography, TextField } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Wrapper, InputContainer } from './SubscribeCallToAction.styles';
 import React from 'react';
 import { Button } from '@/components/Button';
+import { TextField } from '@/components/TextField';
 
 export const SubscribeCallToAction = () => {
   return (
@@ -10,12 +11,7 @@ export const SubscribeCallToAction = () => {
         Get weekly drops
       </Typography>
       <InputContainer>
-        <TextField
-          inputProps={{ disableUnderline: true }}
-          id="outlined-basic"
-          variant="outlined"
-          placeholder="Email"
-        />
+        <TextField id="outlined-basic" variant="outlined" placeholder="Email" rounded />
         <Button variant="contained" rounded>
           Subscribe
         </Button>
