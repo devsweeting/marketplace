@@ -21,7 +21,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
 
   return (
     <Box>
-      <Box style={{ width: 'auto', height: 325, position: 'relative' }}>
+      <Box style={{ width: 'auto', height: 280, position: 'relative' }}>
         <Image
           placeholder="blur"
           blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}

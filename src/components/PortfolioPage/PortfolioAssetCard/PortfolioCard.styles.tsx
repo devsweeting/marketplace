@@ -28,6 +28,13 @@ export const AssetCard = styled(Card, {
     flexDirection: 'column',
     maxWidth: '400px',
   },
+  [theme.breakpoints.down('sm')]: {
+    margin: '0px',
+    boxShadow:
+      '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+    flexDirection: 'column',
+    maxWidth: '400px',
+  },
   ...(active && {
     backgroundColor: theme.palette.grey[50],
     transition: 'background-color 300ms ease-in',
@@ -47,7 +54,7 @@ export const ImageWrapper = styled('div')(({ theme }) => ({
   maxWidth: '152px',
   height: 'auto',
   backgroundColor: theme.palette.grey[100],
-  padding: theme.spacing(3),
+  padding: theme.spacing(5),
   [theme.breakpoints.down('md')]: {
     maxWidth: '100%',
     margin: '0 auto',
@@ -56,7 +63,7 @@ export const ImageWrapper = styled('div')(({ theme }) => ({
 
 export const Img = styled(Image)({
   textAlign: 'center',
-  maxWidth: '100px',
+  maxWidth: '72px',
 });
 
 export const DetailWrapper = styled(Box)(({ theme }) => ({
@@ -107,6 +114,7 @@ export const CardTitle = styled(Typography)({
   fontSize: '24px',
   lineHeight: '32px',
   overflowWrap: 'break-word',
+  paddingLeft: '10px',
 });
 export const CardDetails = styled(Typography)({
   fontWeight: 500,
@@ -125,10 +133,12 @@ export const LargeText = styled(Typography)(({ theme }) => ({
 
   [theme.breakpoints.down(1649.95)]: {
     fontSize: '26px',
+    lineHeight: '32px',
   },
 
   [theme.breakpoints.down('md')]: {
     fontSize: '24px',
+    lineHeight: '24px',
   },
 }));
 export const FineText = styled(Typography)({
@@ -163,10 +173,17 @@ export const TextWrapper = styled(Box)(({ theme }) => ({
 
 export const StarWrapper = styled('div')(({ theme }) => ({
   position: 'absolute',
-  zIndex: 1,
-  top: '1px',
-  right: '1px',
+  zIndex: 10,
+  top: '2px',
+  left: '110px',
+  [theme.breakpoints.down('md')]: {
+    left: 'unset',
+    top: '10px',
+    right: '10px',
+  },
   [theme.breakpoints.down('sm')]: {
+    left: 'unset',
+    top: '0px',
     right: '0px',
   },
 }));

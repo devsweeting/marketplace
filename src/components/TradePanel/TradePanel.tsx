@@ -1,13 +1,4 @@
-import {
-  Box,
-  DialogContent,
-  Divider,
-  Grid,
-  IconButton,
-  LinearProgress,
-  Slider,
-  Typography,
-} from '@mui/material';
+import { Box, DialogContent, Divider, LinearProgress, Slider, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import type { ISellOrder } from '@/types/assetTypes';
 import type { ITradePanel } from './ITradePanel';
@@ -141,138 +132,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliderValue, disableBuyBTN, totalPrice, assetId, asset]);
-  if (asset.isOnUserPortfolio) {
-    return (
-      <Box>
-        <DialogContent>
-          <Drawer
-            tabIndex={-1}
-            variant="persistent"
-            anchor="right"
-            open={open}
-            transitionDuration={300}
-          >
-            <Box>
-              <Box>
-                <Typography>Research Drawer</Typography>
-
-                <IconButton onClick={handleClose} aria-label="Close" sx={{ marginLeft: 'auto' }}>
-                  {<CloseIcon />}
-                </IconButton>
-              </Box>
-              <Divider />
-
-              <Box>{asset.media && asset.media[0] && <AssetGallery images={asset.media} />}</Box>
-
-              <Grid container sx={{ marginTop: '20px' }}>
-                <Grid item xs={7}>
-                  <Typography>{asset.name}</Typography>
-                  <Typography variant="subtitle2">
-                    <Attributes attributes={asset.attributes} />
-                  </Typography>
-                </Grid>
-                <Grid item xs={5} sx={{ textAlign: 'right' }}>
-                  <Typography>Card Valuation</Typography>
-                  <Typography variant="lg">
-                    {'$' +
-                      formatNumber(
-                        calcValuation(
-                          sellOrderData?.fractionQty ?? 0,
-                          sellOrderData?.fractionPriceCents ?? 0,
-                        ),
-                      )}
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              <Box>
-                <LinearProgress
-                  variant="determinate"
-                  value={100 - getPercentClaimed(sellOrderData)}
-                />
-                <Box>
-                  <Typography sx={{ fontSize: '10px', marginRight: '50px' }}>
-                    {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
-                  </Typography>
-                  {sellOrderData?.type === 'drop' &&
-                    sellOrderData?.userFractionLimitEndTime !== null && (
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
-                          Buy more units in
-                        </Typography>
-                        <CountdownTimer
-                          sx={{ fontSize: '10px' }}
-                          startTime={Math.ceil(
-                            calcTimeDifference(
-                              new Date(),
-                              sellOrderData.userFractionLimitEndTime,
-                            ) ?? 0,
-                          )}
-                        />
-                      </Box>
-                    )}
-                </Box>
-              </Box>
-              <Typography>
-                {sellOrderData?.fractionQtyAvailable
-                  ? `${formatNumber(sellOrderData.fractionQtyAvailable)} Units Available ( ${
-                      getPercentClaimed(sellOrderData) + '%'
-                    }
-              )`
-                  : 'No Units Available'}
-              </Typography>
-              <Box sx={{ margin: '20px 0' }}>
-                {sellOrderData && !!buyLimit && (
-                  <Box>
-                    <Typography>Order Summary</Typography>
-                    <Slider
-                      defaultValue={0}
-                      value={sliderValue}
-                      max={buyLimit}
-                      step={1}
-                      valueLabelDisplay="auto"
-                      onChange={handleSliderChange}
-                      marks={marks}
-                    />
-                    <Box sx={{ display: 'flex', marginTop: '10px' }}>
-                      <Typography>{formatNumber(sliderValue)} units</Typography>
-                      <Typography sx={{ marginLeft: 'auto' }}>
-                        {'$' + formatNumber(totalPrice)}
-                      </Typography>
-                    </Box>
-
-                    <Button
-                      onClick={handleOpenBuyModal}
-                      disabled={disableBuyBTN}
-                      variant="contained"
-                    >
-                      {`+ ${sliderValue} units`}
-                    </Button>
-                    <Button variant="contained">{`Sell Now`}</Button>
-                    <Box display="flex" justifyContent="center" margin="30px 0 0 0">
-                      <Typography textAlign="center" textTransform="uppercase">
-                        Buy soon to make sure they’re not sold while you shop
-                      </Typography>
-                    </Box>
-                  </Box>
-                )}
-              </Box>
-            </Box>
-          </Drawer>
-        </DialogContent>
-        {sellOrderData && (
-          <BuyModal
-            isOpen={buyModalOpen}
-            onClose={handleCloseBuyModal}
-            sellOrder={sellOrderData}
-            totalFractions={sliderValue}
-            totalPrice={totalPrice}
-            updateAsset={updateAsset}
-          />
-        )}
-      </Box>
-    );
-  }
   return (
     <Box>
       <DialogContent>
@@ -318,26 +177,30 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                   </Typography>
                 </Box>
               </AssetHeaderContainer>
-              <div>
-                <LinearProgress
-                  variant="determinate"
-                  value={100 - getPercentClaimed(sellOrderData)}
-                  sx={{
-                    height: 8,
-                    width: '100%',
-                    borderRadius: 2,
-                    backgroundColor: '#E5E7EB',
-                  }}
-                />
-                <FlexTextWrapper>
-                  <Typography variant="body2">
-                    {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
-                  </Typography>
-                  <Typography variant="body2">
-                    {formatNumber(sellOrderData?.fractionQtyAvailable ?? 0)} units left
-                  </Typography>
-                </FlexTextWrapper>
-              </div>
+              {(asset.isOnUserPortfolio === false || asset.isOnUserPortfolio === undefined) && (
+                <div>
+                  <LinearProgress
+                    variant="determinate"
+                    value={100 - getPercentClaimed(sellOrderData)}
+                    sx={{
+                      height: 8,
+                      width: '100%',
+                      borderRadius: 2,
+                      backgroundColor: '#E5E7EB',
+                    }}
+                  />
+                  <FlexTextWrapper>
+                    <Typography variant="body2">
+                      {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
+                    </Typography>
+                    <Typography variant="body2">
+                      {sellOrderData?.fractionQtyAvailable &&
+                        formatNumber(sellOrderData.fractionQtyAvailable)}
+                      units left
+                    </Typography>
+                  </FlexTextWrapper>
+                </div>
+              )}
               {sellOrderData?.type === 'drop' && sellOrderData?.userFractionLimitEndTime !== null && (
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
@@ -363,7 +226,27 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 />
               )}
               <div>
-                {sellOrderData && !!buyLimit && (
+                {(asset.isOnUserPortfolio === false || asset.isOnUserPortfolio === undefined) &&
+                  sellOrderData &&
+                  !!buyLimit && (
+                    <div>
+                      <Typography>Order Summary</Typography>
+                      <FlexTextWrapper>
+                        <Typography>{formatNumber(sliderValue)} units</Typography>
+                        <Typography>{'$' + formatNumber(totalPrice)}</Typography>
+                      </FlexTextWrapper>
+
+                      <Button
+                        onClick={handleOpenBuyModal}
+                        disabled={disableBuyBTN}
+                        variant="contained"
+                        fullWidth
+                      >
+                        Buy Now
+                      </Button>
+                    </div>
+                  )}
+                {asset.isOnUserPortfolio === true && sellOrderData && !!buyLimit && (
                   <div>
                     <Typography>Order Summary</Typography>
                     <FlexTextWrapper>
@@ -382,24 +265,26 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                   </div>
                 )}
               </div>
-              <div>
-                <Typography>Card details</Typography>
-                <FlexTextWrapper>
-                  <Typography>Date minted</Typography>
-                  <Typography>Oct 1 2022</Typography>
-                </FlexTextWrapper>
-                <Divider />
-                <FlexTextWrapper>
-                  <Typography>Number of Cards of same grade in PWCCNFT</Typography>
-                  <Typography>#</Typography>
-                </FlexTextWrapper>
-                <Divider />
-                <FlexTextWrapper>
-                  <Typography>Number of people who co-own this card</Typography>
-                  <Typography>#</Typography>
-                </FlexTextWrapper>
-                <Divider />
-              </div>
+              {(asset.isOnUserPortfolio === false || asset.isOnUserPortfolio === undefined) && (
+                <div>
+                  <Typography>Card details</Typography>
+                  <FlexTextWrapper>
+                    <Typography>Date minted</Typography>
+                    <Typography>Oct 1 2022</Typography>
+                  </FlexTextWrapper>
+                  <Divider />
+                  <FlexTextWrapper>
+                    <Typography>Number of Cards of same grade in PWCCNFT</Typography>
+                    <Typography>#</Typography>
+                  </FlexTextWrapper>
+                  <Divider />
+                  <FlexTextWrapper>
+                    <Typography>Number of people who co-own this card</Typography>
+                    <Typography>#</Typography>
+                  </FlexTextWrapper>
+                  <Divider />
+                </div>
+              )}
             </AssetContainer>
           </Box>
         </Drawer>

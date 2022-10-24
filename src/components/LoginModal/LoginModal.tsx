@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { Modal, ModalCard, Form, Label } from './LoginModal.styles';
 
-export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismiss: boolean }) => {
+export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismiss?: boolean }) => {
   const [emailState, setEmailState] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [buttonState, setButtonState] = useState(false);

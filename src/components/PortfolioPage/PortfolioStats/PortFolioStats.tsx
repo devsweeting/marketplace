@@ -1,52 +1,20 @@
 import { formatNumber } from '@/helpers/formatNumber';
-import { Box, Grid, Typography, useTheme, Skeleton } from '@mui/material';
+import { Box, useTheme, Skeleton } from '@mui/material';
 import React from 'react';
 import type { IPortfolioData } from '@/pages/account';
+import { GridContainer, StatTitle, StatValue } from './PortfolioStats.styles';
 
 export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) => {
   const theme = useTheme();
   return (
-    <Grid
-      sx={{
-        display: 'flex',
-        width: '100%',
-        padding: '24px',
-        margin: '56px auto',
-        [theme.breakpoints.down('md')]: {
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          margin: '23px auto',
-        },
-      }}
-    >
+    <GridContainer>
       <Box
         sx={{
           marginRight: '40px',
         }}
       >
-        <Typography
-          variant="lg"
-          component="h3"
-          style={{
-            fontSize: '16px',
-            lineHeight: '16px',
-            fontWeight: '600',
-            textTransform: 'uppercase',
-          }}
-        >
-          Portfolio Value
-        </Typography>
-        <Typography
-          variant="xl"
-          component="p"
-          style={{
-            fontSize: '3.75rem',
-            fontWeight: '600',
-            lineHeight: '60px',
-            fontStyle: 'normal',
-          }}
-        >
+        <StatTitle variant="lg">Portfolio Value</StatTitle>
+        <StatValue variant="xl">
           {portfolio &&
           Object.keys(portfolio).length &&
           Object.keys(portfolio).includes('totalValueInCents') ? (
@@ -56,7 +24,7 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
           ) : (
             <Skeleton variant="text" sx={{ fontSize: '3.75rem', width: '100%' }} />
           )}
-        </Typography>
+        </StatValue>
       </Box>
 
       <Box
@@ -68,30 +36,8 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
           },
         }}
       >
-        <Typography
-          variant="lg"
-          component="h3"
-          style={{
-            fontSize: '16px',
-            lineHeight: '16px',
-            fontWeight: '600',
-            textTransform: 'uppercase',
-          }}
-        >
-          Cash Balance
-        </Typography>
-        <Typography
-          variant="xl"
-          component="p"
-          style={{
-            fontSize: '3.75rem',
-            fontWeight: '600',
-            lineHeight: '60px',
-            fontStyle: 'normal',
-          }}
-        >
-          $XXXX
-        </Typography>
+        <StatTitle variant="lg">Cash Balance</StatTitle>
+        <StatValue variant="xl">$XXXX</StatValue>
       </Box>
 
       <Box
@@ -103,35 +49,15 @@ export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) =>
           },
         }}
       >
-        <Typography
-          variant="lg"
-          component="h3"
-          style={{
-            fontSize: '16px',
-            lineHeight: '16px',
-            fontWeight: '600',
-            textTransform: 'uppercase',
-          }}
-        >
-          Total Units
-        </Typography>
-        <Typography
-          variant="xl"
-          component="p"
-          style={{
-            fontSize: '3.75rem',
-            fontWeight: '600',
-            lineHeight: '60px',
-            fontStyle: 'normal',
-          }}
-        >
+        <StatTitle variant="lg">Total Units</StatTitle>
+        <StatValue variant="xl">
           {portfolio && Object.keys(portfolio).includes('totalUnits') ? (
             <>{`${portfolio.totalUnits}`}</>
           ) : (
             <Skeleton variant="text" sx={{ fontSize: '4.75rem', width: '100%' }} />
           )}
-        </Typography>
+        </StatValue>
       </Box>
-    </Grid>
+    </GridContainer>
   );
 };

@@ -91,34 +91,34 @@ export const PortfolioAssetCard = ({
   return (
     <AssetCard tabIndex={0} onKeyDown={handleKeyDownOnCard}>
       <Box sx={{ width: '100%', height: 'max-content', display: 'flex', position: 'relative' }}>
+        {assetData.category === 'watchlist' && (
+          <>
+            <StarWrapper>
+              <Watched
+                aria-label="remove from watchlist"
+                onClick={() => {
+                  handleRemoveFromWatchlist(assetData);
+                  closeDrawer();
+                  if (router.isReady) {
+                    void router.push(
+                      {
+                        pathname: router.pathname,
+                        query: router.query,
+                      },
+                      undefined,
+                      { shallow: true },
+                    );
+                  }
+                }}
+              >
+                <MuiStar />
+              </Watched>
+            </StarWrapper>
+          </>
+        )}
         <CardActionArea>
           <CardInnerContainer onClick={onClick}>
             <ImageWrapper>
-              {assetData.category === 'watchlist' && (
-                <>
-                  <StarWrapper>
-                    <Watched
-                      aria-label="remove from watchlist"
-                      onClick={() => {
-                        handleRemoveFromWatchlist(assetData);
-                        closeDrawer();
-                        if (router.isReady) {
-                          void router.push(
-                            {
-                              pathname: router.pathname,
-                              query: router.query,
-                            },
-                            undefined,
-                            { shallow: true },
-                          );
-                        }
-                      }}
-                    >
-                      <MuiStar />
-                    </Watched>
-                  </StarWrapper>
-                </>
-              )}
               {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
                 <Img
                   placeholder="blur"

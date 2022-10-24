@@ -6,7 +6,7 @@ import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
@@ -78,6 +78,7 @@ const portfolioReducer = (state: IPortfolioDataState, action: PortfolioListActio
 };
 
 const PortfolioPage: NextPage = () => {
+  const theme = useTheme();
   const user = useUser();
   const router = useRouter();
   const {
@@ -118,6 +119,10 @@ const PortfolioPage: NextPage = () => {
           .catch((error) => {
             dispatch({ type: 'error', error });
           });
+        break;
+      }
+      case 'transactions': {
+        return dispatch({ type: 'success', payload: [] as unknown as IPortfolioData });
         break;
       }
       default: {
@@ -216,7 +221,20 @@ const PortfolioPage: NextPage = () => {
           activePortfolioCategory={activePortfolioCategory}
           OnClick={handleClosingDrawer}
         />
-        <Box sx={{ height: '30vw' }}>
+        <PortFolioStats portfolio={stats} />
+        <Box
+          display="flex"
+          height="15vh"
+          justifyContent="center"
+          alignItems="center"
+          margin="auto"
+          sx={{
+            padding: '150px',
+            [theme.breakpoints.down('md')]: {
+              padding: '100px 0 138px 0',
+            },
+          }}
+        >
           <Loader />;
         </Box>
       </Grid>
@@ -262,9 +280,14 @@ const PortfolioPage: NextPage = () => {
           justifyContent="center"
           alignItems="center"
           margin="auto"
-          padding="150px"
+          sx={{
+            padding: '150px',
+            [theme.breakpoints.down('md')]: {
+              padding: '100px 0 138px 0',
+            },
+          }}
         >
-          <Typography variant="xl3"> Nothing on Watchlist</Typography>
+          <Typography variant="xl3"> Nothing on {activePortfolioCategory}</Typography>
         </Box>
       </>
     );
