@@ -4,7 +4,9 @@ export const Drawer = styled(MuiDrawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
     maxWidth: '600px',
     marginTop: '80px',
+    paddingBottom: '80px',
     backgroundColor: theme.palette.grey[50],
+    overflowY: 'scroll',
     [theme.breakpoints.down('md')]: {
       flex: 1,
     },
