@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { mockPortfolioData } from '@/__mocks__/mockApiData';
-import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortfolioStats';
 import { themeJump } from '@/styles/themeJump';
 import type { IPortfolioData } from '@/pages/account';
+// eslint-disable-next-line import/no-unresolved
+import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 
 const MockPortfolioStats: React.FC<{
   portfolio: IPortfolioData;
