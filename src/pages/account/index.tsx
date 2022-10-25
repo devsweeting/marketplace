@@ -4,7 +4,6 @@ import type { NextPage } from 'next/types';
 import { getPortfolioAssets, getPortfolioWatchlistAssets } from '@/api/endpoints/portfolio';
 import React, { useEffect, useReducer, useState } from 'react';
 import type { IAsset, IAttribute, IMedia, ISellOrder } from '@/types/assetTypes';
-import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortfolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
@@ -14,6 +13,8 @@ import { getAssetById } from '@/api/endpoints/assets';
 import { useUser } from '@/helpers/hooks/useUser';
 import { PageContainer } from '@/styles/AccountPage.styles';
 import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderTabs/PortfolioHeaderTabs';
+// eslint-disable-next-line import/no-unresolved
+import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 export type IPorfolioAsset = {
   isOnUserPortfolio?: boolean | undefined;
   userAsset?: {
