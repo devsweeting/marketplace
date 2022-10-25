@@ -195,9 +195,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                     {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
                   </Typography>
                   <Typography variant="body2">
-                    {sellOrderData?.fractionQtyAvailable &&
-                      formatNumber(sellOrderData.fractionQtyAvailable)}
-                    units left
+                    {formatNumber(sellOrderData?.fractionQtyAvailable ?? 0)} units left
                   </Typography>
                 </FlexTextWrapper>
               </div>
