@@ -56,7 +56,6 @@ export const PortfolioAssetCard = ({
         return;
       });
   };
-
   const theme = useTheme();
   const classes = {
     labelTypography: {},

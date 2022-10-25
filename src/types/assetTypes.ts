@@ -1,12 +1,12 @@
 export interface IAsset {
-  userAsset: {
+  isOnUserPortfolio?: boolean | undefined;
+  userAsset?: {
     assetId: string;
     id: string;
     quantityOwned: number;
   };
   data?: any;
   isOnWatchlist?: boolean;
-  isOnUserPortfolio?: boolean;
   id: string;
   refId: string;
   name: string;
@@ -28,7 +28,7 @@ export interface IMarket {
 export interface IAttribute {
   display: string | null;
   trait: string;
-  value: string | string[] | null;
+  value: string | string[] | number | null;
 }
 
 export interface IMedia {

@@ -1,4 +1,4 @@
-import { Drawer as MuiDrawer, IconButton, styled } from '@mui/material';
+import { Button, Drawer as MuiDrawer, IconButton, styled } from '@mui/material';
 
 export const Drawer = styled(MuiDrawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
@@ -45,3 +45,14 @@ export const FlexTextWrapper = styled('div')({
   justifyContent: 'space-between',
   padding: '0.5rem 0',
 });
+
+export const TradePanelButton = styled(Button)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '12px 32px',
+  height: '52px',
+  border: `1px solid ${theme.palette.grey[300]}`,
+  margin: '8px 0',
+}));

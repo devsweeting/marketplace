@@ -22,6 +22,7 @@ import {
   AssetContainer,
   AssetHeaderContainer,
   FlexTextWrapper,
+  TradePanelButton,
 } from './TradePanel.styles';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
@@ -246,45 +247,55 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                       </Button>
                     </div>
                   )}
-                {asset.isOnUserPortfolio === true && sellOrderData && !!buyLimit && (
+                {asset.isOnUserPortfolio === true && sellOrderData && (
                   <div>
-                    <Typography>Order Summary</Typography>
-                    <FlexTextWrapper>
-                      <Typography>{formatNumber(sliderValue)} units</Typography>
-                      <Typography>{'$' + formatNumber(totalPrice)}</Typography>
-                    </FlexTextWrapper>
+                    {buyLimit ? (
+                      <>
+                        <Typography>Order Summary</Typography>
+                        <FlexTextWrapper>
+                          <Typography>{formatNumber(sliderValue)} units</Typography>
+                          <Typography>{'$' + formatNumber(totalPrice)}</Typography>
+                        </FlexTextWrapper>
+                      </>
+                    ) : (
+                      ''
+                    )}
 
-                    <Button
+                    <TradePanelButton
                       onClick={handleOpenBuyModal}
-                      disabled={disableBuyBTN}
+                      disabled={buyLimit ? disableBuyBTN : true}
                       variant="contained"
                       fullWidth
                     >
-                      Buy Now
-                    </Button>
+                      {buyLimit
+                        ? `+ ${formatNumber(sliderValue)} units`
+                        : `No units available to buy`}
+                    </TradePanelButton>
+                    <TradePanelButton variant="contained" fullWidth>
+                      Sell now
+                    </TradePanelButton>
                   </div>
                 )}
               </div>
-              {(asset.isOnUserPortfolio === false || asset.isOnUserPortfolio === undefined) && (
-                <div>
-                  <Typography>Card details</Typography>
-                  <FlexTextWrapper>
-                    <Typography>Date minted</Typography>
-                    <Typography>Oct 1 2022</Typography>
-                  </FlexTextWrapper>
-                  <Divider />
-                  <FlexTextWrapper>
-                    <Typography>Number of Cards of same grade in PWCCNFT</Typography>
-                    <Typography>#</Typography>
-                  </FlexTextWrapper>
-                  <Divider />
-                  <FlexTextWrapper>
-                    <Typography>Number of people who co-own this card</Typography>
-                    <Typography>#</Typography>
-                  </FlexTextWrapper>
-                  <Divider />
-                </div>
-              )}
+
+              <div>
+                <Typography>Card details</Typography>
+                <FlexTextWrapper>
+                  <Typography>Date minted</Typography>
+                  <Typography>Oct 1 2022</Typography>
+                </FlexTextWrapper>
+                <Divider />
+                <FlexTextWrapper>
+                  <Typography>Number of Cards of same grade in PWCCNFT</Typography>
+                  <Typography>#</Typography>
+                </FlexTextWrapper>
+                <Divider />
+                <FlexTextWrapper>
+                  <Typography>Number of people who co-own this card</Typography>
+                  <Typography>#</Typography>
+                </FlexTextWrapper>
+                <Divider />
+              </div>
             </AssetContainer>
           </Box>
         </Drawer>

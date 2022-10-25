@@ -34,29 +34,35 @@ export const PortfolioHeaderTabs = ({
                 key={index}
                 href={{ pathname: '/account', query: { tab: header.toLocaleLowerCase() } }}
               >
-                <Box
-                  sx={{ padding: '24px 16px', '&: hover': { cursor: 'pointer' } }}
+                <a
+                  role={`link`}
                   style={{
+                    textDecoration: 'none',
                     borderBottom:
                       activePortfolioCategory === header.toLocaleLowerCase()
                         ? '2px solid black'
                         : '2px solid transparent',
                   }}
-                  onClick={() => {
-                    OnClick();
-                  }}
+                  id={`${header.toLocaleLowerCase()}-link`}
                 >
-                  <TabHeader
-                    style={{
-                      color:
-                        activePortfolioCategory === header.toLocaleLowerCase()
-                          ? 'black'
-                          : '#6B7280',
+                  <Box
+                    sx={{ padding: '24px 16px', '&: hover': { cursor: 'pointer' } }}
+                    onClick={() => {
+                      OnClick();
                     }}
                   >
-                    {header}
-                  </TabHeader>
-                </Box>
+                    <TabHeader
+                      style={{
+                        color:
+                          activePortfolioCategory === header.toLocaleLowerCase()
+                            ? 'black'
+                            : '#6B7280',
+                      }}
+                    >
+                      {header}
+                    </TabHeader>
+                  </Box>
+                </a>
               </Link>
             ))}
           </Box>
