@@ -4,7 +4,7 @@ import React from 'react';
 import type { IPortfolioData } from '@/pages/account';
 import { GridContainer, StatTitle, StatValue } from './PortfolioStats.styles';
 
-export const PortFolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) => {
+export const PortfolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) => {
   const theme = useTheme();
   return (
     <GridContainer>

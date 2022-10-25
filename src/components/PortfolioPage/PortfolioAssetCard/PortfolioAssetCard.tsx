@@ -95,6 +95,7 @@ export const PortfolioAssetCard = ({
             <StarWrapper>
               <Watched
                 aria-label="remove from watchlist"
+                name="remove from watchlist"
                 onClick={() => {
                   handleRemoveFromWatchlist(assetData);
                   closeDrawer();

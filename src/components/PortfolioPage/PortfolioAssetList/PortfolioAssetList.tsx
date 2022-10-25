@@ -26,7 +26,7 @@ export const PortfolioAssetList = ({
                   key={asset?.id}
                   assetData={asset}
                   onClick={() => {
-                    handleDrawer(asset);
+                    handleDrawer(asset as IAsset);
                   }}
                   closeDrawer={closeDrawer}
                 />

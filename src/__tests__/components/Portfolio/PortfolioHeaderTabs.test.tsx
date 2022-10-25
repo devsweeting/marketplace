@@ -25,7 +25,7 @@ const MockPortfolioHeaderTabs: React.FC<{
   );
 };
 
-describe('TradePanel', () => {
+describe('Portfolio Header Tabs', () => {
   jest.mock('react', () => ({
     ...jest.requireActual('react'),
     useState: jest.fn(),

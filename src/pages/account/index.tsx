@@ -3,8 +3,8 @@ import { Loader } from '@/components/Loader';
 import type { NextPage } from 'next/types';
 import { getPortfolioAssets, getPortfolioWatchlistAssets } from '@/api/endpoints/portfolio';
 import React, { useEffect, useReducer, useState } from 'react';
-import type { IAsset } from '@/types/assetTypes';
-import { PortFolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
+import type { IAsset, IAttribute, IMedia, ISellOrder } from '@/types/assetTypes';
+import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortfolioStats';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
@@ -14,10 +14,26 @@ import { getAssetById } from '@/api/endpoints/assets';
 import { useUser } from '@/helpers/hooks/useUser';
 import { PageContainer } from '@/styles/AccountPage.styles';
 import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderTabs/PortfolioHeaderTabs';
-export type IPorfolioAsset = IAsset & {
-  fractionPriceCents: number | undefined;
-  fractionQty: number | undefined;
-  isOnUserPortfolio: boolean;
+export type IPorfolioAsset = {
+  isOnUserPortfolio?: boolean | undefined;
+  userAsset?: {
+    assetId: string;
+    id: string;
+    quantityOwned: number;
+  };
+  data?: any;
+  isOnWatchlist?: boolean;
+  id: string;
+  refId: string;
+  name: string;
+  media: IMedia[];
+  sellOrders?: ISellOrder[];
+  slug: string;
+  description: string;
+  updatedAt: string;
+  createdAt: string;
+  attributes: IAttribute[];
+  partner: string;
 };
 interface IPurchaseHistoryItem {
   length: number;
@@ -35,12 +51,11 @@ interface IPurchaseHistoryItem {
   userId?: string;
 }
 export interface IPortfolioData {
-  length: number;
+  length?: number;
   items?: any;
   totalValueInCents: number;
   totalUnits: number;
   purchaseHistory?: IPurchaseHistoryItem[] | [];
-  sellOrderHistory: [];
 }
 
 interface IPortfolioDataState {
@@ -221,7 +236,7 @@ const PortfolioPage: NextPage = () => {
           activePortfolioCategory={activePortfolioCategory}
           OnClick={handleClosingDrawer}
         />
-        <PortFolioStats portfolio={stats} />
+        <PortfolioStats portfolio={stats} />
         <Box
           display="flex"
           height="15vh"
@@ -252,7 +267,7 @@ const PortfolioPage: NextPage = () => {
             OnClick={handleDrawer}
           />
           <Box>
-            <PortFolioStats portfolio={stats} />
+            <PortfolioStats portfolio={stats} />
             <button
               onClick={() => {
                 void handlePortfolioDataFetch(activePortfolioCategory);
@@ -273,7 +288,7 @@ const PortfolioPage: NextPage = () => {
           activePortfolioCategory={activePortfolioCategory}
           OnClick={handleClosingDrawer}
         />
-        <PortFolioStats portfolio={stats} />
+        <PortfolioStats portfolio={stats} />
         <Box
           display="flex"
           height="15vh"
@@ -302,7 +317,7 @@ const PortfolioPage: NextPage = () => {
           OnClick={handleClosingDrawer}
         />
         <Box>
-          <PortFolioStats portfolio={stats} />
+          <PortfolioStats portfolio={stats} />
           <PortfolioAssetList
             portfolioAssetsList={portfolioAssetsList}
             handleDrawer={handleDrawer}
