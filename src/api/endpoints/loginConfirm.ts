@@ -17,7 +17,6 @@ export const loginConfirm = async ({
   if (!parsedToken) {
     return;
   }
-
   const response = await apiClient.post('/users/login/confirm', {
     body: {
       token: parsedToken,

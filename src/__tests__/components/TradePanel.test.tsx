@@ -28,6 +28,92 @@ const mockUser = {
   exp: new Date('3000-01-01T00:10:00.000Z'),
 };
 
+const userPortfolioAsset = {
+  id: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+  name: 'deleniti officiis amet soluta',
+  description: 'Vitae alias ex accusamus quibusdam sit officiis quod.',
+  media: [
+    {
+      id: '18b4456d-0592-4722-a30f-63a678ca7d89',
+      title: 'quae ducimus modi unde',
+      description: 'aliquam omnis exercitationem qui',
+      sourceUrl: 'https://loremflickr.com/640/480',
+      sortOrder: 1,
+      assetId: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+      fileId: 'd7bed264-9e69-4b43-80f9-387dcdcf25ac',
+      file: 'http://localhost:4566/test-bucket/assets/acecd96f-e3f7-44a1-9f1e-28b771c1f203/b0b43dba-f96f-466b-8b49-76f169e110cb',
+      absoluteUrl:
+        'http://localhost:4566/test-bucket/assets/acecd96f-e3f7-44a1-9f1e-28b771c1f203/b0b43dba-f96f-466b-8b49-76f169e110cb',
+    },
+  ],
+  refId: '46205lr5',
+  slug: 'deleniti-officiis-amet-soluta',
+  createdAt: '2022-10-20T14:41:41.829Z',
+  updatedAt: '2022-10-20T14:41:41.829Z',
+  attributes: [
+    {
+      trait: 'brand',
+      value: 'Joe Montana',
+      display: null,
+    },
+    {
+      trait: 'card number',
+      value: '#724',
+      display: null,
+    },
+    {
+      trait: 'category',
+      value: 'Baseball',
+      display: null,
+    },
+    {
+      trait: 'grade',
+      value: 6,
+      display: null,
+    },
+    {
+      trait: 'grading service',
+      value: 'BGS',
+      display: null,
+    },
+    {
+      trait: 'producer',
+      value: 'Topps',
+      display: null,
+    },
+    {
+      trait: 'year',
+      value: 1990,
+      display: null,
+    },
+  ],
+  partner: 'aVEVLpXpo4UgZDVgJVQEuLZkabz',
+  sellOrders: [
+    {
+      id: '91c2a996-e437-4f03-a324-10000a14686c',
+      assetId: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+      userId: 'feeb7cb9-460d-469e-b1fa-2db3c3539d4c',
+      partnerId: '48496929-ea32-40c0-9a9b-ac9ccc6fa876',
+      fractionQty: 57177,
+      fractionQtyAvailable: 50000,
+      fractionPriceCents: 8700,
+      expireTime: 1678750064481,
+      startTime: 1652276928626,
+      deletedTime: 0,
+      type: 'standard',
+      userFractionLimit: null,
+      userFractionLimitEndTime: null,
+    },
+  ],
+  userAsset: {
+    id: '836a8d24-27fe-4947-a63d-3d5931c41438',
+    assetId: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+    quantityOwned: 7177,
+  },
+  category: 'overview',
+  isOnUserPortfolio: true,
+};
+
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
@@ -101,6 +187,35 @@ describe('TradePanel', () => {
     await fireEvent.mouseDown(slider, { clientX: 1000, clientY: 1000 });
     const totalPrice = await screen.findByText(`$0.32`);
     expect(totalPrice).toBeInTheDocument();
+  });
+
+  test('should have sell now on button if on User portfolio', async () => {
+    render(<MockTradePanel asset={userPortfolioAsset} />);
+    const sellBtn = await screen.findByRole('button', { name: /sell now/i });
+    expect(sellBtn).toBeInTheDocument();
+  });
+
+  test('should change value on button if on User portfolio', async () => {
+    render(<MockTradePanel asset={userPortfolioAsset} />);
+    const slider = await screen.findByRole('slider');
+    const buyBtn = await screen.findByRole('button', { name: `+ 0 units` });
+    expect(buyBtn).toBeDisabled;
+    // mock the getBoundingClientRect
+    slider.getBoundingClientRect = jest.fn(() => {
+      return {
+        bottom: 286.22918701171875,
+        height: 28,
+        left: 19.572917938232422,
+        right: 583.0937919616699,
+        top: 258.22918701171875,
+        width: 563.5208740234375,
+        x: 19.572917938232422,
+        y: 258.22918701171875,
+      };
+    }) as unknown as () => DOMRect;
+    await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
+    expect(buyBtn).not.toBeDisabled();
+    expect(buyBtn).not.toContain(`+ 0 units`);
   });
 
   test('should allow user to buy share', async () => {

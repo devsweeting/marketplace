@@ -1,8 +1,8 @@
 export const mockAssetResponse = {
   meta: {
-    totalItems: 2,
-    itemCount: 2,
-    itemsPerPage: 2,
+    totalItems: 3,
+    itemCount: 3,
+    itemsPerPage: 3,
     totalPages: 1,
     currentPage: 1,
   },
@@ -112,6 +112,7 @@ export const mockAssetResponse = {
           value: '1990',
           display: 'number',
         },
+        { display: null, trait: 'brand', value: 'Tiger Woods' },
       ],
       partner: 'lNap6jXLVlfmVOOeqAP0FXw1VyW',
       sellOrders: [
@@ -215,6 +216,91 @@ export const mockAssetResponse = {
       attributes: [],
       partner: 'AzK8MZbM69H9ZzkYX7xptQ6YRk4',
       sellOrders: [],
+    },
+    {
+      id: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+      name: 'deleniti officiis amet soluta',
+      description: 'Vitae alias ex accusamus quibusdam sit officiis quod.',
+      media: [
+        {
+          id: '18b4456d-0592-4722-a30f-63a678ca7d89',
+          title: 'quae ducimus modi unde',
+          description: 'aliquam omnis exercitationem qui',
+          sourceUrl: 'https://loremflickr.com/640/480',
+          sortOrder: 1,
+          assetId: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+          fileId: 'd7bed264-9e69-4b43-80f9-387dcdcf25ac',
+          file: 'http://localhost:4566/test-bucket/assets/acecd96f-e3f7-44a1-9f1e-28b771c1f203/b0b43dba-f96f-466b-8b49-76f169e110cb',
+          absoluteUrl:
+            'http://localhost:4566/test-bucket/assets/acecd96f-e3f7-44a1-9f1e-28b771c1f203/b0b43dba-f96f-466b-8b49-76f169e110cb',
+        },
+      ],
+      refId: '46205lr5',
+      slug: 'deleniti-officiis-amet-soluta',
+      createdAt: '2022-10-20T14:41:41.829Z',
+      updatedAt: '2022-10-20T14:41:41.829Z',
+      attributes: [
+        {
+          trait: 'brand',
+          value: 'Joe Montana',
+          display: null,
+        },
+        {
+          trait: 'card number',
+          value: '#724',
+          display: null,
+        },
+        {
+          trait: 'category',
+          value: 'Baseball',
+          display: null,
+        },
+        {
+          trait: 'grade',
+          value: 6,
+          display: null,
+        },
+        {
+          trait: 'grading service',
+          value: 'BGS',
+          display: null,
+        },
+        {
+          trait: 'producer',
+          value: 'Topps',
+          display: null,
+        },
+        {
+          trait: 'year',
+          value: 1990,
+          display: null,
+        },
+      ],
+      partner: 'aVEVLpXpo4UgZDVgJVQEuLZkabz',
+      sellOrders: [
+        {
+          id: '91c2a996-e437-4f03-a324-10000a14686c',
+          assetId: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+          userId: 'feeb7cb9-460d-469e-b1fa-2db3c3539d4c',
+          partnerId: '48496929-ea32-40c0-9a9b-ac9ccc6fa876',
+          fractionQty: 57177,
+          fractionQtyAvailable: 0,
+          fractionPriceCents: 8700,
+          expireTime: 1678750064481,
+          startTime: 1652276928626,
+          deletedTime: 0,
+          type: 'standard',
+          userFractionLimit: null,
+          userFractionLimitEndTime: null,
+        },
+      ],
+      userAsset: {
+        id: '836a8d24-27fe-4947-a63d-3d5931c41438',
+        assetId: 'acecd96f-e3f7-44a1-9f1e-28b771c1f203',
+        quantityOwned: 57177,
+      },
+      category: 'overview',
+      isOnUserPortfolio: true,
     },
   ],
 };

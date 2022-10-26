@@ -22,12 +22,12 @@ import {
   AssetContainer,
   AssetHeaderContainer,
   FlexTextWrapper,
+  TradePanelButton,
 } from './TradePanel.styles';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
   const { setIsModalOpen } = useModal();
-
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -133,7 +133,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sliderValue, disableBuyBTN, totalPrice, assetId, asset]);
-
   return (
     <Box>
       <DialogContent>
@@ -179,26 +178,30 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                   </Typography>
                 </Box>
               </AssetHeaderContainer>
-              <div>
-                <LinearProgress
-                  variant="determinate"
-                  value={100 - getPercentClaimed(sellOrderData)}
-                  sx={{
-                    height: 8,
-                    width: '100%',
-                    borderRadius: 2,
-                    backgroundColor: '#E5E7EB',
-                  }}
-                />
-                <FlexTextWrapper>
-                  <Typography variant="body2">
-                    {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
-                  </Typography>
-                  <Typography variant="body2">
-                    {formatNumber(sellOrderData?.fractionQtyAvailable ?? 0)} units left
-                  </Typography>
-                </FlexTextWrapper>
-              </div>
+              {(asset.isOnUserPortfolio === false || asset.isOnUserPortfolio === undefined) && (
+                <div>
+                  <LinearProgress
+                    variant="determinate"
+                    value={100 - getPercentClaimed(sellOrderData)}
+                    sx={{
+                      height: 8,
+                      width: '100%',
+                      borderRadius: 2,
+                      backgroundColor: '#E5E7EB',
+                    }}
+                  />
+                  <FlexTextWrapper>
+                    <Typography variant="body2">
+                      {(100 - getPercentClaimed(sellOrderData)).toFixed(2)}% Claimed
+                    </Typography>
+                    <Typography variant="body2">
+                      {sellOrderData?.fractionQtyAvailable &&
+                        formatNumber(sellOrderData.fractionQtyAvailable)}
+                      units left
+                    </Typography>
+                  </FlexTextWrapper>
+                </div>
+              )}
               {sellOrderData?.type === 'drop' && sellOrderData?.userFractionLimitEndTime !== null && (
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
@@ -224,25 +227,57 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 />
               )}
               <div>
-                {sellOrderData && !!buyLimit && (
-                  <div>
-                    <Typography>Order Summary</Typography>
-                    <FlexTextWrapper>
-                      <Typography>{formatNumber(sliderValue)} units</Typography>
-                      <Typography>{'$' + formatNumber(totalPrice)}</Typography>
-                    </FlexTextWrapper>
+                {(asset.isOnUserPortfolio === false || asset.isOnUserPortfolio === undefined) &&
+                  sellOrderData &&
+                  !!buyLimit && (
+                    <div>
+                      <Typography>Order Summary</Typography>
+                      <FlexTextWrapper>
+                        <Typography>{formatNumber(sliderValue)} units</Typography>
+                        <Typography>{'$' + formatNumber(totalPrice)}</Typography>
+                      </FlexTextWrapper>
 
-                    <Button
+                      <Button
+                        onClick={handleOpenBuyModal}
+                        disabled={disableBuyBTN}
+                        variant="contained"
+                        fullWidth
+                      >
+                        Buy Now
+                      </Button>
+                    </div>
+                  )}
+                {asset.isOnUserPortfolio === true && sellOrderData && (
+                  <div>
+                    {buyLimit ? (
+                      <>
+                        <Typography>Order Summary</Typography>
+                        <FlexTextWrapper>
+                          <Typography>{formatNumber(sliderValue)} units</Typography>
+                          <Typography>{'$' + formatNumber(totalPrice)}</Typography>
+                        </FlexTextWrapper>
+                      </>
+                    ) : (
+                      ''
+                    )}
+
+                    <TradePanelButton
                       onClick={handleOpenBuyModal}
-                      disabled={disableBuyBTN}
+                      disabled={buyLimit ? disableBuyBTN : true}
                       variant="contained"
                       fullWidth
                     >
-                      Buy Now
-                    </Button>
+                      {buyLimit
+                        ? `+ ${formatNumber(sliderValue)} units`
+                        : `No units available to buy`}
+                    </TradePanelButton>
+                    <TradePanelButton variant="contained" fullWidth>
+                      Sell now
+                    </TradePanelButton>
                   </div>
                 )}
               </div>
+
               <div>
                 <Typography>Card details</Typography>
                 <FlexTextWrapper>

@@ -21,7 +21,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
 
   return (
     <Box>
-      <Box style={{ width: 'auto', height: 325, position: 'relative' }}>
+      <Box style={{ width: 'auto', height: 280, position: 'relative' }}>
         <Image
           placeholder="blur"
           blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}
@@ -31,7 +31,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
           objectFit={'contain'}
           alt={currentImage.title}
           style={{ textAlign: 'center', lineHeight: '325px' }}
-        ></Image>
+        />
       </Box>
       {images.length > 1 && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
