@@ -1,8 +1,7 @@
 import { Grid, Skeleton } from '@mui/material';
-import type { IPortfolioAsset } from '@/pages/account';
 import React from 'react';
 import { PortfolioAssetCard } from '../PortfolioAssetCard';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset, IPortfolioAsset } from '@/types/assetTypes';
 import { Container } from './PortfolioAssetList.styles';
 
 export const PortfolioAssetList = ({
