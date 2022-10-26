@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { OutlinedInput, Typography } from '@mui/material';
+import { Box, OutlinedInput, Typography, useTheme } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useModal } from '@/helpers/hooks/useModal';
 import { loginRequest } from '@/api/endpoints/loginRequest';
 import { StatusCodes } from 'http-status-codes';
+import { useRouter } from 'next/router';
 
 import { Modal, ModalCard, Form, Label } from './LoginModal.styles';
+import Link from 'next/link';
 
 export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismiss?: boolean }) => {
   const [emailState, setEmailState] = useState('');
@@ -13,6 +15,8 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
   const [buttonState, setButtonState] = useState(false);
   const { setIsModalOpen } = useModal();
   const modalBox = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const theme = useTheme();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmailState(event.target.value);
@@ -119,6 +123,33 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
             Login
           </Button>
         </Form>
+        {noDismiss ? (
+          <Box display="flex" justifyContent="space-between" marginTop="20px">
+            <Link href={''}>
+              <a
+                onClick={() => {
+                  router.back();
+                }}
+                style={{
+                  color: theme.palette.primary.main,
+                }}
+              >
+                Go back
+              </a>
+            </Link>
+            <Link href={'/explore'}>
+              <a
+                style={{
+                  color: theme.palette.primary.main,
+                }}
+              >
+                Explore
+              </a>
+            </Link>
+          </Box>
+        ) : (
+          ''
+        )}
       </ModalCard>
     </Modal>
   );

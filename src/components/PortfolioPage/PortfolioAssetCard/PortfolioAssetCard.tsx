@@ -35,11 +35,10 @@ export const PortfolioAssetCard = ({
 }) => {
   const router = useRouter();
   const details = parseAssetAttributes(assetData.attributes);
-  const fractionPriceCents = assetData.sellOrders
+  const fractionPriceCents = assetData?.sellOrders
     ? assetData.sellOrders[0].fractionPriceCents ?? 0
     : 0;
-
-  const quantityOwned = assetData.userAsset ? assetData.userAsset.quantityOwned ?? 0 : 0;
+  const quantityOwned = assetData?.userAsset?.quantityOwned ?? 0;
 
   const handleKeyDownOnCard = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {

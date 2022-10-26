@@ -3,7 +3,12 @@ import { Loader } from '@/components/Loader';
 import type { NextPage } from 'next/types';
 import { getPortfolioAssets, getPortfolioWatchlistAssets } from '@/api/endpoints/portfolio';
 import React, { useEffect, useReducer, useState } from 'react';
-import type { IAsset, IAttribute, IMedia, ISellOrder } from '@/types/assetTypes';
+import type {
+  IAsset,
+  IPortfolioData,
+  IPortfolioDataState,
+  PortfolioListAction,
+} from '@/types/assetTypes';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { LoginModal } from '@/components/LoginModal';
@@ -15,60 +20,6 @@ import { PageContainer } from '@/styles/AccountPage.styles';
 import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderTabs/PortfolioHeaderTabs';
 // eslint-disable-next-line import/no-unresolved
 import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
-export type IPorfolioAsset = {
-  isOnUserPortfolio?: boolean | undefined;
-  userAsset?: {
-    assetId: string;
-    id: string;
-    quantityOwned: number;
-  };
-  data?: any;
-  isOnWatchlist?: boolean;
-  id: string;
-  refId: string;
-  name: string;
-  media: IMedia[];
-  sellOrders?: ISellOrder[];
-  slug: string;
-  description: string;
-  updatedAt: string;
-  createdAt: string;
-  attributes: IAttribute[];
-  partner: string;
-};
-interface IPurchaseHistoryItem {
-  length: number;
-  asset: IPorfolioAsset;
-  assetId?: string;
-  createdAt?: string;
-  deletedAt?: string | null;
-  fractionPriceCents?: number;
-  fractionQty?: number;
-  id?: string;
-  isDelete?: boolean;
-  purchaseTotal?: number;
-  sellOrderId?: string;
-  updatedAt?: string;
-  userId?: string;
-}
-export interface IPortfolioData {
-  length?: number;
-  items?: any;
-  totalValueInCents: number;
-  totalUnits: number;
-  purchaseHistory?: IPurchaseHistoryItem[] | [];
-}
-
-interface IPortfolioDataState {
-  isLoading: boolean;
-  portfolio: IPortfolioData;
-  error: string;
-}
-
-type PortfolioListAction =
-  | { type: 'fetching' }
-  | { type: 'success'; payload: IPortfolioData }
-  | { type: 'error'; error: Error };
 
 const initialPortfolioListState: IPortfolioDataState = {
   isLoading: true,

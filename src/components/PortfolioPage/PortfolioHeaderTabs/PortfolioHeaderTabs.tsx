@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   PageTitle,
   PortfolioCard,
@@ -18,9 +18,6 @@ export const PortfolioHeaderTabs = ({
   tabs: string[];
   OnClick: () => void;
 }) => {
-  useEffect(() => {
-    //
-  }, [activePortfolioCategory, tabs]);
   return (
     <PortfolioContainer>
       <PortfolioCard>

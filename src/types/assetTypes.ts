@@ -19,6 +19,62 @@ export interface IAsset {
   attributes: IAttribute[];
   partner: string;
 }
+
+export type IPortfolioAsset = {
+  isOnUserPortfolio?: boolean | undefined;
+  userAsset?: {
+    assetId: string;
+    id: string;
+    quantityOwned: number;
+  };
+  data?: any;
+  isOnWatchlist?: boolean;
+  id: string;
+  refId: string;
+  name: string;
+  media: IMedia[];
+  sellOrders?: ISellOrder[];
+  slug: string;
+  description: string;
+  updatedAt: string;
+  createdAt: string;
+  attributes: IAttribute[];
+  partner: string;
+};
+interface IPurchaseHistoryItem {
+  length: number;
+  asset: IPortfolioAsset;
+  assetId?: string;
+  createdAt?: string;
+  deletedAt?: string | null;
+  fractionPriceCents?: number;
+  fractionQty?: number;
+  id?: string;
+  isDelete?: boolean;
+  purchaseTotal?: number;
+  sellOrderId?: string;
+  updatedAt?: string;
+  userId?: string;
+}
+export interface IPortfolioData {
+  length?: number;
+  items?: any;
+  totalValueInCents: number;
+  totalUnits: number;
+  purchaseHistory?: IPurchaseHistoryItem[] | [];
+}
+
+export interface IPortfolioDataState {
+  isLoading: boolean;
+  portfolio: IPortfolioData;
+  error: string;
+}
+
+export type PortfolioListAction =
+  | { type: 'fetching' }
+  | { type: 'success'; payload: IPortfolioData }
+  | { type: 'error'; error: Error };
+
 export interface IMarket {
   brand: string;
   filter: string;

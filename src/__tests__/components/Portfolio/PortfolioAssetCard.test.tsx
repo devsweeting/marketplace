@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material';
 import { portfolioAssetCardData, watchlistAssetCardData } from '@/__mocks__/mockApiData';
 import { PortfolioAssetCard } from '@/components/PortfolioPage/PortfolioAssetCard/PortfolioAssetCard';
 import { themeJump } from '@/styles/themeJump';
-import type { IPorfolioAsset } from '@/pages/account';
+import type { IPortfolioAsset } from '@/pages/account';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
@@ -30,7 +30,7 @@ const MockPortfolioAssetCard = ({
   assetData,
   user,
 }: {
-  assetData: IPorfolioAsset;
+  assetData: IPortfolioAsset;
   user: IUser | undefined;
 }) => {
   return withTestRouter(
