@@ -17,17 +17,18 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
 import { CustomRadio } from './PaymentMethods.styles';
+import type { CartItem } from '@/helpers/auth/CartContext';
+import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 
 export const PaymentMethods = ({
   setPage,
   page,
-  ref,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
   page: number;
-  ref: React.RefObject<HTMLDivElement>;
 }) => {
-  const { closeCart, cartItems } = useCart();
+  const { closeCart } = useCart();
+  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [isDismissed, setIsDismissed] = useState(false);
   const [selectedValue, setSelectedValue] = useState('b');
 
@@ -42,7 +43,7 @@ export const PaymentMethods = ({
     return null;
   }
   return (
-    <Box height="max-content" maxWidth="576px" width="100%" ref={ref}>
+    <Box height="max-content" maxWidth="576px" width="100%">
       <Box
         sx={{
           height: '80px',

@@ -21,14 +21,17 @@ import { queryBuilder } from '@/helpers/queryBuilder';
 import { FilterWrapper } from '@/components/FilterWrapper';
 import { AssetListFooter } from '@/styles/explorePage.styles';
 import { useUser } from '@/helpers/hooks/useUser';
+import type { CartItem } from '@/helpers/auth/CartContext';
 import { useCart } from '@/helpers/auth/CartContext';
+import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-  const { openCart, cartItems } = useCart();
+  const { openCart } = useCart();
+  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const user = useUser();
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
@@ -83,7 +86,7 @@ const ExplorePage: NextPage = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if (user !== undefined && cartItems.length > 0) {
+      if (!user && cartItems.length > 0) {
         openCart();
       }
     }

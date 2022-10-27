@@ -1,27 +1,15 @@
 import Box from '@mui/material/Box';
 import { alpha, Modal } from '@mui/material';
 import { Conditional } from './Conditional';
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useCart } from '@/helpers/auth/CartContext';
 
 export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
   const { closeCart } = useCart();
   const [page, setPage] = useState(0);
-  const [height, setHeight] = useState<number>(0);
-  const [modalScrollHeight, setModalScrollHeight] = useState<number>(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current != null && modalRef.current != null) {
-      setHeight(ref.current.clientHeight);
-      setModalScrollHeight(modalRef.current?.scrollHeight);
-    }
-  }, []);
-
-  useEffect(() => {
-    //
-  }, [page]);
+  const ref = useRef(null as null | HTMLDivElement);
+  const [height, setHeight] = useState(0);
+  const [scrollHeight, setScrollHeight] = useState(0);
 
   const style = {
     position: 'absolute' as const,
@@ -34,8 +22,15 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
     maxWidth: '1024px',
     bgcolor: 'background.paper',
     outline: 'none !important',
-    overflowY: modalScrollHeight < height ? 'scroll' : 'auto',
+    overflowY: scrollHeight < height ? 'scroll' : 'auto',
   };
+
+  useLayoutEffect(() => {
+    if (ref.current != null && ref.current.clientHeight && ref.current.scrollHeight) {
+      setHeight(ref.current?.clientHeight);
+      setScrollHeight(ref.current.scrollHeight);
+    }
+  }, []);
 
   return (
     <Modal
@@ -47,8 +42,8 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
         },
       }}
     >
-      <Box sx={style} ref={modalRef}>
-        <Conditional page={page} setPage={setPage} ref={ref} />
+      <Box ref={ref} sx={style}>
+        <Conditional page={page} setPage={setPage} />
       </Box>
     </Modal>
   );

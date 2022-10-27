@@ -2,36 +2,31 @@ import { Attributes } from '@/components/Attributes';
 import { formatNumber } from '@/helpers/formatNumber';
 import { Typography, IconButton, Card, lighten, Button, Box, useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
-import React, { useEffect } from 'react';
 import type { IAsset } from '@/types/assetTypes';
 import { useCart } from '@/helpers/auth/CartContext';
+import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
+import type { CartItem } from '@/helpers/auth/CartContext';
 
 export const Cart = ({
   page,
   setPage,
-  ref,
   orderSummary,
 }: {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
-  ref: any;
   orderSummary: IAsset;
 }) => {
-  const { cartItems, removeFromCart, closeCart } = useCart();
-  const theme = useTheme();
+  const { removeFromCart, closeCart } = useCart();
+  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const item = cartItems[0];
-  useEffect(() => {
-    if (!item) {
-      return;
-    }
-  }, [item, orderSummary]);
-  if (orderSummary === undefined || !(cartItems.length > 0)) {
-    return null;
-  }
+
+  const theme = useTheme();
+
   return (
-    <div ref={ref}>
+    <div>
       <Box
         sx={{
           height: '80px',
@@ -55,7 +50,7 @@ export const Cart = ({
             right: '10px',
           }}
         >
-          <Typography
+          <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -65,14 +60,23 @@ export const Cart = ({
             }}
           >
             <IconButton
-              aria-label="remove from watchlist"
+              aria-label="remove from cart"
+              onClick={() => {
+                closeCart();
+              }}
+            >
+              <ArrowBackIosIcon />
+              Back
+            </IconButton>
+            <IconButton
+              aria-label="remove from cart"
               onClick={() => {
                 closeCart();
               }}
             >
               <CloseIcon />
             </IconButton>
-          </Typography>
+          </Box>
         </Box>
       </Box>
       <Box

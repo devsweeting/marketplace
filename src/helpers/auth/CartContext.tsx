@@ -21,7 +21,6 @@ type CartContext = {
   decreaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
   removeFromCart: (id: string) => void;
   cartQuantity: number;
-  cartItems: CartItem[];
 };
 
 const CartContext = createContext({} as CartContext);
@@ -111,7 +110,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         removeFromCart,
         openCart,
         closeCart,
-        cartItems,
         cartQuantity,
       }}
     >

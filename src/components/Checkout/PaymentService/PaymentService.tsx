@@ -18,21 +18,22 @@ import { formatNumber } from '@/helpers/formatNumber';
 import { purchaseSellOrder } from '@/api/endpoints/sellorders';
 import { StatusCodes } from 'http-status-codes';
 import type { IAsset } from '@/types/assetTypes';
+import type { CartItem } from '@/helpers/auth/CartContext';
+import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 
 export const PaymentService = ({
   page,
   setPage,
-  ref,
   orderSummary,
 }: {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
-  ref: React.RefObject<HTMLDivElement>;
   orderSummary: IAsset;
 }) => {
   const [alertMessage, setAlertMessage] = useState('');
   const [open, setOpen] = useState(false);
-  const { closeCart, cartItems } = useCart();
+  const { closeCart } = useCart();
+  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const item = cartItems[0];
   const theme = useTheme();
 
@@ -76,7 +77,7 @@ export const PaymentService = ({
     return null;
   }
   return (
-    <Box ref={ref} width="576px" height="max-content">
+    <Box width="576px" height="max-content">
       <Box
         sx={{
           height: '80px',
