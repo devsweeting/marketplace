@@ -1,1 +1,0 @@
-export { AccordionTextItem } from './AccordionTextItem';

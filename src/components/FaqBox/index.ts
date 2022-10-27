@@ -1,1 +1,0 @@
-export { FaqBox } from './FaqBox';
