@@ -17,6 +17,7 @@ export type CartItem = {
 type CartContext = {
   openCart: () => void;
   closeCart: () => void;
+  closeModal: () => void;
   increaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
   decreaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
   removeFromCart: (id: string) => void;
@@ -44,6 +45,9 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const closeCart = () => {
     setIsOpen(false);
     setCartItems([]);
+  };
+  const closeModal = () => {
+    setIsOpen(false);
   };
 
   function increaseCartQuantity(id: string, quantity: number, fractionPriceCents: number) {
@@ -111,6 +115,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         openCart,
         closeCart,
         cartQuantity,
+        closeModal,
       }}
     >
       {children}

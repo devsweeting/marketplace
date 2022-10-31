@@ -183,12 +183,14 @@ const ExplorePage: NextPage = () => {
             title={'Latest Drop'}
             handleDrawer={handleDrawer}
           />
-          <FeaturedMarketCarousel
-            handleApplyBrandFilter={handleApplyBrandFilter}
-            activeBrandCard={activeBrandCard}
-            assets={trendingMarket}
-            title={'Trending Markets'}
-          />
+          {trendingMarket.length > 0 && (
+            <FeaturedMarketCarousel
+              handleApplyBrandFilter={handleApplyBrandFilter}
+              activeBrandCard={activeBrandCard}
+              assets={trendingMarket}
+              title={'Trending Markets'}
+            />
+          )}
 
           <Box>
             <FilterWrapper />

@@ -2,12 +2,12 @@ import { getAssetById } from '@/api/endpoints/assets';
 import type { IAsset } from '@/types/assetTypes';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
-import { AskingPrice } from '../AskingPrice';
 import { Cart } from '../Cart';
 import { PaymentMethods } from '../PaymentMethods';
 import { PaymentService } from '../PaymentService';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
+import { RetrieveUserInfo } from '../RetrieveUserInfo';
 
 export const Conditional = ({
   page,
@@ -21,11 +21,14 @@ export const Conditional = ({
   const item = cartItems[0];
 
   useEffect(() => {
-    void getAssetById(item.id).then((asset) => setOrderSummary(asset));
-  }, [item]);
+    void getAssetById(item.id).then((res) => {
+      setOrderSummary(res);
+    });
+  }, [item.id]);
+
   const conditionalComponent = () => {
     if (!orderSummary) {
-      return;
+      return null;
     }
     switch (page) {
       case 0: {
@@ -35,11 +38,12 @@ export const Conditional = ({
         return <PaymentMethods setPage={setPage} page={page} />;
       }
       case 2: {
-        return <PaymentService setPage={setPage} page={page} orderSummary={orderSummary} />;
+        return <RetrieveUserInfo setPage={setPage} page={page} />;
       }
       case 3: {
-        return <AskingPrice setPage={setPage} page={page} />;
+        return <PaymentService setPage={setPage} page={page} orderSummary={orderSummary} />;
       }
+
       default: {
         return <Cart setPage={setPage} page={page} orderSummary={orderSummary} />;
       }

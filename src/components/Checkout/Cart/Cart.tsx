@@ -19,7 +19,7 @@ export const Cart = ({
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
 }) => {
-  const { removeFromCart, closeCart } = useCart();
+  const { removeFromCart, closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const item = cartItems[0];
 
@@ -62,7 +62,7 @@ export const Cart = ({
             <IconButton
               aria-label="remove from cart"
               onClick={() => {
-                closeCart();
+                closeModal();
               }}
             >
               <ArrowBackIosIcon />
@@ -71,7 +71,7 @@ export const Cart = ({
             <IconButton
               aria-label="remove from cart"
               onClick={() => {
-                closeCart();
+                closeModal();
               }}
             >
               <CloseIcon />

@@ -13,13 +13,14 @@ import {
   useTheme,
 } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
 import { purchaseSellOrder } from '@/api/endpoints/sellorders';
 import { StatusCodes } from 'http-status-codes';
 import type { IAsset } from '@/types/assetTypes';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
+import { useRouter } from 'next/router';
 
 export const PaymentService = ({
   page,
@@ -30,16 +31,13 @@ export const PaymentService = ({
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
 }) => {
+  const router = useRouter();
   const [alertMessage, setAlertMessage] = useState('');
   const [open, setOpen] = useState(false);
-  const { closeCart } = useCart();
+  const { closeModal, closeCart } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const item = cartItems[0];
   const theme = useTheme();
-
-  useEffect(() => {
-    //
-  }, [item, orderSummary]);
 
   const handleBuyFractions = async (): Promise<void> => {
     const response: any = await purchaseSellOrder(
@@ -287,6 +285,10 @@ export const PaymentService = ({
             }}
             onClick={() => {
               void handleBuyFractions();
+              closeModal();
+              void router.push({
+                pathname: `/askingprice/${orderSummary.id}`,
+              });
             }}
           >
             Confirm Order

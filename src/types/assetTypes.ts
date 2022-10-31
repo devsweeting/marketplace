@@ -79,6 +79,7 @@ export interface IMarket {
   brand: string;
   filter: string;
   value_dollars: number;
+  sellOrders?: ISellOrder[];
 }
 
 export interface IAttribute {
