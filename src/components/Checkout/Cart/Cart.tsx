@@ -1,6 +1,6 @@
 import { Attributes } from '@/components/Attributes';
 import { formatNumber } from '@/helpers/formatNumber';
-import { Typography, IconButton, Button, Box, useTheme } from '@mui/material';
+import { IconButton, Box } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Image from 'next/image';
@@ -10,6 +10,7 @@ import { useCart } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import {
+  HeaderContainer,
   AssetCard,
   CardContent,
   CartAsset,
@@ -19,6 +20,11 @@ import {
   RemoveFromCartButton,
   Text,
   ValuationContainer,
+  HeaderSizedText,
+  HeaderButtons,
+  OrderSummaryContainer,
+  OrderSummaryText,
+  OrderButton,
 } from './Cart.styles';
 
 export const Cart = ({
@@ -34,54 +40,31 @@ export const Cart = ({
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const item = cartItems[0];
 
-  const theme = useTheme();
-
   return (
     <div>
-      <Box
-        sx={{
-          height: '80px',
-          padding: '24px 40px',
-          borderBottom: `1px solid ${theme.palette.grey[200]}`,
-        }}
-      >
-        <Typography
-          id="modal-modal-title"
-          variant="xl"
-          component="h2"
-          sx={{ fontSize: '24px', lineHeight: '32px', fontWeight: '600' }}
-        >
-          Cart
-        </Typography>
-        <Box
-          sx={{
-            position: 'absolute',
-            zIndex: 1,
-            top: '10px',
-            right: '10px',
-          }}
-        >
-          <Box sx={{ margin: '0 15px' }}>
-            <IconButton
-              aria-label="Close Cart Modal"
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              <ArrowBackIosIcon />
-              Back
-            </IconButton>
-            <IconButton
-              aria-label="remove from cart"
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </Box>
-      </Box>
+      <HeaderContainer>
+        <HeaderSizedText variant="lg">Cart</HeaderSizedText>
+        <HeaderButtons>
+          <IconButton
+            sx={{ fontSize: '14px' }}
+            aria-label="Close Cart Modal"
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            <ArrowBackIosIcon />
+            Back
+          </IconButton>
+          <IconButton
+            aria-label="remove from cart"
+            onClick={() => {
+              removeFromCart(item.id);
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </HeaderButtons>
+      </HeaderContainer>
       <CartContent>
         <CartAsset>
           <AssetCard>
@@ -114,14 +97,9 @@ export const Cart = ({
                   justifyContent="center"
                   sx={{ width: '100%', marginLeft: '20px' }}
                 >
-                  <Typography
-                    id="modal-modal-title"
-                    variant="xl"
-                    component="h2"
-                    sx={{ fontSize: '24px', lineHeight: '32px', fontWeight: '600' }}
-                  >
+                  <HeaderSizedText variant="lg">
                     {orderSummary && orderSummary.name}
-                  </Typography>
+                  </HeaderSizedText>
                   <Attributes attributes={orderSummary.attributes} />
                 </Box>
               </Box>
@@ -139,25 +117,9 @@ export const Cart = ({
           </AssetCard>
         </CartAsset>
         <CardContent>
-          <Box
-            sx={{
-              height: '60px',
-              borderBottom: `1px solid ${theme.palette.grey[200]}`,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              padding: '16px 0px 16px 24px',
-            }}
-          >
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="h2"
-              sx={{ fontSize: '18px', lineHeight: '28px', fontWeight: '500' }}
-            >
-              Order Summary
-            </Typography>
-          </Box>
+          <OrderSummaryContainer>
+            <OrderSummaryText variant="xl">Order Summary</OrderSummaryText>
+          </OrderSummaryContainer>
 
           <Box display="flex" flexDirection="column">
             <ValuationContainer>
@@ -174,31 +136,13 @@ export const Cart = ({
               <Text variant="lg">These units are still available to other buyers.</Text>
               <Text variant="lg">Buy soon to make sure they’re not sold while you shop</Text>
             </CTACard>
-            <Button
+            <OrderButton
               onClick={() => {
                 setPage(page + 1);
               }}
-              sx={{
-                '&.MuiButtonBase-root': {
-                  color: 'white',
-                  backgroundColor: theme.palette.primary.main,
-                  height: '40px',
-                  margin: '10px 24px',
-                  fontSize: '16px',
-                  lineHeight: '24px',
-                  border: `1px solid ${theme.palette.primary.main}`,
-                  '&:hover': {
-                    color: theme.palette.primary.main,
-                    backgroundColor: theme.palette.secondary.main,
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    margin: '10px auto',
-                  },
-                },
-              }}
             >
               Buy Now
-            </Button>
+            </OrderButton>
           </Box>
         </CardContent>
       </CartContent>

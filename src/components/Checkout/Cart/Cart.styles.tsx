@@ -1,4 +1,4 @@
-import { styled, Box, Card, Typography, lighten } from '@mui/material';
+import { styled, Box, Card, Typography, lighten, Button } from '@mui/material';
 
 export const CartContent = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -13,6 +13,35 @@ export const CartContent = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     maxWidth: '95vw',
     flexDirection: 'column',
+  },
+}));
+export const HeaderContainer = styled(Box)(({ theme }) => ({
+  height: '80px',
+  padding: '24px 40px',
+  borderBottom: `1px solid ${theme.palette.grey[200]}`,
+  [theme.breakpoints.down('sm')]: {
+    height: 'max-content',
+    padding: '14px 30px',
+  },
+}));
+
+export const HeaderButtons = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  zIndex: 1,
+  top: '10px',
+  right: '10px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '30%',
+  margin: '5px 2px',
+  [theme.breakpoints.down('md')]: {
+    right: '1px',
+    flexWrap: 'nowrap',
+  },
+  [theme.breakpoints.down('sm')]: {
+    top: '0px',
+    right: '14px',
   },
 }));
 export const CartAsset = styled(Box)(({ theme }) => ({
@@ -59,6 +88,13 @@ export const Text = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down('md')]: { fontSize: '16px', lineHeight: '24px', fontWeight: '500' },
 }));
 
+export const HeaderSizedText = styled(Typography)(({ theme }) => ({
+  fontSize: '24px',
+  lineHeight: '32px',
+  fontWeight: '600',
+  [theme.breakpoints.down('md')]: { fontSize: '16px', lineHeight: '24px', fontWeight: '500' },
+}));
+
 export const CTACard = styled(Card)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -83,6 +119,9 @@ export const RemoveFromCartButton = styled(Box)(({ theme }) => ({
     top: '5px',
     right: '5px',
   },
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
 }));
 
 export const ImageWrapper = styled(Box)(({ theme }) => ({
@@ -94,5 +133,38 @@ export const ImageWrapper = styled(Box)(({ theme }) => ({
   padding: '40px',
   [theme.breakpoints.down('sm')]: {
     padding: '20px',
+  },
+}));
+export const OrderSummaryContainer = styled(Box)(({ theme }) => ({
+  height: '60px',
+  borderBottom: `1px solid ${theme.palette.grey[200]}`,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  padding: '16px 0px 16px 24px',
+}));
+
+export const OrderSummaryText = styled(Typography)({
+  fontSize: '18px',
+  lineHeight: '28px',
+  fontWeight: '500',
+});
+
+export const OrderButton = styled(Button)(({ theme }) => ({
+  '&.MuiButtonBase-root': {
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
+    height: '40px',
+    margin: '10px 24px',
+    fontSize: '16px',
+    lineHeight: '24px',
+    border: `1px solid ${theme.palette.primary.main}`,
+    '&:hover': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.secondary.main,
+    },
+    [theme.breakpoints.down('sm')]: {
+      margin: '12px',
+    },
   },
 }));
