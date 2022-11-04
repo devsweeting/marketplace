@@ -29,7 +29,7 @@ describe('Login modal flow', () => {
     const modal = screen.getByRole('presentation');
     const input = screen.getByRole('textbox', { name: /email/i });
     const inputLabel = within(modal).getByText(/email/i);
-    const button = screen.getByRole('button', { name: /login/i });
+    const button = screen.getByRole('button', { name: /submit/i });
     const form = screen.getByTestId('form');
     const formViolations = await axe(form ?? '');
     const alert = screen.getByRole('alert');
@@ -55,7 +55,7 @@ describe('Login modal flow', () => {
   test('Input should not allow invalid fields', async () => {
     render(<MockLoginModal />);
     const input = screen.getByRole('textbox', { name: /email/i });
-    const button = screen.getByRole('button', { name: /login/i });
+    const button = screen.getByRole('button', { name: /submit/i });
     const alert = screen.getByRole('alert');
     await user.type(input, 'test@test');
     await user.click(button);
@@ -67,7 +67,7 @@ describe('Login modal flow', () => {
     mockLoginRequest.mockImplementation(async () => StatusCodes.OK);
     render(<MockLoginModal />);
     const input = screen.getByRole('textbox', { name: /email/i });
-    const button = screen.getByRole('button', { name: /login/i });
+    const button = screen.getByRole('button', { name: /submit/i });
     const alert = screen.getByRole('alert');
     await user.type(input, 'test@test.com');
     await user.click(button);
@@ -80,7 +80,7 @@ describe('Login modal flow', () => {
     mockLoginRequest.mockImplementation(async () => StatusCodes.TOO_MANY_REQUESTS);
     render(<MockLoginModal />);
     const input = screen.getByRole('textbox', { name: /email/i });
-    const button = screen.getByRole('button', { name: /login/i });
+    const button = screen.getByRole('button', { name: /submit/i });
     const alert = screen.getByRole('alert');
     expect(alert).toHaveTextContent('');
     await user.type(input, 'test@test.com');

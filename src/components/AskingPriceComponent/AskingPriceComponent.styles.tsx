@@ -1,4 +1,14 @@
-import { styled, Box, Typography, List, ListItem, InputAdornment, Button } from '@mui/material';
+import {
+  styled,
+  Box,
+  Typography,
+  List,
+  ListItem,
+  InputAdornment,
+  Button,
+  InputLabel,
+  OutlinedInput,
+} from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import Image from 'next/image';
 
@@ -96,6 +106,26 @@ export const DismissibleTextHeader = styled(Typography)(({ theme }) => ({
     marginBottom: '10px',
   },
 }));
+
+export const InputLabelText = styled(InputLabel)(({ theme }) => ({
+  fontSize: '14px',
+  lineHeight: '20px',
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '12px',
+    lineHeight: '18px',
+  },
+}));
+export const PriceOutlinedInput = styled(OutlinedInput)({
+  width: '100%',
+  borderRadius: '8px',
+  height: '40px',
+  margin: '4px 8px 4px 0',
+  '& input': {
+    margin: '0 0 0 2px',
+    padding: '0',
+    width: '80%',
+  },
+});
 
 export const Text = styled(Typography)({
   fontWeight: '500',

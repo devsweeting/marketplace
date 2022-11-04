@@ -1,6 +1,6 @@
 import { Attributes } from '@/components/Attributes';
 import { formatNumber } from '@/helpers/formatNumber';
-import { Typography, IconButton, Card, lighten, Button, Box, useTheme } from '@mui/material';
+import { Typography, IconButton, Button, Box, useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Image from 'next/image';
@@ -9,6 +9,17 @@ import type { IAsset } from '@/types/assetTypes';
 import { useCart } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
+import {
+  AssetCard,
+  CardContent,
+  CartAsset,
+  CartContent,
+  CTACard,
+  ImageWrapper,
+  RemoveFromCartButton,
+  Text,
+  ValuationContainer,
+} from './Cart.styles';
 
 export const Cart = ({
   page,
@@ -50,17 +61,9 @@ export const Cart = ({
             right: '10px',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              [theme.breakpoints.down('sm')]: {
-                flexDirection: 'column',
-              },
-            }}
-          >
+          <Box sx={{ margin: '0 15px' }}>
             <IconButton
-              aria-label="remove from cart"
+              aria-label="Close Cart Modal"
               onClick={() => {
                 closeModal();
               }}
@@ -79,45 +82,18 @@ export const Cart = ({
           </Box>
         </Box>
       </Box>
-      <Box
-        display="grid"
-        sx={{
-          gridAutoFlow: 'column',
-          gridAutoColumns: '1fr',
-          maxWidth: '1024px',
-          margin: '0 auto',
-        }}
-      >
-        <Box position="relative">
-          <Card
-            sx={{
-              height: '345px',
-              borderRadius: '0px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+      <CartContent>
+        <CartAsset>
+          <AssetCard>
             <Box
               width="100%"
-              height="200.5px"
               minWidth="152px"
               justifyContent="space-between"
               display="flex"
               flexDirection="column"
-              position="relative"
             >
               <Box display="flex">
-                <Box
-                  sx={{
-                    maxWidth: '152px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: lighten(theme.palette.primary.main, 0.95),
-                    padding: '40px',
-                  }}
-                >
+                <ImageWrapper>
                   {orderSummary.media &&
                     orderSummary.media[0] &&
                     orderSummary.media[0].absoluteUrl && (
@@ -131,7 +107,7 @@ export const Cart = ({
                         style={{ textAlign: 'center', lineHeight: '60px', maxWidth: '100px' }}
                       ></Image>
                     )}
-                </Box>
+                </ImageWrapper>
                 <Box
                   display="flex"
                   flexDirection="column"
@@ -150,43 +126,19 @@ export const Cart = ({
                 </Box>
               </Box>
             </Box>
-            <Box
-              sx={{
-                position: 'absolute',
-                zIndex: 1,
-                top: '10px',
-                right: '10px',
-              }}
-            >
-              <Typography
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  [theme.breakpoints.down('sm')]: {
-                    flexDirection: 'column',
-                  },
+            <RemoveFromCartButton>
+              <IconButton
+                aria-label="remove from cart"
+                onClick={() => {
+                  removeFromCart(item.id);
                 }}
               >
-                <IconButton
-                  aria-label="remove from watchlist"
-                  onClick={() => {
-                    removeFromCart(item.id);
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </Typography>
-            </Box>
-          </Card>
-        </Box>
-        <Box
-          sx={{
-            backgroundColor: theme.palette.grey[50],
-            padding: '0 0 24px',
-            gap: '24px',
-            height: '560px',
-          }}
-        >
+                <CloseIcon />
+              </IconButton>
+            </RemoveFromCartButton>
+          </AssetCard>
+        </CartAsset>
+        <CardContent>
           <Box
             sx={{
               height: '60px',
@@ -208,62 +160,20 @@ export const Cart = ({
           </Box>
 
           <Box display="flex" flexDirection="column">
-            <Box display="flex" justifyContent="space-between" margin="20px 24px 10px 24px">
-              <Typography
-                id="modal-modal-title"
-                variant="xl"
-                component="p"
-                sx={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-              >
+            <ValuationContainer>
+              <Text variant="lg">
                 {Object.keys(item).length > 0 && item.quantity}
                 {Object.keys(item).length > 0 && item.quantity > 1 ? ' Units' : ' Unit'}
-              </Typography>
-              <Typography
-                id="modal-modal-title"
-                variant="xl"
-                component="p"
-                sx={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-              >
+              </Text>
+              <Text variant="lg">
                 {Object.keys(item).length > 0 && '$' + formatNumber(item.totalPrice)}
-              </Typography>
-            </Box>
-            <Card
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'flex-start',
-                padding: '40px',
-                margin: '20px 24px',
-                borderRadius: '8px',
-                border: `1px solid ${theme.palette.grey[400]}`,
-              }}
-            >
-              <Typography
-                id="modal-modal-title"
-                variant="xl"
-                component="h2"
-                sx={{ fontSize: '18px', lineHeight: '28px', fontWeight: '500' }}
-              >
-                Added to cart
-              </Typography>
-              <Typography
-                id="modal-modal-title"
-                variant="xl"
-                component="h2"
-                sx={{ fontSize: '18px', lineHeight: '28px', fontWeight: '500' }}
-              >
-                These units are still available to other buyers.
-              </Typography>
-              <Typography
-                id="modal-modal-title"
-                variant="xl"
-                component="h2"
-                sx={{ fontSize: '18px', lineHeight: '28px', fontWeight: '500' }}
-              >
-                Buy soon to make sure they’re not sold while you shop
-              </Typography>
-            </Card>
+              </Text>
+            </ValuationContainer>
+            <CTACard>
+              <Text variant="lg">Added to cart</Text>
+              <Text variant="lg">These units are still available to other buyers.</Text>
+              <Text variant="lg">Buy soon to make sure they’re not sold while you shop</Text>
+            </CTACard>
             <Button
               onClick={() => {
                 setPage(page + 1);
@@ -290,8 +200,8 @@ export const Cart = ({
               Buy Now
             </Button>
           </Box>
-        </Box>
-      </Box>
+        </CardContent>
+      </CartContent>
     </div>
   );
 };

@@ -19,6 +19,7 @@ import { formatNumber } from '@/helpers/formatNumber';
 import { CustomRadio } from './PaymentMethods.styles';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export const PaymentMethods = ({
   setPage,
@@ -27,7 +28,7 @@ export const PaymentMethods = ({
   setPage: Dispatch<SetStateAction<number>>;
   page: number;
 }) => {
-  const { closeCart } = useCart();
+  const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [isDismissed, setIsDismissed] = useState(false);
   const [selectedValue, setSelectedValue] = useState('b');
@@ -77,9 +78,18 @@ export const PaymentMethods = ({
             }}
           >
             <IconButton
-              aria-label="remove from watchlist"
+              aria-label="Close Cart Modal"
               onClick={() => {
-                closeCart();
+                closeModal();
+              }}
+            >
+              <ArrowBackIosIcon />
+              Back
+            </IconButton>
+            <IconButton
+              aria-label="Close Cart Modal"
+              onClick={() => {
+                closeModal();
               }}
             >
               <CloseIcon />

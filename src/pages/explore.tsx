@@ -86,7 +86,7 @@ const ExplorePage: NextPage = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if (!user && cartItems.length > 0) {
+      if (user && cartItems.length > 0) {
         openCart();
       }
     }

@@ -8,6 +8,7 @@ import { PaymentService } from '../PaymentService';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { RetrieveUserInfo } from '../RetrieveUserInfo';
+import { Box } from '@mui/material';
 
 export const Conditional = ({
   page,
@@ -49,5 +50,5 @@ export const Conditional = ({
       }
     }
   };
-  return <>{conditionalComponent()}</>;
+  return <Box sx={{ display: 'flex', flexDirection: 'column' }}>{conditionalComponent()}</Box>;
 };

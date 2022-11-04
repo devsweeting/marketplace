@@ -1,6 +1,6 @@
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
-import { Box, InputLabel, OutlinedInput, Typography } from '@mui/material';
+import { Box, OutlinedInput, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
   PageContainer,
@@ -31,6 +31,8 @@ import {
   ValuationContainer,
   LargeDetailText,
   Img,
+  InputLabelText,
+  PriceOutlinedInput,
 } from './AskingPriceComponent.styles';
 import { useRouter } from 'next/router';
 
@@ -42,6 +44,8 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
   const router = useRouter();
   const [cartItem, setCartItem] = useState<CartItem>();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [helperTextValue, setHelperTextValue] = useState('');
 
   const [inputValues, setInputValues] = useState({
     percent: 0,
@@ -91,7 +95,9 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
     setInputValues({
       ...inputValues,
       percent: parseFloat(event.target.value),
-      price: pricePaid * ((100 + parseFloat(event.target.value)) / 100),
+      price: (pricePaid * ((100 + parseFloat(event.target.value)) / 100)).toFixed(
+        2,
+      ) as unknown as number,
     });
   };
 
@@ -99,23 +105,15 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
     setInputValues({
       ...inputValues,
       price: parseFloat(event.target.value),
-      percent: (parseFloat(event.target.value) - pricePaid / pricePaid) * 100,
+      percent: ((parseFloat(event.target.value) / pricePaid) * 100 - 100).toFixed(
+        2,
+      ) as unknown as number,
     });
   };
 
   const checkValues = () => {
     if (isNaN(inputValues.percent) || isNaN(inputValues.price)) {
-      setInputValues({
-        ...inputValues,
-        percent: 0,
-        price: pricePaid,
-      });
-    } else if (inputValues.price <= 0) {
-      setInputValues({
-        ...inputValues,
-        percent: 0,
-        price: pricePaid,
-      });
+      setHelperTextValue('Asking Price must be a valid number');
     }
   };
 
@@ -159,53 +157,26 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
               width="100%"
             >
               <Box display="flex" flexDirection="column" width="50%" marginRight="20px">
-                <InputLabel
-                  style={{ fontSize: '14px', lineHeight: '20px' }}
-                  htmlFor="percent-paid-price"
-                >
+                <InputLabelText htmlFor="percent-paid-price">
                   Set over the paid price
-                </InputLabel>
+                </InputLabelText>
                 <OutlinedInput
                   startAdornment={
                     <MonetaryInputAdornment position="start">%</MonetaryInputAdornment>
                   }
                   id="percent-paid-price"
-                  sx={{
-                    width: '100%',
-                    borderRadius: '8px',
-                    height: '40px',
-                    margin: '4px 8px 4px 0',
-                    '& input': {
-                      margin: '0 0 0 2px',
-                      padding: '0',
-                      width: '80%',
-                    },
-                  }}
                   type="number"
-                  value={inputValues.percent.toFixed()}
+                  value={inputValues.percent}
                   onChange={changePercentValue}
                 />
               </Box>
               <Box display="flex" flexDirection="column" width="50%">
-                <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }} htmlFor="ask-price">
-                  Ask price per unit
-                </InputLabel>
-                <OutlinedInput
+                <InputLabelText htmlFor="ask-price">Ask price per unit</InputLabelText>
+                <PriceOutlinedInput
                   startAdornment={
                     <MonetaryInputAdornment position="start">$</MonetaryInputAdornment>
                   }
                   id="ask-price"
-                  sx={{
-                    width: '100%',
-                    borderRadius: '8px',
-                    height: '40px',
-                    margin: '4px 8px 4px 0',
-                    '& input': {
-                      margin: '0 0 0 2px',
-                      padding: '0',
-                      width: '80%',
-                    },
-                  }}
                   inputProps={{ step: '0.01' }}
                   type="number"
                   value={inputValues.price}
@@ -215,7 +186,7 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
             </Box>
           </Wrap>
           <OrderSummary>
-            <OrderSummaryHeader variant="xl">Order Summary</OrderSummaryHeader>
+            <OrderSummaryHeader variant="xl">Listing Value Summary</OrderSummaryHeader>
             <Box marginBottom="24px">
               <OrderSummaryDetailsContainer>
                 <Text variant="lg">
