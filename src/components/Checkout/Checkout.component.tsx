@@ -20,6 +20,7 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
     height: 'max-content',
     maxHeight: 'calc(100% - 80px)',
     maxWidth: '1024px',
+
     bgcolor: 'background.paper',
     outline: 'none !important',
     overflowY: scrollHeight < height ? 'scroll' : 'auto',
@@ -32,6 +33,9 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
     }
   }, []);
 
+  if (!(Object.keys(ref).length > 0)) {
+    return null;
+  }
   return (
     <Modal
       open={isOpen}

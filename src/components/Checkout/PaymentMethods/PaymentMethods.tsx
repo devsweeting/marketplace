@@ -1,4 +1,4 @@
-import { Box, IconButton, InputLabel, Link, OutlinedInput } from '@mui/material';
+import { Box, IconButton, Link } from '@mui/material';
 import { useCart } from '@/helpers/auth/CartContext';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
@@ -26,6 +26,8 @@ import {
   OrderSummaryContainer,
   OrderSummaryHeader,
   OrderSummaryButtonGrid,
+  OutlinedLabel,
+  StyledInput,
 } from './PaymentMethods.styles';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
@@ -58,10 +60,10 @@ export const PaymentMethods = ({
         <HeaderTitle variant="xl">Available payment methods</HeaderTitle>
         <ButtonContainer>
           <IconButton
-            aria-label="Close Cart Modal"
+            aria-label="Previous Cart Page"
             sx={{ fontSize: '14px' }}
             onClick={() => {
-              closeModal();
+              setPage(page - 1);
             }}
           >
             <ArrowBackIosIcon />
@@ -145,15 +147,14 @@ export const PaymentMethods = ({
           Withdraw balance <InfoIcon sx={{ fontSize: '16px', marginLeft: '5px' }} />
         </Text>
 
-        <Box sx={{ margin: '16px 0 16px 0', height: '120px', width: '100%' }}>
-          <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }}>
-            Add funds to your balance
-          </InputLabel>
+        <Box margin="16px 0" height="120px" width="100%">
+          <OutlinedLabel>Add funds to your balance</OutlinedLabel>
           <Box display="flex">
-            <OutlinedInput
+            <StyledInput
               sx={{ width: '90%', borderRadius: '8px', height: '40px', margin: '8px 8px 8px 0' }}
               placeholder="Enter amount"
               endAdornment={<StyledInputAdornments position="end">$</StyledInputAdornments>}
+              disabled={selectedValue === 'b' ? true : false}
             />
             <AddFundsButton disabled={selectedValue === 'b' ? true : false}>
               Add funds

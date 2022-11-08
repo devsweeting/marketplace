@@ -1,5 +1,14 @@
 import type { RadioProps } from '@mui/material';
-import { InputAdornment, Typography, styled, Radio, Box, Button } from '@mui/material';
+import {
+  InputLabel,
+  InputAdornment,
+  Typography,
+  styled,
+  Radio,
+  Box,
+  Button,
+  OutlinedInput,
+} from '@mui/material';
 const BpIcon = styled('span')(({ theme }) => ({
   borderRadius: '50%',
   width: 24,
@@ -334,5 +343,25 @@ export const AddPaymentButton = styled(Button)(({ theme }) => ({
       margin: '10px auto',
       width: 'max-content',
     },
+  },
+}));
+
+export const OutlinedLabel = styled(InputLabel)(({ theme }) => ({
+  fontSize: '14px',
+  lineHeight: '20px',
+  [theme.breakpoints.down('sm')]: {
+    fontWeight: '500',
+    fontSize: '12px',
+    lineHeight: '18px',
+  },
+}));
+
+export const StyledInput = styled(OutlinedInput)(({ theme }) => ({
+  width: '100%',
+  borderRadius: '8px',
+  height: '40px',
+  margin: '8px 8px 8px 0',
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
   },
 }));
