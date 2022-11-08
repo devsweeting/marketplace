@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useCart } from '@/helpers/auth/CartContext';
 
 export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
-  const { closeCart } = useCart();
+  const { closeModal } = useCart();
   const [page, setPage] = useState(0);
   const ref = useRef(null as null | HTMLDivElement);
   const [height, setHeight] = useState(0);
@@ -35,7 +35,7 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <Modal
       open={isOpen}
-      onClose={closeCart}
+      onClose={closeModal}
       sx={{
         '.MuiBackdrop-root': {
           backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.85),

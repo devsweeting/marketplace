@@ -1,22 +1,32 @@
-import {
-  Box,
-  Button,
-  Card,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  Link,
-  OutlinedInput,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, IconButton, InputLabel, Link, OutlinedInput } from '@mui/material';
 import { useCart } from '@/helpers/auth/CartContext';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
-import { CustomRadio } from './PaymentMethods.styles';
+import {
+  AddFundsButton,
+  AddPaymentButton,
+  ButtonContainer,
+  CancelButton,
+  Card,
+  CardTextContainer,
+  Title,
+  Container,
+  CustomRadio,
+  HeaderContainer,
+  HeaderTitle,
+  ImageWrapper,
+  InfoContainer,
+  OrderSummaryDetails,
+  PaymentContainer,
+  StyledInputAdornments,
+  Text,
+  OrderSummaryContainer,
+  OrderSummaryHeader,
+  OrderSummaryButtonGrid,
+} from './PaymentMethods.styles';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -39,184 +49,81 @@ export const PaymentMethods = ({
     setSelectedValue(event.target.value);
   };
   const item = cartItems[0];
-  const theme = useTheme();
   if (!(cartItems.length > 0)) {
     return null;
   }
   return (
-    <Box height="max-content" maxWidth="576px" width="100%">
-      <Box
-        sx={{
-          height: '80px',
-          padding: '24px',
-          borderBottom: `1px solid ${theme.palette.grey[200]}`,
-        }}
-      >
-        <Typography
-          id="modal-modal-title"
-          variant="xl"
-          component="h2"
-          sx={{ fontSize: '24px', lineHeight: '32px', fontWeight: '600' }}
-        >
-          Available payment methods
-        </Typography>
-        <Box
-          sx={{
-            position: 'absolute',
-            zIndex: 1,
-            top: '20px',
-            right: '20px',
-          }}
-        >
-          <Typography
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              [theme.breakpoints.down('sm')]: {
-                flexDirection: 'column',
-              },
+    <Container>
+      <HeaderContainer>
+        <HeaderTitle variant="xl">Available payment methods</HeaderTitle>
+        <ButtonContainer>
+          <IconButton
+            aria-label="Close Cart Modal"
+            sx={{ fontSize: '14px' }}
+            onClick={() => {
+              closeModal();
             }}
           >
-            <IconButton
-              aria-label="Close Cart Modal"
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              <ArrowBackIosIcon />
-              Back
-            </IconButton>
-            <IconButton
-              aria-label="Close Cart Modal"
-              onClick={() => {
-                closeModal();
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Typography>
-        </Box>
-      </Box>
-      <Box
-        height="max-content"
-        maxWidth="576px"
-        width="100%"
-        display="flex"
-        alignItems="flex-start"
-        flexDirection="column"
-        sx={{ padding: '24px' }}
-      >
-        <Card
-          sx={{
-            height: '188px',
-            width: '100%',
-            backgroundColor: theme.palette.grey[100],
-            marginBottom: '16px',
-            padding: '24px',
-            display: isDismissed ? 'none' : 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Typography
-            style={{
-              fontStyle: 'normal',
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
+            <ArrowBackIosIcon />
+            Back
+          </IconButton>
+          <IconButton
+            aria-label="Close Cart Modal"
+            onClick={() => {
+              closeModal();
             }}
-            variant="body1"
-            component="p"
           >
+            <CloseIcon />
+          </IconButton>
+        </ButtonContainer>
+      </HeaderContainer>
+      <PaymentContainer>
+        <InfoContainer style={{ display: isDismissed ? 'none' : 'flex' }}>
+          <Text marginBottom="20px" variant="body1">
             Jump balance represents the funds you have for use in your account. When you make
-            purchases, sales, desposits or withdrawals, those changes will be shown in your balance
+            purchases, sales, deposits or withdrawals, those changes will be shown in your balance
             below.
-          </Typography>
-          <Typography
-            style={{
-              fontStyle: 'normal',
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
-            }}
-            component="p"
-            variant="body1"
-          >
-            View and increase your limits <Link href="/account/balance">here.</Link>
-          </Typography>
-          <Typography
+          </Text>
+          <Text marginBottom="20px" variant="body1">
+            View and increase your limits{' '}
+            <Link
+              style={{
+                width: 'max-content',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+              }}
+              href="/account/balance"
+            >
+              here.
+            </Link>
+          </Text>
+          <Text
             style={{
               width: 'max-content',
-              fontStyle: 'normal',
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
               textDecoration: 'underline',
               cursor: 'pointer',
             }}
             onClick={() => {
               setIsDismissed(true);
             }}
-            component="span"
             variant="body1"
           >
             Dismiss
-          </Typography>
-        </Card>
-        <Card
-          sx={{
-            height: '100px',
-            backgroundColor: theme.palette.grey[100],
-            margin: '16px 0',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Box
-            sx={{
-              backgroundColor: '#D9D9D9',
-              height: '48px',
-              width: '48px',
-              margin: 'auto 0',
-              borderRadius: '24px',
-            }}
-          ></Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              margin: '0 16px',
-              width: '376px',
-            }}
-          >
-            <Typography
-              style={{
-                fontStyle: 'normal',
-                fontWeight: '600',
-                fontSize: '18px',
-                lineHeight: '28px',
-                display: 'flex',
-              }}
-            >
-              Jump balance
-            </Typography>
-            <Typography
-              style={{
-                fontStyle: 'normal',
-                fontWeight: '500',
-                fontSize: '14px',
-                lineHeight: '20px',
-                display: 'flex',
-              }}
-            >
+          </Text>
+        </InfoContainer>
+        <Card>
+          <div>
+            <ImageWrapper></ImageWrapper>
+          </div>
+
+          <CardTextContainer>
+            <Title variant="xl">Jump balance</Title>
+            <Text>
               {`$${formatNumber(funds.toFixed(2) as unknown as number)} USD ${
                 funds < item.totalPrice ? '(Insufficient funds)' : ''
               }`}
-            </Typography>
-          </Box>
+            </Text>
+          </CardTextContainer>
           <Box>
             <CustomRadio
               checked={selectedValue === 'a'}
@@ -227,28 +134,18 @@ export const PaymentMethods = ({
             />
           </Box>
         </Card>
-        <Box
-          sx={{
+
+        <Text
+          style={{
+            textDecoration: 'underline',
             margin: '8px 0',
             height: '20px',
-            display: 'flex',
-            alignItems: 'center',
           }}
         >
-          <Typography
-            style={{
-              fontStyle: 'normal',
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
-              textDecoration: 'underline',
-            }}
-          >
-            Withdraw balance
-          </Typography>
-          <InfoIcon sx={{ fontSize: '16px', marginLeft: '10px' }} />
-        </Box>
-        <Box sx={{ margin: '16px 0 16px 0', height: '120px', width: '528px' }}>
+          Withdraw balance <InfoIcon sx={{ fontSize: '16px', marginLeft: '5px' }} />
+        </Text>
+
+        <Box sx={{ margin: '16px 0 16px 0', height: '120px', width: '100%' }}>
           <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }}>
             Add funds to your balance
           </InputLabel>
@@ -256,129 +153,25 @@ export const PaymentMethods = ({
             <OutlinedInput
               sx={{ width: '90%', borderRadius: '8px', height: '40px', margin: '8px 8px 8px 0' }}
               placeholder="Enter amount"
-              endAdornment={
-                <InputAdornment
-                  sx={{
-                    border: `1px solid ${theme.palette.grey[200]}`,
-                    width: '11px',
-                    padding: '10px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    borderRadius: '24px',
-                    fontWeight: 'bold',
-                    color: 'black',
-                    '& p': {
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      color: 'black',
-                    },
-                  }}
-                  position="end"
-                >
-                  $
-                </InputAdornment>
-              }
+              endAdornment={<StyledInputAdornments position="end">$</StyledInputAdornments>}
             />
-            <Button
-              sx={{
-                '&.MuiButtonBase-root': {
-                  color: 'white',
-                  backgroundColor: theme.palette.primary.main,
-                  height: '40px',
-                  width: '111px',
-                  margin: '8px 0',
-                  fontSize: '16px',
-                  lineHeight: '24px',
-                  borderRadius: '8px',
-                  padding: 0,
-                  border: `1px solid ${theme.palette.primary.main}`,
-                  '&:hover': {
-                    color: theme.palette.primary.main,
-                    backgroundColor: theme.palette.secondary.main,
-                  },
-                },
-                fontWeight: '500',
-                fontSize: '14px',
-                lineHeight: '20px',
-              }}
-            >
+            <AddFundsButton disabled={selectedValue === 'b' ? true : false}>
               Add funds
-            </Button>
+            </AddFundsButton>
           </Box>
-          <Typography
-            style={{
-              fontStyle: 'normal',
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
-            }}
-          >
+          <Text>
             When you purchase Jump balance using fiat payment methods, the sale is made by xyz.
-          </Typography>
+          </Text>
         </Box>
-        <Card
-          sx={{
-            height: '124px',
-            maxidth: '528px',
-            backgroundColor: theme.palette.grey[100],
-            margin: '24px 0',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Box
-            sx={{
-              backgroundColor: '#D9D9D9',
-              height: '48px',
-              width: '48px',
-              margin: 'auto 0',
-              borderRadius: '24px',
-            }}
-          ></Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              margin: '0 16px',
-              width: '376px',
-            }}
-          >
-            <Typography
-              style={{
-                fontStyle: 'normal',
-                fontWeight: '600',
-                fontSize: '18px',
-                lineHeight: '28px',
-                display: 'flex',
-              }}
-            >
-              Credit/Debit cards
-            </Typography>
-            <Typography
-              style={{
-                fontStyle: 'normal',
-                fontWeight: '500',
-                fontSize: '14px',
-                lineHeight: '20px',
-                display: 'flex',
-              }}
-            >
-              {`-5% + 0.25 service fee`}
-            </Typography>
-            <Typography
-              style={{
-                fontStyle: 'normal',
-                fontWeight: '500',
-                fontSize: '14px',
-                lineHeight: '20px',
-                display: 'flex',
-              }}
-            >
-              {`Recommended`}
-            </Typography>
-          </Box>
+        <Card>
+          <div>
+            <ImageWrapper></ImageWrapper>
+          </div>
+          <CardTextContainer>
+            <Title variant="xl">Credit/Debit cards</Title>
+            <Text>{`-5% + 0.25 service fee`}</Text>
+            <Text>{`Recommended`}</Text>
+          </CardTextContainer>
           <Box>
             <CustomRadio
               checked={selectedValue === 'b'}
@@ -389,178 +182,54 @@ export const PaymentMethods = ({
             />
           </Box>
         </Card>
-      </Box>
-      <Box height="max-content" width="576px" bgcolor={theme.palette.grey[50]}>
-        <Box
-          width="100%"
-          sx={{
-            height: '60px',
-            borderBottom: `1px solid ${theme.palette.grey[200]}`,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '16px 0px 16px 24px',
-          }}
-        >
-          <Typography
-            id="modal-modal-title"
-            variant="xl"
-            component="h2"
-            sx={{ fontSize: '18px', lineHeight: '28px', fontWeight: '500' }}
-          >
-            Order Summary
-          </Typography>
-        </Box>
+      </PaymentContainer>
+      <OrderSummaryContainer>
+        <OrderSummaryHeader>
+          <Title variant="xl">Order Summary</Title>
+        </OrderSummaryHeader>
         <Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            margin="20px 24px 10px 24px"
-            sx={{ borderBottom: `1px solid ${theme.palette.grey[200]}` }}
-          >
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
+          <OrderSummaryDetails>
+            <Text variant="lg">
               {Object.keys(item).length > 0 && item.quantity}
               {Object.keys(item).length > 0 && item.quantity > 1 ? ' Units' : ' Unit'}
-            </Typography>
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
+            </Text>
+            <Text variant="lg">
               {Object.keys(item).length > 0 && '$' + formatNumber(item.totalPrice)}
-            </Typography>
-          </Box>
+            </Text>
+          </OrderSummaryDetails>
           <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
-              Royalty fees
-            </Typography>
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
-              10%
-            </Typography>
+            <Text variant="lg">Royalty fees</Text>
+            <Text variant="lg">10%</Text>
           </Box>
         </Box>
-        <Box
-          display="grid"
-          sx={{
-            gridAutoFlow: 'column',
-            gridAutoColumns: '1fr',
-            gap: '20px',
-            maxWidth: '576px',
-            margin: '8px 24px',
-          }}
-        >
-          <Button
-            sx={{
-              '&.MuiButtonBase-root': {
-                color: theme.palette.primary.main,
-                backgroundColor: theme.palette.grey[100],
-                height: '40px',
-                margin: '8px 0',
-                fontSize: '16px',
-                lineHeight: '24px',
-                borderRadius: '8px',
-                border: `1px solid ${theme.palette.grey[100]}`,
-                '&:hover': {
-                  color: theme.palette.secondary.main,
-                  backgroundColor: theme.palette.primary.main,
-                  border: `1px solid white`,
-                },
-                [theme.breakpoints.down('sm')]: {
-                  margin: '10px auto',
-                },
-              },
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
-            }}
+        <OrderSummaryButtonGrid>
+          <CancelButton
             onClick={() => {
               setPage(page - 1);
             }}
           >
-            Cancel Payment
-          </Button>
+            Cancel
+          </CancelButton>
           {selectedValue === 'a' && (
-            <Button
-              sx={{
-                '&.MuiButtonBase-root': {
-                  color: 'white',
-                  backgroundColor: theme.palette.primary.main,
-                  height: '40px',
-
-                  margin: '8px 0',
-                  fontSize: '16px',
-                  lineHeight: '24px',
-                  borderRadius: '8px',
-                  border: `1px solid ${theme.palette.primary.main}`,
-                  '&:hover': {
-                    color: theme.palette.primary.main,
-                    backgroundColor: theme.palette.secondary.main,
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    margin: '10px auto',
-                  },
-                },
-                fontWeight: '500',
-                fontSize: '14px',
-                lineHeight: '20px',
-              }}
+            <AddPaymentButton
               onClick={() => {
                 setPage(page + 1);
               }}
             >
               Pay with Jump balance
-            </Button>
+            </AddPaymentButton>
           )}
           {selectedValue === 'b' && (
-            <Button
-              sx={{
-                '&.MuiButtonBase-root': {
-                  color: 'white',
-                  backgroundColor: theme.palette.primary.main,
-                  height: '40px',
-
-                  margin: '8px 0',
-                  fontSize: '16px',
-                  lineHeight: '24px',
-                  borderRadius: '8px',
-                  border: `1px solid ${theme.palette.primary.main}`,
-                  '&:hover': {
-                    color: theme.palette.primary.main,
-                    backgroundColor: theme.palette.secondary.main,
-                  },
-                  [theme.breakpoints.down('sm')]: {
-                    margin: '10px auto',
-                  },
-                },
-                fontWeight: '500',
-                fontSize: '14px',
-                lineHeight: '20px',
-              }}
+            <AddPaymentButton
               onClick={() => {
                 setPage(page + 1);
               }}
             >
               Add Credit Card
-            </Button>
+            </AddPaymentButton>
           )}
-        </Box>
-      </Box>
-    </Box>
+        </OrderSummaryButtonGrid>
+      </OrderSummaryContainer>
+    </Container>
   );
 };
