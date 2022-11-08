@@ -1,5 +1,6 @@
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
+import { useCart } from '@/helpers/auth/CartContext';
 import { Box, OutlinedInput, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
@@ -42,6 +43,7 @@ import { formatNumber } from '@/helpers/formatNumber';
 
 export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
   const router = useRouter();
+  const { closeCart } = useCart();
   const [cartItem, setCartItem] = useState<CartItem>();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [alertMessage, setAlertMessage] = useState('');
@@ -66,7 +68,7 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
     }
   }, [cartItems, router.isReady]);
 
-  if (!cartItem) {
+  if (!cartItem && !asset) {
     return null;
   }
 
@@ -120,7 +122,7 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
   const totalValuation = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-  }).format((cartItem.totalPrice * (inputValues.percent + 100)) / 100);
+  }).format(cartItem ? (cartItem.totalPrice * (inputValues.percent + 100)) / 100 : 0);
 
   checkValues();
 
@@ -204,7 +206,7 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
                 <Text variant="lg">10%</Text>
               </Box>
               <Box margin="0 24px">
-                <OrderButton>Confirm Order</OrderButton>
+                <OrderButton onClick={closeCart}>Confirm Order</OrderButton>
               </Box>
             </Box>
             <Text
@@ -259,20 +261,22 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
                   <Typography>Valuation</Typography>
                   <LargeDetailText variant="lg">
                     $
-                    {cartItem.totalPrice < 1000
-                      ? Intl.NumberFormat('en-US', {
-                          style: 'currency',
-                          currency: 'USD',
-                          minimumFractionDigits: 2,
-                          currencyDisplay: 'symbol',
-                        }).format(cartItem.totalPrice)
-                      : formatLargeValues(cartItem.totalPrice)}
+                    {cartItem
+                      ? cartItem.totalPrice < 1000
+                        ? Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                            minimumFractionDigits: 2,
+                            currencyDisplay: 'symbol',
+                          }).format(cartItem.totalPrice)
+                        : formatLargeValues(cartItem.totalPrice)
+                      : ''}
                   </LargeDetailText>
                 </ValuationContainer>
                 <ValuationContainer>
                   <Typography>Unit Price</Typography>
                   <LargeDetailText variant="lg">
-                    ${cartItem.fractionPriceCents / 100}
+                    ${cartItem ? cartItem.fractionPriceCents / 100 : ''}
                   </LargeDetailText>
                 </ValuationContainer>
               </CardMeta>

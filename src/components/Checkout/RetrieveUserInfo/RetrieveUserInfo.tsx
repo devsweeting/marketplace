@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import { Box, IconButton, MenuItem } from '@mui/material';
 import { useCart } from '@/helpers/auth/CartContext';
@@ -37,6 +37,37 @@ export const RetrieveUserInfo = ({
     address_subdivision: '',
     address_country_code: '',
     address_postal_code: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
+  });
+
+  function validatePhoneNumber(elementValue: string) {
+    const phoneNumberPattern = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+    console.log('called');
+    return phoneNumberPattern.test(elementValue);
+  }
+
+  const debounce = <T extends (...args: any[]) => ReturnType<T>>(
+    callback: T,
+    timeout: number,
+  ): ((...args: Parameters<T>) => void) => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    return (...args: Parameters<T>) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        callback(...args);
+      }, timeout);
+    };
+  };
+
+  const myDebouncedFunction = debounce((e) => {
+    validatePhoneNumber(e.phoneNumber);
+  }, 2000);
+
+  useEffect(() => {
+    myDebouncedFunction(synapseInfo);
   });
 
   return (
@@ -76,16 +107,42 @@ export const RetrieveUserInfo = ({
           <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
             <CustomBox display="flex" flexDirection="column" width="50%">
               <OutlinedLabel htmlFor="first-name">First Name</OutlinedLabel>
-              <StyledInput id="first-name" />
+              <StyledInput
+                id="first-name"
+                value={synapseInfo.firstName ? synapseInfo.firstName : ''}
+                onChange={(e) => {
+                  let updatedValue = {};
+                  updatedValue = { firstName: e.target.value };
+                  setSynapseInfo((synapseInfo) => ({ ...synapseInfo, ...updatedValue }));
+                }}
+              />
             </CustomBox>
             <Box display="flex" flexDirection="column" width="50%">
               <OutlinedLabel htmlFor="last-name">Last Name</OutlinedLabel>
-              <StyledInput id="last-name" />
+              <StyledInput
+                id="last-name"
+                value={synapseInfo.lastName ? synapseInfo.lastName : ''}
+                onChange={(e) => {
+                  let updatedValue = {};
+                  updatedValue = { lastName: e.target.value };
+                  setSynapseInfo((synapseInfo) => ({ ...synapseInfo, ...updatedValue }));
+                }}
+              />
             </Box>
           </Box>
           <Box display="flex" flexDirection="column" width="100%">
             <OutlinedLabel htmlFor="phone">Phone Number</OutlinedLabel>
-            <StyledInput id="phone" />
+            <StyledInput
+              id="phone"
+              value={synapseInfo.phoneNumber ? synapseInfo.phoneNumber : ''}
+              onChange={(e) => {
+                let updatedValue = {};
+                updatedValue = { phoneNumber: e.target.value };
+
+                setSynapseInfo((synapseInfo) => ({ ...synapseInfo, ...updatedValue }));
+                myDebouncedFunction(e);
+              }}
+            />
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
             <CustomBox display="flex" flexDirection="column" width="70%">

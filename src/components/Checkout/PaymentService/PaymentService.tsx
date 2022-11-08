@@ -285,7 +285,7 @@ export const PaymentService = ({
             }}
             onClick={() => {
               void handleBuyFractions();
-              closeCart();
+
               closeModal();
               void router.push({
                 pathname: `/askingprice/${orderSummary.id}`,
