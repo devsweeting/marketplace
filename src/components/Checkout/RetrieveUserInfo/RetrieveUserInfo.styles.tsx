@@ -1,5 +1,5 @@
-import type { SelectProps } from '@mui/material';
-import { styled, Button, Select, Box } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
+import { MenuItem, styled, Button, Select, Box } from '@mui/material';
 
 export const ConfirmInfoButton = styled(Button)(({ theme }) => ({
   '&.MuiButtonBase-root': {
@@ -26,9 +26,19 @@ export const ConfirmInfoButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-export const CustomSelect = ({ children }: any, props: SelectProps) => {
+export const CustomSelect = ({
+  options,
+  setInfo,
+  info,
+}: {
+  options: { name: string; value: string }[];
+  setInfo: (event: SelectChangeEvent<unknown>) => void;
+  info: any;
+}) => {
   return (
     <StyledSelectMenu
+      value={info}
+      onChange={setInfo}
       sx={{
         '&:hover': {
           bgcolor: 'transparent',
@@ -63,10 +73,15 @@ export const CustomSelect = ({ children }: any, props: SelectProps) => {
           horizontal: 'center',
         },
       }}
-      value={props.value ? props.value : 'US'}
-      {...props}
     >
-      {children}
+      {options.length > 0 &&
+        options.map((option: { value: string; name: string }) => {
+          return (
+            <MenuItem key={option.value} value={option.value}>
+              {option.name}
+            </MenuItem>
+          );
+        })}
     </StyledSelectMenu>
   );
 };
@@ -75,14 +90,15 @@ export const StyledSelectMenu = styled(Select)({
   width: '100%',
   borderRadius: '8px',
   height: '40px',
-  margin: '8px 8px 8px 0',
+  margin: '8px 8px 0px 0',
   '&:hover': {
     bgcolor: 'transparent',
   },
 });
 
 export const CustomBox = styled(Box)(({ theme }) => ({
-  marginRight: '20px',
+  marginRight: '15px',
+  marginBottom: '8px',
   [theme.breakpoints.down('sm')]: {
     marginRight: '12px',
   },

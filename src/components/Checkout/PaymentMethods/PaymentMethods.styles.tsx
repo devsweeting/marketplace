@@ -360,7 +360,7 @@ export const StyledInput = styled(OutlinedInput)(({ theme }) => ({
   width: '100%',
   borderRadius: '8px',
   height: '40px',
-  margin: '8px 8px 8px 0',
+  margin: '8px 8px 0px 0',
   [theme.breakpoints.down('sm')]: {
     width: '100%',
   },
