@@ -30,15 +30,18 @@ export const CustomSelect = ({
   options,
   setInfo,
   info,
+  name,
 }: {
   options: { name: string; value: string }[];
   setInfo: (event: SelectChangeEvent<unknown>) => void;
   info: any;
+  name: string;
 }) => {
   return (
     <StyledSelectMenu
       value={info}
       onChange={setInfo}
+      name={name}
       sx={{
         '&:hover': {
           bgcolor: 'transparent',

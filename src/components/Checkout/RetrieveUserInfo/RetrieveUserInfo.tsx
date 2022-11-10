@@ -1,10 +1,10 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { StatusCodes } from 'http-status-codes';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
-import { Box, IconButton, FormHelperText } from '@mui/material';
+import { Box, FormHelperText, IconButton } from '@mui/material';
 import { ConfirmInfoButton, CustomBox, CustomSelect } from './RetrieveUserInfo.styles';
 import { states } from './StatesAndTerritories';
+import { StatusCodes } from 'http-status-codes';
 import { useCart } from '@/helpers/auth/CartContext';
 import { verifyAddress } from '@/api/endpoints/synapse';
 import type { Dispatch, SetStateAction } from 'react';
@@ -17,14 +17,13 @@ import {
   PaymentContainer,
   StyledInput,
 } from '../PaymentMethods/PaymentMethods.styles';
-import type { SelectChangeEvent } from '@mui/material';
 
 export interface IUserBillingInfo {
-  address_street: string;
-  address_city: string;
-  address_subdivision: string;
-  address_country_code: string;
-  address_postal_code: string;
+  address_street?: string;
+  address_city?: string;
+  address_subdivision?: string;
+  address_country_code?: string;
+  address_postal_code?: string;
 }
 
 export const RetrieveUserInfo = ({
@@ -35,7 +34,8 @@ export const RetrieveUserInfo = ({
   setPage: Dispatch<SetStateAction<number>>;
 }) => {
   const { closeModal } = useCart();
-  const [paymentProviderInfo, setPaymentProviderInfo] = useState({
+  const [isValid, setIsValid] = useState(false);
+  const [paymentProviderInfo, setPaymentProviderInfo] = useState<{ [x: string]: string }>({
     address_street: '',
     address_city: '',
     address_subdivision: '',
@@ -45,7 +45,7 @@ export const RetrieveUserInfo = ({
     lastName: '',
     phoneNumber: '',
   });
-  const [helperText, setHelperText] = useState({
+  const [validation, setValidation] = useState({
     address_street: '',
     address_city: '',
     address_subdivision: '',
@@ -56,80 +56,131 @@ export const RetrieveUserInfo = ({
     phoneNumber: '',
   });
 
-  function validatePhoneNumber(elementValue: string) {
+  function validatePhoneNumber(phoneNumber: string) {
     const phoneNumberPattern = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-    return phoneNumberPattern.test(elementValue);
+    return phoneNumberPattern.test(phoneNumber);
   }
 
-  async function validateAddress(address: {
-    address_street: string;
-    address_city: string;
-    address_subdivision: string;
-    address_country_code: string;
-    address_postal_code: string;
-  }) {
+  function checkValidity() {
     const zipCodePattern = /^[0-9]{5}(?:-[0-9]{4})?$/;
     const countryPattern = /^US$/;
     const antiSymbolPattern = /[!@$%^&*(),?":{}|<>]/g;
     const statePattern =
       /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/gm;
 
-    const addressSchema = {
-      address_street: (values: string) => !values.match(antiSymbolPattern) && values != '',
-      address_city: (values: string) => !values.match(antiSymbolPattern) && values != '',
-      address_subdivision: (values: string) => values.match(statePattern),
-      address_country_code: (values: string) => values.match(countryPattern),
-      address_postal_code: (values: string) => values.match(zipCodePattern),
-    };
+    let address: { [x: string]: string };
 
-    const validate = (
-      object: { [x: string]: any },
-      schema: { [x: string]: (arg0: any) => any },
-    ) => {
-      return Object.keys(schema)
-        .filter((key) => !schema[key](object[key]))
-        .map((key) => {
-          return new Error(key);
-        });
-    };
+    [
+      'address_street',
+      'address_city',
+      'address_subdivision',
+      'address_country_code',
+      'address_postal_code',
+    ].forEach((prop) => (address[prop] = paymentProviderInfo[prop]));
 
-    const errors = validate(address, addressSchema);
+    console.log(address);
 
-    if (errors.length > 0) {
-      for (const { message } of errors) {
-        for (const key of Object.keys(helperText)) {
-          if (message === key) {
-            let updatedValue = {};
-            updatedValue = { [key]: 'input is invalid' };
-            setHelperText((errorMessages) => ({
-              ...errorMessages,
-              ...updatedValue,
-            }));
-          }
-        }
-      }
-      return false;
+    const errors = validation;
+    if (!paymentProviderInfo.firstName.trim()) {
+      setIsValid(false);
+      errors.firstName = 'First name is required';
+    } else {
+      setIsValid(true);
+      errors.firstName = '';
     }
-    const res = await verifyAddress(address);
-    return res?.status === StatusCodes.OK ? true : false;
+
+    if (!paymentProviderInfo.lastName.trim()) {
+      setIsValid(false);
+      errors.lastName = 'Last name is required';
+    } else {
+      setIsValid(true);
+      errors.lastName = '';
+    }
+
+    if (!paymentProviderInfo.phoneNumber.trim()) {
+      setIsValid(false);
+      errors.phoneNumber = 'Phone Number is required';
+    } else if (!validatePhoneNumber(paymentProviderInfo.phoneNumber)) {
+      setIsValid(false);
+      errors.phoneNumber = 'Phone Number is invalid';
+    } else {
+      setIsValid(true);
+      errors.lastName = '';
+    }
+
+    if (!paymentProviderInfo.address_street.trim()) {
+      setIsValid(false);
+      errors.address_street = 'Street address is required';
+    } else if (paymentProviderInfo.address_street.match(antiSymbolPattern)) {
+      setIsValid(false);
+      errors.address_street = 'Street address contains invalid symbols';
+    } else {
+      setIsValid(true);
+      errors.address_street = '';
+    }
+
+    if (!paymentProviderInfo.address_city.trim()) {
+      setIsValid(false);
+      errors.address_city = 'City is required';
+    } else if (paymentProviderInfo.address_city.match(antiSymbolPattern)) {
+      setIsValid(false);
+      errors.address_city = 'City contains invalid symbols';
+    } else {
+      setIsValid(true);
+      errors.address_city = '';
+    }
+
+    if (!paymentProviderInfo.address_subdivision.trim()) {
+      setIsValid(false);
+      errors.address_subdivision = 'State or territory is required';
+    } else if (!paymentProviderInfo.address_subdivision.match(statePattern)) {
+      setIsValid(false);
+      errors.address_subdivision = `Entered value doesn't match any state or territory`;
+    } else {
+      setIsValid(true);
+      errors.address_subdivision = '';
+    }
+
+    if (!paymentProviderInfo.address_country_code.trim()) {
+      setIsValid(false);
+      errors.address_country_code = 'Country is required';
+    } else if (!paymentProviderInfo.address_country_code.match(countryPattern)) {
+      setIsValid(false);
+      errors.address_country_code = `Entered value doesn't match supported countries`;
+    } else {
+      setIsValid(true);
+      errors.address_country_code = '';
+    }
+
+    if (!paymentProviderInfo.address_postal_code.trim()) {
+      setIsValid(false);
+      errors.address_postal_code = 'ZIP/Postal code is required';
+    } else if (!paymentProviderInfo.address_postal_code.match(zipCodePattern)) {
+      setIsValid(false);
+      errors.address_postal_code = `Entered value doesn't match supported ZIP code`;
+    } else {
+      setIsValid(true);
+      errors.address_postal_code = '';
+    }
+    setValidation(errors);
+    if (isValid) {
+      return true;
+    }
   }
+
+  const handleChange = (e: { target: { name: any; value: any } }) => {
+    const { name, value } = e.target;
+
+    setPaymentProviderInfo((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   useEffect(() => {
-    const {
-      address_street,
-      address_city,
-      address_subdivision,
-      address_country_code,
-      address_postal_code,
-    } = paymentProviderInfo;
-    const address = {
-      address_street,
-      address_city,
-      address_subdivision,
-      address_country_code,
-      address_postal_code,
-    };
-    void validateAddress(address);
+    checkValidity();
   }, [paymentProviderInfo]);
+
   return (
     <Container>
       <HeaderContainer>
@@ -169,6 +220,7 @@ export const RetrieveUserInfo = ({
               <OutlinedLabel htmlFor="first-name">First Name</OutlinedLabel>
               <StyledInput
                 id="first-name"
+                name={'firstName'}
                 value={paymentProviderInfo.firstName ? paymentProviderInfo.firstName : ''}
                 onChange={(e) => {
                   let updatedValue = {};
@@ -179,12 +231,12 @@ export const RetrieveUserInfo = ({
                   }));
                 }}
               />
-              <FormHelperText>{helperText.firstName}</FormHelperText>
             </CustomBox>
             <Box display="flex" flexDirection="column" width="50%">
               <OutlinedLabel htmlFor="last-name">Last Name</OutlinedLabel>
               <StyledInput
                 id="last-name"
+                name={'lastName'}
                 value={paymentProviderInfo.lastName ? paymentProviderInfo.lastName : ''}
                 onChange={(e) => {
                   let updatedValue = {};
@@ -195,60 +247,37 @@ export const RetrieveUserInfo = ({
                   }));
                 }}
               />
-              <FormHelperText>{helperText.lastName}</FormHelperText>
             </Box>
           </Box>
           <Box display="flex" flexDirection="column" width="100%">
             <OutlinedLabel htmlFor="phone">Phone Number</OutlinedLabel>
             <StyledInput
               id="phone"
+              name={'phoneNumber'}
               value={paymentProviderInfo.phoneNumber ? paymentProviderInfo.phoneNumber : ''}
-              onChange={(e) => {
-                let updatedValue = {};
-                updatedValue = { phoneNumber: e.target.value };
-
-                setPaymentProviderInfo((userBillingInfo) => ({
-                  ...userBillingInfo,
-                  ...updatedValue,
-                }));
-              }}
+              onChange={handleChange}
             />
-            <FormHelperText>{helperText.phoneNumber}</FormHelperText>
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
             <CustomBox display="flex" flexDirection="column" width="70%">
               <OutlinedLabel htmlFor="street-address">Street Address</OutlinedLabel>
               <StyledInput
                 id="street-address"
+                name={'address_street'}
                 value={paymentProviderInfo.address_street ? paymentProviderInfo.address_street : ''}
-                onChange={(e) => {
-                  let updatedValue = {};
-                  updatedValue = { address_street: e.target.value };
-                  setPaymentProviderInfo((userBillingInfo) => ({
-                    ...userBillingInfo,
-                    ...updatedValue,
-                  }));
-                }}
+                onChange={handleChange}
               />
-              <FormHelperText error>{helperText.address_street}</FormHelperText>
+              <FormHelperText error>{validation.address_street}</FormHelperText>
             </CustomBox>
             <Box display="flex" width="40%" flexDirection="column">
               <OutlinedLabel htmlFor="country">Country</OutlinedLabel>
               <CustomSelect
+                name={'address_country_code'}
                 info={paymentProviderInfo.address_country_code}
-                setInfo={(event: SelectChangeEvent<unknown>) => {
-                  const updatedValue = {
-                    address_country_code: event.target
-                      .value as IUserBillingInfo['address_country_code'],
-                  };
-                  setPaymentProviderInfo((userBillingInfo: any) => ({
-                    ...userBillingInfo,
-                    ...updatedValue,
-                  }));
-                }}
+                setInfo={handleChange}
                 options={[{ value: 'US', name: 'United States' }]}
               />
-              <FormHelperText error>{helperText.address_country_code}</FormHelperText>
+              <FormHelperText error>{validation.address_country_code}</FormHelperText>
             </Box>
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
@@ -256,54 +285,35 @@ export const RetrieveUserInfo = ({
               <OutlinedLabel htmlFor="city">City</OutlinedLabel>
               <StyledInput
                 id="city"
+                name={'address_city'}
                 value={paymentProviderInfo.address_city ? paymentProviderInfo.address_city : ''}
-                onChange={(e) => {
-                  let updatedValue = {};
-                  updatedValue = { address_city: e.target.value };
-                  setPaymentProviderInfo((userBillingInfo) => ({
-                    ...userBillingInfo,
-                    ...updatedValue,
-                  }));
-                }}
+                onChange={handleChange}
               />
-              <FormHelperText error>{helperText.address_city}</FormHelperText>
+              <FormHelperText error>{validation.address_city}</FormHelperText>
             </CustomBox>
             <CustomBox display="flex" flexDirection="column" width="100%">
               <OutlinedLabel htmlFor="state">State/Territory</OutlinedLabel>
               <CustomSelect
+                name={'address_subdivision'}
                 info={paymentProviderInfo.address_subdivision}
-                setInfo={(event: SelectChangeEvent<unknown>) => {
-                  const updatedValue = {
-                    address_subdivision: event.target
-                      .value as IUserBillingInfo['address_subdivision'],
-                  };
-                  setPaymentProviderInfo((userBillingInfo) => ({
-                    ...userBillingInfo,
-                    ...updatedValue,
-                  }));
-                }}
+                setInfo={handleChange}
                 options={states}
               />
-              <FormHelperText error>{helperText.address_subdivision}</FormHelperText>
+              <FormHelperText error>{validation.address_subdivision}</FormHelperText>
             </CustomBox>
             <Box display="flex" flexDirection="column" width="100%">
               <OutlinedLabel htmlFor="postal">Zip/Postal Code</OutlinedLabel>
               <StyledInput
                 id="postal"
+                name={'address_postal_code'}
                 value={
                   paymentProviderInfo.address_postal_code
                     ? paymentProviderInfo.address_postal_code
                     : ''
                 }
-                onChange={(e) => {
-                  const updatedValue = { address_postal_code: e.target.value };
-                  setPaymentProviderInfo((userBillingInfo) => ({
-                    ...userBillingInfo,
-                    ...updatedValue,
-                  }));
-                }}
+                onChange={handleChange}
               />
-              <FormHelperText error>{helperText.address_postal_code}</FormHelperText>
+              <FormHelperText error>{validation.address_postal_code}</FormHelperText>
             </Box>
           </Box>
         </PaymentContainer>
