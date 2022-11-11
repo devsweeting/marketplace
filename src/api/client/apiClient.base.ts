@@ -15,6 +15,7 @@ interface IBaseApiResponse {
   status: StatusCodes;
   ok: boolean;
   headers: Record<string, string>;
+  message?: string;
 }
 
 export interface IApiJsonResponse extends IBaseApiResponse {
