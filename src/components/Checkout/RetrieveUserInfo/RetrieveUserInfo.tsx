@@ -1,7 +1,7 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
-import { Box, FormHelperText, IconButton } from '@mui/material';
+import { Box, FormHelperText, IconButton, Alert, Stack } from '@mui/material';
 import { ConfirmInfoButton, CustomBox, CustomSelect } from './RetrieveUserInfo.styles';
 import { states } from './StatesAndTerritories';
 import { StatusCodes } from 'http-status-codes';
@@ -18,6 +18,41 @@ import {
   StyledInput,
 } from '../PaymentMethods/PaymentMethods.styles';
 
+function useForm(initialState = {}, validations = [] as any[], onSubmit: () => Promise<void>) {
+  function validate(validations: any[], values: Record<string, unknown>) {
+    const errors = validations
+      .map((validation) => validation(values))
+      .filter((validation) => typeof validation === 'object');
+    return {
+      isValid: errors.length === 0,
+      errors: errors.reduce((errors, error) => ({ ...errors, ...error }), {}),
+    };
+  }
+
+  const { isValid: initialIsValid, errors: initialErrors } = validate(validations, initialState);
+  const [values, setValues] = useState<{ [x: string]: string }>(initialState);
+  const [errors, setErrors] = useState(initialErrors);
+  const [isValid, setIsValid] = useState(initialIsValid);
+  const [touched, setTouched] = useState<{ [x: string]: boolean }>(initialState);
+
+  const changeHandler = (event: { target: { name: any; value: any } }) => {
+    const { name, value } = event.target;
+    const newValues = { ...values, [name]: value };
+    const newlyTouched = { ...touched, [name]: true };
+    const { isValid, errors } = validate(validations, newValues);
+    setValues(newValues);
+    setIsValid(isValid);
+    setErrors(errors);
+    setValues(newValues);
+    setTouched(newlyTouched);
+  };
+  const submitHandler = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    void onSubmit();
+  };
+  return { values, changeHandler, isValid, errors, touched, submitHandler };
+}
+
 export interface IUserBillingInfo {
   address_street?: string;
   address_city?: string;
@@ -25,6 +60,35 @@ export interface IUserBillingInfo {
   address_country_code?: string;
   address_postal_code?: string;
 }
+
+const isRequired = (value: string) => {
+  return value != null && value.trim().length > 0;
+};
+
+const validatePhoneNumber = (phoneNumber: string) => {
+  const phoneNumberPattern = /^(?:\([2-9]\d{2}\) ?|[2-9]\d{2}(?:-?| ?))[2-9]\d{2}[- ]?\d{4}$/;
+  return phoneNumberPattern.test(phoneNumber);
+};
+
+const validateState = (state: string) => {
+  const statePattern =
+    /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/gm;
+  return statePattern.test(state);
+};
+const validateCountry = (country: string) => {
+  const countryPattern = /^US$/;
+  return countryPattern.test(country);
+};
+const validateZip = (zip: string) => {
+  const countryPattern = /^US$/;
+  return countryPattern.test(zip);
+};
+
+const antiSymbolPattern = /[!@$%^&*(),?":{}|<>]/g;
+
+const validatePattern = (value: string) => {
+  return !antiSymbolPattern.test(value);
+};
 
 export const RetrieveUserInfo = ({
   page,
@@ -34,8 +98,7 @@ export const RetrieveUserInfo = ({
   setPage: Dispatch<SetStateAction<number>>;
 }) => {
   const { closeModal } = useCart();
-  const [isValid, setIsValid] = useState(false);
-  const [paymentProviderInfo, setPaymentProviderInfo] = useState<{ [x: string]: string }>({
+  const initialState = {
     address_street: '',
     address_city: '',
     address_subdivision: '',
@@ -44,142 +107,76 @@ export const RetrieveUserInfo = ({
     firstName: '',
     lastName: '',
     phoneNumber: '',
-  });
-  const [validation, setValidation] = useState({
-    address_street: '',
-    address_city: '',
-    address_subdivision: '',
-    address_country_code: '',
-    address_postal_code: '',
-    firstName: '',
-    lastName: '',
-    phoneNumber: '',
-  });
+  };
 
-  function validatePhoneNumber(phoneNumber: string) {
-    const phoneNumberPattern = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
-    return phoneNumberPattern.test(phoneNumber);
+  const validations = [
+    ({ address_street }: { address_street: string }) =>
+      isRequired(address_street) || { address_street: 'Street address is required' },
+    ({ address_street }: { address_street: string }) =>
+      validatePattern(address_street) || { address_street: 'Street contains invalid characters' },
+    ({ address_city }: { address_city: string }) =>
+      isRequired(address_city) || { address_city: 'City is required' },
+    ({ address_city }: { address_city: string }) =>
+      validatePattern(address_city) || { address_city: 'City contains invalid characters' },
+    ({ address_subdivision }: { address_subdivision: string }) =>
+      isRequired(address_subdivision) || { address_subdivision: 'State is required' },
+    ({ address_subdivision }: { address_subdivision: string }) =>
+      validateState(address_subdivision) || { address_subdivision: 'State is not valid' },
+    ({ address_country_code }: { address_country_code: string }) =>
+      isRequired(address_country_code) || { address_country_code: 'Country is required' },
+    ({ address_country_code }: { address_country_code: string }) =>
+      validateCountry(address_country_code) || { address_country_code: 'State is not valid' },
+    ({ address_postal_code }: { address_postal_code: string }) =>
+      validateZip(address_postal_code) || { address_postal_code: 'ZIP code is required' },
+    ({ address_postal_code }: { address_postal_code: string }) =>
+      isRequired(address_postal_code) || { address_postal_code: 'ZIP code is required' },
+    ({ firstName }: { firstName: string }) =>
+      validatePattern(firstName) || { firstName: `First name contains invalid characters` },
+    ({ firstName }: { firstName: string }) =>
+      isRequired(firstName) || { firstName: 'First name is required' },
+    ({ lastName }: { lastName: string }) =>
+      validatePattern(lastName) || { lastName: `Last name contains invalid characters` },
+    ({ lastName }: { lastName: string }) =>
+      isRequired(lastName) || { lastName: 'Last name is required' },
+    ({ phoneNumber }: { phoneNumber: string }) =>
+      isRequired(phoneNumber) || { phoneNumber: 'Phone number is required' },
+    ({ phoneNumber }: { phoneNumber: string }) =>
+      validatePhoneNumber(phoneNumber) || { phoneNumber: 'Not a valid phone number' },
+  ];
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const address: { [x: string]: string } = {
+    address_street: '',
+    address_city: '',
+    address_subdivision: '',
+    address_country_code: '',
+    address_postal_code: '',
+  };
+
+  async function onSignup(): Promise<void> {
+    const res = await verifyAddress(address);
+    res?.status === StatusCodes.OK
+      ? setPage(page + 1)
+      : setAlertText(`Address couldn't be verified`);
   }
 
-  function checkValidity() {
-    const zipCodePattern = /^[0-9]{5}(?:-[0-9]{4})?$/;
-    const countryPattern = /^US$/;
-    const antiSymbolPattern = /[!@$%^&*(),?":{}|<>]/g;
-    const statePattern =
-      /(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])/gm;
+  const { values, isValid, errors, changeHandler, touched, submitHandler } = useForm(
+    initialState,
+    validations,
+    onSignup,
+  );
 
-    let address: { [x: string]: string };
-
+  useEffect(() => {
     [
       'address_street',
       'address_city',
       'address_subdivision',
       'address_country_code',
       'address_postal_code',
-    ].forEach((prop) => (address[prop] = paymentProviderInfo[prop]));
+    ].forEach((prop) => (address[prop] = values[prop]));
+  }, [address, values]);
 
-    console.log(address);
-
-    const errors = validation;
-    if (!paymentProviderInfo.firstName.trim()) {
-      setIsValid(false);
-      errors.firstName = 'First name is required';
-    } else {
-      setIsValid(true);
-      errors.firstName = '';
-    }
-
-    if (!paymentProviderInfo.lastName.trim()) {
-      setIsValid(false);
-      errors.lastName = 'Last name is required';
-    } else {
-      setIsValid(true);
-      errors.lastName = '';
-    }
-
-    if (!paymentProviderInfo.phoneNumber.trim()) {
-      setIsValid(false);
-      errors.phoneNumber = 'Phone Number is required';
-    } else if (!validatePhoneNumber(paymentProviderInfo.phoneNumber)) {
-      setIsValid(false);
-      errors.phoneNumber = 'Phone Number is invalid';
-    } else {
-      setIsValid(true);
-      errors.lastName = '';
-    }
-
-    if (!paymentProviderInfo.address_street.trim()) {
-      setIsValid(false);
-      errors.address_street = 'Street address is required';
-    } else if (paymentProviderInfo.address_street.match(antiSymbolPattern)) {
-      setIsValid(false);
-      errors.address_street = 'Street address contains invalid symbols';
-    } else {
-      setIsValid(true);
-      errors.address_street = '';
-    }
-
-    if (!paymentProviderInfo.address_city.trim()) {
-      setIsValid(false);
-      errors.address_city = 'City is required';
-    } else if (paymentProviderInfo.address_city.match(antiSymbolPattern)) {
-      setIsValid(false);
-      errors.address_city = 'City contains invalid symbols';
-    } else {
-      setIsValid(true);
-      errors.address_city = '';
-    }
-
-    if (!paymentProviderInfo.address_subdivision.trim()) {
-      setIsValid(false);
-      errors.address_subdivision = 'State or territory is required';
-    } else if (!paymentProviderInfo.address_subdivision.match(statePattern)) {
-      setIsValid(false);
-      errors.address_subdivision = `Entered value doesn't match any state or territory`;
-    } else {
-      setIsValid(true);
-      errors.address_subdivision = '';
-    }
-
-    if (!paymentProviderInfo.address_country_code.trim()) {
-      setIsValid(false);
-      errors.address_country_code = 'Country is required';
-    } else if (!paymentProviderInfo.address_country_code.match(countryPattern)) {
-      setIsValid(false);
-      errors.address_country_code = `Entered value doesn't match supported countries`;
-    } else {
-      setIsValid(true);
-      errors.address_country_code = '';
-    }
-
-    if (!paymentProviderInfo.address_postal_code.trim()) {
-      setIsValid(false);
-      errors.address_postal_code = 'ZIP/Postal code is required';
-    } else if (!paymentProviderInfo.address_postal_code.match(zipCodePattern)) {
-      setIsValid(false);
-      errors.address_postal_code = `Entered value doesn't match supported ZIP code`;
-    } else {
-      setIsValid(true);
-      errors.address_postal_code = '';
-    }
-    setValidation(errors);
-    if (isValid) {
-      return true;
-    }
-  }
-
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-
-    setPaymentProviderInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  useEffect(() => {
-    checkValidity();
-  }, [paymentProviderInfo]);
+  const [alertText, setAlertText] = useState('');
 
   return (
     <Container>
@@ -214,6 +211,13 @@ export const RetrieveUserInfo = ({
         alignItems="center"
         justifyContent="center"
       >
+        {alertText && (
+          <Stack sx={{ width: '90%', margin: 1 }} spacing={2}>
+            <Alert severity="error" icon={false}>
+              {alertText}
+            </Alert>
+          </Stack>
+        )}
         <PaymentContainer>
           <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
             <CustomBox display="flex" flexDirection="column" width="50%">
@@ -221,42 +225,37 @@ export const RetrieveUserInfo = ({
               <StyledInput
                 id="first-name"
                 name={'firstName'}
-                value={paymentProviderInfo.firstName ? paymentProviderInfo.firstName : ''}
-                onChange={(e) => {
-                  let updatedValue = {};
-                  updatedValue = { firstName: e.target.value };
-                  setPaymentProviderInfo((userBillingInfo) => ({
-                    ...userBillingInfo,
-                    ...updatedValue,
-                  }));
-                }}
+                value={values.firstName ? values.firstName : ''}
+                onChange={changeHandler}
               />
+              {touched.firstName && errors.firstName && (
+                <FormHelperText error>{errors.firstName}</FormHelperText>
+              )}
             </CustomBox>
             <Box display="flex" flexDirection="column" width="50%">
               <OutlinedLabel htmlFor="last-name">Last Name</OutlinedLabel>
               <StyledInput
                 id="last-name"
                 name={'lastName'}
-                value={paymentProviderInfo.lastName ? paymentProviderInfo.lastName : ''}
-                onChange={(e) => {
-                  let updatedValue = {};
-                  updatedValue = { lastName: e.target.value };
-                  setPaymentProviderInfo((userBillingInfo) => ({
-                    ...userBillingInfo,
-                    ...updatedValue,
-                  }));
-                }}
+                value={values.lastName ? values.lastName : ''}
+                onChange={changeHandler}
               />
+              {touched.lastName && errors.lastName && (
+                <FormHelperText error>{errors.lastName}</FormHelperText>
+              )}
             </Box>
           </Box>
-          <Box display="flex" flexDirection="column" width="100%">
+          <Box marginBottom="8px" display="flex" flexDirection="column" width="100%">
             <OutlinedLabel htmlFor="phone">Phone Number</OutlinedLabel>
             <StyledInput
               id="phone"
               name={'phoneNumber'}
-              value={paymentProviderInfo.phoneNumber ? paymentProviderInfo.phoneNumber : ''}
-              onChange={handleChange}
+              value={values.phoneNumber ? values.phoneNumber : ''}
+              onChange={changeHandler}
             />
+            {touched.phoneNumber && errors.phoneNumber && (
+              <FormHelperText error>{errors.phoneNumber}</FormHelperText>
+            )}
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
             <CustomBox display="flex" flexDirection="column" width="70%">
@@ -264,20 +263,24 @@ export const RetrieveUserInfo = ({
               <StyledInput
                 id="street-address"
                 name={'address_street'}
-                value={paymentProviderInfo.address_street ? paymentProviderInfo.address_street : ''}
-                onChange={handleChange}
+                value={values.address_street ? values.address_street : ''}
+                onChange={changeHandler}
               />
-              <FormHelperText error>{validation.address_street}</FormHelperText>
+              {touched.address_street && errors.address_street && (
+                <FormHelperText error>{errors.address_street}</FormHelperText>
+              )}
             </CustomBox>
             <Box display="flex" width="40%" flexDirection="column">
               <OutlinedLabel htmlFor="country">Country</OutlinedLabel>
               <CustomSelect
                 name={'address_country_code'}
-                info={paymentProviderInfo.address_country_code}
-                setInfo={handleChange}
+                info={values.address_country_code}
+                setInfo={changeHandler}
                 options={[{ value: 'US', name: 'United States' }]}
               />
-              <FormHelperText error>{validation.address_country_code}</FormHelperText>
+              {touched.address_country_code && errors.address_country_code && (
+                <FormHelperText error>{errors.address_country_code}</FormHelperText>
+              )}
             </Box>
           </Box>
           <Box display="flex" flexDirection="row" justifyContent="space-between">
@@ -286,43 +289,41 @@ export const RetrieveUserInfo = ({
               <StyledInput
                 id="city"
                 name={'address_city'}
-                value={paymentProviderInfo.address_city ? paymentProviderInfo.address_city : ''}
-                onChange={handleChange}
+                value={values.address_city ? values.address_city : ''}
+                onChange={changeHandler}
               />
-              <FormHelperText error>{validation.address_city}</FormHelperText>
+              {touched.address_city && errors.address_city && (
+                <FormHelperText error>{errors.address_city}</FormHelperText>
+              )}
             </CustomBox>
             <CustomBox display="flex" flexDirection="column" width="100%">
               <OutlinedLabel htmlFor="state">State/Territory</OutlinedLabel>
               <CustomSelect
                 name={'address_subdivision'}
-                info={paymentProviderInfo.address_subdivision}
-                setInfo={handleChange}
+                info={values.address_subdivision}
+                setInfo={changeHandler}
                 options={states}
               />
-              <FormHelperText error>{validation.address_subdivision}</FormHelperText>
+              {touched.address_subdivision && errors.address_subdivision && (
+                <FormHelperText error>{errors.address_subdivision}</FormHelperText>
+              )}
             </CustomBox>
             <Box display="flex" flexDirection="column" width="100%">
               <OutlinedLabel htmlFor="postal">Zip/Postal Code</OutlinedLabel>
               <StyledInput
                 id="postal"
                 name={'address_postal_code'}
-                value={
-                  paymentProviderInfo.address_postal_code
-                    ? paymentProviderInfo.address_postal_code
-                    : ''
-                }
-                onChange={handleChange}
+                value={values.address_postal_code ? values.address_postal_code : ''}
+                onChange={changeHandler}
               />
-              <FormHelperText error>{validation.address_postal_code}</FormHelperText>
+              {touched.address_postal_code && errors.address_postal_code && (
+                <FormHelperText error>{errors.address_postal_code}</FormHelperText>
+              )}
             </Box>
           </Box>
         </PaymentContainer>
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
-          <ConfirmInfoButton
-            onClick={() => {
-              setPage(page + 1);
-            }}
-          >
+          <ConfirmInfoButton disabled={!isValid} onClick={submitHandler}>
             Confirm Info
           </ConfirmInfoButton>
         </Box>

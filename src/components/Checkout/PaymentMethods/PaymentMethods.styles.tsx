@@ -281,6 +281,8 @@ export const AddFundsButton = styled(Button)(({ theme }) => ({
       backgroundColor: theme.palette.grey[200],
       color: theme.palette.grey[400],
       borderColor: theme.palette.grey[400],
+      cursor: 'not-allowed',
+      pointerEvents: 'all',
     },
     border: `1px solid ${theme.palette.primary.main}`,
     '&:hover': {

@@ -17,6 +17,13 @@ export const ConfirmInfoButton = styled(Button)(({ theme }) => ({
       color: theme.palette.primary.main,
       backgroundColor: theme.palette.secondary.main,
     },
+    '&:disabled': {
+      backgroundColor: theme.palette.grey[200],
+      color: theme.palette.grey[400],
+      borderColor: theme.palette.grey[400],
+      cursor: 'not-allowed',
+      pointerEvents: 'all',
+    },
     [theme.breakpoints.down('sm')]: {
       margin: '0 12px',
       fontWeight: '500',
