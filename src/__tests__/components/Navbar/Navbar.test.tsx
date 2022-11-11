@@ -7,6 +7,7 @@ import { themeJump } from '@/styles/themeJump';
 import { mockNavLinks } from '@/__mocks__/mockApiData';
 import { withTestRouter } from '../../utils/TestRouter';
 import user from '@testing-library/user-event';
+import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 //TODO - account for when the user is logged in and when they are not logged in
 jest.mock('next/router', () => ({
   useRouter() {
@@ -21,7 +22,9 @@ const push = jest.fn();
 const MockNavbar: React.FC<{ navLinks: NavLinksProps }> = ({ navLinks }) => {
   return withTestRouter(
     <ThemeProvider theme={themeJump}>
-      <Navbar navLinks={navLinks} />
+      <ModalContextProvider>
+        <Navbar navLinks={navLinks} />
+      </ModalContextProvider>
     </ThemeProvider>,
     { push, asPath: '/' },
   );

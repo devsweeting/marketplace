@@ -7,7 +7,7 @@ import { BuyModal } from '../BuyModal/BuyModal';
 import { AssetGallery } from './Components/CardGallery';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
-import { useModal } from '@/helpers/hooks/useModal';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
@@ -29,7 +29,7 @@ import Link from 'next/link';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
-  const { setIsModalOpen } = useModal();
+  const { dispatch } = useModalContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -64,7 +64,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
 
   const handleOpenBuyModal = () => {
     if (!user) {
-      setIsModalOpen(true);
+      dispatch({ type: 'login', visible: true });
       return;
     }
     setBuyModalOpen(true);

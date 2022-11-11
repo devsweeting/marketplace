@@ -3,11 +3,14 @@ import HomePage from '../pages';
 import { withTestRouter } from './utils/TestRouter';
 import { themeJump } from '@/styles/themeJump';
 import { ThemeProvider } from '@mui/material';
+import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 const push = jest.fn();
 const MockHomePage = () => {
   return withTestRouter(
     <ThemeProvider theme={themeJump}>
-      <HomePage />
+      <ModalContextProvider>
+        <HomePage />
+      </ModalContextProvider>
     </ThemeProvider>,
     { push, asPath: '/' },
   );

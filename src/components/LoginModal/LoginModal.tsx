@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Box, OutlinedInput, Typography, useTheme } from '@mui/material';
 import { Button } from '@/components/Button';
-import { useModal } from '@/helpers/hooks/useModal';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 import { loginRequest } from '@/api/endpoints/loginRequest';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/router';
@@ -9,11 +9,11 @@ import { useRouter } from 'next/router';
 import { Modal, ModalCard, Form, Label } from './LoginModal.styles';
 import Link from 'next/link';
 
-export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismiss?: boolean }) => {
+export const LoginModal = ({ noDismiss }: { noDismiss?: boolean }) => {
   const [emailState, setEmailState] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [buttonState, setButtonState] = useState(false);
-  const { setIsModalOpen } = useModal();
+  const { state, dispatch } = useModalContext();
   const modalBox = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const theme = useTheme();
@@ -24,7 +24,7 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
   };
   const handleClose = () => {
     if (noDismiss) {
-      setIsModalOpen(!isOpen);
+      dispatch({ type: 'login', visible: false });
     }
 
     setEmailState('');
@@ -94,7 +94,7 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
   };
   return (
     <Modal
-      open={isOpen}
+      open={state.login}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"

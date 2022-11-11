@@ -1,13 +1,12 @@
 import { Box, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import React from 'react';
-import { useModal } from '@/helpers/hooks/useModal';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 import { Container, Square } from './SignUpCallToAction.styles';
 
 export const SignUpCallToAction = () => {
-  const { isModalOpen, setIsModalOpen } = useModal();
+  const { dispatch } = useModalContext();
   const handleClick = () => {
-    setIsModalOpen(!isModalOpen);
+    dispatch({ type: 'login', visible: true });
   };
   return (
     <Container>

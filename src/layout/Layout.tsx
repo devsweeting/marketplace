@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import type { HeaderPosition } from './components/Header/Header';
 import { Footer } from './components/Footer';
 import { styled } from '@mui/material';
+import { Modals } from '@/components/Modals';
 
 const MainContainer = styled('div')({
   minHeight: '100vh',
@@ -21,6 +22,7 @@ export const Layout = ({
 }) => {
   return (
     <MainContainer>
+      <Modals />
       <Header headerPosition={headerPosition} />
       {children}
       <Footer />

@@ -1,5 +1,6 @@
 import { AssetListView } from '@/containers/AssetListView';
 import type { IAssetListView } from '@/containers/AssetListView/IAssetListView';
+import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 import { themeJump } from '@/styles/themeJump';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { ThemeProvider } from '@mui/styles';
@@ -12,11 +13,13 @@ const mockAssets = mockAssetResponse.items;
 const MockAssetListView = ({ assets, handleDrawer, activeCardId }: IAssetListView) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <AssetListView
-        assets={assets}
-        handleDrawer={handleDrawer}
-        activeCardId={activeCardId}
-      ></AssetListView>
+      <ModalContextProvider>
+        <AssetListView
+          assets={assets}
+          handleDrawer={handleDrawer}
+          activeCardId={activeCardId}
+        ></AssetListView>
+      </ModalContextProvider>
     </ThemeProvider>
   );
 };
