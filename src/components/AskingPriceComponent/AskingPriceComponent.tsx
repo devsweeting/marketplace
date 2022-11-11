@@ -46,8 +46,8 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
   const { closeCart } = useCart();
   const [cartItem, setCartItem] = useState<CartItem>();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [helperTextValue, setHelperTextValue] = useState('');
+  // const [alertMessage, setAlertMessage] = useState('');
+  // const [helperTextValue, setHelperTextValue] = useState('');
 
   const [inputValues, setInputValues] = useState({
     percent: 0,
@@ -115,7 +115,7 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
 
   const checkValues = () => {
     if (isNaN(inputValues.percent) || isNaN(inputValues.price)) {
-      setHelperTextValue('Asking Price must be a valid number');
+      // setHelperTextValue('Asking Price must be a valid number');
     }
   };
 
@@ -219,7 +219,10 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
               }}
             >
               <StyledLockIcon />
-              {'Secured by'} <span style={{ fontWeight: '600', margin: '0 4px' }}>{'Jump'}</span>
+              {'Secured by'}
+              <Box component="span" style={{ fontWeight: '600', margin: '0 4px' }}>
+                {'Jump'}
+              </Box>
             </Text>
           </OrderSummary>
         </Content>

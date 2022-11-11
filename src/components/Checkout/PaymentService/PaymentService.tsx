@@ -7,6 +7,7 @@ import {
   Button,
   Collapse,
   IconButton,
+  InputAdornment,
   InputLabel,
   OutlinedInput,
   Typography,
@@ -21,6 +22,47 @@ import type { IAsset } from '@/types/assetTypes';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
+
+function creditCardType(cc: string) {
+  const amex = new RegExp('^3[47][0-9]{13}$');
+  const visa = new RegExp('^4[0-9]{12}(?:[0-9]{3})?$');
+  const cup1 = new RegExp('^62[0-9]{14}[0-9]*$');
+  const cup2 = new RegExp('^81[0-9]{14}[0-9]*$');
+
+  const mastercard = new RegExp('^5[1-5][0-9]{14}$');
+  const mastercard2 = new RegExp('^2[2-7][0-9]{14}$');
+
+  const disco1 = new RegExp('^6011[0-9]{12}[0-9]*$');
+  const disco2 = new RegExp('^62[24568][0-9]{13}[0-9]*$');
+  const disco3 = new RegExp('^6[45][0-9]{14}[0-9]*$');
+
+  const diners = new RegExp('^3[0689][0-9]{12}[0-9]*$');
+  const jcb = new RegExp('^35[0-9]{14}[0-9]*$');
+
+  if (visa.test(cc)) {
+    return 'visa-color.svg';
+  }
+  if (amex.test(cc)) {
+    return 'amex-color.svg';
+  }
+  if (mastercard.test(cc) || mastercard2.test(cc)) {
+    return 'mastercard-color.svg';
+  }
+  if (disco1.test(cc) || disco2.test(cc) || disco3.test(cc)) {
+    return 'discover-color.svg';
+  }
+  if (diners.test(cc)) {
+    return 'DINERS';
+  }
+  if (jcb.test(cc)) {
+    return 'JCB';
+  }
+  if (cup1.test(cc) || cup2.test(cc)) {
+    return 'CHINA_UNION_PAY';
+  }
+  return 'card-default-color.svg';
+}
 
 export const PaymentService = ({
   page,
@@ -151,6 +193,20 @@ export const PaymentService = ({
               placeholder="xxxx xxxx xxxx xxxx"
               id="card-number"
               sx={{ width: '100%', borderRadius: '8px', height: '40px', margin: '4px 8px 8px 0' }}
+              endAdornment={
+                <InputAdornment position="start">
+                  <Box
+                    component="div"
+                    sx={{ height: '45px', width: '45px', objectFit: 'cover', position: 'relative' }}
+                  >
+                    <Image
+                      layout="fill"
+                      src={`/images/PaymentProvidersIcons/${creditCardType('4111111111111111')}`}
+                      alt=""
+                    />
+                  </Box>
+                </InputAdornment>
+              }
             />
           </Box>
           <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }} htmlFor="card-name">
@@ -321,7 +377,10 @@ export const PaymentService = ({
               padding: '0',
             }}
           />
-          {'Secured by'} <span style={{ fontWeight: '600', margin: '0 4px' }}>{'Jump'}</span>
+          {'Secured by'}
+          <Box component="span" style={{ fontWeight: '600', margin: '0 4px' }}>
+            {'Jump'}
+          </Box>
         </Typography>
       </Box>
     </Box>

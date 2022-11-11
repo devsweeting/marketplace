@@ -7,6 +7,7 @@ import { states } from './StatesAndTerritories';
 import { StatusCodes } from 'http-status-codes';
 import { useCart } from '@/helpers/auth/CartContext';
 import { verifyAddress } from '@/api/endpoints/synapse';
+import { useForm } from '@/helpers/hooks/useForm';
 import type { Dispatch, SetStateAction } from 'react';
 import {
   Container,
@@ -17,41 +18,6 @@ import {
   PaymentContainer,
   StyledInput,
 } from '../PaymentMethods/PaymentMethods.styles';
-
-function useForm(initialState = {}, validations = [] as any[], onSubmit: () => Promise<void>) {
-  function validate(validations: any[], values: Record<string, unknown>) {
-    const errors = validations
-      .map((validation) => validation(values))
-      .filter((validation) => typeof validation === 'object');
-    return {
-      isValid: errors.length === 0,
-      errors: errors.reduce((errors, error) => ({ ...errors, ...error }), {}),
-    };
-  }
-
-  const { isValid: initialIsValid, errors: initialErrors } = validate(validations, initialState);
-  const [values, setValues] = useState<{ [x: string]: string }>(initialState);
-  const [errors, setErrors] = useState(initialErrors);
-  const [isValid, setIsValid] = useState(initialIsValid);
-  const [touched, setTouched] = useState<{ [x: string]: boolean }>(initialState);
-
-  const changeHandler = (event: { target: { name: any; value: any } }) => {
-    const { name, value } = event.target;
-    const newValues = { ...values, [name]: value };
-    const newlyTouched = { ...touched, [name]: true };
-    const { isValid, errors } = validate(validations, newValues);
-    setValues(newValues);
-    setIsValid(isValid);
-    setErrors(errors);
-    setValues(newValues);
-    setTouched(newlyTouched);
-  };
-  const submitHandler = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    void onSubmit();
-  };
-  return { values, changeHandler, isValid, errors, touched, submitHandler };
-}
 
 export interface IUserBillingInfo {
   address_street?: string;
@@ -80,7 +46,7 @@ const validateCountry = (country: string) => {
   return countryPattern.test(country);
 };
 const validateZip = (zip: string) => {
-  const countryPattern = /^US$/;
+  const countryPattern = /^\d{5}(-\d{4})?$/;
   return countryPattern.test(zip);
 };
 
@@ -127,7 +93,7 @@ export const RetrieveUserInfo = ({
     ({ address_country_code }: { address_country_code: string }) =>
       validateCountry(address_country_code) || { address_country_code: 'State is not valid' },
     ({ address_postal_code }: { address_postal_code: string }) =>
-      validateZip(address_postal_code) || { address_postal_code: 'ZIP code is required' },
+      validateZip(address_postal_code) || { address_postal_code: 'ZIP code is not valid' },
     ({ address_postal_code }: { address_postal_code: string }) =>
       isRequired(address_postal_code) || { address_postal_code: 'ZIP code is required' },
     ({ firstName }: { firstName: string }) =>
