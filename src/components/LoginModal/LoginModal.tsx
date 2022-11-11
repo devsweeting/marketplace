@@ -288,9 +288,9 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
               >
                 {headerText}
               </Typography>
-              <span style={{ marginBottom: '40px' }} role="alert" ref={modalBox}>
+              <Box component="span" style={{ marginBottom: '40px' }} role="alert" ref={modalBox}>
                 {alertMessage}
-              </span>
+              </Box>
               <Typography
                 variant="lg"
                 sx={{
@@ -406,14 +406,15 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
                   />
                   <Typography>
                     {"Didn't get it? "}
-                    <span
+                    <Box
+                      component="span"
                       style={{ cursor: 'pointer', textDecoration: 'underline' }}
                       onClick={() => {
                         dispatch({ type: 'fail', payload: 0 });
                       }}
                     >
                       Try again
-                    </span>
+                    </Box>
                   </Typography>
                 </>
               )}

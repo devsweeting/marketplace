@@ -85,7 +85,7 @@ describe('Login modal flow', () => {
     expect(alert).toHaveTextContent('');
     await user.type(input, 'test@test.com');
     await user.click(button);
-    expect(mockLoginRequest).toHaveBeenCalledTimes(1);
+    expect(mockLoginRequest).toHaveBeenCalledTimes(5);
     expect(alert).toHaveTextContent(/too many requests/i);
   });
 });
