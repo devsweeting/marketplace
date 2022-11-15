@@ -36,18 +36,24 @@ import {
   PriceOutlinedInput,
 } from './AskingPriceComponent.styles';
 import { useRouter } from 'next/router';
-
-import { Attributes } from '../Attributes';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset, IPurchaseInfo } from '@/types/assetTypes';
 import { formatNumber } from '@/helpers/formatNumber';
 
-export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
+export const AskingPriceComponent = ({
+  asset,
+  purchaseInfo,
+}: {
+  asset: IAsset;
+  purchaseInfo: IPurchaseInfo[];
+}) => {
   const router = useRouter();
   const { closeCart } = useCart();
   const [cartItem, setCartItem] = useState<CartItem>();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   // const [alertMessage, setAlertMessage] = useState('');
   // const [helperTextValue, setHelperTextValue] = useState('');
+
+  console.log(purchaseInfo);
 
   const [inputValues, setInputValues] = useState({
     percent: 0,
@@ -67,10 +73,6 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
       setCartItem(cartItems[0]);
     }
   }, [cartItems, router.isReady]);
-
-  if (!cartItem && !asset) {
-    return null;
-  }
 
   const formatLargeValues = (value: number) => {
     if (isNaN(value)) return value;
@@ -258,7 +260,7 @@ export const AskingPriceComponent = ({ asset }: { asset: IAsset }) => {
               <CardMeta>
                 <div>
                   <CardName variant="xl">{asset.name}</CardName>
-                  <Attributes attributes={asset.attributes} />
+                  {/* <Attributes attributes={asset.attributes} /> */}
                 </div>
                 <ValuationContainer>
                   <Typography>Valuation</Typography>

@@ -1,15 +1,15 @@
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import LockIcon from '@mui/icons-material/Lock';
 import { useCart } from '@/helpers/auth/CartContext';
 import {
   Alert,
   Box,
-  Button,
   Collapse,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -23,45 +23,156 @@ import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useForm } from '@/helpers/hooks/useForm';
+import {
+  ButtonContainer,
+  Container,
+  HeaderContainer,
+  HeaderTitle,
+  OrderSummaryContainer,
+  OrderSummaryHeader,
+  OutlinedLabel,
+  PaymentContainer,
+  StyledInput,
+  Text,
+  Title,
+} from '../PaymentMethods/PaymentMethods.styles';
+import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 
-function creditCardType(cc: string) {
-  const amex = new RegExp('^3[47][0-9]{13}$');
-  const visa = new RegExp('^4[0-9]{12}(?:[0-9]{3})?$');
-  const cup1 = new RegExp('^62[0-9]{14}[0-9]*$');
-  const cup2 = new RegExp('^81[0-9]{14}[0-9]*$');
+const AcceptedCardProviders: { [x: string]: RegExp } = {
+  amex: new RegExp('^3[47][0-9]{13}$'),
+  visa: new RegExp('^4[0-9]{12}(?:[0-9]{3})?$'),
+  mastercard: new RegExp('^5[1-5][0-9]{14}$'),
+  mastercard2: new RegExp('^2[2-7][0-9]{14}$'),
+  disco1: new RegExp('^6011[0-9]{12}[0-9]*$'),
+  disco2: new RegExp('^62[24568][0-9]{13}[0-9]*$'),
+  disco3: new RegExp('^6[45][0-9]{14}[0-9]*$'),
+};
+const luhnCheck = (val: string) => {
+  let checksum = 0;
+  let j = 1;
+  for (let i = val.length - 1; i >= 0; i--) {
+    let calc = 0;
+    calc = Number(val.charAt(i)) * j;
+    if (calc > 9) {
+      checksum = checksum + 1;
+      calc = calc - 10;
+    }
+    checksum = checksum + calc;
+    if (j == 1) {
+      j = 2;
+    } else {
+      j = 1;
+    }
+  }
+  return checksum % 10 == 0;
+};
+const isCardAccepted = (number: string) => {
+  const cardNumber = number.replace(/\s/g, '');
+  let accepted = false;
+  Object.keys(AcceptedCardProviders).forEach(function (key) {
+    const regex = AcceptedCardProviders[key];
+    if (regex.test(cardNumber)) {
+      accepted = true;
+    }
+  });
 
-  const mastercard = new RegExp('^5[1-5][0-9]{14}$');
-  const mastercard2 = new RegExp('^2[2-7][0-9]{14}$');
+  return accepted;
+};
 
-  const disco1 = new RegExp('^6011[0-9]{12}[0-9]*$');
-  const disco2 = new RegExp('^62[24568][0-9]{13}[0-9]*$');
-  const disco3 = new RegExp('^6[45][0-9]{14}[0-9]*$');
+const isRequired = (value: string) => {
+  return value != null && value.trim().length > 0;
+};
 
-  const diners = new RegExp('^3[0689][0-9]{12}[0-9]*$');
-  const jcb = new RegExp('^35[0-9]{14}[0-9]*$');
+const antiSymbolPattern = /[!@$%^&*(),?":{}|<>]/g;
 
-  if (visa.test(cc)) {
-    return 'visa-color.svg';
+const validatePattern = (value: string) => {
+  return !antiSymbolPattern.test(value);
+};
+
+const validateCardNumber = (number: string) => {
+  const cardnumber = number.replace(/\s/g, '');
+  const regex = new RegExp('^[0-9]{13,19}$');
+  if (!regex.test(cardnumber)) {
+    return false;
   }
-  if (amex.test(cc)) {
-    return 'amex-color.svg';
+  return luhnCheck(cardnumber) && isCardAccepted(cardnumber);
+};
+
+const validateCardName = (name: string): boolean => {
+  return validatePattern(name) && isRequired(name);
+};
+
+const validateExpireDate = (date: string): boolean => {
+  const today = new Date();
+  const someday = new Date();
+
+  const regex = new RegExp('^(0[1-9]|1[0-2])(/|-)([0-9]{4})$');
+  if (regex.test(date)) {
+    const dateArray = date.split('/');
+    const month = parseInt(dateArray[0]) - 1;
+    const year = parseInt(dateArray[1]);
+    someday.setFullYear(year, month, 1);
+    if (someday < today) {
+      return false;
+    }
+    return true;
+  } else {
+    return false;
   }
-  if (mastercard.test(cc) || mastercard2.test(cc)) {
-    return 'mastercard-color.svg';
+};
+
+const expireformat = (value: any) => {
+  const expdate = value;
+  const expDateFormatter =
+    expdate.replace(/\//g, '').substring(0, 2) +
+    (expdate.length > 2 ? '/' : '') +
+    expdate.replace(/\//g, '').substring(2, 6);
+
+  return expDateFormatter;
+};
+
+const validateCVV = (creditCardNumber: string, cvv: string): boolean => {
+  const creditCard = creditCardNumber.replace(/\D/g, '');
+  const cardcvv = cvv.replace(/\D/g, '');
+
+  if (AcceptedCardProviders.amex.test(creditCard)) {
+    if (/^\d{4}$/.test(cardcvv)) return true;
+  } else if (/^\d{3}$/.test(cardcvv)) {
+    return true;
   }
-  if (disco1.test(cc) || disco2.test(cc) || disco3.test(cc)) {
-    return 'discover-color.svg';
-  }
-  if (diners.test(cc)) {
-    return 'DINERS';
-  }
-  if (jcb.test(cc)) {
-    return 'JCB';
-  }
-  if (cup1.test(cc) || cup2.test(cc)) {
-    return 'CHINA_UNION_PAY';
-  }
-  return 'card-default-color.svg';
+  return false;
+};
+
+function creditCardType(cardNumber: string) {
+  const number = cardNumber.replace(/\s/g, '');
+  let media = 'card-default-color.svg';
+  Object.keys(AcceptedCardProviders).forEach(function (key) {
+    if (validateCardNumber(number) && AcceptedCardProviders[key].test(number)) {
+      switch (key) {
+        case 'visa': {
+          return (media = 'visa-color.svg');
+          break;
+        }
+        case 'amex': {
+          return (media = 'amex-color.svg');
+          break;
+        }
+        case 'mastercard' || 'mastercard2': {
+          return (media = 'mastercard-color.svg');
+          break;
+        }
+        case 'disco1' || 'disco2' || 'disco3': {
+          return (media = 'mastercard-color.svg');
+          break;
+        }
+        default: {
+          return 'card-default-color.svg';
+        }
+      }
+    }
+  });
+  return media;
 }
 
 export const PaymentService = ({
@@ -76,10 +187,69 @@ export const PaymentService = ({
   const router = useRouter();
   const [alertMessage, setAlertMessage] = useState('');
   const [open, setOpen] = useState(false);
-  const { closeModal, closeCart } = useCart();
+  const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const item = cartItems[0];
   const theme = useTheme();
+  const initialState = {
+    cardNumber: '',
+    cardName: '',
+    cardExpireDate: '',
+    cardCVV: '',
+  };
+
+  const validations = [
+    ({ cardNumber }: { cardNumber: string }) =>
+      validateCardNumber(cardNumber) || { cardNumber: 'Card number is invalid' },
+    ({ cardName }: { cardName: string }) =>
+      validateCardName(cardName) || {
+        cardName: `Name on card can't be empty or contain invalid characters`,
+      },
+    ({ cardCVV, cardNumber }: { cardCVV: string; cardNumber: string }) =>
+      validateCVV(cardNumber, cardCVV) || { cardCVV: 'CVV is invalid' },
+    ({ cardExpireDate }: { cardExpireDate: string }) =>
+      validateExpireDate(cardExpireDate) || {
+        cardExpireDate: `The expiry date is before today's date. Please select a valid expiry date`,
+      },
+  ];
+
+  async function onSubmit(): Promise<void> {
+    if (isValid) {
+      void handleBuyFractions();
+
+      closeModal();
+      void router.push({
+        pathname: `/askingprice/${orderSummary.id}`,
+      });
+    }
+  }
+
+  function formatCard(cardNumber: string) {
+    let newval = '';
+    cardNumber = cardNumber.replace(/\s/g, '');
+    for (let i = 0; i < cardNumber.length; i++) {
+      // add space if modulus of 4 is 0
+      if (i % 4 == 0 && i > 0) newval = newval.concat(' ');
+      // concatenate the new value
+      newval = newval.concat(cardNumber[i]);
+    }
+    return newval;
+  }
+
+  const { values, isValid, errors, changeHandler, touched, submitHandler } = useForm(
+    initialState,
+    validations,
+    onSubmit,
+  );
+  const cardNumberHandler = (e: { target: { name: string; value: string } }) => {
+    e.target.value = formatCard(e.target.value);
+    changeHandler(e);
+  };
+
+  const cvvHandler = (e: { target: { name: string; value: string } }) => {
+    e.target.value = e.target.value.slice(0, 5);
+    changeHandler(e);
+  };
 
   const handleBuyFractions = async (): Promise<void> => {
     const response: any = await purchaseSellOrder(
@@ -117,50 +287,30 @@ export const PaymentService = ({
     return null;
   }
   return (
-    <Box width="576px" height="max-content">
-      <Box
-        sx={{
-          height: '80px',
-          padding: '24px',
-          borderBottom: `1px solid ${theme.palette.grey[200]}`,
-        }}
-      >
-        <Typography
-          id="modal-modal-title"
-          variant="xl"
-          component="h2"
-          sx={{ fontSize: '24px', lineHeight: '32px', fontWeight: '600' }}
-        >
-          Payment
-        </Typography>
-        <Box
-          sx={{
-            position: 'absolute',
-            zIndex: 1,
-            top: '20px',
-            right: '20px',
-          }}
-        >
-          <Typography
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              [theme.breakpoints.down('sm')]: {
-                flexDirection: 'column',
-              },
+    <Container>
+      <HeaderContainer>
+        <HeaderTitle variant="xl">Payment</HeaderTitle>
+        <ButtonContainer>
+          <IconButton
+            aria-label="Go back"
+            sx={{ fontSize: '14px' }}
+            onClick={() => {
+              setPage(page - 1);
             }}
           >
-            <IconButton
-              aria-label="remove from watchlist"
-              onClick={() => {
-                closeCart();
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Typography>
-        </Box>
-      </Box>
+            <ArrowBackIosIcon />
+            Back
+          </IconButton>
+          <IconButton
+            aria-label="Close Cart Modal"
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </ButtonContainer>
+      </HeaderContainer>
       <Box
         width="100%"
         height="max-content"
@@ -178,89 +328,92 @@ export const PaymentService = ({
             {alertMessage}
           </Alert>
         </Collapse>
-        <Box
-          width="576px"
-          height="max-content"
-          display="flex"
-          flexDirection="column"
-          padding="24px"
-        >
-          <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }} htmlFor="card-number">
-            Card Number
-          </InputLabel>
-          <Box display="flex">
-            <OutlinedInput
-              placeholder="xxxx xxxx xxxx xxxx"
-              id="card-number"
-              sx={{ width: '100%', borderRadius: '8px', height: '40px', margin: '4px 8px 8px 0' }}
+        <PaymentContainer>
+          <Box display="flex" flexDirection="column" marginBottom="12px" width="100%">
+            <OutlinedLabel htmlFor="cardNumber">Card Number</OutlinedLabel>
+            <StyledInput
+              id="cardNumber"
+              name="cardNumber"
+              value={values.cardNumber ? values.cardNumber : ''}
+              onChange={cardNumberHandler}
               endAdornment={
                 <InputAdornment position="start">
                   <Box
                     component="div"
-                    sx={{ height: '45px', width: '45px', objectFit: 'cover', position: 'relative' }}
+                    sx={{
+                      height: '45px',
+                      width: '45px',
+                      objectFit: 'cover',
+                      position: 'relative',
+                    }}
                   >
                     <Image
                       layout="fill"
-                      src={`/images/PaymentProvidersIcons/${creditCardType('4111111111111111')}`}
+                      src={`/images/PaymentProvidersIcons/${creditCardType(values.cardNumber)}`}
                       alt=""
                     />
                   </Box>
                 </InputAdornment>
               }
             />
+            {touched.cardNumber && errors.cardNumber && (
+              <FormHelperText error>{errors.cardNumber}</FormHelperText>
+            )}
           </Box>
-          <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }} htmlFor="card-name">
-            Name on Card
-          </InputLabel>
-          <Box display="flex">
-            <OutlinedInput
-              id="card-name"
-              sx={{ width: '100%', borderRadius: '8px', height: '40px', margin: '4px 8px 8px 0' }}
+
+          <Box display="flex" flexDirection="column" marginBottom="12px" width="100%">
+            <OutlinedLabel htmlFor="cardName">Name on Card</OutlinedLabel>
+            <StyledInput
+              id="cardName"
+              name="cardName"
+              value={values.cardName ? values.cardName : ''}
+              onChange={changeHandler}
             />
+            {touched.cardName && errors.cardName && (
+              <FormHelperText error>{errors.cardName}</FormHelperText>
+            )}
           </Box>
-          <Box display="flex" flexDirection="row" justifyContent="space-between" maxWidth="520px">
-            <Box display="flex" flexDirection="column" width="75%" marginRight="20px">
-              <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }} htmlFor="card-number">
-                Expiration date (MM/YY)
-              </InputLabel>
-              <OutlinedInput
-                id="card-number"
-                sx={{ width: '100%', borderRadius: '8px', height: '40px', margin: '4px 8px 8px 0' }}
+          <Box display="flex" flexDirection="row" justifyContent="space-between" width="100%">
+            <Box
+              display="flex"
+              flexDirection="column"
+              width="75%"
+              marginRight="20px"
+              marginBottom="12px"
+            >
+              <InputLabel htmlFor="cardExpireDate">Expiration date (MM/YYYY)</InputLabel>
+              <StyledInput
+                value={values.cardExpireDate ? expireformat(values.cardExpireDate) : ''}
+                onChange={(e) => {
+                  e.target.value = expireformat(e.target.value);
+                  changeHandler(e);
+                }}
+                id="cardExpireDate"
+                name="cardExpireDate"
               />
+              {touched.cardExpireDate && errors.cardExpireDate && (
+                <FormHelperText error>{errors.cardExpireDate}</FormHelperText>
+              )}
             </Box>
             <Box display="flex" flexDirection="column" width="25%">
-              <InputLabel style={{ fontSize: '14px', lineHeight: '20px' }} htmlFor="card-number">
-                CVC
-              </InputLabel>
-              <OutlinedInput
-                id="card-number"
-                sx={{ width: '100%', borderRadius: '8px', height: '40px', margin: '4px 8px 8px 0' }}
+              <InputLabel htmlFor="cardCVV">CVV</InputLabel>
+              <StyledInput
+                id="cardCVV"
+                name="cardCVV"
+                value={values.cardCVV ? values.cardCVV : ''}
+                onChange={cvvHandler}
               />
+              {touched.cardCVV && errors.cardCVV && (
+                <FormHelperText error>{errors.cardCVV}</FormHelperText>
+              )}
             </Box>
           </Box>
-        </Box>
+        </PaymentContainer>
       </Box>
-      <Box height="max-content" width="576px" bgcolor={theme.palette.grey[50]}>
-        <Box
-          width="100%"
-          sx={{
-            height: '60px',
-            borderBottom: `1px solid ${theme.palette.grey[200]}`,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            padding: '16px 0px 16px 24px',
-          }}
-        >
-          <Typography
-            id="modal-modal-title"
-            variant="xl"
-            component="h2"
-            sx={{ fontSize: '18px', lineHeight: '28px', fontWeight: '500' }}
-          >
-            Order Summary
-          </Typography>
-        </Box>
+      <OrderSummaryContainer>
+        <OrderSummaryHeader>
+          <Title variant="xl">Order Summary</Title>
+        </OrderSummaryHeader>
         <Box>
           <Box
             display="flex"
@@ -268,88 +421,39 @@ export const PaymentService = ({
             margin="20px 24px 10px 24px"
             sx={{ borderBottom: `1px solid ${theme.palette.grey[200]}` }}
           >
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
+            <Text variant="lg">
               {Object.keys(item).length > 0 && item.quantity}
               {Object.keys(item).length > 0 && item.quantity > 1 ? ' Units' : ' Unit'}
-            </Typography>
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
+            </Text>
+            <Text variant="lg">
               {Object.keys(item).length > 0 && '$' + formatNumber(item.totalPrice)}
-            </Typography>
+            </Text>
           </Box>
           <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
-              Royalty fees
-            </Typography>
-            <Typography
-              id="modal-modal-title"
-              variant="xl"
-              component="p"
-              style={{ fontSize: '14px', lineHeight: '20px', fontWeight: '500' }}
-            >
-              10%
-            </Typography>
+            <Text variant="lg">Royalty fees</Text>
+            <Text variant="lg">10%</Text>
+          </Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            margin="10px 24px 10px 24px"
+            sx={{ borderBottom: `1px solid ${theme.palette.grey[200]}` }}
+          >
+            <Text variant="lg">Processing fees</Text>
+            <Text variant="lg">-5% + 0.25</Text>
+          </Box>
+          <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
+            <Text variant="lg">Total</Text>
+            <Text variant="lg">
+              {Object.keys(item).length > 0 &&
+                '$' + formatNumber((item.totalPrice * 1.15 + 0.25).toFixed(2) as unknown as number)}
+            </Text>
           </Box>
         </Box>
-        <Box
-          display="grid"
-          sx={{
-            gridAutoFlow: 'column',
-            gridAutoColumns: '1fr',
-            gap: '20px',
-            maxWidth: '576px',
-            margin: '0px 24px',
-          }}
-        >
-          <Button
-            sx={{
-              '&.MuiButtonBase-root': {
-                color: 'white',
-                backgroundColor: theme.palette.primary.main,
-                height: '52px',
-                padding: '12px 32px',
-                margin: '8px 0',
-                fontSize: '16px',
-                lineHeight: '24px',
-                borderRadius: '8px',
-                border: `1px solid ${theme.palette.primary.main}`,
-                '&:hover': {
-                  color: theme.palette.primary.main,
-                  backgroundColor: theme.palette.secondary.main,
-                },
-                [theme.breakpoints.down('sm')]: {
-                  margin: '10px auto',
-                },
-              },
-              fontWeight: '500',
-              fontSize: '14px',
-              lineHeight: '20px',
-            }}
-            onClick={() => {
-              void handleBuyFractions();
-
-              closeModal();
-              void router.push({
-                pathname: `/askingprice/${orderSummary.id}`,
-              });
-            }}
-          >
+        <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
+          <ConfirmInfoButton disabled={!isValid} onClick={submitHandler}>
             Confirm Order
-          </Button>
+          </ConfirmInfoButton>
         </Box>
         <Typography
           id="modal-modal-title"
@@ -382,7 +486,7 @@ export const PaymentService = ({
             {'Jump'}
           </Box>
         </Typography>
-      </Box>
-    </Box>
+      </OrderSummaryContainer>
+    </Container>
   );
 };

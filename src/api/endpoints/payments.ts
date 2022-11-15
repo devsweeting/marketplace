@@ -14,7 +14,7 @@ type AddressResponse = {
 
 export const verifyAddress = async (data: any): Promise<AddressResponse | undefined> => {
   try {
-    const res = await apiClient.post('/synapse/address', {
+    const res = await apiClient.post('/payments/address', {
       body: data,
     });
 
@@ -31,7 +31,7 @@ type SynapseUserResponse = any;
 
 export const sendSynapseUser = async (data: any): Promise<SynapseUserResponse | undefined> => {
   try {
-    const res = await apiClient.post('/synapse/user', {
+    const res = await apiClient.post('/payments/user', {
       body: data,
     });
 

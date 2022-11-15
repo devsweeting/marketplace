@@ -19,6 +19,17 @@ export interface IAsset {
   attributes: IAttribute[];
   partner: string;
 }
+export interface IPurchaseInfo {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt: string;
+  sellOrderId: string;
+  userId: string;
+  fractionQty: number;
+  fractionPriceCents: number;
+  assetId: string;
+}
 
 export type IPortfolioAsset = {
   isOnUserPortfolio?: boolean | undefined;

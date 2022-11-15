@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/client';
-import type { IUserBuyLimit } from '@/types/assetTypes';
+import type { IPurchaseInfo, IUserBuyLimit } from '@/types/assetTypes';
 
 export const purchaseSellOrder = async (
   id: string,
@@ -32,5 +32,20 @@ export const getNumSellordersUserCanBuy = async (id: string): Promise<IUserBuyLi
     console.error(e);
 
     throw e;
+  }
+};
+
+export const getPurchaseById = async (id: string): Promise<IPurchaseInfo[]> => {
+  try {
+    const res = await apiClient.get(`/sellorders/purchase-history?assetId=${id}`, {
+      requireAuth: true,
+    });
+
+    return res.data as unknown as IPurchaseInfo[];
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.log(err);
+
+    throw err;
   }
 };

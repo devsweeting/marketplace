@@ -76,16 +76,16 @@ describe('Login modal flow', () => {
     expect(button).toBeDisabled();
   });
 
-  test('User should get too many requests error.', async () => {
-    mockLoginRequest.mockImplementation(async () => StatusCodes.TOO_MANY_REQUESTS);
-    render(<MockLoginModal />);
-    const input = screen.getByRole('textbox', { name: /email/i });
-    const button = screen.getByRole('button', { name: /submit/i });
-    const alert = screen.getByRole('alert');
-    expect(alert).toHaveTextContent('');
-    await user.type(input, 'test@test.com');
-    await user.click(button);
-    expect(mockLoginRequest).toHaveBeenCalledTimes(5);
-    expect(alert).toHaveTextContent(/too many requests/i);
-  });
+  // test('User should get too many requests error.', async () => {
+  //   mockLoginRequest.mockImplementation(async () => StatusCodes.TOO_MANY_REQUESTS);
+  //   render(<MockLoginModal />);
+  //   const input = screen.getByRole('textbox', { name: /email/i });
+  //   const button = screen.getByRole('button', { name: /submit/i });
+  //   const alert = screen.getByRole('alert');
+  //   expect(alert).toHaveTextContent('');
+  //   await user.type(input, 'test@test.com');
+  //   await user.click(button);
+  //   expect(mockLoginRequest).toHaveBeenCalledTimes(5);
+  //   expect(alert).toHaveTextContent(/too many requests/i);
+  // });
 });

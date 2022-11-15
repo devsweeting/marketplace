@@ -6,7 +6,7 @@ import { ConfirmInfoButton, CustomBox, CustomSelect } from './RetrieveUserInfo.s
 import { states } from './StatesAndTerritories';
 import { StatusCodes } from 'http-status-codes';
 import { useCart } from '@/helpers/auth/CartContext';
-import { verifyAddress } from '@/api/endpoints/synapse';
+import { verifyAddress } from '@/api/endpoints/payments';
 import { useForm } from '@/helpers/hooks/useForm';
 import type { Dispatch, SetStateAction } from 'react';
 import {
@@ -120,10 +120,12 @@ export const RetrieveUserInfo = ({
   };
 
   async function onSignup(): Promise<void> {
-    const res = await verifyAddress(address);
-    res?.status === StatusCodes.OK
-      ? setPage(page + 1)
-      : setAlertText(`Address couldn't be verified`);
+    if (isValid) {
+      const res = await verifyAddress(address);
+      res?.status === StatusCodes.OK
+        ? setPage(page + 1)
+        : setAlertText(`Address couldn't be verified`);
+    }
   }
 
   const { values, isValid, errors, changeHandler, touched, submitHandler } = useForm(

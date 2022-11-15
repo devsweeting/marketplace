@@ -87,10 +87,14 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (user && cartItems.length > 0) {
-        openCart();
+        void getAssetById(cartItems[0].id).then((asset) => {
+          if (Object.keys(asset).length > 0 && asset !== undefined) {
+            openCart();
+          }
+        });
       }
     }
-  }, [cartItems.length, openCart, user]);
+  }, [cartItems, cartItems.length, openCart, user]);
 
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
