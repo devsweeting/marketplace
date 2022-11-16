@@ -11,7 +11,7 @@ type AddressResponse = {
 };
 
 type AddressErrorResponse = {
-  statusCode: StatusCodes;
+  statusCode: StatusCodes.BAD_REQUEST;
   message: string;
   error: {
     address_city?: string[];
@@ -43,10 +43,12 @@ export const verifyAddress = async (
   }
 };
 
-type PaymentsUserResponse = any;
+type PaymentsUserResponse = {
+  status: StatusCodes;
+};
 
 type PaymentsUserErrorResponse = {
-  statusCode: StatusCodes;
+  statusCode: StatusCodes.BAD_REQUEST;
   message: string;
   error: {
     first_name?: string[];
@@ -71,7 +73,7 @@ type PaymentsUserErrorResponse = {
 
 export const registerPaymentsUser = async (
   data: any,
-): Promise<PaymentsUserResponse | undefined> => {
+): Promise<PaymentsUserResponse | PaymentsUserErrorResponse | undefined> => {
   try {
     const res = await apiClient.post('/payments/kyc', {
       body: data,

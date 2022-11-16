@@ -1,8 +1,12 @@
+import { registerPaymentsUser, verifyAddress } from '@/api/endpoints/payments';
 import { VerificationFailure } from '@/components/Verification/Failure';
 import { VerificationForm } from '@/components/Verification/Form';
+import type { VerificationValues } from '@/components/Verification/Form/verification.schema';
 import { VerificationSuccess } from '@/components/Verification/Success';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
+import { formatErrorResponse, formatNestedErrorResponse } from '@/helpers/formatErrorResponse';
 import { styled } from '@mui/material';
+import type { FormikHelpers } from 'formik';
 import type { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -45,8 +49,60 @@ function Verify() {
     router.back();
   };
 
+  const submit = async (
+    values: VerificationValues,
+    { setErrors, setStatus }: FormikHelpers<VerificationValues>,
+  ) => {
+    try {
+      const address = await verifyAddress(values.mailing_address);
+
+      if (!address) {
+        return setStatus({
+          formError: 'Failed to submit address information. Please try again or contact support.',
+        });
+      }
+
+      if ('error' in address) {
+        setErrors({ mailing_address: formatErrorResponse(address.error) });
+        return;
+      }
+
+      if ('address' in address) {
+        if (address.address.deliverability === 'error') {
+          return setStatus({
+            formError: 'Failed to validate address. Please check information is correct.',
+          });
+        }
+      }
+
+      const user = await registerPaymentsUser(values);
+
+      if (!user)
+        return setStatus({
+          formError: 'Failed to submit your information. Please try again or contact support.',
+        });
+
+      if ('error' in user) {
+        setErrors(formatNestedErrorResponse(user.error));
+      } else {
+        if (user.status === 303) {
+          failure('Synapse user already exists.');
+        }
+
+        if (user.status === 201) {
+          success();
+        }
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+
+      failure('Failed to submit your verification');
+    }
+  };
+
   const steps: VerificationSteps = {
-    form: <VerificationForm success={success} failure={failure} />,
+    form: <VerificationForm submit={submit} />,
     success: <VerificationSuccess redirect={redirect} message={message} />,
     failure: <VerificationFailure redirect={redirect} message={message} />,
   };
