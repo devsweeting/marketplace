@@ -1,18 +1,19 @@
 import { render } from '@testing-library/react';
 import HomePage from '../pages';
-import { withTestRouter } from './utils/TestRouter';
+import { TestRouter } from './utils/TestRouter';
 import { themeJump } from '@/styles/themeJump';
 import { ThemeProvider } from '@mui/material';
 import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 const push = jest.fn();
 const MockHomePage = () => {
-  return withTestRouter(
-    <ThemeProvider theme={themeJump}>
-      <ModalContextProvider>
-        <HomePage />
-      </ModalContextProvider>
-    </ThemeProvider>,
-    { push, asPath: '/' },
+  return (
+    <TestRouter router={{ push, asPath: '/' }}>
+      <ThemeProvider theme={themeJump}>
+        <ModalContextProvider>
+          <HomePage />
+        </ModalContextProvider>
+      </ThemeProvider>
+    </TestRouter>
   );
 };
 describe('HomePage', () => {

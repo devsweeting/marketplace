@@ -16,8 +16,7 @@ const MockLoginModal = () => {
   return (
     <ThemeProvider theme={themeJump}>
       <ModalContext.Provider
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        value={{ state: { login: true, verification: false }, dispatch: () => {} }}
+        value={{ state: { login: true, verification: false }, dispatch: () => true }}
       >
         <LoginModal noDismiss={false} />
       </ModalContext.Provider>

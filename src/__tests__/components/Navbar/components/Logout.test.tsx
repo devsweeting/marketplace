@@ -4,14 +4,15 @@ import user from '@testing-library/user-event';
 import { ThemeProvider } from '@mui/material';
 import { Logout } from '@/components/Navbar/components/Logout';
 import { themeJump } from '@/styles/themeJump';
-import { withTestRouter } from '../../../utils/TestRouter';
+import { TestRouter } from '../../../utils/TestRouter';
 const push = jest.fn();
 const MockLogout = () => {
-  return withTestRouter(
-    <ThemeProvider theme={themeJump}>
-      <Logout>Logout </Logout>
-    </ThemeProvider>,
-    { push, asPath: '/' },
+  return (
+    <TestRouter router={{ push, asPath: '/' }}>
+      <ThemeProvider theme={themeJump}>
+        <Logout>Logout </Logout>
+      </ThemeProvider>
+    </TestRouter>
   );
 };
 

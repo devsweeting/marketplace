@@ -2,7 +2,12 @@ import React from 'react';
 import type { NextRouter } from 'next/router';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
-export function withTestRouter(tree: React.ReactElement, router: Partial<NextRouter> = {}) {
+type Props = {
+  router: Partial<NextRouter>;
+  children: JSX.Element;
+};
+
+export function TestRouter({ router, children }: Props) {
   const {
     route = '',
     pathname = '',
@@ -47,11 +52,7 @@ export function withTestRouter(tree: React.ReactElement, router: Partial<NextRou
         isPreview,
       }}
     >
-      {tree}
+      {children}
     </RouterContext.Provider>
   );
 }
-
-test('renders without crashing', () => {
-  expect(true).toBe(true);
-});
