@@ -287,6 +287,7 @@ export const ConfirmText = styled(Typography)(({ theme }) => ({
 export const AssetCard = styled(Box)(({ theme }) => ({
   borderRadius: '0px',
   maxWidth: '756px',
+  width: '100%',
   display: 'flex',
   borderTop: '1px solid #E5E7EB',
   borderBottom: '1px solid #E5E7EB',
@@ -299,6 +300,7 @@ export const AssetCard = styled(Box)(({ theme }) => ({
 export const CardContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   height: '106.94px',
+  width: '100%',
   [theme.breakpoints.down('md')]: {
     maxWidth: '400px',
     alignItems: 'center',

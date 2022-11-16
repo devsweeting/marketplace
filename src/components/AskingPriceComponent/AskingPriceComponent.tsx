@@ -1,5 +1,5 @@
 import { useCart } from '@/helpers/auth/CartContext';
-import { Box, OutlinedInput, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import {
   PageContainer,
@@ -36,6 +36,27 @@ import {
 import { getPurchaseById } from '@/api/endpoints/sellorders';
 import type { IAsset, IPurchaseInfo } from '@/types/assetTypes';
 import { formatNumber } from '@/helpers/formatNumber';
+import { Attributes } from '../Attributes';
+
+const calculatePercentFromInput = (input: number, originalValue: number) => {
+  input = input * 100;
+  const decimal = input / originalValue;
+  const percent = decimal * 100;
+  return (percent - 100).toFixed(3) as unknown as number;
+};
+
+const calculateValueFromPercent = (percent: number, originalValue: number): number => {
+  const truePercent = percent + 100;
+  const decimal = truePercent / 100;
+  return ((originalValue * decimal) / 100).toFixed(2) as unknown as number;
+};
+
+const calculateTotalFromPercentAndPrice = (price: number, numOfUnits: number) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(price * numOfUnits);
+};
 
 export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string }) => {
   const { closeCart, closeModal } = useCart();
@@ -70,8 +91,6 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
     ((purchaseHistory?.fractionPriceCents as number) * (purchaseHistory?.fractionQty as number)) /
     100;
 
-  const pricePaid = purchaseHistory?.fractionPriceCents / 100 ?? undefined;
-
   const formatLargeValues = (value: number) => {
     if (isNaN(value)) return value;
 
@@ -95,11 +114,11 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
 
   const changePercentValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({
-      ...inputValues,
       percent: parseFloat(event.target.value),
-      price: (((parseFloat(event.target.value) + 100) / 100) * pricePaid).toFixed(
-        2,
-      ) as unknown as number,
+      price: calculateValueFromPercent(
+        parseFloat(event.target.value),
+        purchaseHistory?.fractionPriceCents,
+      ),
     });
   };
 
@@ -107,7 +126,10 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
     setInputValues({
       ...inputValues,
       price: parseFloat(event.target.value),
-      percent: (parseFloat(event.target.value) / pricePaid) * 100,
+      percent: calculatePercentFromInput(
+        parseFloat(event.target.value),
+        purchaseHistory?.fractionPriceCents,
+      ),
     });
   };
 
@@ -117,10 +139,11 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
     }
   };
 
-  const totalValuation = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(purchaseHistory ? totalPrice + (inputValues.percent + 100) : 0);
+  const totalValuation =
+    !isNaN((purchaseHistory.fractionPriceCents / 100) * inputValues.percent) &&
+    !isNaN(inputValues.price)
+      ? calculateTotalFromPercentAndPrice(inputValues.price, purchaseHistory?.fractionQty)
+      : '~';
 
   checkValues();
 
@@ -160,7 +183,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
                 <InputLabelText htmlFor="percent-paid-price">
                   Set over the paid price
                 </InputLabelText>
-                <OutlinedInput
+                <PriceOutlinedInput
                   startAdornment={
                     <MonetaryInputAdornment position="start">%</MonetaryInputAdornment>
                   }
@@ -199,9 +222,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
                     ? ' Units'
                     : ' Unit'}
                 </Text>
-                <Text variant="lg">
-                  {purchaseHistory && Object.keys(purchaseHistory).length > 0 && totalValuation}
-                </Text>
+                <Text variant="lg">{totalValuation}</Text>
               </OrderSummaryDetailsContainer>
               <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
                 <Text variant="lg">Royalty fees</Text>
@@ -242,7 +263,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
           <Text>Order Number</Text>
           <Text>{asset.sellOrders[0].id}</Text>
         </Box>
-        <Box maxWidth="756px">
+        <Box maxWidth="756px" width="100%">
           <AssetCard>
             <CardContent>
               <AssetImageWrapper>
@@ -260,7 +281,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
               <CardMeta>
                 <div>
                   <CardName variant="xl">{asset.name}</CardName>
-                  {/* <Attributes attributes={asset.attributes} /> */}
+                  <Attributes attributes={asset.attributes} />
                 </div>
                 <ValuationContainer>
                   <Typography>Valuation</Typography>
