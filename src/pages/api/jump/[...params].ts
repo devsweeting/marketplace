@@ -2,8 +2,8 @@ import type { NextApiHandler } from 'next';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
 import { withSentry } from '@sentry/nextjs';
-import type { IApiRequest, IApiRequestWithBody } from '@/api/client/apiClient.base';
 import { processHeaders } from '@/helpers/processHeaders';
+import type { IServerApiRequest, IServerApiRequestWithBody } from '@/api/client/apiClient.server';
 
 const methods = {
   GET: 'get',
@@ -22,10 +22,11 @@ export const jumpApiProxy: NextApiHandler = async (req, res) => {
   const headers = processHeaders(req.headers);
   const body = parseBody(headers, req.body);
 
-  const apiRequest: IApiRequestWithBody | IApiRequest = {
+  const apiRequest: IServerApiRequestWithBody | IServerApiRequest = {
     req,
     body,
     headers,
+    useAuthInApiRoute: true,
   };
 
   const url = (req.url?.startsWith('/')

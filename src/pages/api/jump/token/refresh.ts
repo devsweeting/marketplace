@@ -55,6 +55,7 @@ async function refreshJwt(token: IJwt, req: NextApiRequest, res: NextServerRespo
     const request: any = {
       headers: req.headers,
       body: { refreshToken: token.refreshToken },
+      useAuthInApiRoute: true,
     };
 
     const response = await client.post('/users/login/refresh', request);

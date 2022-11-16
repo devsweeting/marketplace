@@ -6,17 +6,53 @@ import { formatDate, getTimezoneOffset } from '@/helpers/time';
 import type { IApiRequest, IApiRequestWithBody, IApiResponse, IApiUrl } from './apiClient.base';
 import { BaseApiClient } from './apiClient.base';
 
+export interface IServerApiRequest extends IApiRequest {
+  // Required to be set to true in order to be called from an API route
+  // This is not intended to be used in get server side props
+  useAuthInApiRoute?: boolean;
+}
+
+export interface IServerApiRequestWithBody extends IServerApiRequest, IApiRequestWithBody {}
+
 export class ServerApiClient extends BaseApiClient {
   getBaseUrl() {
     return process.env.NEXT_PUBLIC_BACKEND_URL ?? '';
   }
 
   disallowHeader = ['host'];
+
+  get(url: IApiUrl, request: IServerApiRequest = {}) {
+    return this.send(url, 'GET', request);
+  }
+
+  post(url: IApiUrl, request: IServerApiRequestWithBody) {
+    return this.send(url, 'POST', request);
+  }
+
+  put(url: IApiUrl, request: IServerApiRequestWithBody) {
+    return this.send(url, 'PUT', request);
+  }
+
+  patch(url: IApiUrl, request: IServerApiRequestWithBody) {
+    return this.send(url, 'PATCH', request);
+  }
+
+  delete(url: IApiUrl, request: IServerApiRequest = {}) {
+    return this.send(url, 'DELETE', request);
+  }
+
   async send(
     path: IApiUrl,
     method: string,
-    request: IApiRequest | IApiRequestWithBody,
+    { useAuthInApiRoute = false, ...request }: IServerApiRequest | IServerApiRequestWithBody,
   ): Promise<IApiResponse> {
+    if (!useAuthInApiRoute) {
+      throw new Error(
+        'Cannot use api client on the server side with auth.' +
+          'Please use the api client in the browser instead',
+      );
+    }
+
     let token;
     let authUser = '-';
     let host: string | undefined = '-';
