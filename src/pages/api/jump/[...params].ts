@@ -26,7 +26,7 @@ export const jumpApiProxy: NextApiHandler = async (req, res) => {
     req,
     body,
     headers,
-    useAuthInApiRoute: true,
+    __allowAuthInServerSideRequest: true,
   };
 
   const url = (req.url?.startsWith('/')

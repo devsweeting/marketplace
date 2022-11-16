@@ -5,7 +5,11 @@ import { StatusCodes } from 'http-status-codes';
 import { getUserCookie } from '@/helpers/auth/userCookie';
 import type { NextServerRequest } from '@/types/next';
 import { logger } from '@/helpers/logger';
-import { ServerApiClient } from '@/api/client/apiClient.server';
+import {
+  AuthenticatedServerRequestError,
+  MissingNextRequestError,
+  ServerApiClient,
+} from '@/api/client/apiClient.server';
 
 jest.mock('@/helpers/auth/userCookie');
 jest.mock('@/helpers/logger');
@@ -175,7 +179,11 @@ describe('ApiClient', () => {
 
     const mockRequest = {} as NextServerRequest;
 
-    await client.post('/test', { req: mockRequest, body: { test: 'test' } });
+    await client.post('/test', {
+      req: mockRequest,
+      body: { test: 'test' },
+      __allowAuthInServerSideRequest: true,
+    });
 
     expect(global.fetch).toHaveBeenCalledWith(expectedUrl, {
       body: JSON.stringify({ test: 'test' }),
@@ -187,7 +195,11 @@ describe('ApiClient', () => {
 
     mockGetUserCookie.mockReturnValue(mockValidJwt);
 
-    await client.post('/test', { req: mockRequest, body: { test: 'test' } });
+    await client.post('/test', {
+      req: mockRequest,
+      body: { test: 'test' },
+      __allowAuthInServerSideRequest: true,
+    });
     expect(global.fetch).toHaveBeenNthCalledWith(1, expectedUrl, {
       body: JSON.stringify({ test: 'test' }),
       method: 'POST',
@@ -243,5 +255,35 @@ describe('ApiClient', () => {
     await client.get('/test');
 
     expect(mockLogger.error).toHaveBeenCalledTimes(1);
+  });
+
+  test('it throws if authed request is missing flag', async () => {
+    const mockRequest = {} as NextServerRequest;
+
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        status: StatusCodes.UNAUTHORIZED,
+        headers: new Headers(),
+        text: () => Promise.resolve('some text'),
+      }),
+    ) as jest.Mock;
+
+    await expect(() => client.get('/test', { req: mockRequest })).rejects.toThrow(
+      AuthenticatedServerRequestError,
+    );
+  });
+
+  test('it throws if 401 error and no request object', async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        status: StatusCodes.UNAUTHORIZED,
+        headers: new Headers(),
+        text: () => Promise.resolve('some text'),
+      }),
+    ) as jest.Mock;
+
+    await expect(() => client.get('/test')).rejects.toThrow(MissingNextRequestError);
   });
 });

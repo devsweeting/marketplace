@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import { getUserFromJwt } from '@/helpers/auth/getUserFrom';
 import { getUserCookie } from '@/helpers/auth/userCookie';
 import { getIpAddress } from '@/helpers/getIpAddress';
@@ -7,12 +8,19 @@ import type { IApiRequest, IApiRequestWithBody, IApiResponse, IApiUrl } from './
 import { BaseApiClient } from './apiClient.base';
 
 export interface IServerApiRequest extends IApiRequest {
-  // Required to be set to true in order to be called from an API route
-  // This is not intended to be used in get server side props
-  useAuthInApiRoute?: boolean;
+  // This flag is to prevent accidental use of the ServerApiClient. ServerApiClient
+  // doesn't handle token refresh, only the BrowserApiClient does so all requests
+  // should go through BrowserApiClient. There are a few exception to this rule
+  // and those use this flag. Be very careful about adding this flag elsewhere
+  // since you might introduce a subtle token refresh bug
+  __allowAuthInServerSideRequest?: boolean;
 }
 
 export interface IServerApiRequestWithBody extends IServerApiRequest, IApiRequestWithBody {}
+
+export class MissingNextRequestError extends Error {}
+
+export class AuthenticatedServerRequestError extends Error {}
 
 export class ServerApiClient extends BaseApiClient {
   getBaseUrl() {
@@ -44,15 +52,11 @@ export class ServerApiClient extends BaseApiClient {
   async send(
     path: IApiUrl,
     method: string,
-    { useAuthInApiRoute = false, ...request }: IServerApiRequest | IServerApiRequestWithBody,
+    {
+      __allowAuthInServerSideRequest = false,
+      ...request
+    }: IServerApiRequest | IServerApiRequestWithBody,
   ): Promise<IApiResponse> {
-    if (!useAuthInApiRoute) {
-      throw new Error(
-        'Cannot use api client on the server side with auth.' +
-          'Please use the api client in the browser instead',
-      );
-    }
-
     let token;
     let authUser = '-';
     let host: string | undefined = '-';
@@ -64,6 +68,12 @@ export class ServerApiClient extends BaseApiClient {
     }
 
     if ('req' in request && request.req) {
+      if (!__allowAuthInServerSideRequest) {
+        throw new AuthenticatedServerRequestError(
+          'ServerApiClient cannot handle authenticated requests.' +
+            'Please use BrowserApiClient instead',
+        );
+      }
       token = getUserCookie(request.req);
       host = getIpAddress(request.req);
 
@@ -97,6 +107,14 @@ export class ServerApiClient extends BaseApiClient {
     };
 
     const response = await super.send(path, method, request, { onError, onSuccess, onCatch });
+
+    if (response.status === StatusCodes.UNAUTHORIZED && !request.req) {
+      throw new MissingNextRequestError(
+        'Got a 401 unauthorized error in ServerApiClient.' +
+          'Did you forget to pass in the Next.js request object?',
+      );
+    }
+
     return response;
   }
 }
