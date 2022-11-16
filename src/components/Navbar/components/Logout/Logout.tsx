@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { MenuItem, Typography } from '@mui/material';
 import { useContext } from 'react';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { useRouter } from 'next/router';
@@ -18,10 +18,16 @@ export const Logout = ({
   };
 
   return (
-    <a style={{ textDecoration: 'none' }} onClick={handleLogoutClick} className={className}>
-      <Typography variant="nav" component="span" className={className}>
-        {children}
-      </Typography>
+    <a
+      style={{ textDecoration: 'none', display: 'flex' }}
+      onClick={handleLogoutClick}
+      className={className}
+    >
+      <MenuItem sx={{ width: '100%' }}>
+        <Typography variant="nav" component="span" className={className}>
+          {children}
+        </Typography>
+      </MenuItem>
     </a>
   );
 };

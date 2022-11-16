@@ -3,7 +3,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import Avatar from '@mui/material/Avatar';
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Logout as LogoutButton } from '../Logout';
 import Link from 'next/link';
 
@@ -14,22 +14,25 @@ import type { IUser } from '@/types/user';
 export const UserPane = ({ user }: { user: IUser }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const isOpen = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const anchor = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    setIsOpen(true);
   };
+
   const handleClose = () => {
-    setAnchorEl(null);
+    setIsOpen(false);
   };
 
   return (
     <>
       {matchesMobile ? (
         <Typography
+          ref={anchor}
           variant="nav"
-          onClick={handleClick}
-          onMouseEnter={handleClick}
+          onClick={handleOpen}
+          onMouseEnter={handleOpen}
           aria-controls={isOpen ? 'account-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={isOpen ? 'true' : undefined}
@@ -38,8 +41,9 @@ export const UserPane = ({ user }: { user: IUser }) => {
         </Typography>
       ) : (
         <IconButton
-          onClick={handleClick}
-          onMouseEnter={handleClick}
+          ref={anchor}
+          onClick={handleOpen}
+          onMouseEnter={handleOpen}
           size="small"
           aria-controls={isOpen ? 'account-menu' : undefined}
           aria-haspopup="true"
@@ -50,7 +54,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
       )}
       <Menu
         open={isOpen}
-        anchorEl={anchorEl}
+        anchorEl={anchor.current}
         onClose={handleClose}
         style={{ marginTop: matchesMobile ? 6 : 1 }}
         PaperProps={{
@@ -71,8 +75,8 @@ export const UserPane = ({ user }: { user: IUser }) => {
           <Divider />
           {userPanelLinks.map(({ title, path }: { title: string; path: string }, index: number) => (
             <Link href={path} key={`${title}-${index}`}>
-              <a style={{ textDecoration: 'none' }}>
-                <MenuItem>
+              <a style={{ textDecoration: 'none', display: 'flex' }}>
+                <MenuItem sx={{ width: '100%' }}>
                   <Typography variant="nav">{title}</Typography>
                 </MenuItem>
               </a>
@@ -80,9 +84,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
           ))}
 
           <Divider />
-          <MenuItem>
-            <LogoutButton>Logout</LogoutButton>
-          </MenuItem>
+          <LogoutButton>Logout</LogoutButton>
         </div>
       </Menu>
     </>
