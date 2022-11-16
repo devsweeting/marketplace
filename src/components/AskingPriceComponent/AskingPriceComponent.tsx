@@ -1,5 +1,3 @@
-import type { CartItem } from '@/helpers/auth/CartContext';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { useCart } from '@/helpers/auth/CartContext';
 import { Box, OutlinedInput, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -35,44 +33,44 @@ import {
   InputLabelText,
   PriceOutlinedInput,
 } from './AskingPriceComponent.styles';
-import { useRouter } from 'next/router';
+import { getPurchaseById } from '@/api/endpoints/sellorders';
 import type { IAsset, IPurchaseInfo } from '@/types/assetTypes';
 import { formatNumber } from '@/helpers/formatNumber';
 
-export const AskingPriceComponent = ({
-  asset,
-  purchaseInfo,
-}: {
-  asset: IAsset;
-  purchaseInfo: IPurchaseInfo[];
-}) => {
-  const router = useRouter();
-  const { closeCart } = useCart();
-  const [cartItem, setCartItem] = useState<CartItem>();
-  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
+export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string }) => {
+  const { closeCart, closeModal } = useCart();
+  const [purchaseHistory, setPurchaseHistory] = useState<IPurchaseInfo>();
   // const [alertMessage, setAlertMessage] = useState('');
   // const [helperTextValue, setHelperTextValue] = useState('');
 
-  console.log(purchaseInfo);
-
   const [inputValues, setInputValues] = useState({
     percent: 0,
-    price:
-      cartItem && cartItem.fractionPriceCents !== undefined
-        ? cartItem.fractionPriceCents / 100
-        : asset.sellOrders[0].fractionPriceCents / 100,
+    price: 0,
   });
 
-  const pricePaid =
-    cartItem && cartItem.fractionPriceCents !== undefined
-      ? cartItem.fractionPriceCents / 100
-      : asset.sellOrders[0].fractionPriceCents / 100;
-
   useEffect(() => {
-    if (cartItems[0] !== undefined && cartItems.length > 0 && router.isReady) {
-      setCartItem(cartItems[0]);
+    const grabPurchaseHistory = async (id: string) => {
+      const assetPurchase = await getPurchaseById(id as string);
+      setPurchaseHistory(assetPurchase[0] as IPurchaseInfo);
+      setInputValues({ percent: 0, price: assetPurchase[0].fractionPriceCents / 100 });
+      closeCart();
+      closeModal();
+    };
+
+    if (asset) {
+      void grabPurchaseHistory(id);
     }
-  }, [cartItems, router.isReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [asset, id]);
+
+  if (!purchaseHistory) {
+    return null;
+  }
+  const totalPrice =
+    ((purchaseHistory?.fractionPriceCents as number) * (purchaseHistory?.fractionQty as number)) /
+    100;
+
+  const pricePaid = purchaseHistory?.fractionPriceCents / 100 ?? undefined;
 
   const formatLargeValues = (value: number) => {
     if (isNaN(value)) return value;
@@ -99,7 +97,7 @@ export const AskingPriceComponent = ({
     setInputValues({
       ...inputValues,
       percent: parseFloat(event.target.value),
-      price: (pricePaid * ((100 + parseFloat(event.target.value)) / 100)).toFixed(
+      price: (((parseFloat(event.target.value) + 100) / 100) * pricePaid).toFixed(
         2,
       ) as unknown as number,
     });
@@ -109,9 +107,7 @@ export const AskingPriceComponent = ({
     setInputValues({
       ...inputValues,
       price: parseFloat(event.target.value),
-      percent: ((parseFloat(event.target.value) / pricePaid) * 100 - 100).toFixed(
-        2,
-      ) as unknown as number,
+      percent: (parseFloat(event.target.value) / pricePaid) * 100,
     });
   };
 
@@ -124,7 +120,7 @@ export const AskingPriceComponent = ({
   const totalValuation = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-  }).format(cartItem ? (cartItem.totalPrice * (inputValues.percent + 100)) / 100 : 0);
+  }).format(purchaseHistory ? totalPrice + (inputValues.percent + 100) : 0);
 
   checkValues();
 
@@ -194,13 +190,17 @@ export const AskingPriceComponent = ({
             <Box marginBottom="24px">
               <OrderSummaryDetailsContainer>
                 <Text variant="lg">
-                  {cartItem && Object.keys(cartItem).length > 0 && cartItem.quantity}
-                  {cartItem && Object.keys(cartItem).length > 0 && cartItem.quantity > 1
+                  {purchaseHistory &&
+                    Object.keys(purchaseHistory).length > 0 &&
+                    purchaseHistory.fractionQty}
+                  {purchaseHistory &&
+                  Object.keys(purchaseHistory).length > 0 &&
+                  purchaseHistory.fractionQty > 1
                     ? ' Units'
                     : ' Unit'}
                 </Text>
                 <Text variant="lg">
-                  {cartItem && Object.keys(cartItem).length > 0 && totalValuation}
+                  {purchaseHistory && Object.keys(purchaseHistory).length > 0 && totalValuation}
                 </Text>
               </OrderSummaryDetailsContainer>
               <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
@@ -242,7 +242,7 @@ export const AskingPriceComponent = ({
           <Text>Order Number</Text>
           <Text>{asset.sellOrders[0].id}</Text>
         </Box>
-        <Box maxWidth="756px" sx={{ margin: '0 auto' }}>
+        <Box maxWidth="756px">
           <AssetCard>
             <CardContent>
               <AssetImageWrapper>
@@ -266,22 +266,22 @@ export const AskingPriceComponent = ({
                   <Typography>Valuation</Typography>
                   <LargeDetailText variant="lg">
                     $
-                    {cartItem
-                      ? cartItem.totalPrice < 1000
+                    {purchaseHistory
+                      ? totalPrice < 1000
                         ? Intl.NumberFormat('en-US', {
                             style: 'currency',
                             currency: 'USD',
                             minimumFractionDigits: 2,
                             currencyDisplay: 'symbol',
-                          }).format(cartItem.totalPrice)
-                        : formatLargeValues(cartItem.totalPrice)
+                          }).format(totalPrice)
+                        : formatLargeValues(totalPrice)
                       : ''}
                   </LargeDetailText>
                 </ValuationContainer>
                 <ValuationContainer>
                   <Typography>Unit Price</Typography>
                   <LargeDetailText variant="lg">
-                    ${cartItem ? cartItem.fractionPriceCents / 100 : ''}
+                    ${purchaseHistory ? purchaseHistory.fractionPriceCents / 100 : ''}
                   </LargeDetailText>
                 </ValuationContainer>
               </CardMeta>
