@@ -23,7 +23,8 @@ export interface IPurchaseInfo {
   id: string;
   updatedAt: string;
   createdAt: string;
-  deletedAt: string;
+  deletedAt: string | null;
+  isDeleted: boolean;
   sellOrderId: string;
   userId: string;
   fractionQty: number;
@@ -61,7 +62,7 @@ interface IPurchaseHistoryItem {
   fractionPriceCents?: number;
   fractionQty?: number;
   id?: string;
-  isDelete?: boolean;
+  isDeleted?: boolean;
   purchaseTotal?: number;
   sellOrderId?: string;
   updatedAt?: string;

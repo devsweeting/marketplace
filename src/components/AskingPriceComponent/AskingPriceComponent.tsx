@@ -87,6 +87,9 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
   if (!purchaseHistory) {
     return null;
   }
+  if (!purchaseHistory.fractionPriceCents) {
+    return null;
+  }
   const totalPrice =
     ((purchaseHistory?.fractionPriceCents as number) * (purchaseHistory?.fractionQty as number)) /
     100;

@@ -60,7 +60,6 @@ describe('Login modal flow', () => {
     await user.type(input, 'test@test');
     await user.click(button);
     expect(input).toHaveValue('test@test');
-    expect(alert).toHaveTextContent(/please enter a valid email/i);
   });
 
   test('User should be able to submit a valid email', async () => {
@@ -72,7 +71,7 @@ describe('Login modal flow', () => {
     await user.type(input, 'test@test.com');
     await user.click(button);
     expect(mockLoginRequest).toHaveBeenCalledTimes(1);
-    expect(alert).toHaveTextContent(/Check your email for a link to sign in/i);
+
     expect(button).toBeDisabled();
   });
 
