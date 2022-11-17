@@ -48,7 +48,6 @@ export const Img = styled(Image)({
 });
 
 export const CardDetails = styled('div')({
-  // width: '100%',
   flex: 1,
   padding: '1rem',
   display: 'flex',

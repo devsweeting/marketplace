@@ -13,13 +13,13 @@ import {
   removeWatchlistFromLocalStorage,
 } from '@/api/endpoints/watchlist';
 import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 import { useModal } from '@/helpers/hooks/useModal';
 import { useUser } from '@/helpers/hooks/useUser';
 import { Star as MuiStar } from '@mui/icons-material';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { Attributes } from '../Attributes';
-import type { IAsset } from '@/types/assetTypes';
 
 import {
   CardContainer,
@@ -62,9 +62,11 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     }
   }, [assetData, user]);
 
-  const handleAddToWatchlist = (asset: IAsset) => {
+  const handleAddToWatchlist = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+
     if (!user) {
-      addWatchlistToLocalStorage(asset)
+      addWatchlistToLocalStorage(assetData)
         .then(() => {
           setIsModalOpen(true);
           setHasBeenAdded(true);
@@ -76,7 +78,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       return;
     }
 
-    addToWatchlist(asset)
+    addToWatchlist(assetData)
       .then((status) => {
         setHasBeenAdded(hasBeenAddedWatchlist(status));
       })
@@ -85,9 +87,11 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       });
   };
 
-  const handleRemoveFromWatchlist = (asset: IAsset) => {
+  const handleRemoveFromWatchlist = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+
     if (!user?.id) {
-      removeWatchlistFromLocalStorage(asset)
+      removeWatchlistFromLocalStorage(assetData)
         .then(() => {
           setHasBeenAdded(false);
           return;
@@ -98,7 +102,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       return;
     }
 
-    removeFromWatchlist(asset)
+    removeFromWatchlist(assetData)
       .then(() => {
         setHasBeenAdded(false);
         return;
@@ -156,21 +160,11 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       <StarWrapper>
         <Star>
           {!hasBeenAdded ? (
-            <IconButton
-              aria-label="add to watchlist"
-              onClick={() => {
-                handleAddToWatchlist(assetData);
-              }}
-            >
+            <IconButton aria-label="add to watchlist" onClick={handleAddToWatchlist}>
               <StarBorderIcon />
             </IconButton>
           ) : (
-            <Watched
-              aria-label="remove from watchlist"
-              onClick={() => {
-                handleRemoveFromWatchlist(assetData);
-              }}
-            >
+            <Watched aria-label="remove from watchlist" onClick={handleRemoveFromWatchlist}>
               <MuiStar />
             </Watched>
           )}
