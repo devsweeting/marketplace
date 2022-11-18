@@ -118,12 +118,14 @@ const userPortfolioAsset = {
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <TradePanel
-        asset={asset}
-        open={true}
-        handleClose={mockHandleClose}
-        updateAsset={mockUpdateAsset}
-      />
+      <CartProvider>
+        <TradePanel
+          asset={asset}
+          open={true}
+          handleClose={mockHandleClose}
+          updateAsset={mockUpdateAsset}
+        />
+      </CartProvider>
     </ThemeProvider>
   );
 };
@@ -246,7 +248,6 @@ describe('TradePanel', () => {
     const closeBtn = await screen.findByRole('button', { name: /close/i });
     await user.click(closeBtn);
   });
-
   test('should reset if the card data changes', async () => {
     const { rerender } = render(<MockTradePanel asset={data} />);
     const slider = await screen.findByRole('slider');
