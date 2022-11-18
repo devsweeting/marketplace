@@ -9,8 +9,7 @@ import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
 import {
   addToWatchlist,
   addWatchlistToLocalStorage,
-  checkForAssetOnWatchlist,
-  hasBeenAddedWatchlist,
+  isAssetOnWatchlist,
   isAssetInLocalStorage,
   removeFromWatchlist,
   removeWatchlistFromLocalStorage,
@@ -94,7 +93,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
       const status = await addToWatchlist(asset);
 
       if (status) {
-        setWatched(hasBeenAddedWatchlist(status));
+        setWatched(status.isSuccessful);
       }
     } catch (e) {
       // eslint-disable-next-line no-console
@@ -132,9 +131,9 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     const fetchIsWatched = async (asset: IAsset) => {
       setWatched(isAssetInLocalStorage(asset));
 
-      const watchlistCheck = await checkForAssetOnWatchlist(asset);
+      const onWatchlistCheck = await isAssetOnWatchlist(asset);
 
-      setWatched(watchlistCheck.inWatchlist ?? false);
+      setWatched(onWatchlistCheck ?? false);
     };
 
     if (asset) {

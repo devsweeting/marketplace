@@ -22,7 +22,7 @@ export const isAssetOnWatchlist = async ({ id }: IAsset): Promise<boolean> => {
 };
 
 interface IWatchlistResponse {
-  success: boolean;
+  isSuccessful: boolean;
 }
 export const addToWatchlist = async ({
   id,
@@ -32,7 +32,7 @@ export const addToWatchlist = async ({
   });
 
   const isAdded = await hasBeenAddedWatchlist(addToWatchListResponse.status);
-  return { success: isAdded };
+  return { isSuccessful: isAdded };
 };
 
 const hasBeenAddedWatchlist = (status: StatusCodes): boolean => {
@@ -43,11 +43,11 @@ export const removeFromWatchlist = async (item: IWatchList): Promise<IWatchlistR
   try {
     const deleteWatchListResponse = await apiClient.delete(`/watchlist/${item.id}`);
     if (deleteWatchListResponse.status === StatusCodes.OK) {
-      return { success: true };
+      return { isSuccessful: true };
     }
-    return { success: false };
+    return { isSuccessful: false };
   } catch (error) {
-    return { success: false };
+    return { isSuccessful: false };
   }
 };
 
@@ -77,20 +77,22 @@ export const addWatchlistToLocalStorage = async ({
       localWatchlist = [{ id, name }];
     }
     localStorage.setItem(WATCHLIST, JSON.stringify(localWatchlist));
-    return { success: true };
+    return { isSuccessful: true };
   } catch (error) {
-    return { success: false };
+    return { isSuccessful: false };
   }
 };
 
-export const removeWatchlistFromLocalStorage = async (id: string): Promise<IWatchlistResponse> => {
+export const removeWatchlistFromLocalStorage = async ({
+  id,
+}: IAsset): Promise<IWatchlistResponse> => {
   try {
     const localWatchlist = await getLocalWatchlist();
     const watchlist = localWatchlist.filter((watchlist: IWatchList) => watchlist.id !== id);
     localStorage.setItem(WATCHLIST, JSON.stringify(watchlist));
-    return { success: true };
+    return { isSuccessful: true };
   } catch (error) {
-    return { success: false };
+    return { isSuccessful: false };
   }
 };
 

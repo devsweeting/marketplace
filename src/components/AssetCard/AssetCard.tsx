@@ -68,7 +68,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       addWatchlistToLocalStorage(assetData)
         .then((data) => {
           setIsModalOpen(true);
-          if (!data.success) {
+          if (!data.isSuccessful) {
             setHasBeenAdded(false);
             return;
           }
@@ -82,7 +82,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     }
 
     void addToWatchlist(assetData).then((data) => {
-      if (!data.success) {
+      if (!data.isSuccessful) {
         setHasBeenAdded(false);
         return;
       }
@@ -94,9 +94,9 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     e.stopPropagation();
 
     if (!user?.id) {
-      removeWatchlistFromLocalStorage(assetData.id)
+      removeWatchlistFromLocalStorage(assetData)
         .then((data) => {
-          if (data.success) {
+          if (data.isSuccessful) {
             setHasBeenAdded(false);
           }
           return;
