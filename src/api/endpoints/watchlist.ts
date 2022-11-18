@@ -7,38 +7,48 @@ export const getWatchlist = async () => {
   const addToWatchListResponse = await apiClient.get(`/watchlist/`);
   return addToWatchListResponse.data;
 };
+export interface IWatchList {
+  name: string;
+  id: string;
+}
 
-export const checkForAssetOnWatchlist = async ({ id }: IAsset) => {
+export const isAssetOnWatchlist = async ({ id }: IAsset): Promise<boolean> => {
   try {
     const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`);
     return isOnWatchlist.data?.inWatchlist ?? false;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return;
+    return false;
   }
 };
 
-export const addToWatchlist = async ({ id }: IAsset | WatchlistAsset) => {
+interface IWatchlistResponse {
+  isSuccessful: boolean;
+}
+export const addToWatchlist = async ({
+  id,
+}: IAsset | WatchlistAsset): Promise<IWatchlistResponse> => {
   const addToWatchListResponse = await apiClient.post(`/watchlist/`, {
     body: { assetId: id },
   });
-  return addToWatchListResponse.status;
+
+  const isAdded = await hasBeenAddedWatchlist(addToWatchListResponse.status);
+  return { isSuccessful: isAdded };
 };
 
-export const removeFromWatchlist = async ({ id }: IAsset) => {
-  try {
-    const deleteWatchListResponse = await apiClient.delete(`/watchlist/${id}`);
-    return deleteWatchListResponse.status;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return StatusCodes.INTERNAL_SERVER_ERROR;
-  }
-};
-
-export const hasBeenAddedWatchlist = (status: StatusCodes): boolean => {
+const hasBeenAddedWatchlist = (status: StatusCodes): boolean => {
   return status == StatusCodes.CREATED || status == StatusCodes.CONFLICT;
+};
+
+export const removeFromWatchlist = async (item: IWatchList): Promise<IWatchlistResponse> => {
+  try {
+    const deleteWatchListResponse = await apiClient.delete(`/watchlist/${item.id}`);
+    if (deleteWatchListResponse.status === StatusCodes.OK) {
+      return { isSuccessful: true };
+    }
+    return { isSuccessful: false };
+  } catch (error) {
+    return { isSuccessful: false };
+  }
 };
 
 export const isAssetInLocalStorage = ({ id }: IAsset): boolean => {
@@ -51,37 +61,38 @@ export const isAssetInLocalStorage = ({ id }: IAsset): boolean => {
     }
     return false;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
     return false;
   }
 };
 
-export const addWatchlistToLocalStorage = async ({ id, name }: IAsset): Promise<void> => {
+export const addWatchlistToLocalStorage = async ({
+  id,
+  name,
+}: IAsset): Promise<IWatchlistResponse> => {
   try {
-    let localWatchlist = await getLocalWatchlist();
+    let localWatchlist: IWatchList[] = await getLocalWatchlist();
     if (localWatchlist) {
       localWatchlist.push({ id, name });
     } else {
       localWatchlist = [{ id, name }];
     }
     localStorage.setItem(WATCHLIST, JSON.stringify(localWatchlist));
+    return { isSuccessful: true };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return;
+    return { isSuccessful: false };
   }
 };
 
-export const removeWatchlistFromLocalStorage = async ({ id }: IAsset): Promise<void> => {
+export const removeWatchlistFromLocalStorage = async ({
+  id,
+}: IAsset): Promise<IWatchlistResponse> => {
   try {
     const localWatchlist = await getLocalWatchlist();
-    const watchlist = localWatchlist.filter((asset: WatchlistAsset) => asset.id !== id);
+    const watchlist = localWatchlist.filter((watchlist: IWatchList) => watchlist.id !== id);
     localStorage.setItem(WATCHLIST, JSON.stringify(watchlist));
+    return { isSuccessful: true };
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-    return;
+    return { isSuccessful: false };
   }
 };
 

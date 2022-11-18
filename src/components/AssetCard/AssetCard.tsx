@@ -6,8 +6,7 @@ import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import {
   addToWatchlist,
   addWatchlistToLocalStorage,
-  checkForAssetOnWatchlist,
-  hasBeenAddedWatchlist,
+  isAssetOnWatchlist,
   isAssetInLocalStorage,
   removeFromWatchlist,
   removeWatchlistFromLocalStorage,
@@ -52,7 +51,7 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
     setHasBeenAdded(isAssetInLocalStorage(assetData));
 
     if (user) {
-      checkForAssetOnWatchlist(assetData)
+      isAssetOnWatchlist(assetData)
         .then((isOnWatchlist: boolean) => {
           setHasBeenAdded(isOnWatchlist ?? false);
         })
@@ -67,8 +66,12 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
 
     if (!user) {
       addWatchlistToLocalStorage(assetData)
-        .then(() => {
+        .then((data) => {
           setIsModalOpen(true);
+          if (!data.isSuccessful) {
+            setHasBeenAdded(false);
+            return;
+          }
           setHasBeenAdded(true);
           return;
         })
@@ -78,13 +81,13 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
       return;
     }
 
-    addToWatchlist(assetData)
-      .then((status) => {
-        setHasBeenAdded(hasBeenAddedWatchlist(status));
-      })
-      .catch(() => {
+    void addToWatchlist(assetData).then((data) => {
+      if (!data.isSuccessful) {
+        setHasBeenAdded(false);
         return;
-      });
+      }
+      setHasBeenAdded(true);
+    });
   };
 
   const handleRemoveFromWatchlist = (e: MouseEvent<HTMLElement>) => {
@@ -92,8 +95,10 @@ export const AssetCard = ({ onClick, assetData, activeCardId }: IAssetCard) => {
 
     if (!user?.id) {
       removeWatchlistFromLocalStorage(assetData)
-        .then(() => {
-          setHasBeenAdded(false);
+        .then((data) => {
+          if (data.isSuccessful) {
+            setHasBeenAdded(false);
+          }
           return;
         })
         .catch(() => {
