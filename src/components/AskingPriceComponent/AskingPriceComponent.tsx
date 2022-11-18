@@ -264,7 +264,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
         </ThanksHeader>
         <Box marginBottom="20px">
           <Text>Order Number</Text>
-          <Text>{asset.sellOrders[0].id}</Text>
+          <Text>{id}</Text>
         </Box>
         <Box maxWidth="756px" width="100%">
           <AssetCard>
