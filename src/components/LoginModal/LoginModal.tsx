@@ -118,7 +118,7 @@ const LoginInput = ({
         </div>
       )}
       {statCode === StatusCodes.OK && (
-        <form role="form">
+        <div role="form">
           <InputTextField
             label={'code'}
             name={'code'}
@@ -157,7 +157,7 @@ const LoginInput = ({
               Submit
             </LoginButton>
           </Box>
-        </form>
+        </div>
       )}
     </Box>
   );
@@ -216,6 +216,7 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
   const handleLoginSubmit = (value: string) => {
     if (!validate(value)) {
       setHeaderText('Enter a valid email');
+      setAlertMessage('Email is needed to proceed with login/signup');
 
       return;
     }

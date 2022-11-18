@@ -37,6 +37,7 @@ import { getPurchaseById } from '@/api/endpoints/sellorders';
 import type { IAsset, IPurchaseInfo } from '@/types/assetTypes';
 import { formatNumber } from '@/helpers/formatNumber';
 import { Attributes } from '../Attributes';
+import { safeParseFloat } from '@/helpers/safeParseInt';
 
 const calculatePercentFromInput = (input: number, originalValue: number) => {
   input = input * 100;
@@ -45,17 +46,23 @@ const calculatePercentFromInput = (input: number, originalValue: number) => {
   return (percent - 100).toFixed(3) as unknown as number;
 };
 
-const calculateValueFromPercent = (percent: number, originalValue: number): number => {
+const calculateValueFromPercent = (percent: number | undefined, originalValue: number) => {
+  if (!percent) {
+    return undefined;
+  }
   const truePercent = percent + 100;
   const decimal = truePercent / 100;
   return ((originalValue * decimal) / 100).toFixed(2) as unknown as number;
 };
 
 const calculateTotalFromPercentAndPrice = (price: number, numOfUnits: number) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(price * numOfUnits);
+  if (price) {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(price * numOfUnits);
+  }
+  return '~';
 };
 
 export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string }) => {
@@ -64,7 +71,10 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
   // const [alertMessage, setAlertMessage] = useState('');
   // const [helperTextValue, setHelperTextValue] = useState('');
 
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<{
+    percent: number | undefined;
+    price: number | undefined;
+  }>({
     percent: 0,
     price: 0,
   });
@@ -117,9 +127,9 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
 
   const changePercentValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValues({
-      percent: parseFloat(event.target.value),
+      percent: safeParseFloat(event.target.value),
       price: calculateValueFromPercent(
-        parseFloat(event.target.value),
+        safeParseFloat(event.target.value),
         purchaseHistory?.fractionPriceCents,
       ),
     });
@@ -136,19 +146,10 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
     });
   };
 
-  const checkValues = () => {
-    if (isNaN(inputValues.percent) || isNaN(inputValues.price)) {
-      // setHelperTextValue('Asking Price must be a valid number');
-    }
-  };
-
   const totalValuation =
-    !isNaN((purchaseHistory.fractionPriceCents / 100) * inputValues.percent) &&
-    !isNaN(inputValues.price)
+    inputValues.price !== undefined && inputValues.percent !== undefined
       ? calculateTotalFromPercentAndPrice(inputValues.price, purchaseHistory?.fractionQty)
       : '~';
-
-  checkValues();
 
   return (
     <PageContainer>

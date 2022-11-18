@@ -13,6 +13,7 @@ import type { IUser } from '@/types/user';
 import user from '@testing-library/user-event';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
+import { CartProvider } from '@/helpers/auth/CartContext';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
 
 const mockHandleClose = jest.fn();
@@ -130,7 +131,9 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
 const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser }) => {
   return (
     <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
-      <MockTradePanel asset={asset} />
+      <CartProvider>
+        <MockTradePanel asset={asset} />
+      </CartProvider>
     </UserContext.Provider>
   );
 };
@@ -240,7 +243,7 @@ describe('TradePanel', () => {
     expect(buyBtn).not.toBeDisabled();
     await user.click(buyBtn);
 
-    const closeBtn = await screen.findByRole('button', { name: /cancel/i });
+    const closeBtn = await screen.findByRole('button', { name: /close/i });
     await user.click(closeBtn);
   });
 

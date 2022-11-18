@@ -199,7 +199,7 @@ describe('Set Asking Price tests', () => {
         id={'4922fbce-1982-4392-a9f8-81049fff89a7'}
       />,
     );
-    const closeCart = jest.fn();
+
     const percentInput = await screen.findByRole('spinbutton', {
       name: /set over the paid price/i,
     });
