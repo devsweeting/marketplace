@@ -24,7 +24,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
       mockJsonResponse({ assetId: mockData.id, inWatchlist: true }),
     );
 
-    const res = await isAssetOnWatchlist(mockData.id);
+    const res = await isAssetOnWatchlist(mockData);
 
     expect(res).toBeTruthy();
     expect(mockedClient.get).toBeCalledTimes(1);
@@ -35,7 +35,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
       mockJsonResponse({ assetId: mockData.id, inWatchlist: false }),
     );
 
-    const res = await isAssetOnWatchlist(mockData.id);
+    const res = await isAssetOnWatchlist(mockData);
 
     expect(res).toBeFalsy();
     expect(mockedClient.get).toBeCalledTimes(1);
@@ -47,7 +47,7 @@ describe('watchlist addToWatchlist', () => {
     mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.CREATED }));
 
     const res = await addToWatchlist(mockProductData);
-    expect(res.success).toBe(true);
+    expect(res.isSuccessful).toBe(true);
     expect(mockedClient.post).toBeCalledTimes(1);
   });
 });
@@ -57,7 +57,7 @@ describe('watchlist removeFromWatchList', () => {
     mockedClient.delete.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.OK }));
 
     const res = await removeFromWatchlist(mockProductData);
-    expect(res.success).toBe(true);
+    expect(res.isSuccessful).toBe(true);
     expect(mockedClient.delete).toBeCalledTimes(1);
   });
 
@@ -65,7 +65,7 @@ describe('watchlist removeFromWatchList', () => {
     mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.NOT_FOUND }));
 
     const res = await addToWatchlist(mockProductData);
-    expect(res.success).toBeFalsy;
+    expect(res.isSuccessful).toBeFalsy;
     expect(mockedClient.post).toBeCalledTimes(1);
   });
 });

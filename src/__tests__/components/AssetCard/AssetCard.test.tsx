@@ -54,10 +54,10 @@ describe('Asset Card', () => {
     jest.resetAllMocks();
     mockApiClient.get.mockResolvedValue(mockJsonResponse());
     mockIsAssetOnWatchlist.mockResolvedValue(true);
-    mockAddToWatchlist.mockResolvedValue({ success: true });
-    mockRemoveFromWatchlist.mockResolvedValue({ success: true });
-    mockAddWatchlistToLocalStorage.mockResolvedValue({ success: true });
-    mockRemoveWatchlistFromLocalStorage.mockResolvedValue({ success: true });
+    mockAddToWatchlist.mockResolvedValue({ isSuccessful: true });
+    mockRemoveFromWatchlist.mockResolvedValue({ isSuccessful: true });
+    mockAddWatchlistToLocalStorage.mockResolvedValue({ isSuccessful: true });
+    mockRemoveWatchlistFromLocalStorage.mockResolvedValue({ isSuccessful: true });
   });
 
   afterAll(() => {
