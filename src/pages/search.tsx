@@ -116,13 +116,11 @@ const SearchPage: NextPage = () => {
           <Box>
             <FilterWrapper />
             <Grid container direction="row" justifyContent="center" alignItems="stretch">
-              {assets && (
-                <AssetListView
-                  handleDrawer={handleDrawer}
-                  assets={assets}
-                  activeCardId={isOpen ? tradePanelData?.id : ''}
-                />
-              )}
+              <AssetListView
+                handleDrawer={handleDrawer}
+                assets={assets}
+                activeCardId={isOpen ? tradePanelData?.id : ''}
+              />
             </Grid>
             <AssetListFooter>
               {assets.length < (currentMeta?.totalItems || 0) && (

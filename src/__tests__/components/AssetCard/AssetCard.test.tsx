@@ -9,27 +9,13 @@ import type { IAsset } from '@/types/assetTypes';
 import type { IUser } from '@/types/user';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
-import {
-  addToWatchlist,
-  addWatchlistToLocalStorage,
-  isAssetOnWatchlist,
-  removeFromWatchlist,
-  removeWatchlistFromLocalStorage,
-} from '@/api/endpoints/watchlist';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
 
 jest.mock('@/api/client');
 const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
 jest.mock('@/api/endpoints/watchlist');
-const mockAddToWatchlist = addToWatchlist as jest.MockedFn<typeof addToWatchlist>;
-const mockIsAssetOnWatchlist = isAssetOnWatchlist as jest.MockedFn<typeof isAssetOnWatchlist>;
-const mockRemoveFromWatchlist = removeFromWatchlist as jest.MockedFn<typeof removeFromWatchlist>;
-const mockAddWatchlistToLocalStorage = addWatchlistToLocalStorage as jest.MockedFn<
-  typeof addWatchlistToLocalStorage
->;
-const mockRemoveWatchlistFromLocalStorage = removeWatchlistFromLocalStorage as jest.MockedFn<
-  typeof removeWatchlistFromLocalStorage
->;
+const mockAdd = jest.fn();
+const mockRemove = jest.fn();
 
 const handleClick = jest.fn();
 
@@ -39,11 +25,25 @@ const mockUser = {
   email: 'example@example.com',
   exp: new Date('3000-01-01T00:10:00.000Z'),
 };
-const MockAssetCard = ({ asset, user }: { asset: IAsset; user: IUser | undefined }) => {
+const MockAssetCard = ({
+  asset,
+  user,
+  watched = false,
+}: {
+  asset: IAsset;
+  user: IUser | undefined;
+  watched?: boolean;
+}) => {
   return (
     <ThemeProvider theme={themeJump}>
       <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
-        <AssetCard onClick={handleClick} assetData={asset} />
+        <AssetCard
+          onClick={handleClick}
+          assetData={asset}
+          watched={watched}
+          watchlistAdd={mockAdd}
+          watchlistRemove={mockRemove}
+        />
       </UserContext.Provider>
     </ThemeProvider>
   );
@@ -53,11 +53,6 @@ describe('Asset Card', () => {
   beforeEach(() => {
     jest.resetAllMocks();
     mockApiClient.get.mockResolvedValue(mockJsonResponse());
-    mockIsAssetOnWatchlist.mockResolvedValue(true);
-    mockAddToWatchlist.mockResolvedValue({ isSuccessful: true });
-    mockRemoveFromWatchlist.mockResolvedValue({ isSuccessful: true });
-    mockAddWatchlistToLocalStorage.mockResolvedValue({ isSuccessful: true });
-    mockRemoveWatchlistFromLocalStorage.mockResolvedValue({ isSuccessful: true });
   });
 
   afterAll(() => {
@@ -100,43 +95,29 @@ describe('Asset Card', () => {
     expect(soldOut).toBeInTheDocument();
   });
 
-  test('should allow non auth user to add and remove item from watchlist ', async () => {
-    render(<MockAssetCard asset={mockData} user={undefined} />);
+  describe('Watchlist actions', () => {
+    test('can add an item to watchlist', async () => {
+      render(<MockAssetCard asset={mockData} user={mockUser} />);
 
-    const addToWatchListBtn = await screen.findByRole('button', { name: /add to watchlist/i });
-    expect(addToWatchListBtn).toBeInTheDocument();
-    await user.click(addToWatchListBtn);
-    expect(mockAddWatchlistToLocalStorage).toHaveBeenCalledTimes(1);
-    const removeFromWatchListBtn = await screen.findByRole('button', {
-      name: /remove from watchlist/i,
+      const button = await screen.findByRole('button', { name: /add to watchlist/i });
+
+      expect(button).toBeInTheDocument();
+
+      await user.click(button);
+
+      expect(mockAdd).toBeCalled();
     });
-    expect(removeFromWatchListBtn).toBeInTheDocument();
-    await user.click(removeFromWatchListBtn);
 
-    const addToWatchListBtn2 = await screen.findByRole('button', { name: /add to watchlist/i });
-    expect(addToWatchListBtn2).toBeInTheDocument();
-    expect(mockAddWatchlistToLocalStorage).toHaveBeenCalledTimes(1);
-    expect(mockRemoveWatchlistFromLocalStorage).toHaveBeenCalledTimes(1);
-    expect(mockAddToWatchlist).toHaveBeenCalledTimes(0);
-  });
+    test('can remove an item from watchlist', async () => {
+      render(<MockAssetCard asset={mockData} user={mockUser} watched={true} />);
 
-  test('should allow auth user to add and remove items', async () => {
-    mockIsAssetOnWatchlist.mockResolvedValue(false);
-    render(<MockAssetCard asset={mockData} user={mockUser} />);
-    const addToWatchListBtn = await screen.findByRole('button', { name: /add to watchlist/i });
-    expect(addToWatchListBtn).toBeInTheDocument();
-    await user.click(addToWatchListBtn);
-    expect(mockAddToWatchlist).toHaveBeenCalledTimes(1);
-    expect(mockIsAssetOnWatchlist).toHaveBeenCalledTimes(1);
-    const removeFromWatchListBtn = await screen.findByRole('button', {
-      name: /remove from watchlist/i,
+      const button = await screen.findByRole('button', { name: /remove from watchlist/i });
+
+      expect(button).toBeInTheDocument();
+
+      await user.click(button);
+
+      expect(mockRemove).toBeCalled();
     });
-    expect(removeFromWatchListBtn).toBeInTheDocument();
-    await user.click(removeFromWatchListBtn);
-
-    const addToWatchListBtn2 = await screen.findByRole('button', { name: /add to watchlist/i });
-    expect(addToWatchListBtn2).toBeInTheDocument();
-    expect(mockAddToWatchlist).toHaveBeenCalledTimes(1);
-    expect(mockRemoveFromWatchlist).toHaveBeenCalledTimes(1);
   });
 });
