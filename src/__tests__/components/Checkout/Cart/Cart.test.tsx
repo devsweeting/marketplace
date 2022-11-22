@@ -5,39 +5,10 @@ import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';
 import user from '@testing-library/user-event';
 import type { IAsset } from '@/types/assetTypes';
-import type { CartItem } from '@/helpers/auth/CartContext';
+import { setLocalStorage } from '@/helpers/mockLocalStorage';
 import { Cart } from '@/components/Checkout/Cart';
 
 jest.mock('@/api/endpoints/sellorders');
-
-const localStorageMock = (function () {
-  let store: { [key: string]: CartItem[] } = {};
-  return {
-    getItem(key: string) {
-      return store[key];
-    },
-    setItem(key: string, value: CartItem[]) {
-      store[key] = value;
-    },
-    clear() {
-      store = {};
-    },
-    removeItem(key: string) {
-      delete store[key];
-    },
-    getAll() {
-      return store;
-    },
-  };
-})();
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-
-const setLocalStorage = (
-  id: string,
-  data: { id: string; quantity: number; fractionPriceCents: number; totalPrice: number }[],
-) => {
-  window.localStorage.setItem(id, JSON.stringify(data));
-};
 
 const mockId = '@local-cart';
 const mockJson = [
@@ -203,10 +174,12 @@ describe('Cart', () => {
     for (const element of elementsArray) {
       if (elementsArray.length > 0) {
         return expect(element).toBeInTheDocument();
+      } else {
+        return fail('it should not reach here');
       }
     }
   });
-  test('should buy button', async () => {
+  test('should allow click buy button and move on to next page', async () => {
     const setPage = jest.fn();
     render(<MockCart orderSummary={mockData} setPage={setPage} />);
 

@@ -55,7 +55,7 @@ export const PaymentMethods = ({
     return null;
   }
   return (
-    <Container>
+    <Container role="presentation">
       <HeaderContainer>
         <HeaderTitle variant="xl">Available payment methods</HeaderTitle>
         <ButtonContainer>
@@ -153,6 +153,7 @@ export const PaymentMethods = ({
             <StyledInput
               sx={{ width: '90%', borderRadius: '8px', height: '40px', margin: '8px 8px 8px 0' }}
               placeholder="Enter amount"
+              type="number"
               endAdornment={<StyledInputAdornments position="end">$</StyledInputAdornments>}
               disabled={selectedValue === 'b' ? true : false}
             />

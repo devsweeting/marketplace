@@ -30,7 +30,7 @@ const ExplorePage: NextPage = () => {
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-  const { openCart } = useCart();
+  const { openCart, isDisabled } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const user = useUser();
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
@@ -86,7 +86,7 @@ const ExplorePage: NextPage = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if (user && cartItems.length > 0) {
+      if (user && cartItems.length > 0 && isDisabled === false) {
         void getAssetById(cartItems[0].id).then((asset) => {
           if (Object.keys(asset).length > 0 && asset !== undefined) {
             openCart();
@@ -94,7 +94,7 @@ const ExplorePage: NextPage = () => {
         });
       }
     }
-  }, [cartItems, cartItems.length, openCart, user]);
+  }, [cartItems, cartItems.length, isDisabled, openCart, user]);
 
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);

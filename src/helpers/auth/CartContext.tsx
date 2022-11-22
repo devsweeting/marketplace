@@ -15,6 +15,7 @@ export type CartItem = {
 };
 
 type CartContext = {
+  reOpenCart: () => void;
   openCart: () => void;
   closeCart: () => void;
   closeModal: () => void;
@@ -22,6 +23,7 @@ type CartContext = {
   decreaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
   removeFromCart: (id: string) => void;
   cartQuantity: number;
+  isDisabled: boolean;
 };
 
 const CartContext = createContext({} as CartContext);
@@ -32,7 +34,8 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }: CartProviderProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isOpen, setIsOpen] = useState(false);
+  const initialState = { isOpen: false, isDisabled: false };
+  const [cartModalState, setCartModalState] = useState(initialState);
   const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
 
   const cartQuantity = cartItems.reduce(
@@ -41,13 +44,22 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     0,
   );
 
-  const openCart = () => setIsOpen(true);
+  const openCart = () => {
+    const newState = { ...cartModalState, isOpen: true };
+    setCartModalState(newState);
+  };
+  const reOpenCart = () => {
+    const newState = { isDisabled: false, isOpen: true };
+    setCartModalState(newState);
+  };
   const closeCart = () => {
-    setIsOpen(false);
+    const newState = { isDisabled: true, isOpen: false };
+    setCartModalState(newState);
     setCartItems([]);
   };
   const closeModal = () => {
-    setIsOpen(false);
+    const newState = { isDisabled: true, isOpen: false };
+    setCartModalState(newState);
   };
 
   function increaseCartQuantity(id: string, quantity: number, fractionPriceCents: number) {
@@ -115,11 +127,13 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         openCart,
         closeCart,
         cartQuantity,
+        reOpenCart,
         closeModal,
+        isDisabled: cartModalState.isDisabled,
       }}
     >
       {children}
-      <Checkout isOpen={isOpen} />
+      <Checkout isOpen={!cartModalState.isDisabled ? cartModalState.isOpen : false} />
     </CartContext.Provider>
   );
 };
