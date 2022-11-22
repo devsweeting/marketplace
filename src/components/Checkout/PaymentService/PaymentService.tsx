@@ -209,7 +209,7 @@ export const PaymentService = ({
       validateCVV(cardNumber, cardCVV) || { cardCVV: 'CVV is invalid' },
     ({ cardExpireDate }: { cardExpireDate: string }) =>
       validateExpireDate(cardExpireDate) || {
-        cardExpireDate: `The expiry date is before today's date. Please select a valid expiry date`,
+        cardExpireDate: `Please select a valid expiry date`,
       },
   ];
 
@@ -257,29 +257,30 @@ export const PaymentService = ({
       item.quantity,
       item.fractionPriceCents,
     );
-
-    switch (response.status) {
-      case StatusCodes.CREATED: {
-        setPage(page + 1);
-        break;
-      }
-      case StatusCodes.BAD_REQUEST: {
-        setOpen(true);
-        setAlertMessage('You cannot purchase any more of this item at this time.');
-        if (response.data.message === 'USER_CANNOT_PURCHASE_OWN_ORDER') {
-          setAlertMessage('You cannot purchase your own order.');
+    if (response) {
+      switch (response.status) {
+        case StatusCodes.CREATED: {
+          setPage(page + 1);
+          break;
         }
-        break;
-      }
-      case StatusCodes.UNAUTHORIZED: {
-        setOpen(true);
-        setAlertMessage('Please login to buy assets');
-        break;
-      }
-      default: {
-        setOpen(true);
-        setAlertMessage('Something went wrong.');
-        break;
+        case StatusCodes.BAD_REQUEST: {
+          setOpen(true);
+          setAlertMessage('You cannot purchase any more of this item at this time.');
+          if (response.data.message === 'USER_CANNOT_PURCHASE_OWN_ORDER') {
+            setAlertMessage('You cannot purchase your own order.');
+          }
+          break;
+        }
+        case StatusCodes.UNAUTHORIZED: {
+          setOpen(true);
+          setAlertMessage('Please login to buy assets');
+          break;
+        }
+        default: {
+          setOpen(true);
+          setAlertMessage('Something went wrong.');
+          break;
+        }
       }
     }
   };
@@ -287,7 +288,7 @@ export const PaymentService = ({
     return null;
   }
   return (
-    <Container>
+    <Container role="presentation">
       <HeaderContainer>
         <HeaderTitle variant="xl">Payment</HeaderTitle>
         <ButtonContainer>
@@ -350,7 +351,7 @@ export const PaymentService = ({
                     <Image
                       layout="fill"
                       src={`/images/PaymentProvidersIcons/${creditCardType(values.cardNumber)}`}
-                      alt=""
+                      alt="card provider"
                     />
                   </Box>
                 </InputAdornment>
