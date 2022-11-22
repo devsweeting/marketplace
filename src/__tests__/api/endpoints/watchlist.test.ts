@@ -1,4 +1,4 @@
-import { addToWatchlist, isAssetOnWatchlist, removeFromWatchlist } from '@/api/endpoints/watchlist';
+import { addToWatchlist, inWatchlist, removeFromWatchlist } from '@/api/endpoints/watchlist';
 import { mockAssetResponse } from '@/__mocks__/mockAssetResponse';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
@@ -24,7 +24,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
       mockJsonResponse({ assetId: mockData.id, inWatchlist: true }),
     );
 
-    const res = await isAssetOnWatchlist(mockData);
+    const res = await inWatchlist(mockData.id);
 
     expect(res).toBeTruthy();
     expect(mockedClient.get).toBeCalledTimes(1);
@@ -35,7 +35,7 @@ describe('watchlist checkForAssetOnWatchList', () => {
       mockJsonResponse({ assetId: mockData.id, inWatchlist: false }),
     );
 
-    const res = await isAssetOnWatchlist(mockData);
+    const res = await inWatchlist(mockData.id);
 
     expect(res).toBeFalsy();
     expect(mockedClient.get).toBeCalledTimes(1);
@@ -46,7 +46,7 @@ describe('watchlist addToWatchlist', () => {
   test('should return true on successful watchlist addition', async () => {
     mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.CREATED }));
 
-    const res = await addToWatchlist(mockProductData);
+    const res = await addToWatchlist(mockProductData.id);
     expect(res.isSuccessful).toBe(true);
     expect(mockedClient.post).toBeCalledTimes(1);
   });
@@ -56,7 +56,7 @@ describe('watchlist removeFromWatchList', () => {
   test('should return true on successful watchlist removal', async () => {
     mockedClient.delete.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.OK }));
 
-    const res = await removeFromWatchlist(mockProductData);
+    const res = await removeFromWatchlist(mockProductData.id);
     expect(res.isSuccessful).toBe(true);
     expect(mockedClient.delete).toBeCalledTimes(1);
   });
@@ -64,7 +64,7 @@ describe('watchlist removeFromWatchList', () => {
   test('should return false if watchlist item is not found', async () => {
     mockedClient.post.mockResolvedValue(mockJsonResponse({}, { status: StatusCodes.NOT_FOUND }));
 
-    const res = await addToWatchlist(mockProductData);
+    const res = await addToWatchlist(mockProductData.id);
     expect(res.isSuccessful).toBeFalsy;
     expect(mockedClient.post).toBeCalledTimes(1);
   });

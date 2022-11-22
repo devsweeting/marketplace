@@ -6,18 +6,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { getAssetById } from '@/api/endpoints/assets';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
-import {
-  addToWatchlist,
-  addWatchlistToLocalStorage,
-  isAssetOnWatchlist,
-  isAssetInLocalStorage,
-  removeFromWatchlist,
-  removeWatchlistFromLocalStorage,
-} from '@/api/endpoints/watchlist';
+import { addToWatchlist, removeFromWatchlist, inWatchlist } from '@/api/endpoints/watchlist';
 
 import { AssetErrorPage } from '@/components/DropPage/AssetErrorPage';
 import { AssetPage } from '@/components/DropPage/AssetPage';
 import type { AssetPageProps } from '@/components/DropPage/AssetPage';
+import { useLocalWatchlist } from '@/helpers/hooks/useLocalWatchlist';
 
 const mockInfo = [
   {
@@ -35,6 +29,7 @@ const mockInfo = [
 ];
 
 const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
+  const { addToLocalWatchlist, removeFromLocalWatchlist, inLocalWatchlist } = useLocalWatchlist();
   const [asset, setAsset] = useState<IAsset>(initialAsset);
   const sellOrder = useMemo(() => {
     if (asset?.sellOrders && asset?.sellOrders.length > 0) return asset.sellOrders[0];
@@ -85,33 +80,19 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   };
 
   const handleWatch = async (asset: IAsset): Promise<void> => {
-    try {
-      await addWatchlistToLocalStorage(asset);
+    addToLocalWatchlist(asset.id);
 
-      setWatched(true);
+    const { isSuccessful } = await addToWatchlist(asset.id);
 
-      const status = await addToWatchlist(asset);
-
-      if (status) {
-        setWatched(status.isSuccessful);
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
+    if (isSuccessful) setWatched(true);
   };
 
   const handleRemoveWatch = async (asset: IAsset): Promise<void> => {
-    try {
-      await removeWatchlistFromLocalStorage(asset);
+    removeFromLocalWatchlist(asset.id);
 
-      await removeFromWatchlist(asset);
+    const { isSuccessful } = await removeFromWatchlist(asset.id);
 
-      setWatched(false);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
+    if (isSuccessful) setWatched(false);
   };
 
   useEffect(() => {
@@ -129,9 +110,9 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
 
   useEffect(() => {
     const fetchIsWatched = async (asset: IAsset) => {
-      setWatched(isAssetInLocalStorage(asset));
+      setWatched(inLocalWatchlist(asset.id));
 
-      const onWatchlistCheck = await isAssetOnWatchlist(asset);
+      const onWatchlistCheck = await inWatchlist(asset.id);
 
       setWatched(onWatchlistCheck ?? false);
     };
@@ -140,6 +121,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
       // eslint-disable-next-line no-console
       fetchIsWatched(asset).catch((e) => console.error(e));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asset]);
 
   if (asset && sellOrder) {

@@ -150,5 +150,13 @@ export interface ISellOrder {
 
 export interface WatchlistAsset {
   id: string;
+  refId: string;
   name: string;
+  media: IMedia[];
+  slug: string;
+  description: string;
+  updatedAt: string;
+  createdAt: string;
+  attributes: IAttribute[];
+  partner: string;
 }

@@ -47,7 +47,7 @@ export const PortfolioAssetCard = ({
   };
 
   const handleRemoveFromWatchlist = (asset: IAsset) => {
-    removeFromWatchlist(asset)
+    removeFromWatchlist(asset.id)
       .then(() => {
         return;
       })

@@ -3,13 +3,15 @@ import { useEffect } from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Container, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import { addToWatchlist, getLocalWatchlist } from '@/api/endpoints/watchlist';
-import type { IWatchList } from '@/api/endpoints/watchlist';
+import { addToWatchlist } from '@/api/endpoints/watchlist';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import Link from 'next/link';
 import { LoginTextContainer } from '@/styles/LoginPage.styles';
+import { useLocalWatchlist } from '@/helpers/hooks/useLocalWatchlist';
 
 const Login: NextPage = (user) => {
+  const { getLocalWatchlist } = useLocalWatchlist();
+
   useEffect(() => {
     if (!user) {
       return;
@@ -18,7 +20,7 @@ const Login: NextPage = (user) => {
     const addWatchListItems = async () => {
       const watchList = getLocalWatchlist();
 
-      await Promise.all(watchList.map((item: IWatchList) => addToWatchlist(item)));
+      await Promise.all(watchList.map((id) => addToWatchlist(id)));
     };
 
     addWatchListItems()
@@ -28,6 +30,7 @@ const Login: NextPage = (user) => {
       .catch(() => {
         return;
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
