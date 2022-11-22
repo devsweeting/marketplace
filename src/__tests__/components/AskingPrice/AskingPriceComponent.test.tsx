@@ -117,7 +117,7 @@ const MockAskingPrice = ({
         </CartProvider>
       </UserContext.Provider>
     </ThemeProvider>,
-    { push, asPath: '/account' },
+    { push, asPath: '/askingprice' },
   );
 };
 

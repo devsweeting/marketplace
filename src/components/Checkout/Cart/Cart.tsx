@@ -39,9 +39,8 @@ export const Cart = ({
   const { removeFromCart, closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const item = cartItems[0];
-
   return (
-    <div>
+    <div role="presentation">
       <HeaderContainer>
         <HeaderSizedText variant="lg">Cart</HeaderSizedText>
         <HeaderButtons>
@@ -59,6 +58,7 @@ export const Cart = ({
             aria-label="remove from cart"
             onClick={() => {
               removeFromCart(item.id);
+              closeModal();
             }}
           >
             <CloseIcon />
@@ -106,7 +106,7 @@ export const Cart = ({
             </Box>
             <RemoveFromCartButton>
               <IconButton
-                aria-label="remove from cart"
+                aria-label="remove item from cart"
                 onClick={() => {
                   removeFromCart(item.id);
                 }}
