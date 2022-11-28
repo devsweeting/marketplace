@@ -20,17 +20,15 @@ export const ImgContainer = styled('div')(({ theme }) => ({
   position: 'relative',
 }));
 
-export const IconContainer = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'row',
+export const IconContainer = styled('div')({
   position: 'absolute',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   top: '2rem',
   right: '1.5rem',
   gap: '1rem',
-  [theme.breakpoints.down('md')]: {
-    flexDirection: 'column-reverse',
-  },
-}));
+});
 
 //---- Info content styles ----//
 export const InfoContainer = styled('div')(({ theme }) => ({

@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
 import {
   PageContainer,
@@ -11,7 +11,7 @@ import {
   UnitContainer,
   IconContainer,
 } from './AssetPage.styles';
-import { ShareOutlined, StarBorderRounded, StarRounded } from '@mui/icons-material';
+import { StarBorderRounded, StarRounded } from '@mui/icons-material';
 import { ImgGallery } from '@/components/ImgGallery';
 import { DropDetails } from '@/components/DropPage/DropDetails';
 const CountdownTimer = dynamic<CountdownProps>(
@@ -28,6 +28,15 @@ import { Button } from '@/components/Button';
 import type { InfoRow } from '../DropDetails/DropDetails';
 import { Attributes } from '@/components/Attributes';
 import type { CountdownProps } from '@/components/coundownTimer';
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+  EmailShareButton,
+  EmailIcon,
+} from 'react-share';
+import { CopyButton } from '@/components/CopyButton';
 
 export interface AssetPageProps {
   asset: IAsset;
@@ -64,20 +73,12 @@ export function AssetPage(props: AssetPageProps) {
     handleRemoveWatch,
   } = props;
 
+  const [url, setUrl] = useState('');
   const [modalState, setModalState] = useState<boolean>(false);
   const [unitsToPurchase, setUnitsToPurchase] = useState<number>(1);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
   const purchasable = timeToPurchasable === 0;
-
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-    }
-  };
 
   const toggleBuyModal = () => setModalState((prev) => !prev);
 
@@ -100,6 +101,8 @@ export function AssetPage(props: AssetPageProps) {
     },
   ];
 
+  useEffect(() => setUrl(window.location.href), []);
+
   return (
     <>
       <OpenGraph
@@ -115,12 +118,21 @@ export function AssetPage(props: AssetPageProps) {
       <PageContainer>
         <ImgContainer>
           <IconContainer>
-            <ShareOutlined onClick={() => void copyLink()} fontSize="large" />
             {watched ? (
               <StarRounded onClick={() => void handleRemoveWatch(asset)} fontSize="large" />
             ) : (
               <StarBorderRounded onClick={() => void handleWatch(asset)} fontSize="large" />
             )}
+            <CopyButton />
+            <FacebookShareButton url={url}>
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <TwitterShareButton url={url}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+            <EmailShareButton url={url}>
+              <EmailIcon size={32} round />
+            </EmailShareButton>
           </IconContainer>
           {asset?.media && <ImgGallery images={asset.media} />}
         </ImgContainer>
