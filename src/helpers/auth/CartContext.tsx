@@ -53,7 +53,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     setCartModalState(newState);
   };
   const closeCart = () => {
-    const newState = { isDisabled: true, isOpen: false };
+    const newState = { ...cartModalState, isDisabled: true, isOpen: false };
     setCartModalState(newState);
     setCartItems([]);
   };

@@ -33,7 +33,7 @@ import { useCart } from '@/helpers/auth/CartContext';
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
   const { setIsModalOpen } = useModal();
-  const { openCart } = useCart();
+  const { reOpenCart } = useCart();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -126,7 +126,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       }
     });
 
-    openCart();
+    reOpenCart();
 
     // setBuyModalOpen(true);
   };

@@ -49,6 +49,8 @@ export const CustomSelect = ({
       value={info}
       onChange={setInfo}
       name={name}
+      data-testid={name}
+      labelId={name}
       sx={{
         '&:hover': {
           bgcolor: 'transparent',
