@@ -106,6 +106,8 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     const fetchBuyLimit = async (id: string) => {
       const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(id);
 
+      if (!fractionsAvailableToPurchase) return;
+
       setPurchaseLimit(fractionsAvailableToPurchase);
     };
 
