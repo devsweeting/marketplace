@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue?: T | (() => T)) {
-  if (!key || !initialValue) {
-    throw new Error('Name and or value must be provided to persist to localStorage');
+  if (!key) {
+    throw new Error('Key must be provided to persist to localStorage');
   }
   const [value, setValue] = useState<T>(() => {
     if (typeof window !== 'undefined') {
