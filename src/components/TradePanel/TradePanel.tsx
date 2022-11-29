@@ -15,6 +15,7 @@ import { calcTimeDifference } from '@/helpers/time';
 import { CountdownTimer } from '../coundownTimer';
 import { Attributes } from '../Attributes';
 import { Close } from '@mui/icons-material';
+import ArrowRightAltRounded from '@mui/icons-material/ArrowRightAltRounded';
 import {
   Drawer,
   Header,
@@ -24,6 +25,7 @@ import {
   FlexTextWrapper,
   TradePanelButton,
 } from './TradePanel.styles';
+import Link from 'next/link';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
@@ -278,24 +280,13 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                 )}
               </div>
 
-              <div>
-                <Typography>Card details</Typography>
-                <FlexTextWrapper>
-                  <Typography>Date minted</Typography>
-                  <Typography>Oct 1 2022</Typography>
-                </FlexTextWrapper>
-                <Divider />
-                <FlexTextWrapper>
-                  <Typography>Number of Cards of same grade in PWCCNFT</Typography>
-                  <Typography>#</Typography>
-                </FlexTextWrapper>
-                <Divider />
-                <FlexTextWrapper>
-                  <Typography>Number of people who co-own this card</Typography>
-                  <Typography>#</Typography>
-                </FlexTextWrapper>
-                <Divider />
-              </div>
+              <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Link href={`/asset/${asset.id}`}>
+                  <Button variant="text" endIcon={<ArrowRightAltRounded />}>
+                    Card Details
+                  </Button>
+                </Link>
+              </Box>
             </AssetContainer>
           </Box>
         </Drawer>

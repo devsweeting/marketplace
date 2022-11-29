@@ -87,6 +87,9 @@ const theme = createTheme({
       900: '#111827',
     },
     divider: '#E5E7EB',
+    success: {
+      main: '#0BDA51',
+    },
   },
   shape: {
     borderRadius: 8,
