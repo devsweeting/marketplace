@@ -122,6 +122,7 @@ describe('Cart', () => {
 
   afterEach(() => {
     window.localStorage.clear();
+    jest.resetAllMocks();
   });
 
   test('should render all available cart content', async () => {

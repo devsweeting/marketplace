@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils';
 
 const onSubmit = jest.fn();
 
-const e = { target: { name: 'cardNumber', value: 374245455400126 } };
+const event = { target: { name: 'cardNumber', value: 374245455400126 } };
 
 describe('useForm', () => {
   it('can access initial value', () => {
@@ -37,7 +37,7 @@ describe('useForm', () => {
     );
 
     act(() => {
-      result.current.changeHandler(e);
+      result.current.changeHandler(event);
     });
 
     expect(result.current.values).toEqual({ cardNumber: 374245455400126 });

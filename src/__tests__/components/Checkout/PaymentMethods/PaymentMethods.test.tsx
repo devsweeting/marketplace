@@ -42,6 +42,7 @@ describe('Payment methods', () => {
 
   afterEach(() => {
     window.localStorage.clear();
+    jest.resetAllMocks();
   });
   test('Should render out all of the content', async () => {
     const setPage = jest.fn();
@@ -62,13 +63,13 @@ describe('Payment methods', () => {
     const withdrawLink = await screen.findByText(/withdraw balance/i);
 
     const jumpBalanceRadio = await screen.findByRole('radio', {
-      name: /a/i,
+      name: /jump_account/i,
     });
     const addFundsToBalanceInput = await screen.findByRole('spinbutton');
     const addFundsToBalanceButton = await screen.findByRole('button', { name: /add funds/i });
 
     const creditDebitCardRadio = await screen.findByRole('radio', {
-      name: /b/i,
+      name: /card/i,
     });
 
     const units = await screen.findByText(/400 units/i);
@@ -106,7 +107,7 @@ describe('Payment methods', () => {
     render(<MockPaymentMethods setPage={setPage} />);
 
     const jumpBalanceRadio = await screen.findByRole('radio', {
-      name: /a/i,
+      name: /jump_account/i,
     });
     const addFundsToBalanceInput = await screen.findByRole('spinbutton');
     const addFundsToBalanceButton = await screen.findByRole('button', { name: /add funds/i });
@@ -124,7 +125,7 @@ describe('Payment methods', () => {
 
     const addCreditCardButton = await screen.findByRole('button', { name: /add credit card/i });
     const jumpBalanceRadio = await screen.findByRole('radio', {
-      name: /a/i,
+      name: /jump_account/i,
     });
 
     await user.click(addCreditCardButton);

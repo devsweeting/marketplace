@@ -21,9 +21,9 @@ export const verifyAddress = async (data: any): Promise<AddressResponse | undefi
     if (res.status !== 200) return;
 
     return res.data as AddressResponse;
-  } catch (e) {
+  } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(e);
+    console.error(error);
   }
 };
 
@@ -38,8 +38,8 @@ export const sendSynapseUser = async (data: any): Promise<SynapseUserResponse | 
     if (res.status !== 201) return;
 
     return res.data as SynapseUserResponse;
-  } catch (e) {
+  } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(e);
+    console.error(error);
   }
 };

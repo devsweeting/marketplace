@@ -30,8 +30,8 @@ export const getServerSideProps = async ({ query }: { query: ParsedUrlQuery }) =
     return {
       props: { initialAsset: asset, id: id },
     };
-  } catch (e) {
+  } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(e);
+    console.error(error);
   }
 };

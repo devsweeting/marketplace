@@ -132,6 +132,7 @@ describe('Payment service', () => {
 
   afterEach(() => {
     window.localStorage.clear();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.resetAllMocks();

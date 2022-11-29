@@ -43,7 +43,7 @@ export const PaymentMethods = ({
   const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [isDismissed, setIsDismissed] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('b');
+  const [selectedValue, setSelectedValue] = useState('card');
 
   const funds = 0;
 
@@ -128,11 +128,11 @@ export const PaymentMethods = ({
           </CardTextContainer>
           <Box>
             <CustomRadio
-              checked={selectedValue === 'a'}
+              checked={selectedValue === 'jump_account'}
               onChange={handleChange}
-              value="a"
+              value="jump_account"
               name="radio-buttons"
-              inputProps={{ 'aria-label': 'A' }}
+              inputProps={{ 'aria-label': 'jump_account' }}
             />
           </Box>
         </Card>
@@ -155,9 +155,9 @@ export const PaymentMethods = ({
               placeholder="Enter amount"
               type="number"
               endAdornment={<StyledInputAdornments position="end">$</StyledInputAdornments>}
-              disabled={selectedValue === 'b' ? true : false}
+              disabled={selectedValue === 'card' ? true : false}
             />
-            <AddFundsButton disabled={selectedValue === 'b' ? true : false}>
+            <AddFundsButton disabled={selectedValue === 'card' ? true : false}>
               Add funds
             </AddFundsButton>
           </Box>
@@ -176,11 +176,11 @@ export const PaymentMethods = ({
           </CardTextContainer>
           <Box>
             <CustomRadio
-              checked={selectedValue === 'b'}
+              checked={selectedValue === 'card'}
               onChange={handleChange}
-              value="b"
+              value="card"
               name="radio-buttons"
-              inputProps={{ 'aria-label': 'B' }}
+              inputProps={{ 'aria-label': 'card' }}
             />
           </Box>
         </Card>
@@ -212,7 +212,7 @@ export const PaymentMethods = ({
           >
             Cancel
           </CancelButton>
-          {selectedValue === 'a' && (
+          {selectedValue === 'jump_account' && (
             <AddPaymentButton
               onClick={() => {
                 setPage(page + 1);
@@ -221,7 +221,7 @@ export const PaymentMethods = ({
               Pay with Jump balance
             </AddPaymentButton>
           )}
-          {selectedValue === 'b' && (
+          {selectedValue === 'card' && (
             <AddPaymentButton
               onClick={() => {
                 setPage(page + 1);

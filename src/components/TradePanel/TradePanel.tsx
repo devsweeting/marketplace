@@ -127,8 +127,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     });
 
     reOpenCart();
-
-    // setBuyModalOpen(true);
   };
 
   const handleCloseBuyModal = () => {

@@ -65,6 +65,7 @@ describe('Login modal flow', () => {
     await user.click(button);
     expect(input).toHaveValue('test@test');
     await user.click(button);
+    //TODO: update tests for login modal
   });
 
   test('User should be able to submit a valid email', async () => {
