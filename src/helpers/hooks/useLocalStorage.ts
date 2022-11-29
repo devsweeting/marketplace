@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function useLocalStorage<T>(key: string, initialValue: T | (() => T)) {
+export function useLocalStorage<T>(key: string, initialValue?: T | (() => T)) {
   if (!key || !initialValue) {
     throw new Error('Name and or value must be provided to persist to localStorage');
   }
