@@ -6,6 +6,9 @@ interface AttributesProps {
 }
 
 export function Attributes({ attributes }: AttributesProps) {
+  if (!attributes) {
+    return null;
+  }
   return (
     <Container>
       {attributes.flatMap((attribute: IAttribute) => (

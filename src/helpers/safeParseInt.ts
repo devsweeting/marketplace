@@ -10,3 +10,11 @@ export const safeParseInt = (number: string): number | undefined => {
   }
   return result;
 };
+
+export const safeParseFloat = (number: string): number | undefined => {
+  const result = parseFloat(number);
+  if (isNaN(result)) {
+    return;
+  }
+  return result;
+};

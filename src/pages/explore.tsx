@@ -20,14 +20,19 @@ import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
 import { queryBuilder } from '@/helpers/queryBuilder';
 import { FilterWrapper } from '@/components/FilterWrapper';
 import { AssetListFooter } from '@/styles/explorePage.styles';
-
+import { useUser } from '@/helpers/hooks/useUser';
+import type { CartItem } from '@/helpers/auth/CartContext';
+import { useCart } from '@/helpers/auth/CartContext';
+import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
   const [assets, setAssets] = useState<IAsset[]>([]);
   const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
   const [ready, setReady] = useState<boolean>(false);
-
+  const { openCart, isDisabled } = useCart();
+  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
+  const user = useUser();
   const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
@@ -78,6 +83,18 @@ const ExplorePage: NextPage = () => {
     const { markets }: { markets: IMarket[] } = await trendingMarkets();
     setTrendingMarket(markets);
   }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (user && cartItems.length > 0 && isDisabled === false) {
+        void getAssetById(cartItems[0].id).then((asset) => {
+          if (Object.keys(asset).length > 0 && asset !== undefined) {
+            openCart();
+          }
+        });
+      }
+    }
+  }, [cartItems, cartItems.length, isDisabled, openCart, user]);
 
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);
@@ -170,12 +187,14 @@ const ExplorePage: NextPage = () => {
             title={'Latest Drop'}
             handleDrawer={handleDrawer}
           />
-          <FeaturedMarketCarousel
-            handleApplyBrandFilter={handleApplyBrandFilter}
-            activeBrandCard={activeBrandCard}
-            assets={trendingMarket}
-            title={'Trending Markets'}
-          />
+          {trendingMarket.length > 0 && (
+            <FeaturedMarketCarousel
+              handleApplyBrandFilter={handleApplyBrandFilter}
+              activeBrandCard={activeBrandCard}
+              assets={trendingMarket}
+              title={'Trending Markets'}
+            />
+          )}
 
           <Box>
             <FilterWrapper />

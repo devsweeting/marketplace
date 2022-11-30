@@ -13,6 +13,7 @@ import { Layout } from '@/layout/index';
 import { SkinContext, skins } from '@/styles/skin-context';
 import type { HeaderPosition } from '@/layout/components/Header/Header';
 import { UserProvider } from '@/helpers/auth/UserContext';
+import { CartProvider } from '@/helpers/auth/CartContext';
 import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 
 declare module '@mui/styles/defaultTheme' {
@@ -52,12 +53,14 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={chosenTheme}>
         <SkinContext.Provider value={{ skin, setSkin }}>
           <UserProvider>
-            <ModalContextProvider>
-              <CssBaseline />
-              <Layout headerPosition={headerStyle}>
-                <Component {...pageProps} />
-              </Layout>
-            </ModalContextProvider>
+            <CartProvider>
+              <ModalContextProvider>
+                <CssBaseline />
+                <Layout headerPosition={headerStyle}>
+                  <Component {...pageProps} />
+                </Layout>
+              </ModalContextProvider>
+            </CartProvider>
           </UserProvider>
         </SkinContext.Provider>
       </ThemeProvider>

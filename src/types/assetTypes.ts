@@ -19,6 +19,18 @@ export interface IAsset {
   attributes: IAttribute[];
   partner: string;
 }
+export interface IPurchaseInfo {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt: string | null;
+  isDeleted: boolean;
+  sellOrderId: string;
+  userId: string;
+  fractionQty: number;
+  fractionPriceCents: number;
+  assetId: string;
+}
 
 export type IPortfolioAsset = {
   isOnUserPortfolio?: boolean | undefined;
@@ -50,7 +62,7 @@ interface IPurchaseHistoryItem {
   fractionPriceCents?: number;
   fractionQty?: number;
   id?: string;
-  isDelete?: boolean;
+  isDeleted?: boolean;
   purchaseTotal?: number;
   sellOrderId?: string;
   updatedAt?: string;
@@ -79,6 +91,7 @@ export interface IMarket {
   brand: string;
   filter: string;
   value_dollars: number;
+  sellOrders?: ISellOrder[];
 }
 
 export interface IAttribute {

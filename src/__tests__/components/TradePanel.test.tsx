@@ -13,6 +13,7 @@ import type { IUser } from '@/types/user';
 import user from '@testing-library/user-event';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
+import { CartProvider } from '@/helpers/auth/CartContext';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
 import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 
@@ -119,12 +120,14 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
       <ModalContextProvider>
-        <TradePanel
-          asset={asset}
-          open={true}
-          handleClose={mockHandleClose}
-          updateAsset={mockUpdateAsset}
-        />
+        <CartProvider>
+          <TradePanel
+            asset={asset}
+            open={true}
+            handleClose={mockHandleClose}
+            updateAsset={mockUpdateAsset}
+          />
+        </CartProvider>
       </ModalContextProvider>
     </ThemeProvider>
   );
@@ -133,7 +136,9 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
 const MockTradePanelWithUser = ({ asset, user }: { asset: IAsset; user: IUser }) => {
   return (
     <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
-      <MockTradePanel asset={asset} />
+      <CartProvider>
+        <MockTradePanel asset={asset} />
+      </CartProvider>
     </UserContext.Provider>
   );
 };
@@ -243,10 +248,9 @@ describe('TradePanel', () => {
     expect(buyBtn).not.toBeDisabled();
     await user.click(buyBtn);
 
-    const closeBtn = await screen.findByRole('button', { name: /cancel/i });
+    const closeBtn = await screen.findByRole('button', { name: /close/i });
     await user.click(closeBtn);
   });
-
   test('should reset if the card data changes', async () => {
     const { rerender } = render(<MockTradePanel asset={data} />);
     const slider = await screen.findByRole('slider');
