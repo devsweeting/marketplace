@@ -174,7 +174,7 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
               <StyledInput
                 id="first-name"
                 name={'firstName'}
-                value={values.firstName ? values.firstName : ''}
+                value={values?.firstName ?? ''}
                 onChange={changeHandler}
               />
               {touched.firstName && errors.firstName && (
@@ -186,7 +186,7 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
               <StyledInput
                 id="last-name"
                 name={'lastName'}
-                value={values.lastName ? values.lastName : ''}
+                value={values?.lastName ?? ''}
                 onChange={changeHandler}
               />
               {touched.lastName && errors.lastName && (
@@ -199,7 +199,7 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
             <StyledInput
               id="phone"
               name={'phoneNumber'}
-              value={values.phoneNumber ? values.phoneNumber : ''}
+              value={values?.phoneNumber ?? ''}
               onChange={changeHandler}
             />
             {touched.phoneNumber && errors.phoneNumber && (
@@ -212,7 +212,7 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
               <StyledInput
                 id="street-address"
                 name={'address_street'}
-                value={values.address_street ? values.address_street : ''}
+                value={values?.address_street ?? ''}
                 onChange={changeHandler}
               />
               {touched.address_street && errors.address_street && (
@@ -238,7 +238,7 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
               <StyledInput
                 id="city"
                 name={'address_city'}
-                value={values.address_city ? values.address_city : ''}
+                value={values?.address_city ?? ''}
                 onChange={changeHandler}
               />
               {touched.address_city && errors.address_city && (
@@ -262,7 +262,7 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
               <StyledInput
                 id="postal"
                 name={'address_postal_code'}
-                value={values.address_postal_code ? values.address_postal_code : ''}
+                value={values?.address_postal_code ?? ''}
                 onChange={changeHandler}
               />
               {touched.address_postal_code && errors.address_postal_code && (
