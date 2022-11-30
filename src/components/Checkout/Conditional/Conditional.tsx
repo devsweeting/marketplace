@@ -13,13 +13,15 @@ export const Conditional = () => {
   const [page, setPage] = useState(0);
   const [orderSummary, setOrderSummary] = useState<IAsset>();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  const item = cartItems[0];
+  const id = cartItems[0]?.id ?? undefined;
 
   useEffect(() => {
-    void getAssetById(item.id).then((res) => {
-      setOrderSummary(res);
-    });
-  }, [item.id]);
+    if (id) {
+      void getAssetById(id).then((res) => {
+        setOrderSummary(res);
+      });
+    }
+  }, [id]);
 
   const conditionalComponent = () => {
     if (!orderSummary) {

@@ -87,14 +87,13 @@ const ExplorePage: NextPage = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (user && cartItems.length > 0 && isDisabled === false) {
-        void getAssetById(cartItems[0].id).then((asset) => {
-          if (Object.keys(asset).length > 0 && asset !== undefined) {
-            openCart();
-          }
-        });
+        if (cartItems[0].id) {
+          openCart();
+        }
       }
     }
-  }, [cartItems, cartItems.length, isDisabled, openCart, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems, cartItems.length, user]);
 
   useEffect(() => {
     isReady ? setReady(true) : setReady(false);

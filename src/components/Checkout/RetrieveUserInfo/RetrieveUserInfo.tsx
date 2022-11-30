@@ -110,11 +110,11 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
         address_city: values.address_city,
         address_subdivision: values.address_subdivision,
         address_country_code: values.address_country_code,
-        address_postal_code: values.address_postal_,
+        address_postal_code: values.address_postal_code,
       });
 
       res && 'error' in res
-        ? setAlertText(`Address counldn't be verified`)
+        ? setAlertText(`Address couldn't be verified`)
         : setPage((prev) => prev + 1);
     }
   }
