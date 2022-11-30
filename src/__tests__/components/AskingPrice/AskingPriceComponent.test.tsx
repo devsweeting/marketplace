@@ -4,7 +4,7 @@ import { themeJump } from '@/styles/themeJump';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/user';
-import { withTestRouter } from '../../utils/TestRouter';
+import { TestRouter } from '../../utils/TestRouter';
 import user from '@testing-library/user-event';
 import type { IAsset } from '@/types/assetTypes';
 import { AskingPriceComponent } from '@/components/AskingPriceComponent/AskingPriceComponent';
@@ -109,15 +109,16 @@ const MockAskingPrice = ({
   id: string;
   user: IUser | undefined;
 }) => {
-  return withTestRouter(
-    <ThemeProvider theme={themeJump}>
-      <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
-        <CartProvider>
-          <AskingPriceComponent asset={asset} id={id} />
-        </CartProvider>
-      </UserContext.Provider>
-    </ThemeProvider>,
-    { push, asPath: '/askingprice' },
+  return (
+    <TestRouter router={{ push, asPath: '/askingprice' }}>
+      <ThemeProvider theme={themeJump}>
+        <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
+          <CartProvider>
+            <AskingPriceComponent asset={asset} id={id} />
+          </CartProvider>
+        </UserContext.Provider>
+      </ThemeProvider>
+    </TestRouter>
   );
 };
 

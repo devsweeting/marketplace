@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Box, FormHelperText, IconButton, Alert, Stack } from '@mui/material';
 import { ConfirmInfoButton, CustomBox, CustomSelect } from './RetrieveUserInfo.styles';
 import { states } from './StatesAndTerritories';
-import { StatusCodes } from 'http-status-codes';
 import { useCart } from '@/helpers/auth/CartContext';
 import { verifyAddress } from '@/api/endpoints/payments';
 import { useForm } from '@/helpers/hooks/useForm';
@@ -113,9 +112,10 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
         address_country_code: values.address_country_code,
         address_postal_code: values.address_postal_,
       });
-      res?.status === StatusCodes.OK
-        ? setPage((prev) => prev + 1)
-        : setAlertText(`Address couldn't be verified`);
+
+      res && 'error' in res
+        ? setAlertText(`Address counldn't be verified`)
+        : setPage((prev) => prev + 1);
     }
   }
 

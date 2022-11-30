@@ -6,7 +6,7 @@ import { CartProvider } from '@/helpers/auth/CartContext';
 import user from '@testing-library/user-event';
 import { setLocalStorage } from '@/helpers/mockLocalStorage';
 import { PaymentService } from '@/components/Checkout/PaymentService';
-import { withTestRouter } from '@/__tests__/utils/TestRouter';
+import { TestRouter } from '@/__tests__/utils/TestRouter';
 import { apiClient } from '@/api/client';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
 
@@ -111,17 +111,19 @@ const mockUser = {
 
 const push = jest.fn();
 
-const MockPaymentService = ({ setPage }: { setPage: () => void }) =>
-  withTestRouter(
-    <ThemeProvider theme={themeJump}>
-      <UserContext.Provider value={{ user: mockUser, refreshUser: jest.fn(), logout: jest.fn() }}>
-        <CartProvider>
-          <PaymentService page={1} setPage={setPage} orderSummary={mockData} />
-        </CartProvider>
-      </UserContext.Provider>
-    </ThemeProvider>,
-    { push, asPath: '/askingprice' },
+const MockPaymentService = ({ setPage }: { setPage: () => void }) => {
+  return (
+    <TestRouter router={{ push, asPath: '/askingprice' }}>
+      <ThemeProvider theme={themeJump}>
+        <UserContext.Provider value={{ user: mockUser, refreshUser: jest.fn(), logout: jest.fn() }}>
+          <CartProvider>
+            <PaymentService setPage={setPage} orderSummary={mockData} />
+          </CartProvider>
+        </UserContext.Provider>
+      </ThemeProvider>
+    </TestRouter>
   );
+};
 
 describe('Payment service', () => {
   jest.mock('@/api/endpoints/sellorders');
