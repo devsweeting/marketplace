@@ -6,6 +6,7 @@ import { ThemeProvider } from '@mui/material';
 import { themeJump } from '@/styles/themeJump';
 import { loginRequest } from '@/api/endpoints/loginRequest';
 import { StatusCodes } from 'http-status-codes';
+import { ModalContext } from '@/helpers/auth/ModalContext';
 
 jest.mock('@/api/endpoints/loginRequest');
 
@@ -14,7 +15,11 @@ const mockLoginRequest = loginRequest as unknown as jest.MockedFn<typeof loginRe
 const MockLoginModal = () => {
   return (
     <ThemeProvider theme={themeJump}>
-      <LoginModal open={true} noDismiss={false} />
+      <ModalContext.Provider
+        value={{ state: { login: true, verification: false }, dispatch: () => true }}
+      >
+        <LoginModal noDismiss={false} />
+      </ModalContext.Provider>
     </ThemeProvider>
   );
 };

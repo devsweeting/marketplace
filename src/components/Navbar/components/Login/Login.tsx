@@ -1,13 +1,12 @@
-import { LoginModal } from '@/components/LoginModal';
-import { useModal } from '@/helpers/hooks/useModal';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 
 import { NavText } from '../NavLink/NavLink.styles';
 
 export const Login = () => {
-  const { isModalOpen, setIsModalOpen } = useModal();
+  const { dispatch } = useModalContext();
 
   const handleOpen = () => {
-    setIsModalOpen(!isModalOpen);
+    dispatch({ type: 'login', visible: true });
   };
 
   return (
@@ -15,7 +14,6 @@ export const Login = () => {
       <a style={{ textDecoration: 'none' }} onClick={handleOpen}>
         <NavText variant="nav">Login</NavText>
       </a>
-      <LoginModal open={isModalOpen} />
     </div>
   );
 };

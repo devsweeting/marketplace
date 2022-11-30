@@ -14,6 +14,7 @@ import user from '@testing-library/user-event';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
+import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 
 const mockHandleClose = jest.fn();
 const mockUpdateAsset = jest.fn();
@@ -117,12 +118,14 @@ const userPortfolioAsset = {
 const MockTradePanel = ({ asset }: { asset: IAsset }) => {
   return (
     <ThemeProvider theme={themeJump}>
-      <TradePanel
-        asset={asset}
-        open={true}
-        handleClose={mockHandleClose}
-        updateAsset={mockUpdateAsset}
-      />
+      <ModalContextProvider>
+        <TradePanel
+          asset={asset}
+          open={true}
+          handleClose={mockHandleClose}
+          updateAsset={mockUpdateAsset}
+        />
+      </ModalContextProvider>
     </ThemeProvider>
   );
 };

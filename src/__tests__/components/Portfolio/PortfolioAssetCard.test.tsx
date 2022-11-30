@@ -3,14 +3,14 @@ import { ThemeProvider } from '@mui/material';
 import { portfolioAssetCardData, watchlistAssetCardData } from '@/__mocks__/mockApiData';
 import { PortfolioAssetCard } from '@/components/PortfolioPage/PortfolioAssetCard/PortfolioAssetCard';
 import { themeJump } from '@/styles/themeJump';
-import type { IPortfolioAsset } from '@/pages/account';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
 import type { IUser } from '@/types/user';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
-import { withTestRouter } from '../../utils/TestRouter';
+import { TestRouter } from '../../utils/TestRouter';
 import user from '@testing-library/user-event';
+import type { IPortfolioAsset } from '@/types/assetTypes';
 
 jest.mock('@/api/client');
 const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
@@ -33,13 +33,18 @@ const MockPortfolioAssetCard = ({
   assetData: IPortfolioAsset;
   user: IUser | undefined;
 }) => {
-  return withTestRouter(
-    <ThemeProvider theme={themeJump}>
-      <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
-        <PortfolioAssetCard onClick={handleClick} assetData={assetData} closeDrawer={closeDrawer} />
-      </UserContext.Provider>
-    </ThemeProvider>,
-    { push, asPath: '/account' },
+  return (
+    <TestRouter router={{ push, asPath: '/account' }}>
+      <ThemeProvider theme={themeJump}>
+        <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
+          <PortfolioAssetCard
+            onClick={handleClick}
+            assetData={assetData}
+            closeDrawer={closeDrawer}
+          />
+        </UserContext.Provider>
+      </ThemeProvider>
+    </TestRouter>
   );
 };
 

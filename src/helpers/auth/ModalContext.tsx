@@ -1,21 +1,44 @@
+import {
+  createContext,
+  useReducer,
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  useContext,
+} from 'react';
 import type { Dispatch } from 'react';
-import { createContext, useCallback, useEffect, useState, useMemo } from 'react';
 
 export interface IModalContext {
-  isModalOpen: boolean;
-  setIsModalOpen: Dispatch<boolean>;
+  state: ModalState;
+  dispatch: Dispatch<ModalAction>;
 }
 
-const defaultState = {
-  isModalOpen: false,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  setIsModalOpen: () => {},
+type ModalState = {
+  [key: string]: boolean;
+  login: boolean;
+  verification: boolean;
 };
 
-export const ModalContext = createContext<IModalContext>(defaultState);
+type ModalAction = {
+  type: 'login' | 'verification';
+  visible: boolean;
+};
 
-export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+export const ModalContext = createContext<IModalContext | undefined>(undefined);
+
+const initialState: ModalState = {
+  login: false,
+  verification: false,
+};
+
+const reducer = (state: ModalState, action: ModalAction) => {
+  return { ...state, [action.type]: action.visible };
+};
+
+const ModalContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     isModalOpen
@@ -29,11 +52,23 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
 
   const contextValue = useMemo(
     () => ({
-      isModalOpen,
-      setIsModalOpen,
+      state,
+      dispatch,
     }),
-    [isModalOpen, setIsModalOpen],
+    [state, dispatch],
   );
 
   return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>;
 };
+
+function useModalContext() {
+  const context = useContext(ModalContext);
+
+  if (context === undefined) {
+    throw new Error('useModalContext was used outside the provider');
+  }
+
+  return context;
+}
+
+export { ModalContextProvider, useModalContext };

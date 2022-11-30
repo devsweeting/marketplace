@@ -1,7 +1,7 @@
 import { UserPane } from '@/components/Navbar/components/UserPane';
 import { userPanelLinks } from '@/domain/userPaneLink';
 import { themeJump } from '@/styles/themeJump';
-import { withTestRouter } from '@/__tests__/utils/TestRouter';
+import { TestRouter } from '@/__tests__/utils/TestRouter';
 import { ThemeProvider } from '@mui/styles';
 import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
@@ -22,11 +22,12 @@ jest.mock('next/router', () => ({
 const push = jest.fn();
 
 const MockUserPane = () => {
-  return withTestRouter(
-    <ThemeProvider theme={themeJump}>
-      <UserPane user={mockUser} />
-    </ThemeProvider>,
-    { push, asPath: '/' },
+  return (
+    <TestRouter router={{ push, asPath: '/' }}>
+      <ThemeProvider theme={themeJump}>
+        <UserPane user={mockUser} />
+      </ThemeProvider>
+    </TestRouter>
   );
 };
 describe('UserPane', () => {
