@@ -176,11 +176,9 @@ function creditCardType(cardNumber: string) {
 }
 
 export const PaymentService = ({
-  page,
   setPage,
   orderSummary,
 }: {
-  page: number;
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
 }) => {
@@ -260,7 +258,7 @@ export const PaymentService = ({
     if (response) {
       switch (response.status) {
         case StatusCodes.CREATED: {
-          setPage(page + 1);
+          setPage((prev) => prev + 1);
           break;
         }
         case StatusCodes.BAD_REQUEST: {
@@ -296,7 +294,7 @@ export const PaymentService = ({
             aria-label="Go back"
             sx={{ fontSize: '14px' }}
             onClick={() => {
-              setPage(page - 1);
+              setPage((prev) => prev - 1);
             }}
           >
             <ArrowBackIosIcon />

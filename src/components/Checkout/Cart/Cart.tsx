@@ -28,11 +28,9 @@ import {
 } from './Cart.styles';
 
 export const Cart = ({
-  page,
   setPage,
   orderSummary,
 }: {
-  page: number;
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
 }) => {
@@ -124,12 +122,10 @@ export const Cart = ({
           <Box display="flex" flexDirection="column">
             <ValuationContainer>
               <Text variant="lg">
-                {Object.keys(item).length > 0 && item.quantity}
-                {Object.keys(item).length > 0 && item.quantity > 1 ? ' Units' : ' Unit'}
+                {item.quantity && item.quantity}
+                {item.quantity && item.quantity > 1 ? ' Units' : ' Unit'}
               </Text>
-              <Text variant="lg">
-                {Object.keys(item).length > 0 && '$' + formatNumber(item.totalPrice)}
-              </Text>
+              <Text variant="lg">{item.totalPrice && '$' + formatNumber(item.totalPrice)}</Text>
             </ValuationContainer>
             <CTACard>
               <Text variant="lg">Added to cart</Text>
@@ -138,7 +134,7 @@ export const Cart = ({
             </CTACard>
             <OrderButton
               onClick={() => {
-                setPage(page + 1);
+                setPage((prev) => prev + 1);
               }}
             >
               Buy Now

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useState, useContext, createContext } from 'react';
+import { useMemo, useState, useContext, createContext, useCallback } from 'react';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { Checkout } from '@/components/Checkout';
 
@@ -44,94 +44,115 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     0,
   );
 
-  const openCart = () => {
+  const openCart = useCallback(() => {
     const newState = { ...cartModalState, isOpen: true };
     setCartModalState(newState);
-  };
+  }, [cartModalState]);
+
   const reOpenCart = () => {
     const newState = { isDisabled: false, isOpen: true };
     setCartModalState(newState);
   };
-  const closeCart = () => {
+  const closeCart = useCallback(() => {
     const newState = { ...cartModalState, isDisabled: true, isOpen: false };
     setCartModalState(newState);
     setCartItems([]);
-  };
+  }, [cartModalState, setCartItems]);
   const closeModal = () => {
     const newState = { isDisabled: true, isOpen: false };
     setCartModalState(newState);
   };
 
-  function increaseCartQuantity(id: string, quantity: number, fractionPriceCents: number) {
-    setCartItems((currItems) => {
-      if (currItems.find((item) => item.id === id) == null) {
-        return [
-          ...currItems,
-          {
-            id,
-            quantity: quantity,
-            fractionPriceCents: fractionPriceCents,
-            totalPrice: Math.ceil(quantity * (fractionPriceCents ?? 0)) / 100,
-          },
-        ];
-      } else {
-        return currItems.map((item) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              quantity: item.quantity + 1,
-              fractionPriceCents: item.fractionPriceCents,
-              totalPrice: Math.ceil((item.quantity + 1) * (item.fractionPriceCents ?? 0)) / 100,
-            };
-          } else {
-            return item;
-          }
-        });
-      }
-    });
-  }
+  const increaseCartQuantity = useCallback(
+    (id: string, quantity: number, fractionPriceCents: number) => {
+      setCartItems((currItems) => {
+        if (currItems.find((item) => item.id === id) == null) {
+          return [
+            ...currItems,
+            {
+              id,
+              quantity: quantity,
+              fractionPriceCents: fractionPriceCents,
+              totalPrice: Math.ceil(quantity * (fractionPriceCents ?? 0)) / 100,
+            },
+          ];
+        } else {
+          return currItems.map((item) => {
+            if (item.id === id) {
+              return {
+                ...item,
+                quantity: item.quantity + 1,
+                fractionPriceCents: item.fractionPriceCents,
+                totalPrice: Math.ceil((item.quantity + 1) * (item.fractionPriceCents ?? 0)) / 100,
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      });
+    },
+    [setCartItems],
+  );
 
-  function decreaseCartQuantity(id: string) {
-    setCartItems((currItems) => {
-      if (currItems.find((item) => item.id === id)?.quantity === 1) {
+  const decreaseCartQuantity = useCallback(
+    (id: string) => {
+      setCartItems((currItems) => {
+        if (currItems.find((item) => item.id === id)?.quantity === 1) {
+          return currItems.filter((item) => item.id !== id);
+        } else {
+          return currItems.map((item) => {
+            if (item.id === id) {
+              return {
+                ...item,
+                quantity: item.quantity - 1,
+                fractionPriceCents: item.fractionPriceCents,
+                totalPrice: Math.ceil((item.quantity - 1) * (item.fractionPriceCents ?? 0)) / 100,
+              };
+            } else {
+              return item;
+            }
+          });
+        }
+      });
+    },
+    [setCartItems],
+  );
+
+  const removeFromCart = useCallback(
+    (id: string) => {
+      setCartItems((currItems) => {
         return currItems.filter((item) => item.id !== id);
-      } else {
-        return currItems.map((item) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              quantity: item.quantity - 1,
-              fractionPriceCents: item.fractionPriceCents,
-              totalPrice: Math.ceil((item.quantity - 1) * (item.fractionPriceCents ?? 0)) / 100,
-            };
-          } else {
-            return item;
-          }
-        });
-      }
-    });
-  }
+      });
+    },
+    [setCartItems],
+  );
 
-  function removeFromCart(id: string) {
-    setCartItems((currItems) => {
-      return currItems.filter((item) => item.id !== id);
-    });
-  }
+  const contextValue = useMemo(
+    () => ({
+      increaseCartQuantity,
+      decreaseCartQuantity,
+      removeFromCart,
+      openCart,
+      closeCart,
+      cartQuantity,
+      reOpenCart,
+      closeModal,
+      isDisabled: cartModalState.isDisabled,
+    }),
+    [
+      cartModalState.isDisabled,
+      cartQuantity,
+      closeCart,
+      decreaseCartQuantity,
+      increaseCartQuantity,
+      openCart,
+      removeFromCart,
+    ],
+  );
 
   return (
-    <CartContext.Provider
-      value={{
-        increaseCartQuantity,
-        decreaseCartQuantity,
-        removeFromCart,
-        openCart,
-        closeCart,
-        cartQuantity,
-        reOpenCart,
-        closeModal,
-        isDisabled: cartModalState.isDisabled,
-      }}
-    >
+    <CartContext.Provider value={contextValue}>
       {children}
       <Checkout isOpen={!cartModalState.isDisabled ? cartModalState.isOpen : false} />
     </CartContext.Provider>

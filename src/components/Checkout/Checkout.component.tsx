@@ -6,7 +6,6 @@ import { useCart } from '@/helpers/auth/CartContext';
 
 export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
   const { closeModal } = useCart();
-  const [page, setPage] = useState(0);
   const ref = useRef(null as null | HTMLDivElement);
   const [height, setHeight] = useState(0);
   const [scrollHeight, setScrollHeight] = useState(0);
@@ -47,7 +46,7 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
       }}
     >
       <Box ref={ref} sx={style}>
-        <Conditional page={page} setPage={setPage} />
+        <Conditional />
       </Box>
     </Modal>
   );

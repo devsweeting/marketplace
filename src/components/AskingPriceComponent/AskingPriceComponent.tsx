@@ -68,8 +68,6 @@ const calculateTotalFromPercentAndPrice = (price: number, numOfUnits: number) =>
 export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string }) => {
   const { closeCart, closeModal } = useCart();
   const [purchaseHistory, setPurchaseHistory] = useState<IPurchaseInfo>();
-  // const [alertMessage, setAlertMessage] = useState('');
-  // const [helperTextValue, setHelperTextValue] = useState('');
 
   const [inputValues, setInputValues] = useState<{
     percent: number | undefined;
@@ -81,11 +79,14 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
 
   useEffect(() => {
     const grabPurchaseHistory = async (id: string) => {
-      const assetPurchase = await getPurchaseById(id as string);
-      setPurchaseHistory(assetPurchase[0] as IPurchaseInfo);
-      setInputValues({ percent: 0, price: assetPurchase[0].fractionPriceCents / 100 });
-      closeCart();
-      closeModal();
+      const assetPurchase = await getPurchaseById(id);
+      if (!assetPurchase) return;
+      if (assetPurchase) {
+        setPurchaseHistory(assetPurchase[0] as IPurchaseInfo);
+        setInputValues({ percent: 0, price: assetPurchase[0].fractionPriceCents / 100 });
+        closeCart();
+        closeModal();
+      }
     };
 
     if (asset) {
@@ -217,14 +218,8 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
             <Box marginBottom="24px">
               <OrderSummaryDetailsContainer>
                 <Text variant="lg">
-                  {purchaseHistory &&
-                    Object.keys(purchaseHistory).length > 0 &&
-                    purchaseHistory.fractionQty}
-                  {purchaseHistory &&
-                  Object.keys(purchaseHistory).length > 0 &&
-                  purchaseHistory.fractionQty > 1
-                    ? ' Units'
-                    : ' Unit'}
+                  {purchaseHistory.fractionQty && purchaseHistory.fractionQty}
+                  {purchaseHistory.fractionQty > 1 ? ' Units' : ' Unit'}
                 </Text>
                 <Text variant="lg">{totalValuation}</Text>
               </OrderSummaryDetailsContainer>

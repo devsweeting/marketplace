@@ -1,6 +1,6 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, FormHelperText, IconButton, Alert, Stack } from '@mui/material';
 import { ConfirmInfoButton, CustomBox, CustomSelect } from './RetrieveUserInfo.styles';
 import { states } from './StatesAndTerritories';
@@ -56,13 +56,7 @@ const validatePattern = (value: string) => {
   return !antiSymbolPattern.test(value);
 };
 
-export const RetrieveUserInfo = ({
-  page,
-  setPage,
-}: {
-  page: number;
-  setPage: Dispatch<SetStateAction<number>>;
-}) => {
+export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) => {
   const { closeModal } = useCart();
   const initialState = {
     address_street: '',
@@ -110,20 +104,17 @@ export const RetrieveUserInfo = ({
       validatePhoneNumber(phoneNumber) || { phoneNumber: 'Not a valid phone number' },
   ];
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const address: { [x: string]: string } = {
-    address_street: '',
-    address_city: '',
-    address_subdivision: '',
-    address_country_code: '',
-    address_postal_code: '',
-  };
-
   async function onSignup(): Promise<void> {
     if (isValid) {
-      const res = await verifyAddress(address);
+      const res = await verifyAddress({
+        address_street: values.address_street,
+        address_city: values.address_city,
+        address_subdivision: values.address_subdivision,
+        address_country_code: values.address_country_code,
+        address_postal_code: values.address_postal_,
+      });
       res?.status === StatusCodes.OK
-        ? setPage(page + 1)
+        ? setPage((prev) => prev + 1)
         : setAlertText(`Address couldn't be verified`);
     }
   }
@@ -133,16 +124,6 @@ export const RetrieveUserInfo = ({
     validations,
     onSignup,
   );
-
-  useEffect(() => {
-    [
-      'address_street',
-      'address_city',
-      'address_subdivision',
-      'address_country_code',
-      'address_postal_code',
-    ].forEach((prop) => (address[prop] = values[prop]));
-  }, [address, values]);
 
   const [alertText, setAlertText] = useState('');
 
@@ -155,7 +136,7 @@ export const RetrieveUserInfo = ({
             aria-label="Go back"
             sx={{ fontSize: '14px' }}
             onClick={() => {
-              setPage(page - 1);
+              setPage((prev) => prev - 1);
             }}
           >
             <ArrowBackIosIcon />

@@ -33,13 +33,7 @@ import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-export const PaymentMethods = ({
-  setPage,
-  page,
-}: {
-  setPage: Dispatch<SetStateAction<number>>;
-  page: number;
-}) => {
+export const PaymentMethods = ({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) => {
   const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [isDismissed, setIsDismissed] = useState(false);
@@ -51,7 +45,7 @@ export const PaymentMethods = ({
     setSelectedValue(event.target.value);
   };
   const item = cartItems[0];
-  if (!(cartItems.length > 0)) {
+  if (!(cartItems.length > 0) || !(Object.keys(item).length > 0)) {
     return null;
   }
   return (
@@ -63,7 +57,7 @@ export const PaymentMethods = ({
             aria-label="Previous Cart Page"
             sx={{ fontSize: '14px' }}
             onClick={() => {
-              setPage(page - 1);
+              setPage((prev) => prev - 1);
             }}
           >
             <ArrowBackIosIcon />
@@ -192,12 +186,10 @@ export const PaymentMethods = ({
         <Box>
           <OrderSummaryDetails>
             <Text variant="lg">
-              {Object.keys(item).length > 0 && item.quantity}
-              {Object.keys(item).length > 0 && item.quantity > 1 ? ' Units' : ' Unit'}
+              {item.quantity && item.quantity}
+              {item.quantity && item.quantity > 1 ? ' Units' : ' Unit'}
             </Text>
-            <Text variant="lg">
-              {Object.keys(item).length > 0 && '$' + formatNumber(item.totalPrice)}
-            </Text>
+            <Text variant="lg">{item.quantity && '$' + formatNumber(item.totalPrice)}</Text>
           </OrderSummaryDetails>
           <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
             <Text variant="lg">Royalty fees</Text>
@@ -207,7 +199,7 @@ export const PaymentMethods = ({
         <OrderSummaryButtonGrid>
           <CancelButton
             onClick={() => {
-              setPage(page - 1);
+              setPage((prev) => prev - 1);
             }}
           >
             Cancel
@@ -215,7 +207,7 @@ export const PaymentMethods = ({
           {selectedValue === 'jump_account' && (
             <AddPaymentButton
               onClick={() => {
-                setPage(page + 1);
+                setPage((prev) => prev + 1);
               }}
             >
               Pay with Jump balance
@@ -224,7 +216,7 @@ export const PaymentMethods = ({
           {selectedValue === 'card' && (
             <AddPaymentButton
               onClick={() => {
-                setPage(page + 1);
+                setPage((prev) => prev + 1);
               }}
             >
               Add Credit Card
