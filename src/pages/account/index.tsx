@@ -11,15 +11,14 @@ import type {
 } from '@/types/assetTypes';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
-import { LoginModal } from '@/components/LoginModal';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
 import { getAssetById } from '@/api/endpoints/assets';
 import { useUser } from '@/helpers/hooks/useUser';
-import { PageContainer } from '@/styles/AccountPage.styles';
 import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderTabs/PortfolioHeaderTabs';
 // eslint-disable-next-line import/no-unresolved
 import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 
 const initialPortfolioListState: IPortfolioDataState = {
   isLoading: true,
@@ -63,6 +62,7 @@ const PortfolioPage: NextPage = () => {
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const [isOpen, setIsOpen] = useState(false);
   const [assets, setAssets] = useState<IAsset[]>([]);
+  const { dispatch: modalDispatch } = useModalContext();
 
   const handlePortfolioDataFetch = (tab: string | string[] | undefined) => {
     dispatch({ type: 'fetching' });
@@ -169,14 +169,7 @@ const PortfolioPage: NextPage = () => {
   };
 
   if (!user) {
-    return (
-      <PageContainer>
-        <Box height="35vw">
-          <Loader />;
-        </Box>
-        <LoginModal open={true} noDismiss={true} />
-      </PageContainer>
-    );
+    modalDispatch({ type: 'login', visible: true });
   }
 
   if (isLoading) {
@@ -287,7 +280,8 @@ const PortfolioPage: NextPage = () => {
           }}
         />
       )}
-      {Object.keys(portfolio).includes('statusCode') && <LoginModal open={true} noDismiss={true} />}
+      {Object.keys(portfolio).includes('statusCode') &&
+        modalDispatch({ type: 'login', visible: true })}
     </>
   );
 };

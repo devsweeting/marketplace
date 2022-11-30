@@ -7,7 +7,7 @@ import { BuyModal } from '../BuyModal/BuyModal';
 import { AssetGallery } from './Components/CardGallery';
 import { getMainSellOrder } from '@/helpers/getMainSellOrder';
 import { useUser } from '@/helpers/hooks/useUser';
-import { useModal } from '@/helpers/hooks/useModal';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
@@ -32,10 +32,9 @@ import { useCart } from '@/helpers/auth/CartContext';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
-  const { setIsModalOpen } = useModal();
   const { reOpenCart } = useCart();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
+  const [, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
+  const { dispatch } = useModalContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
   const [disableBuyBTN, setDisableBuyBTN] = useState(true);
@@ -96,7 +95,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
           });
         }
       });
-      setIsModalOpen(true);
+      dispatch({ type: 'login', visible: true });
       return;
     }
     setCartItems((currItems: CartItem[]) => {

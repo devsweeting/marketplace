@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { ThemeProvider } from '@mui/material';
 import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderTabs/PortfolioHeaderTabs';
 import { themeJump } from '@/styles/themeJump';
-import { withTestRouter } from '../../utils/TestRouter';
+import { TestRouter } from '../../utils/TestRouter';
 import user from '@testing-library/user-event';
 
 const tabs = ['Overview', 'Watchlist', 'Transactions'];
@@ -13,15 +13,16 @@ const mockHandleClose = jest.fn();
 const MockPortfolioHeaderTabs: React.FC<{
   activePortfolioCategory: string;
 }> = ({ activePortfolioCategory }) => {
-  return withTestRouter(
-    <ThemeProvider theme={themeJump}>
-      <PortfolioHeaderTabs
-        tabs={tabs}
-        activePortfolioCategory={activePortfolioCategory}
-        OnClick={mockHandleClose}
-      />
-    </ThemeProvider>,
-    { push, asPath: '/account' },
+  return (
+    <TestRouter router={{ push, asPath: '/account' }}>
+      <ThemeProvider theme={themeJump}>
+        <PortfolioHeaderTabs
+          tabs={tabs}
+          activePortfolioCategory={activePortfolioCategory}
+          OnClick={mockHandleClose}
+        />
+      </ThemeProvider>
+    </TestRouter>
   );
 };
 

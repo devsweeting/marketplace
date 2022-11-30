@@ -1,7 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
-import { Box } from '@mui/system';
-import { Typography, useTheme, alpha, Link } from '@mui/material';
-import { useModal } from '@/helpers/hooks/useModal';
+import { Typography, useTheme, alpha, Link, Box } from '@mui/material';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 import { loginRequest } from '@/api/endpoints/loginRequest';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/router';
@@ -183,15 +182,14 @@ const loginReducer = (state: ILoginState, action: LoginAction) => {
   }
 };
 
-export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismiss?: boolean }) => {
+export const LoginModal = ({ noDismiss }: { noDismiss?: boolean }) => {
   const theme = useTheme();
   const [loginInputValue, setLoginInputValue] = useState('');
   const [tokenInputValue, setTokenInputValue] = useState('');
   const [headerText, setHeaderText] = useState('Login/Signup');
   const [alertMessage, setAlertMessage] = useState(' ');
-
   const [buttonState, setButtonState] = useState(false);
-  const { setIsModalOpen } = useModal();
+  const { state: modalState, dispatch: modalDispatch } = useModalContext();
   const modalBox = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [{ isLoading, error, statCode }, dispatch] = useReducer(loginReducer, initialLoginState);
@@ -200,7 +198,7 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
     if (reason && reason == 'backdropClick' && noDismiss) {
       return;
     }
-    setIsModalOpen(!isOpen);
+    modalDispatch({ type: 'login', visible: false });
     setLoginInputValue('');
     if (statCode === 0 || statCode === StatusCodes.TOO_MANY_REQUESTS) {
       setHeaderText('Login/Signup');
@@ -267,7 +265,7 @@ export const LoginModal = ({ open: isOpen, noDismiss }: { open: boolean; noDismi
           backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.85),
         },
       }}
-      open={isOpen}
+      open={modalState.login}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"

@@ -10,6 +10,7 @@ import type { IUser } from '@/types/user';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
+import { ModalContextProvider } from '@/helpers/auth/ModalContext';
 
 jest.mock('@/api/client');
 const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
@@ -37,13 +38,15 @@ const MockAssetCard = ({
   return (
     <ThemeProvider theme={themeJump}>
       <UserContext.Provider value={{ user, refreshUser: jest.fn(), logout: jest.fn() }}>
-        <AssetCard
-          onClick={handleClick}
-          assetData={asset}
-          watched={watched}
-          watchlistAdd={mockAdd}
-          watchlistRemove={mockRemove}
-        />
+        <ModalContextProvider>
+          <AssetCard
+            onClick={handleClick}
+            assetData={asset}
+            watched={watched}
+            watchlistAdd={mockAdd}
+            watchlistRemove={mockRemove}
+          />
+        </ModalContextProvider>
       </UserContext.Provider>
     </ThemeProvider>
   );

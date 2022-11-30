@@ -244,10 +244,8 @@ export const themeJump = createTheme(theme, {
           fontSize: '1rem',
           fontWeight: 600,
           boxSizing: 'border-box',
-          padding: '0.75rem 1.25rem',
-          [theme.breakpoints.up('lg')]: {
-            padding: '1rem 1.5rem',
-          },
+          padding: '0.75rem 1.5rem',
+          textTransform: 'none',
           lineHeight: '1.5rem',
           boxShadow: 'none',
           '&:hover': {
@@ -328,12 +326,9 @@ export const themeJump = createTheme(theme, {
           borderWidth: '2px',
         },
         input: {
-          padding: '0.75rem 1.25rem',
+          padding: '1rem 1.5rem',
           lineHeight: '1.5rem',
           height: 'auto',
-          [theme.breakpoints.up('md')]: {
-            padding: '1rem 1.5rem',
-          },
         },
       },
     },

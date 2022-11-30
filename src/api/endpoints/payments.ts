@@ -1,45 +1,94 @@
 import type { StatusCodes } from 'http-status-codes';
 import { apiClient } from '../client';
 
-type FormErrors = {
-  [key: string]: string[];
-};
-
 type AddressResponse = {
   status: StatusCodes;
-  address?: Record<string, unknown>;
-  message?: any[];
-  error?: string | FormErrors;
+  address: {
+    deliverability: string;
+    deliverability_analysis: Record<string, unknown>;
+    normalized_address: Record<string, unknown>;
+  };
 };
 
-export const verifyAddress = async (data: any): Promise<AddressResponse | undefined> => {
+type AddressErrorResponse = {
+  statusCode: StatusCodes.BAD_REQUEST;
+  message: string;
+  error: {
+    address_city?: string[];
+    address_street?: string[];
+    address_subdivision?: string[];
+    address_postal_code?: string[];
+  };
+};
+
+export const verifyAddress = async (
+  data: any,
+): Promise<AddressResponse | AddressErrorResponse | undefined> => {
   try {
     const res = await apiClient.post('/payments/address', {
       body: data,
     });
 
-    if (res.status !== 200) return;
+    if (!res || !res.isJson) return;
+
+    if (!res.ok) {
+      if (res.data?.message === 'Form errors') return res.data as AddressErrorResponse;
+    }
 
     return res.data as AddressResponse;
-  } catch (error) {
+  } catch (e: any) {
     // eslint-disable-next-line no-console
-    console.error(error);
+    console.error(e);
+    return;
   }
 };
 
-type SynapseUserResponse = any;
+type PaymentsUserResponse = {
+  status: StatusCodes;
+};
 
-export const sendSynapseUser = async (data: any): Promise<SynapseUserResponse | undefined> => {
+type PaymentsUserErrorResponse = {
+  statusCode: StatusCodes.BAD_REQUEST;
+  message: string;
+  error: {
+    first_name?: string[];
+    last_name?: string[];
+    email?: string[];
+    phone_numbers?: string[];
+    gender?: string[];
+    date_of_birth?: {
+      day?: string[];
+      month?: string[];
+      year?: string[];
+    };
+    mailing_address?: {
+      address_street?: string[];
+      address_city?: string[];
+      address_subdivision?: string[];
+      address_postal_code?: string[];
+      address_country_code?: string[];
+    };
+  };
+};
+
+export const registerPaymentsUser = async (
+  data: any,
+): Promise<PaymentsUserResponse | PaymentsUserErrorResponse | undefined> => {
   try {
-    const res = await apiClient.post('/payments/user', {
+    const res = await apiClient.post('/payments/kyc', {
       body: data,
     });
 
-    if (res.status !== 201) return;
+    if (!res || !res.isJson) return;
 
-    return res.data as SynapseUserResponse;
-  } catch (error) {
+    if (!res.ok) {
+      if (res.data?.message === 'Form errors') return res.data as PaymentsUserErrorResponse;
+    }
+
+    return res.data as PaymentsUserResponse;
+  } catch (e) {
     // eslint-disable-next-line no-console
-    console.error(error);
+    console.error(e);
+    return;
   }
 };
