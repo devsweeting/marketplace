@@ -333,7 +333,7 @@ export const PaymentService = ({
             <StyledInput
               id="cardNumber"
               name="cardNumber"
-              value={values.cardNumber ? values.cardNumber : ''}
+              value={values?.cardNumber ?? ''}
               onChange={cardNumberHandler}
               endAdornment={
                 <InputAdornment position="start">
@@ -365,7 +365,7 @@ export const PaymentService = ({
             <StyledInput
               id="cardName"
               name="cardName"
-              value={values.cardName ? values.cardName : ''}
+              value={values?.cardName ?? ''}
               onChange={changeHandler}
             />
             {touched.cardName && errors.cardName && (
@@ -382,7 +382,7 @@ export const PaymentService = ({
             >
               <InputLabel htmlFor="cardExpireDate">Expiration date (MM/YYYY)</InputLabel>
               <StyledInput
-                value={values.cardExpireDate ? expireformat(values.cardExpireDate) : ''}
+                value={expireformat(values.cardExpireDate) || ''}
                 onChange={(e) => {
                   e.target.value = expireformat(e.target.value);
                   changeHandler(e);
@@ -399,7 +399,7 @@ export const PaymentService = ({
               <StyledInput
                 id="cardCVV"
                 name="cardCVV"
-                value={values.cardCVV ? values.cardCVV : ''}
+                value={values?.cardCVV ?? ''}
                 onChange={cvvHandler}
               />
               {touched.cardCVV && errors.cardCVV && (
