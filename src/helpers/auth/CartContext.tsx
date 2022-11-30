@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useMemo, useState, useContext, createContext, useCallback } from 'react';
+import { useState, useContext, createContext, useCallback } from 'react';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { Checkout } from '@/components/Checkout';
 
@@ -44,15 +44,13 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     0,
   );
 
-  const openCart = useCallback(() => {
-    const newState = { ...cartModalState, isOpen: true };
-    setCartModalState(newState);
-  }, [cartModalState]);
-
-  const reOpenCart = () => {
-    const newState = { isDisabled: false, isOpen: true };
-    setCartModalState(newState);
+  const openCart = () => {
+    setCartModalState({ ...cartModalState, isOpen: true });
   };
+
+  const reOpenCart = useCallback(() => {
+    setCartModalState({ isDisabled: false, isOpen: true });
+  }, []);
   const closeCart = useCallback(() => {
     const newState = { ...cartModalState, isDisabled: true, isOpen: false };
     setCartModalState(newState);
@@ -95,6 +93,13 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     [setCartItems],
   );
 
+  const shouldBeOpen = () => {
+    const cartItem = cartItems[0];
+    if (cartModalState.isDisabled || cartItem?.id === undefined) {
+      return false;
+    }
+    return cartModalState.isOpen;
+  };
   const decreaseCartQuantity = useCallback(
     (id: string) => {
       setCartItems((currItems) => {
@@ -128,33 +133,22 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     [setCartItems],
   );
 
-  const contextValue = useMemo(
-    () => ({
-      increaseCartQuantity,
-      decreaseCartQuantity,
-      removeFromCart,
-      openCart,
-      closeCart,
-      cartQuantity,
-      reOpenCart,
-      closeModal,
-      isDisabled: cartModalState.isDisabled,
-    }),
-    [
-      cartModalState.isDisabled,
-      cartQuantity,
-      closeCart,
-      decreaseCartQuantity,
-      increaseCartQuantity,
-      openCart,
-      removeFromCart,
-    ],
-  );
-
   return (
-    <CartContext.Provider value={contextValue}>
+    <CartContext.Provider
+      value={{
+        increaseCartQuantity,
+        decreaseCartQuantity,
+        removeFromCart,
+        openCart,
+        closeCart,
+        cartQuantity,
+        reOpenCart,
+        closeModal,
+        isDisabled: cartModalState.isDisabled,
+      }}
+    >
       {children}
-      <Checkout isOpen={!cartModalState.isDisabled ? cartModalState.isOpen : false} />
+      <Checkout isOpen={shouldBeOpen()} />
     </CartContext.Provider>
   );
 };
