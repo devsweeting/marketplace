@@ -61,7 +61,7 @@
       {
         "additionalHooks": "useEndpoint"
       }
-    ]
+    ],
     "prettier/prettier": "warn",
     "no-console": "warn"
   },
