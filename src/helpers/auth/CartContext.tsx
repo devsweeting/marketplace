@@ -48,9 +48,9 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     setCartModalState({ ...cartModalState, isOpen: true });
   };
 
-  const reOpenCart = useCallback(() => {
-    setCartModalState({ isDisabled: false, isOpen: true });
-  }, []);
+  const reOpenCart = () => {
+    setCartModalState({ ...cartModalState, isDisabled: false, isOpen: true });
+  };
   const closeCart = useCallback(() => {
     const newState = { ...cartModalState, isDisabled: true, isOpen: false };
     setCartModalState(newState);
@@ -95,10 +95,12 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
   const shouldBeOpen = () => {
     const cartItem = cartItems[0];
-    if (cartModalState.isDisabled || cartItem?.id === undefined) {
-      return false;
+
+    if (cartModalState.isDisabled === false || cartItem?.id !== undefined) {
+      return cartModalState.isOpen;
     }
-    return cartModalState.isOpen;
+
+    return false;
   };
   const decreaseCartQuantity = useCallback(
     (id: string) => {
