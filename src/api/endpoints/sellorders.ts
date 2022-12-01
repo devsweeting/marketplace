@@ -38,10 +38,14 @@ export const getNumSellordersUserCanBuy = async (
   }
 };
 
-export const getPurchaseById = async (id: string): Promise<IPurchaseInfo[]> => {
+export const getPurchaseById = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<IPurchaseInfo[]> => {
   try {
     const res = await apiClient.get(`/sellorders/purchase-history?assetId=${id}`, {
       requireAuth: true,
+      signal,
     });
 
     return res.data as unknown as IPurchaseInfo[];

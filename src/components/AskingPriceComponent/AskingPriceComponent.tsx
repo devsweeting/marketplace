@@ -34,10 +34,11 @@ import {
   PriceOutlinedInput,
 } from './AskingPriceComponent.styles';
 import { getPurchaseById } from '@/api/endpoints/sellorders';
-import type { IAsset, IPurchaseInfo } from '@/types/assetTypes';
+import type { IAsset } from '@/types/assetTypes';
 import { formatNumber } from '@/helpers/formatNumber';
 import { Attributes } from '../Attributes';
 import { safeParseFloat } from '@/helpers/safeParseInt';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 const calculatePercentFromInput = (input: number, originalValue: number) => {
   input = input * 100;
@@ -67,8 +68,7 @@ const calculateTotalFromPercentAndPrice = (price: number, numOfUnits: number) =>
 
 export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string }) => {
   const { closeCart, closeModal } = useCart();
-  const [purchaseHistory, setPurchaseHistory] = useState<IPurchaseInfo>();
-
+  const [assetPurchase] = useEndpoint((signal) => getPurchaseById(id, signal), [id]);
   const [inputValues, setInputValues] = useState<{
     percent: number | undefined;
     price: number | undefined;
@@ -78,31 +78,23 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
   });
 
   useEffect(() => {
-    const grabPurchaseHistory = async (id: string) => {
-      const assetPurchase = await getPurchaseById(id);
-      if (!assetPurchase) return;
-      if (assetPurchase) {
-        setPurchaseHistory(assetPurchase[0] as IPurchaseInfo);
-        setInputValues({ percent: 0, price: assetPurchase[0].fractionPriceCents / 100 });
-        closeCart();
-        closeModal();
-      }
-    };
-
-    if (asset) {
-      void grabPurchaseHistory(id);
-    }
+    closeCart();
+    closeModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asset, id]);
+  }, []);
 
-  if (!purchaseHistory) {
+  useEffect(() => {
+    if (assetPurchase !== undefined) {
+      setInputValues({ percent: 0, price: assetPurchase[0].fractionPriceCents / 100 });
+    }
+  }, [assetPurchase]);
+
+  if (!assetPurchase) {
     return null;
   }
-  if (!purchaseHistory.fractionPriceCents) {
-    return null;
-  }
+
   const totalPrice =
-    ((purchaseHistory?.fractionPriceCents as number) * (purchaseHistory?.fractionQty as number)) /
+    ((assetPurchase[0]?.fractionPriceCents as number) * (assetPurchase[0]?.fractionQty as number)) /
     100;
 
   const formatLargeValues = (value: number) => {
@@ -131,7 +123,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
       percent: safeParseFloat(event.target.value),
       price: calculateValueFromPercent(
         safeParseFloat(event.target.value),
-        purchaseHistory?.fractionPriceCents,
+        assetPurchase[0]?.fractionPriceCents,
       ),
     });
   };
@@ -142,14 +134,14 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
       price: parseFloat(event.target.value),
       percent: calculatePercentFromInput(
         parseFloat(event.target.value),
-        purchaseHistory?.fractionPriceCents,
+        assetPurchase[0]?.fractionPriceCents,
       ),
     });
   };
 
   const totalValuation =
     inputValues.price !== undefined && inputValues.percent !== undefined
-      ? calculateTotalFromPercentAndPrice(inputValues.price, purchaseHistory?.fractionQty)
+      ? calculateTotalFromPercentAndPrice(inputValues.price, assetPurchase[0]?.fractionQty)
       : '~';
 
   return (
@@ -218,8 +210,8 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
             <Box marginBottom="24px">
               <OrderSummaryDetailsContainer>
                 <Text variant="lg">
-                  {purchaseHistory.fractionQty && purchaseHistory.fractionQty}
-                  {purchaseHistory.fractionQty > 1 ? ' Units' : ' Unit'}
+                  {assetPurchase[0].fractionQty && assetPurchase[0].fractionQty}
+                  {assetPurchase[0].fractionQty > 1 ? ' Units' : ' Unit'}
                 </Text>
                 <Text variant="lg">{totalValuation}</Text>
               </OrderSummaryDetailsContainer>
@@ -286,7 +278,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
                   <Typography>Valuation</Typography>
                   <LargeDetailText variant="lg">
                     $
-                    {purchaseHistory
+                    {assetPurchase[0]
                       ? totalPrice < 1000
                         ? Intl.NumberFormat('en-US', {
                             style: 'currency',
@@ -301,7 +293,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
                 <ValuationContainer>
                   <Typography>Unit Price</Typography>
                   <LargeDetailText variant="lg">
-                    ${purchaseHistory ? purchaseHistory.fractionPriceCents / 100 : ''}
+                    ${assetPurchase[0] ? assetPurchase[0].fractionPriceCents / 100 : ''}
                   </LargeDetailText>
                 </ValuationContainer>
               </CardMeta>

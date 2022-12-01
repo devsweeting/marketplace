@@ -165,6 +165,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
 
   const [buyLimit = 1] = useEndpoint(
     (signal) => getUserBuyLimit(sellOrderData, signal),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [sellOrderData, user],
   );
 
