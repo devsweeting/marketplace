@@ -24,6 +24,7 @@ describe('useEndpoint', () => {
     const { result } = renderHook(() => useEndpoint(() => promise));
 
     await act(async () => {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       await promise.catch(() => {});
     });
 
@@ -34,6 +35,7 @@ describe('useEndpoint', () => {
   test('refetches on dependency change', async () => {
     const promise = Promise.resolve();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const { result, rerender } = renderHook((prop) => useEndpoint(() => promise, [prop]), {
       initialProps: 'value',
     });

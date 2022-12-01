@@ -12,7 +12,6 @@ type LoadingStates = typeof LoadingState[keyof typeof LoadingState];
 export const useEndpoint = <TData>(
   endpoint: (signal: AbortSignal) => Promise<TData>,
   deps: DependencyList = [],
-  options = {},
 ): [TData | undefined, LoadingStates] => {
   const [data, setData] = useState<TData>();
   const [loadingState, setLoadingState] = useState<LoadingStates>(LoadingState.pending);
