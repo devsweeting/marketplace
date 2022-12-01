@@ -22,9 +22,12 @@ export const getSellOrderById = async (id: string) => {
  * @param id Id of the sell order
  * @returns object
  */
-export const getNumSellordersUserCanBuy = async (id: string): Promise<IUserBuyLimit> => {
+export const getNumSellordersUserCanBuy = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<IUserBuyLimit> => {
   try {
-    const res = await apiClient.get(`/sellorders/${id}/check`);
+    const res = await apiClient.get(`/sellorders/${id}/check`, { signal });
 
     return res.data as unknown as IUserBuyLimit;
   } catch (e) {

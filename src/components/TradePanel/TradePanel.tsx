@@ -29,6 +29,7 @@ import Link from 'next/link';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useCart } from '@/helpers/auth/CartContext';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
@@ -41,17 +42,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
-  const [buyLimit, setBuyLimit] = useState<number>(1);
-  const marks = [
-    {
-      value: 0,
-      label: '0',
-    },
-    {
-      value: buyLimit,
-      label: formatNumber(buyLimit),
-    },
-  ];
+  // const [buyLimit, setBuyLimit] = useState<number>(1);
 
   const getPercentClaimed = (sellOrderData: ISellOrder | undefined): number => {
     const percentClaimed = sellOrderData
@@ -142,7 +133,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     }
   };
 
-  const getUserBuyLimit = async (sellOrderData: ISellOrder | undefined) => {
+  const getUserBuyLimit = async (sellOrderData: ISellOrder | undefined, signal: AbortSignal) => {
     if (!sellOrderData) {
       return 0;
     }
@@ -160,7 +151,10 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       return userBuyLimit;
     }
 
-    const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(sellOrderData.id);
+    const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(
+      sellOrderData.id,
+      signal,
+    );
 
     if (fractionsAvailableToPurchase) {
       userBuyLimit = fractionsAvailableToPurchase || 0;
@@ -169,15 +163,31 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     return userBuyLimit;
   };
 
-  useEffect(() => {
-    const handleUpdateBuyLimit = async () => {
-      const userBuyLimit = await getUserBuyLimit(sellOrderData);
-      setBuyLimit(userBuyLimit);
-    };
-    void handleUpdateBuyLimit();
+  const [buyLimit = 1] = useEndpoint(
+    (signal) => getUserBuyLimit(sellOrderData, signal),
+    [sellOrderData, user],
+  );
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sellOrderData, user]);
+  const marks = [
+    {
+      value: 0,
+      label: '0',
+    },
+    {
+      value: buyLimit,
+      label: formatNumber(buyLimit),
+    },
+  ];
+
+  // useEffect(() => {
+  //   const handleUpdateBuyLimit = async () => {
+  //     const userBuyLimit = await getUserBuyLimit(sellOrderData);
+  //     setBuyLimit(userBuyLimit);
+  //   };
+  //   void handleUpdateBuyLimit();
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [sellOrderData, user]);
 
   useEffect(() => {
     if ((sliderValue as number) < 1) {
