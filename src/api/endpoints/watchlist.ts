@@ -25,9 +25,9 @@ export interface IWatchList {
   id: string;
 }
 
-export const inWatchlist = async (id: string): Promise<boolean> => {
+export const inWatchlist = async (id: string, signal?: AbortSignal): Promise<boolean> => {
   try {
-    const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`);
+    const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`, { signal });
     return isOnWatchlist.data?.inWatchlist ?? false;
   } catch (error) {
     return false;

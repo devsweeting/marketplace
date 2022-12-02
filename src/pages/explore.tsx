@@ -109,7 +109,7 @@ const ExplorePage: NextPage = () => {
         setDropAssets([]);
       });
     }
-  });
+  }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets]);
 
   useEffect(() => {
     if (Object.keys(query).length > 0 && !Object.keys(query).includes('attr_eq[brand]')) {

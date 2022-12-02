@@ -7,11 +7,11 @@ import { getAssetById } from '@/api/endpoints/assets';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
 import { addToWatchlist, removeFromWatchlist, inWatchlist } from '@/api/endpoints/watchlist';
-
 import { AssetErrorPage } from '@/components/DropPage/AssetErrorPage';
 import { AssetPage } from '@/components/DropPage/AssetPage';
 import type { AssetPageProps } from '@/components/DropPage/AssetPage';
 import { useLocalWatchlist } from '@/helpers/hooks/useLocalWatchlist';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 const mockInfo = [
   {
@@ -33,9 +33,20 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   const [asset, setAsset] = useState<IAsset>(initialAsset);
   const sellOrder = useMemo(() => {
     if (asset?.sellOrders && asset?.sellOrders.length > 0) return asset.sellOrders[0];
-
     return undefined;
   }, [asset?.sellOrders]);
+
+  const [availableFractionInfo] = useEndpoint(
+    (signal) => getNumSellordersUserCanBuy(sellOrder?.id, signal),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [asset, sellOrder?.id],
+  );
+  const [onWatchlistCheck] = useEndpoint(
+    (signal) => inWatchlist(asset.id, signal),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [asset, sellOrder?.id],
+  );
+  const purchaseLimit = availableFractionInfo?.fractionsAvailableToPurchase;
 
   const sellOrderCalculations = useMemo(() => {
     if (sellOrder) {
@@ -63,8 +74,6 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     };
   }, [sellOrder]);
   const [watched, setWatched] = useState<boolean>(false);
-
-  const [purchaseLimit, setPurchaseLimit] = useState<number>(0);
 
   const updateAsset = (assetId: string): void => {
     const fetchAsset = async (id: string): Promise<void> => {
@@ -96,35 +105,14 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   };
 
   useEffect(() => {
-    const fetchBuyLimit = async (id: string) => {
-      const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(id);
-
-      setPurchaseLimit(fractionsAvailableToPurchase);
-    };
-
-    if (sellOrder) {
-      // eslint-disable-next-line no-console
-      fetchBuyLimit(sellOrder.id).catch((e) => console.error(e));
-    }
-  }, [asset, sellOrder]);
-
-  useEffect(() => {
-    const fetchIsWatched = async (asset: IAsset) => {
-      setWatched(inLocalWatchlist(asset.id));
-
-      const onWatchlistCheck = await inWatchlist(asset.id);
-
-      setWatched(onWatchlistCheck ?? false);
-    };
-
     if (asset) {
-      // eslint-disable-next-line no-console
-      fetchIsWatched(asset).catch((e) => console.error(e));
+      setWatched(inLocalWatchlist(asset.id));
+      setWatched(onWatchlistCheck ?? false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asset]);
 
-  if (asset && sellOrder) {
+  if (asset && sellOrder && purchaseLimit) {
     const assetProps: AssetPageProps = {
       asset,
       sellOrder,

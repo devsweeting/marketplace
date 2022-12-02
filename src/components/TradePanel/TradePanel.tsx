@@ -180,16 +180,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
     },
   ];
 
-  // useEffect(() => {
-  //   const handleUpdateBuyLimit = async () => {
-  //     const userBuyLimit = await getUserBuyLimit(sellOrderData);
-  //     setBuyLimit(userBuyLimit);
-  //   };
-  //   void handleUpdateBuyLimit();
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [sellOrderData, user]);
-
   useEffect(() => {
     if ((sliderValue as number) < 1) {
       setDisableBuyBTN(true);

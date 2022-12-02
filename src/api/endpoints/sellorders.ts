@@ -23,7 +23,7 @@ export const getSellOrderById = async (id: string) => {
  * @returns object
  */
 export const getNumSellordersUserCanBuy = async (
-  id: string,
+  id: string | undefined,
   signal?: AbortSignal,
 ): Promise<IUserBuyLimit> => {
   try {
