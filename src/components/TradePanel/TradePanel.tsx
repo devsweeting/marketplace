@@ -12,7 +12,7 @@ import { calcValuation } from '@/helpers/calcValuation';
 import { formatNumber } from '@/helpers/formatNumber';
 import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
 import { calcTimeDifference } from '@/helpers/time';
-import { CountdownTimer } from '../coundownTimer';
+import CountdownTimer from '../coundownTimer/CountdownTimer';
 import { Attributes } from '../Attributes';
 import { Close } from '@mui/icons-material';
 import ArrowRightAltRounded from '@mui/icons-material/ArrowRightAltRounded';
