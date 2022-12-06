@@ -1,4 +1,4 @@
-import type { DependencyList } from 'react';
+import type { DependencyList, Dispatch, SetStateAction } from 'react';
 import { useState, useEffect } from 'react';
 
 export const LoadingState = {
@@ -12,7 +12,7 @@ type LoadingStates = typeof LoadingState[keyof typeof LoadingState];
 export const useEndpoint = <TData>(
   endpoint: (signal: AbortSignal) => Promise<TData>,
   deps: DependencyList = [],
-): [TData | undefined, LoadingStates] => {
+): [TData | undefined, LoadingStates, Dispatch<SetStateAction<TData | undefined>>] => {
   const [data, setData] = useState<TData>();
   const [loadingState, setLoadingState] = useState<LoadingStates>(LoadingState.pending);
 
@@ -38,5 +38,5 @@ export const useEndpoint = <TData>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
-  return [data, loadingState];
+  return [data, loadingState, setData];
 };

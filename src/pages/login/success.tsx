@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextPage } from 'next';
-import { useEffect } from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Container, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
@@ -8,30 +7,27 @@ import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import Link from 'next/link';
 import { LoginTextContainer } from '@/styles/LoginPage.styles';
 import { useLocalWatchlist } from '@/helpers/hooks/useLocalWatchlist';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 const Login: NextPage = (user) => {
   const { getLocalWatchlist } = useLocalWatchlist();
+  const addWatchListItems = async (signal: AbortSignal | undefined) => {
+    const watchList = getLocalWatchlist();
 
-  useEffect(() => {
     if (!user) {
       return;
     }
 
-    const addWatchListItems = async () => {
-      const watchList = getLocalWatchlist();
+    await Promise.all(watchList.map((id) => addToWatchlist(id, signal))).then(() => {
+      localStorage.removeItem('watchList');
+    });
+  };
 
-      await Promise.all(watchList.map((id) => addToWatchlist(id)));
-    };
-
-    addWatchListItems()
-      .then(() => {
-        localStorage.removeItem('watchList');
-      })
-      .catch(() => {
-        return;
-      });
+  useEndpoint(
+    (signal) => addWatchListItems(signal),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+    [user],
+  );
 
   return (
     <>

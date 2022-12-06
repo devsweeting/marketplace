@@ -2,46 +2,18 @@ import { OpenGraph } from '@/components/OpenGraph';
 import { Loader } from '@/components/Loader';
 import type { NextPage } from 'next/types';
 import { getPortfolioAssets, getPortfolioWatchlistAssets } from '@/api/endpoints/portfolio';
-import React, { useEffect, useReducer, useState } from 'react';
-import type {
-  IAsset,
-  IPortfolioData,
-  IPortfolioDataState,
-  PortfolioListAction,
-} from '@/types/assetTypes';
+import React, { useEffect, useState } from 'react';
+import type { IAsset, IPortfolioData } from '@/types/assetTypes';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
-import { Box, Grid, Typography, useTheme } from '@mui/material';
+import { Box, Button, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import { TradePanel } from '@/components/TradePanel';
 import { getAssetById } from '@/api/endpoints/assets';
 import { useUser } from '@/helpers/hooks/useUser';
 import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderTabs/PortfolioHeaderTabs';
-// eslint-disable-next-line import/no-unresolved
 import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { useModalContext } from '@/helpers/auth/ModalContext';
-
-const initialPortfolioListState: IPortfolioDataState = {
-  isLoading: true,
-  portfolio: [] as unknown as IPortfolioData,
-  error: '',
-};
-
-const portfolioReducer = (state: IPortfolioDataState, action: PortfolioListAction) => {
-  switch (action.type) {
-    case 'fetching': {
-      return { ...state, isLoading: true, error: '' };
-    }
-    case 'success': {
-      return { ...state, isLoading: false, portfolio: action.payload };
-    }
-    case 'error': {
-      return { ...state, isLoading: false, error: action.error.message };
-    }
-    default: {
-      return state;
-    }
-  }
-};
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 const PortfolioPage: NextPage = () => {
   const theme = useTheme();
@@ -53,81 +25,67 @@ const PortfolioPage: NextPage = () => {
     query,
   } = router;
   const tabs = ['Overview', 'Watchlist', 'Transactions'];
-  const [{ isLoading, error, portfolio }, dispatch] = useReducer(
-    portfolioReducer,
-    initialPortfolioListState,
-  );
   const [activePortfolioCategory, setActivePortfolioCategory] = useState('');
-  const [stats, setStats] = useState<IPortfolioData | undefined>();
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const [isOpen, setIsOpen] = useState(false);
   const [assets, setAssets] = useState<IAsset[]>([]);
   const { dispatch: modalDispatch } = useModalContext();
 
-  const handlePortfolioDataFetch = (tab: string | string[] | undefined) => {
-    dispatch({ type: 'fetching' });
-
-    switch (tab) {
-      case 'overview' || null: {
-        return getPortfolioAssets()
-          .then((data) => {
-            dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
-          })
-          .catch((error) => {
-            dispatch({ type: 'error', error });
-          });
-        break;
-      }
-      case 'watchlist': {
-        return getPortfolioWatchlistAssets()
-          .then((data) => {
-            dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
-          })
-          .catch((error) => {
-            dispatch({ type: 'error', error });
-          });
-        break;
-      }
-      case 'transactions': {
-        return dispatch({ type: 'success', payload: [] as unknown as IPortfolioData });
-        break;
-      }
-      default: {
-        return getPortfolioAssets()
-          .then((data) => {
-            dispatch({ type: 'success', payload: data as unknown as IPortfolioData });
-          })
-          .catch((error) => {
-            dispatch({ type: 'error', error });
-          });
-        break;
+  const handlePortfolioDataFetch = async (
+    tab: string | string[] | undefined,
+    isReady: boolean,
+    signal?: AbortSignal,
+  ) => {
+    if (isReady) {
+      switch (tab) {
+        case 'overview' || null: {
+          return (await getPortfolioAssets(signal)) as unknown as IPortfolioData;
+        }
+        case 'watchlist': {
+          return (await getPortfolioWatchlistAssets(signal)) as unknown as IPortfolioData;
+        }
+        case 'transactions': {
+          //TODO Add transactions when we generate sellOrders
+          return [] as unknown as IPortfolioData;
+        }
+        default: {
+          return (await getPortfolioAssets(signal)) as unknown as IPortfolioData;
+        }
       }
     }
   };
 
-  const handleStatsDataFetch = () => {
-    getPortfolioAssets()
-      .then((data) => {
-        setStats(data as unknown as IPortfolioData);
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error(error);
-      });
+  const handleStatsDataFetch = async (signal: AbortSignal | undefined) => {
+    if (user) {
+      const data = getPortfolioAssets(signal);
+      return data as unknown as IPortfolioData;
+    }
   };
 
+  const [stats] = useEndpoint(
+    (signal) => handleStatsDataFetch(signal),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user],
+  );
+
   useEffect(() => {
-    if (user) {
-      void handleStatsDataFetch();
-      if (isReady) {
-        const queryString = tab as string;
-        setActivePortfolioCategory(queryString ? queryString : 'overview');
-        void handlePortfolioDataFetch(queryString);
-      }
+    if (isReady) {
+      const queryString = tab as string;
+      setActivePortfolioCategory(queryString ? queryString : 'overview');
     }
   }, [activePortfolioCategory, isReady, query, tab, user]);
 
+  const [portfolio, loadingState, setPortfolio] = useEndpoint(
+    (signal) => handlePortfolioDataFetch(tab, isReady, signal),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [activePortfolioCategory, isReady, query, tab, user],
+  );
+
   const portfolioAssetsList = [];
+
+  if (!portfolio) {
+    return null;
+  }
 
   if (Object.keys(portfolio).includes('meta')) {
     portfolio.items.flatMap((item: { category: string }) => {
@@ -171,8 +129,10 @@ const PortfolioPage: NextPage = () => {
   if (!user) {
     modalDispatch({ type: 'login', visible: true });
   }
-
-  if (isLoading) {
+  if (!stats) {
+    return null;
+  }
+  if (loadingState === 'pending') {
     return (
       <Grid>
         <OpenGraph title={'List view'} description={'List view page description'} />
@@ -201,7 +161,7 @@ const PortfolioPage: NextPage = () => {
     );
   }
 
-  if (error !== '') {
+  if (loadingState === 'error') {
     return (
       <div>
         <Grid>
@@ -213,13 +173,19 @@ const PortfolioPage: NextPage = () => {
           />
           <Box>
             <PortfolioStats portfolio={stats} />
-            <button
-              onClick={() => {
-                void handlePortfolioDataFetch(activePortfolioCategory);
-              }}
-            >
-              Try again
-            </button>
+            <Box display="flex" justifyContent="center" margin="30px">
+              <Button
+                variant="contained"
+                onClick={() => {
+                  void (async () => {
+                    const data = await handlePortfolioDataFetch(activePortfolioCategory, isReady);
+                    setPortfolio(data);
+                  })();
+                }}
+              >
+                Try again
+              </Button>
+            </Box>
           </Box>
         </Grid>
       </div>

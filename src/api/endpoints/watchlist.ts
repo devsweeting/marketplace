@@ -38,9 +38,13 @@ interface IWatchlistResponse {
   isSuccessful: boolean;
 }
 
-export const addToWatchlist = async (id: string): Promise<IWatchlistResponse> => {
+export const addToWatchlist = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<IWatchlistResponse> => {
   const { status } = await apiClient.post(`/watchlist/`, {
     body: { assetId: id },
+    signal,
   });
 
   const isAdded = hasBeenAddedWatchlist(status);
