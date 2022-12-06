@@ -9,7 +9,7 @@ export interface CountdownProps {
   sx?: SxProps<Theme>;
 }
 
-export const CountdownTimer = ({ startTime, variant = 'body1', sx = {} }: CountdownProps) => {
+const CountdownTimer = ({ startTime, variant = 'body1', sx = {} }: CountdownProps) => {
   const [secondsRemaining, setSecondsRemaining] = useState(startTime);
 
   const secondsToDisplay = Math.ceil(secondsRemaining % 60);
@@ -30,3 +30,6 @@ export const CountdownTimer = ({ startTime, variant = 'body1', sx = {} }: Countd
   );
 };
 const twoDigits = (num: number) => String(num).padStart(2, '0');
+
+// eslint-disable-next-line import/no-default-export
+export default CountdownTimer;

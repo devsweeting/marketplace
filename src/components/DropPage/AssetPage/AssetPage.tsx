@@ -14,9 +14,12 @@ import {
 import { StarBorderRounded, StarRounded } from '@mui/icons-material';
 import { ImgGallery } from '@/components/ImgGallery';
 import { DropDetails } from '@/components/DropPage/DropDetails';
+import type { CountdownProps } from '@/components/coundownTimer';
 const CountdownTimer = dynamic<CountdownProps>(
-  () => import('@/components/coundownTimer').then((module) => module.CountdownTimer),
-  { ssr: false },
+  () => import('../../../components/coundownTimer/CountdownTimer'),
+  {
+    ssr: false,
+  },
 );
 import { BuyModal } from '@/components/BuyModal';
 
@@ -27,7 +30,6 @@ import Link from 'next/link';
 import { Button } from '@/components/Button';
 import type { InfoRow } from '../DropDetails/DropDetails';
 import { Attributes } from '@/components/Attributes';
-import type { CountdownProps } from '@/components/coundownTimer';
 import {
   FacebookShareButton,
   FacebookIcon,
