@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import type { IAsset, IMeta, IMarket } from 'src/types';
 import { Box, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   loadListAssetByPage,
   latestDropAssets,
@@ -24,16 +24,13 @@ import { useUser } from '@/helpers/hooks/useUser';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useCart } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 const ExplorePage: NextPage = () => {
   const router = useRouter();
   const { query, isReady } = router;
-  const [assets, setAssets] = useState<IAsset[]>([]);
-  const [trendingMarket, setTrendingMarket] = useState<IMarket[]>([]);
-  const [ready, setReady] = useState<boolean>(false);
   const { openCart } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const user = useUser();
-  const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const [activeBrandCard, setActiveBrandCard] = useState<string>('');
@@ -45,44 +42,6 @@ const ExplorePage: NextPage = () => {
     updateBrandFilters,
     sortByOrder,
   } = useFilters();
-  const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
-  const loadLatestDropAssets = useCallback(async (page = 1) => {
-    const { items }: { items: IAsset[] } = await latestDropAssets({
-      page,
-    });
-    setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-  }, []);
-
-  useEffect(() => {
-    if (!assets.length && !dropAssets.length) {
-      setIsOpen(false);
-    }
-  }, [assets, dropAssets]);
-
-  const loadAssets = useCallback(
-    async (page = 1) => {
-      const queryString = await queryBuilder({
-        page,
-        sortType: sortByOrder,
-        checkedFilters,
-        rangeFilters,
-      });
-
-      if (queryString) {
-        const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
-          queryString,
-        });
-        setAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-        setCurrentMeta(meta);
-      }
-    },
-    [checkedFilters, rangeFilters, sortByOrder],
-  );
-
-  const loadTrendingMarkets = useCallback(async () => {
-    const { markets }: { markets: IMarket[] } = await trendingMarkets();
-    setTrendingMarket(markets);
-  }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -96,26 +55,78 @@ const ExplorePage: NextPage = () => {
   }, [cartItems, cartItems.length, user]);
 
   useEffect(() => {
-    isReady ? setReady(true) : setReady(false);
-    if (isReady) {
-      loadTrendingMarkets().catch(() => {
-        setTrendingMarket([]);
-      });
-      loadAssets(1).catch(() => {
-        setAssets([]);
-      });
-
-      loadLatestDropAssets().catch(() => {
-        setDropAssets([]);
-      });
-    }
-  }, [isReady, loadAssets, loadLatestDropAssets, loadTrendingMarkets]);
-
-  useEffect(() => {
     if (Object.keys(query).length > 0 && !Object.keys(query).includes('attr_eq[brand]')) {
       setActiveBrandCard('');
     }
   }, [query]);
+
+  const loadAssets = useCallback(
+    async (page = 1, signal?: AbortSignal | undefined) => {
+      if (isReady) {
+        const queryString = await queryBuilder({
+          page,
+          sortType: sortByOrder,
+          checkedFilters,
+          rangeFilters,
+        });
+
+        if (queryString) {
+          const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+            queryString,
+            signal,
+          });
+          return { currentMeta: meta, assets: items };
+        }
+      }
+    },
+    [checkedFilters, isReady, rangeFilters, sortByOrder],
+  );
+
+  const loadLatestDropAssets = useCallback(
+    async (page = 1, signal?: AbortSignal | undefined) => {
+      if (isReady) {
+        const { items }: { items: IAsset[] } = await latestDropAssets({
+          page,
+          signal,
+        });
+        return items;
+      }
+    },
+    [isReady],
+  );
+
+  const loadTrendingMarkets = useCallback(
+    async (signal?: AbortSignal | undefined) => {
+      if (isReady) {
+        const { markets }: { markets: IMarket[] } = await trendingMarkets(signal);
+        return markets;
+      }
+    },
+    [isReady],
+  );
+
+  const [
+    assetData = {
+      currentMeta: { currentPage: 0, itemCount: 0, itemsPerPage: 0, totalItems: 0, totalPages: 0 },
+      assets: [],
+    },
+    assetLoadingState,
+    setAssetData,
+  ] = useEndpoint((signal) => loadAssets(1, signal), [loadAssets]);
+
+  const [dropAssets = [], dropAssetsLoadingState] = useEndpoint(
+    (signal) => loadLatestDropAssets(1, signal),
+    [loadLatestDropAssets],
+  );
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [trendingMarket = [], trendingMarketLoadingState] = useEndpoint(
+    (signal) => loadTrendingMarkets(signal),
+    [loadTrendingMarkets],
+  );
+
+  if (!assetData || !dropAssets || !trendingMarket) {
+    return null;
+  }
 
   const handleDrawer = (asset: IAsset) => {
     if (!isOpen) {
@@ -145,26 +156,32 @@ const ExplorePage: NextPage = () => {
     return;
   };
 
-  if (!ready) {
-    return null;
-  }
-
   const updateAsset = (assetId: string): void => {
     const fetchAsset = async (id: string) => {
       const asset = await getAssetById(id);
 
       if (!asset) return;
 
-      const tempAssets = assets;
+      const tempAssets: IAsset[] = assetData?.assets;
       tempAssets[tempAssets.findIndex((asset) => asset.id === assetId)] = asset;
-      setAssets(tempAssets);
+      setAssetData({ currentMeta: assetData?.currentMeta, assets: tempAssets });
+
       setTradePanelData(asset);
     };
 
     // eslint-disable-next-line no-console
     fetchAsset(assetId).catch(console.error);
   };
-
+  const handleLoadMore = () => {
+    void (async () => {
+      const data = await loadAssets(assetData.currentMeta.currentPage + 1);
+      if (!data) return null;
+      setAssetData({
+        currentMeta: data?.currentMeta,
+        assets: [...assetData.assets, ...data.assets],
+      });
+    })();
+  };
   return (
     <ClientOnly>
       <OpenGraph title="Explore" description={'List view page description'} />
@@ -181,11 +198,14 @@ const ExplorePage: NextPage = () => {
         container
       >
         <Grid container item>
-          <FeaturedMarketCarousel
-            assets={dropAssets}
-            title={'Latest Drop'}
-            handleDrawer={handleDrawer}
-          />
+          {dropAssetsLoadingState === 'success' && (
+            <FeaturedMarketCarousel
+              assets={dropAssets}
+              title={'Latest Drop'}
+              handleDrawer={handleDrawer}
+            />
+          )}
+
           {trendingMarket.length > 0 && (
             <FeaturedMarketCarousel
               handleApplyBrandFilter={handleApplyBrandFilter}
@@ -198,25 +218,17 @@ const ExplorePage: NextPage = () => {
           <Box>
             <FilterWrapper />
             <Grid container direction="row" justifyContent="center" alignItems="stretch">
-              {assets && (
+              {assetData.assets && assetLoadingState === 'success' && (
                 <AssetListView
                   handleDrawer={handleDrawer}
-                  assets={assets}
+                  assets={assetData.assets}
                   activeCardId={isOpen ? tradePanelData?.id : ''}
                 />
               )}
             </Grid>
             <AssetListFooter>
-              {assets.length < (currentMeta?.totalItems || 0) && (
-                <Button
-                  size="large"
-                  variant="contained"
-                  onClick={() => {
-                    loadAssets((currentMeta?.currentPage ?? 0) + 1).catch(() => {
-                      setAssets([]);
-                    });
-                  }}
-                >
+              {assetData.assets.length < (assetData.currentMeta?.totalItems || 0) && (
+                <Button size="large" variant="contained" onClick={handleLoadMore}>
                   LOAD MORE
                 </Button>
               )}
@@ -231,7 +243,7 @@ const ExplorePage: NextPage = () => {
               >
                 Number of assets viewed:{' '}
                 <Box component="span" sx={{ color: '#000', display: 'inline' }}>
-                  {assets.length} of {currentMeta?.totalItems}
+                  {assetData.assets.length} of {assetData.currentMeta?.totalItems}
                 </Box>
               </Typography>
             </AssetListFooter>

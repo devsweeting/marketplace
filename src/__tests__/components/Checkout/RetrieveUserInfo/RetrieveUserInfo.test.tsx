@@ -29,7 +29,6 @@ const MockRetrieveUserInfo = ({ setPage }: { setPage: () => void }) => (
 
 describe('Retrieve and send user info', () => {
   beforeEach(() => {
-    jest.setTimeout(2000);
     mockverifyAddress.mockResolvedValue({
       status: 200,
       address: { deliverability: '', deliverability_analysis: {}, normalized_address: {} },
@@ -97,6 +96,7 @@ describe('Retrieve and send user info', () => {
   });
 
   test('Should allow users to enter information', async () => {
+    jest.setTimeout(4000);
     const setPage = jest.fn();
     render(<MockRetrieveUserInfo setPage={setPage} />);
 
