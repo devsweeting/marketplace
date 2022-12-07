@@ -5,6 +5,7 @@ import { processHeaders } from '@/helpers/processHeaders';
 export interface IApiRequest {
   req?: NextServerRequest;
   headers?: Record<string, string>;
+  signal?: AbortSignal;
 }
 
 export interface IApiRequestWithBody extends IApiRequest {
@@ -91,6 +92,7 @@ export abstract class BaseApiClient {
         method,
         headers: requestHeaders,
         body,
+        signal: request.signal,
       });
       if (response.ok) {
         options?.onSuccess(response);

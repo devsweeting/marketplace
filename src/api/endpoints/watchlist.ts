@@ -7,9 +7,11 @@ type PaginatedResponse<T> = {
   items: T[];
 };
 
-export const getWatchlist = async (): Promise<PaginatedResponse<WatchlistAsset> | undefined> => {
+export const getWatchlist = async (
+  signal?: AbortSignal,
+): Promise<PaginatedResponse<WatchlistAsset> | undefined> => {
   try {
-    const res = await apiClient.get(`/watchlist/`);
+    const res = await apiClient.get(`/watchlist/`, { signal });
 
     if (!res.ok || !res.isJson) return;
 
@@ -25,9 +27,9 @@ export interface IWatchList {
   id: string;
 }
 
-export const inWatchlist = async (id: string): Promise<boolean> => {
+export const inWatchlist = async (id: string, signal?: AbortSignal): Promise<boolean> => {
   try {
-    const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`);
+    const isOnWatchlist: any = await apiClient.get(`/watchlist/check/${id}`, { signal });
     return isOnWatchlist.data?.inWatchlist ?? false;
   } catch (error) {
     return false;
@@ -38,9 +40,13 @@ interface IWatchlistResponse {
   isSuccessful: boolean;
 }
 
-export const addToWatchlist = async (id: string): Promise<IWatchlistResponse> => {
+export const addToWatchlist = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<IWatchlistResponse> => {
   const { status } = await apiClient.post(`/watchlist/`, {
     body: { assetId: id },
+    signal,
   });
 
   const isAdded = hasBeenAddedWatchlist(status);

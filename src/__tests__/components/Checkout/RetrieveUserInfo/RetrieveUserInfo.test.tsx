@@ -21,7 +21,7 @@ const MockRetrieveUserInfo = ({ setPage }: { setPage: () => void }) => (
   <ThemeProvider theme={themeJump}>
     <UserContext.Provider value={{ user: mockUser, refreshUser: jest.fn(), logout: jest.fn() }}>
       <CartProvider>
-        <RetrieveUserInfo page={1} setPage={setPage} />
+        <RetrieveUserInfo setPage={setPage} />
       </CartProvider>
     </UserContext.Provider>
   </ThemeProvider>
@@ -29,7 +29,10 @@ const MockRetrieveUserInfo = ({ setPage }: { setPage: () => void }) => (
 
 describe('Retrieve and send user info', () => {
   beforeEach(() => {
-    mockverifyAddress.mockResolvedValue({ status: 200 });
+    mockverifyAddress.mockResolvedValue({
+      status: 200,
+      address: { deliverability: '', deliverability_analysis: {}, normalized_address: {} },
+    });
   });
 
   afterEach(() => {

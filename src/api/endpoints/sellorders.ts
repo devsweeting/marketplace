@@ -22,9 +22,12 @@ export const getSellOrderById = async (id: string) => {
  * @param id Id of the sell order
  * @returns object
  */
-export const getNumSellordersUserCanBuy = async (id: string): Promise<IUserBuyLimit> => {
+export const getNumSellordersUserCanBuy = async (
+  id: string | undefined,
+  signal?: AbortSignal,
+): Promise<IUserBuyLimit> => {
   try {
-    const res = await apiClient.get(`/sellorders/${id}/check`);
+    const res = await apiClient.get(`/sellorders/${id}/check`, { signal });
 
     return res.data as unknown as IUserBuyLimit;
   } catch (e) {
@@ -35,10 +38,14 @@ export const getNumSellordersUserCanBuy = async (id: string): Promise<IUserBuyLi
   }
 };
 
-export const getPurchaseById = async (id: string): Promise<IPurchaseInfo[]> => {
+export const getPurchaseById = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<IPurchaseInfo[]> => {
   try {
     const res = await apiClient.get(`/sellorders/purchase-history?assetId=${id}`, {
       requireAuth: true,
+      signal,
     });
 
     return res.data as unknown as IPurchaseInfo[];

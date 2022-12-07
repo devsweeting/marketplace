@@ -1,6 +1,5 @@
 import { getAssetById } from '@/api/endpoints/assets';
-import type { IAsset } from '@/types/assetTypes';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Cart } from '../Cart';
 import { PaymentMethods } from '../PaymentMethods';
 import { PaymentService } from '../PaymentService';
@@ -8,20 +7,25 @@ import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { RetrieveUserInfo } from '../RetrieveUserInfo';
 import { Box } from '@mui/material';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 export const Conditional = () => {
   const [page, setPage] = useState(0);
-  const [orderSummary, setOrderSummary] = useState<IAsset>();
+  // const [orderSummary, setOrderSummary] = useState<IAsset>();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const id = cartItems[0]?.id ?? undefined;
 
-  useEffect(() => {
-    if (id) {
-      void getAssetById(id).then((res) => {
-        setOrderSummary(res);
-      });
+  const getOrderSummary = async (id: string, signal?: AbortSignal | undefined) => {
+    if (!id) {
+      return null;
     }
-  }, [id]);
+    const orderSummary = await getAssetById(id, signal);
+    return orderSummary;
+  };
+  const [orderSummary, orderSummaryLoadingState] = useEndpoint(
+    (signal) => getOrderSummary(id, signal),
+    [id],
+  );
 
   const conditionalComponent = () => {
     if (!orderSummary) {
@@ -46,5 +50,9 @@ export const Conditional = () => {
       }
     }
   };
-  return <Box sx={{ display: 'flex', flexDirection: 'column' }}>{conditionalComponent()}</Box>;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      {orderSummaryLoadingState === 'success' && conditionalComponent()}
+    </Box>
+  );
 };

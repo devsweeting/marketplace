@@ -409,7 +409,7 @@ export const LoginModal = ({ noDismiss }: { noDismiss?: boolean }) => {
                       component="span"
                       style={{ cursor: 'pointer', textDecoration: 'underline' }}
                       onClick={() => {
-                        dispatch({ type: 'fail', payload: 0 });
+                        dispatch({ type: 'fail', payload: 0 as number });
                       }}
                     >
                       Try again

@@ -1,6 +1,6 @@
 import type { IAsset } from '@/types/assetTypes';
 import type { ParsedUrlQuery } from 'querystring';
-
+import { useUser } from '@/helpers/hooks/useUser';
 import { calcTimeDifference } from '@/helpers/time';
 import { useEffect, useMemo, useState } from 'react';
 import { getAssetById } from '@/api/endpoints/assets';
@@ -12,6 +12,7 @@ import { AssetErrorPage } from '@/components/DropPage/AssetErrorPage';
 import { AssetPage } from '@/components/DropPage/AssetPage';
 import type { AssetPageProps } from '@/components/DropPage/AssetPage';
 import { useLocalWatchlist } from '@/helpers/hooks/useLocalWatchlist';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 const mockInfo = [
   {
@@ -31,6 +32,7 @@ const mockInfo = [
 const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   const { addToLocalWatchlist, removeFromLocalWatchlist, inLocalWatchlist } = useLocalWatchlist();
   const [asset, setAsset] = useState<IAsset>(initialAsset);
+  const user = useUser();
   const sellOrder = useMemo(() => {
     if (asset?.sellOrders && asset?.sellOrders.length > 0) return asset.sellOrders[0];
 
@@ -80,19 +82,24 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   };
 
   const handleWatch = async (asset: IAsset): Promise<void> => {
-    addToLocalWatchlist(asset.id);
-
-    const { isSuccessful } = await addToWatchlist(asset.id);
-
-    if (isSuccessful) setWatched(true);
+    if (user) {
+      const { isSuccessful } = await addToWatchlist(asset.id);
+      if (isSuccessful) setWatched(true);
+    } else {
+      addToLocalWatchlist(asset.id);
+      setWatched(true);
+    }
   };
 
   const handleRemoveWatch = async (asset: IAsset): Promise<void> => {
-    removeFromLocalWatchlist(asset.id);
+    if (user) {
+      const { isSuccessful } = await removeFromWatchlist(asset.id);
 
-    const { isSuccessful } = await removeFromWatchlist(asset.id);
-
-    if (isSuccessful) setWatched(false);
+      if (isSuccessful) setWatched(false);
+    } else {
+      removeFromLocalWatchlist(asset.id);
+      setWatched(false);
+    }
   };
 
   useEffect(() => {
@@ -108,21 +115,30 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     }
   }, [asset, sellOrder]);
 
+  // const onWatchlistCheck = await inWatchlist(asset.id, signal);
+
+  const [onWatchlistCheck] = useEndpoint(
+    (signal) => inWatchlist(asset.id, signal),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [asset.id],
+  );
+
   useEffect(() => {
-    const fetchIsWatched = async (asset: IAsset) => {
+    const fetchIsWatched = async (
+      asset: IAsset,
+      onWatchlistCheck: boolean | ((prevState: boolean) => boolean),
+    ) => {
       setWatched(inLocalWatchlist(asset.id));
 
-      const onWatchlistCheck = await inWatchlist(asset.id);
-
-      setWatched(onWatchlistCheck ?? false);
+      setWatched(onWatchlistCheck);
     };
 
-    if (asset) {
+    if (asset && onWatchlistCheck) {
       // eslint-disable-next-line no-console
-      fetchIsWatched(asset).catch((e) => console.error(e));
+      fetchIsWatched(asset, onWatchlistCheck).catch((e) => console.error(e));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [asset]);
+  }, [asset, onWatchlistCheck]);
 
   if (asset && sellOrder) {
     const assetProps: AssetPageProps = {
