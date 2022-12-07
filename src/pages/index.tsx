@@ -9,29 +9,31 @@ import { FAQ } from '@/components/Homepage/FAQ';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { useRouter } from 'next/router';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import type { IAsset } from '../types';
 import { latestDropAssets } from '@/api/endpoints/assets';
 import { ClientOnly } from '@/components/ClientOnly/ClientOnly';
+import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 const Homepage = () => {
   const router = useRouter();
   const { isReady } = router;
-  const [dropAssets, setDropAssets] = useState<IAsset[]>([]);
-
-  const loadLatestDropAssets = useCallback(async (page = 1) => {
-    const { items }: { items: IAsset[] } = await latestDropAssets({
-      page,
-    });
-    setDropAssets((prev) => (page === 1 ? items : [...prev, ...items]));
-  }, []);
-  useEffect(() => {
-    if (isReady) {
-      loadLatestDropAssets().catch(() => {
-        setDropAssets([]);
-      });
-    }
-  }, [isReady, loadLatestDropAssets]);
+  const loadLatestDropAssets = useCallback(
+    async (page = 1, signal?: AbortSignal | undefined) => {
+      if (isReady) {
+        const { items }: { items: IAsset[] } = await latestDropAssets({
+          page,
+          signal,
+        });
+        return items;
+      }
+    },
+    [isReady],
+  );
+  const [dropAssets = [], dropAssetsLoadingState] = useEndpoint(
+    (signal) => loadLatestDropAssets(1, signal),
+    [loadLatestDropAssets],
+  );
   const handleDrawer = () => {
     return null;
   };
@@ -57,11 +59,13 @@ const Homepage = () => {
               <Hero />
             </Grid>
             <Grid item xs={12}>
-              <FeaturedMarketCarousel
-                assets={dropAssets}
-                title={'New Drops'}
-                handleDrawer={handleDrawer}
-              />
+              {dropAssetsLoadingState === 'success' && (
+                <FeaturedMarketCarousel
+                  assets={dropAssets}
+                  title={'New Drops'}
+                  handleDrawer={handleDrawer}
+                />
+              )}
             </Grid>
 
             <Grid item xs={12}>

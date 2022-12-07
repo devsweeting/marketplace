@@ -118,8 +118,8 @@ const ExplorePage: NextPage = () => {
     (signal) => loadLatestDropAssets(1, signal),
     [loadLatestDropAssets],
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [trendingMarket = [], trendingMarketLoadingState] = useEndpoint(
+
+  const [trendingMarket = []] = useEndpoint(
     (signal) => loadTrendingMarkets(signal),
     [loadTrendingMarkets],
   );
