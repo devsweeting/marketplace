@@ -96,7 +96,6 @@ describe('Retrieve and send user info', () => {
   });
 
   test('Should allow users to enter information', async () => {
-    jest.setTimeout(4000);
     const setPage = jest.fn();
     render(<MockRetrieveUserInfo setPage={setPage} />);
 

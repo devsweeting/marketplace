@@ -7,9 +7,11 @@ type PaginatedResponse<T> = {
   items: T[];
 };
 
-export const getWatchlist = async (): Promise<PaginatedResponse<WatchlistAsset> | undefined> => {
+export const getWatchlist = async (
+  signal?: AbortSignal,
+): Promise<PaginatedResponse<WatchlistAsset> | undefined> => {
   try {
-    const res = await apiClient.get(`/watchlist/`);
+    const res = await apiClient.get(`/watchlist/`, { signal });
 
     if (!res.ok || !res.isJson) return;
 
