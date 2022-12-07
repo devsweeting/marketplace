@@ -25,7 +25,7 @@ const MockAssetListView = ({ assets, handleDrawer, activeCardId }: IAssetListVie
 };
 
 describe('AssetListView', () => {
-  test('should render multiple cards ', () => {
+  test('should render multiple cards ', async () => {
     render(
       <MockAssetListView
         assets={mockAssets}
@@ -33,9 +33,9 @@ describe('AssetListView', () => {
         activeCardId={mockAssets[0].id}
       ></MockAssetListView>,
     );
-    const card = screen.getByText(mockAssets[0].name);
-    const card2 = screen.getByText(mockAssets[1].name);
-    const card3 = screen.getByText(mockAssets[1].name);
+    const card = await screen.findByText(mockAssets[0].name);
+    const card2 = await screen.findByText(mockAssets[1].name);
+    const card3 = await screen.findByText(mockAssets[1].name);
     expect(card).toBeInTheDocument();
     expect(card2).toBeInTheDocument();
     expect(card3).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('AssetListView', () => {
         activeCardId={mockAssets[0].id}
       ></MockAssetListView>,
     );
-    const card = screen.getByText(mockAssets[0].name);
+    const card = await screen.findByText(mockAssets[0].name);
     expect(card).toBeInTheDocument();
     await user.click(card);
     expect(mockHandleDrawer).toBeCalled();
