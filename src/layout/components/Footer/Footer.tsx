@@ -18,10 +18,11 @@ export const Footer = () => {
   return (
     <Container>
       <TopContainer>
-        <Img src="/images/logoPWCC.svg" alt="Footer Logo" />
-        <Typography variant="xl" fontWeight={600}>
-          PWCC Powered by Jump
-        </Typography>
+        <Img
+          src="/images/logoJump.svg"
+          alt="Footer Logo"
+          style={{ filter: 'brightness(0) invert(1)' }}
+        />
         <SocialLinks>
           <FacebookIcon color="secondary" />
           <InstagramIcon color="secondary" />
@@ -31,7 +32,7 @@ export const Footer = () => {
       </TopContainer>
       <Divider />
       <BottomContainer>
-        <Typography variant="body1">2022 PWCC & JUMP. All rights reserved.</Typography>
+        <Typography variant="body1">2022 JUMP. All rights reserved.</Typography>
         <PageLinks>
           <Link href="/site-policy/refunds-returns">
             <Button variant="text" color="secondary">
