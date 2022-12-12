@@ -52,18 +52,18 @@ export const CustomizedAccordions = () => {
           id="panel1d-header"
         >
           <Typography style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}>
-            What is the biggest advantage of selling my items with PWCC?
+            What is the biggest advantage of selling my items with Jump?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography
             style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.5' }}
           >
-            {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
-            with thousands of unique users participating in every auction. PWCC's strong reputation
-            in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace
+            {`Jump offers the largest auction venue specifically targeted to trading cards worldwide
+            with thousands of unique users participating in every auction. Jump's strong reputation
+            in the market causes buyers to bid with confidence. Items sold on the Jump Marketplace
             generally garner higher sale prices when compared with prices from other venues.
-            Finally, PWCC’s fees are lower than many other venues and lower in many cases than
+            Finally, Jump’s fees are lower than many other venues and lower in many cases than
             selling individually.`}
           </Typography>
         </AccordionDetails>
@@ -75,18 +75,18 @@ export const CustomizedAccordions = () => {
           id="panel2d-header"
         >
           <Typography style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}>
-            What is the biggest advantage of selling my items with PWCC?
+            What is the biggest advantage of selling my items with Jump?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography
             style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.5' }}
           >
-            {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
-            with thousands of unique users participating in every auction. PWCC's strong reputation
-            in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace
+            {`Jump offers the largest auction venue specifically targeted to trading cards worldwide
+            with thousands of unique users participating in every auction. Jump's strong reputation
+            in the market causes buyers to bid with confidence. Items sold on the Jump Marketplace
             generally garner higher sale prices when compared with prices from other venues.
-            Finally, PWCC’s fees are lower than many other venues and lower in many cases than
+            Finally, Jump’s fees are lower than many other venues and lower in many cases than
             selling individually.`}
           </Typography>
         </AccordionDetails>
@@ -98,18 +98,18 @@ export const CustomizedAccordions = () => {
           id="panel3d-header"
         >
           <Typography style={{ padding: '0', fontWeight: 'bold', fontSize: '1.3rem' }}>
-            What is the biggest advantage of selling my items with PWCC?
+            What is the biggest advantage of selling my items with Jump?
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography
             style={{ padding: '0', fontWeight: 'normal', fontSize: '1.1rem', opacity: '0.5' }}
           >
-            {`PWCC offers the largest auction venue specifically targeted to trading cards worldwide
-            with thousands of unique users participating in every auction. PWCC's strong reputation
-            in the market causes buyers to bid with confidence. Items sold on the PWCC Marketplace
+            {`Jump offers the largest auction venue specifically targeted to trading cards worldwide
+            with thousands of unique users participating in every auction. Jump's strong reputation
+            in the market causes buyers to bid with confidence. Items sold on the Jump Marketplace
             generally garner higher sale prices when compared with prices from other venues.
-            Finally, PWCC’s fees are lower than many other venues and lower in many cases than
+            Finally, Jump’s fees are lower than many other venues and lower in many cases than
             selling individually.`}
           </Typography>
         </AccordionDetails>

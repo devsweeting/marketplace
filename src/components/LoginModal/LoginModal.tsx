@@ -93,7 +93,7 @@ const LoginInput = ({
               }
             }}
           />
-          <Typography>You can use your PWCC email, we will send you a token.</Typography>
+          <Typography>You can use your email, we will send you a token.</Typography>
           <Box
             sx={{
               width: '100%',
