@@ -72,7 +72,7 @@ const theme = createTheme({
       main: '#fff',
     },
     accent: {
-      main: '#ffdf00',
+      main: '#D1D5DB',
     },
     grey: {
       50: '#F9FAFB',
