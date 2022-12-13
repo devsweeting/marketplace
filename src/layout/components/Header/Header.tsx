@@ -12,18 +12,17 @@ import {
   IconButton,
   Drawer,
   Divider,
-  Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import {
   Container,
   LogoWrapper,
-  LogoText,
   SearchContainer,
   CloseContainer,
   NavContainer,
 } from './Header.styles';
+import Image from 'next/image';
 
 export type HeaderPosition = 'fixed' | 'absolute' | 'relative' | 'static' | 'sticky' | undefined;
 
@@ -59,12 +58,7 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
           <Container>
             <Link href="/">
               <LogoWrapper>
-                <LogoText variant="xl4" color="primary">
-                  COA Marketplace
-                </LogoText>
-                <Typography variant="body2" color="primary" fontWeight={500}>
-                  Powered by Jump
-                </Typography>
+                <Image src="/images/logoJump.svg" alt="Header Logo" height="52" width="113" />
               </LogoWrapper>
             </Link>
             {matchesDesktop ? (

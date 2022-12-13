@@ -154,7 +154,7 @@ export function AssetPage(props: AssetPageProps) {
               </div>
               <div>
                 <Typography variant="body2" color="#4B5563" fontWeight={500}>
-                  Pwcc market valuation
+                  Market valuation
                 </Typography>
                 <Typography variant="xl2" fontWeight={600}>
                   ${marketValuation}
