@@ -104,11 +104,11 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
 
   useEffect(() => {
     const fetchBuyLimit = async (id: string) => {
-      const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(id);
+      const units = await getNumSellordersUserCanBuy(id);
 
-      if (!fractionsAvailableToPurchase) return;
+      if (!units) return;
 
-      setPurchaseLimit(fractionsAvailableToPurchase);
+      setPurchaseLimit(units.fractionsAvailableToPurchase ?? 0);
     };
 
     if (sellOrder) {

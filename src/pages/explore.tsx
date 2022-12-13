@@ -71,7 +71,7 @@ const ExplorePage: NextPage = () => {
         });
 
         if (queryString) {
-          const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+          const { meta, items } = await loadListAssetByPage({
             queryString,
             signal,
           });

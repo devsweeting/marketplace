@@ -14,6 +14,7 @@ import { PortfolioHeaderTabs } from '@/components/PortfolioPage/PortfolioHeaderT
 import { PortfolioStats } from '@/components/PortfolioPage/PortfolioStats/PortFolioStats';
 import { useModalContext } from '@/helpers/auth/ModalContext';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
+import { getWatchlist } from '@/api/endpoints/watchlist';
 
 const PortfolioPage: NextPage = () => {
   const theme = useTheme();
@@ -39,17 +40,17 @@ const PortfolioPage: NextPage = () => {
     if (isReady) {
       switch (tab) {
         case 'overview' || null: {
-          return (await getPortfolioAssets(signal)) as unknown as IPortfolioData;
+          return await getPortfolioAssets(signal);
         }
         case 'watchlist': {
-          return (await getPortfolioWatchlistAssets(signal)) as unknown as IPortfolioData;
+          return await getWatchlist(signal);
         }
         case 'transactions': {
           //TODO Add transactions when we generate sellOrders
           return [] as unknown as IPortfolioData;
         }
         default: {
-          return (await getPortfolioAssets(signal)) as unknown as IPortfolioData;
+          return await getPortfolioAssets(signal);
         }
       }
     }
@@ -57,8 +58,11 @@ const PortfolioPage: NextPage = () => {
 
   const handleStatsDataFetch = async (signal: AbortSignal | undefined) => {
     if (user) {
-      const data = getPortfolioAssets(signal);
-      return data as unknown as IPortfolioData;
+      const assets = await getPortfolioAssets(signal);
+
+      if (!assets) return;
+
+      return assets;
     }
   };
 

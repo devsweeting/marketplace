@@ -26,10 +26,8 @@ const SearchPage: NextPage = () => {
   const user = useUser();
   const { openCart } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  // const [assets, setAssets] = useState<IAsset[]>([]);
   const searchQuery = query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
-  // const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const { checkedFilters, rangeFilters, sortByOrder } = useFilters();
@@ -57,7 +55,7 @@ const SearchPage: NextPage = () => {
         });
 
         if (queryString) {
-          const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+          const { meta, items } = await loadListAssetByPage({
             queryString,
             signal,
           });

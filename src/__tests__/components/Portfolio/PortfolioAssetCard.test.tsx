@@ -29,7 +29,7 @@ const MockPortfolioAssetCard = ({
   assetData,
   user,
 }: {
-  assetData: IPortfolioAsset;
+  assetData: IAsset;
   user: IUser | undefined;
 }) => {
   return (

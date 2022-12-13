@@ -69,6 +69,7 @@ export const watchlistAssetCardData = {
   partner: 'aVEVLpXpo4UgZDVgJVQEuLZkabz',
   category: 'watchlist',
   isOnUserPortfolio: true,
+  sellOrders: [],
 };
 
 export const portfolioAssetCardData = {

@@ -109,7 +109,7 @@ const MockCart = ({ orderSummary, setPage }: { orderSummary: IAsset; setPage: ()
   <ThemeProvider theme={themeJump}>
     <UserContext.Provider value={{ user: mockUser, refreshUser: jest.fn(), logout: jest.fn() }}>
       <CartProvider>
-        <Cart orderSummary={orderSummary} page={0} setPage={setPage} />
+        <Cart orderSummary={orderSummary} setPage={setPage} />
       </CartProvider>
     </UserContext.Provider>
   </ThemeProvider>
