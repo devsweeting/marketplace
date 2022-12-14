@@ -263,19 +263,20 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
                   </FlexTextWrapper>
                 </div>
               )}
-              {sellOrderData?.type === 'drop' && sellOrderData?.userFractionLimitEndTime !== null && (
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
-                    Buy more units in
-                  </Typography>
-                  <CountdownTimer
-                    sx={{ fontSize: '10px' }}
-                    startTime={Math.ceil(
-                      calcTimeDifference(new Date(), sellOrderData.userFractionLimitEndTime) ?? 0,
-                    )}
-                  />
-                </Box>
-              )}
+              {sellOrderData?.type === 'drop' &&
+                sellOrderData?.userFractionLimitEndTime !== null && (
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography sx={{ fontSize: '10px', paddingRight: '0.2rem' }}>
+                      Buy more units in
+                    </Typography>
+                    <CountdownTimer
+                      sx={{ fontSize: '10px' }}
+                      startTime={Math.ceil(
+                        calcTimeDifference(new Date(), sellOrderData.userFractionLimitEndTime) ?? 0,
+                      )}
+                    />
+                  </Box>
+                )}
               {sellOrderData && !!buyLimit && (
                 <Slider
                   defaultValue={0}

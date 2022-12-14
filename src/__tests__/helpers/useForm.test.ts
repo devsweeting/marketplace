@@ -24,7 +24,7 @@ describe('useForm', () => {
     });
   });
 
-  it('can return if an entry was touched, has value, and is valid', () => {
+  it('can return if an entry was touched, has value, and is valid', async () => {
     const { result } = renderHook(() =>
       useForm(
         { cardNumber: '' },
@@ -36,7 +36,7 @@ describe('useForm', () => {
       ),
     );
 
-    act(() => {
+    void act(() => {
       result.current.changeHandler(event);
     });
 
