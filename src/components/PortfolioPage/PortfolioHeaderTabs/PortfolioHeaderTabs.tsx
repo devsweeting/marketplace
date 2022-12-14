@@ -30,36 +30,33 @@ export const PortfolioHeaderTabs = ({
               <Link
                 key={index}
                 href={{ pathname: '/account', query: { tab: header.toLocaleLowerCase() } }}
+                role={`link`}
+                style={{
+                  textDecoration: 'none',
+                  borderBottom:
+                    activePortfolioCategory === header.toLocaleLowerCase()
+                      ? '2px solid black'
+                      : '2px solid transparent',
+                }}
+                id={`${header.toLocaleLowerCase()}-link`}
               >
-                <a
-                  role={`link`}
-                  style={{
-                    textDecoration: 'none',
-                    borderBottom:
-                      activePortfolioCategory === header.toLocaleLowerCase()
-                        ? '2px solid black'
-                        : '2px solid transparent',
+                <Box
+                  sx={{ padding: '24px 16px', '&: hover': { cursor: 'pointer' } }}
+                  onClick={() => {
+                    OnClick();
                   }}
-                  id={`${header.toLocaleLowerCase()}-link`}
                 >
-                  <Box
-                    sx={{ padding: '24px 16px', '&: hover': { cursor: 'pointer' } }}
-                    onClick={() => {
-                      OnClick();
+                  <TabHeader
+                    style={{
+                      color:
+                        activePortfolioCategory === header.toLocaleLowerCase()
+                          ? 'black'
+                          : '#6B7280',
                     }}
                   >
-                    <TabHeader
-                      style={{
-                        color:
-                          activePortfolioCategory === header.toLocaleLowerCase()
-                            ? 'black'
-                            : '#6B7280',
-                      }}
-                    >
-                      {header}
-                    </TabHeader>
-                  </Box>
-                </a>
+                    {header}
+                  </TabHeader>
+                </Box>
               </Link>
             ))}
           </Box>

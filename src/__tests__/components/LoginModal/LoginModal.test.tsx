@@ -7,20 +7,23 @@ import { themeJump } from '@/styles/themeJump';
 import { loginRequest } from '@/api/endpoints/loginRequest';
 import { StatusCodes } from 'http-status-codes';
 import { ModalContext } from '@/helpers/auth/ModalContext';
+import { TestRouter } from '@/__tests__/utils/TestRouter';
 
 jest.mock('@/api/endpoints/loginRequest');
 
 const mockLoginRequest = loginRequest as unknown as jest.MockedFn<typeof loginRequest>;
-
+const push = jest.fn();
 const MockLoginModal = () => {
   return (
-    <ThemeProvider theme={themeJump}>
-      <ModalContext.Provider
-        value={{ state: { login: true, verification: false }, dispatch: () => true }}
-      >
-        <LoginModal noDismiss={false} />
-      </ModalContext.Provider>
-    </ThemeProvider>
+    <TestRouter router={{ push, asPath: '/' }}>
+      <ThemeProvider theme={themeJump}>
+        <ModalContext.Provider
+          value={{ state: { login: true, verification: false }, dispatch: () => true }}
+        >
+          <LoginModal noDismiss={false} />
+        </ModalContext.Provider>
+      </ThemeProvider>
+    </TestRouter>
   );
 };
 
@@ -80,18 +83,6 @@ describe('Login modal flow', () => {
     const button = await screen.findByRole('button', {
       name: /submit/i,
     });
-    await user.type(input, 'test@test.com');
-    await user.click(button);
-    expect(mockLoginRequest).toHaveBeenCalledTimes(1);
-  });
-
-  test('User should get too many requests error.', async () => {
-    mockLoginRequest.mockImplementation(async () => StatusCodes.TOO_MANY_REQUESTS);
-    render(<MockLoginModal />);
-    const input = await screen.findByRole('textbox', { name: /email/i });
-    const button = await screen.findByRole('button', { name: /submit/i });
-    const alert = await screen.findByRole('alert');
-    expect(alert).toHaveTextContent('');
     await user.type(input, 'test@test.com');
     await user.click(button);
     expect(mockLoginRequest).toHaveBeenCalledTimes(1);

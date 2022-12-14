@@ -73,13 +73,13 @@ describe('Portfolio Header Tabs', () => {
       shallow: undefined,
     });
     await user.click(tabLinks[1]);
-    expect(push).toHaveBeenCalledWith('/account?tab=watchlist', '/account?tab=watchlist', {
+    expect(push).toHaveBeenCalledWith('/account?tab=overview', '/account?tab=overview', {
       locale: undefined,
       scroll: undefined,
       shallow: undefined,
     });
     await user.click(tabLinks[2]);
-    expect(push).toHaveBeenCalledWith('/account?tab=transactions', '/account?tab=transactions', {
+    expect(push).toHaveBeenCalledWith('/account?tab=watchlist', '/account?tab=watchlist', {
       locale: undefined,
       scroll: undefined,
       shallow: undefined,

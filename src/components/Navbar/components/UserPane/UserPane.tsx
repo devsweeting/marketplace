@@ -74,12 +74,14 @@ export const UserPane = ({ user }: { user: IUser }) => {
 
           <Divider />
           {userPanelLinks.map(({ title, path }: { title: string; path: string }, index: number) => (
-            <Link href={path} key={`${title}-${index}`}>
-              <a style={{ textDecoration: 'none', display: 'flex' }}>
-                <MenuItem sx={{ width: '100%' }}>
-                  <Typography variant="nav">{title}</Typography>
-                </MenuItem>
-              </a>
+            <Link
+              href={path}
+              key={`${title}-${index}`}
+              style={{ textDecoration: 'none', display: 'flex' }}
+            >
+              <MenuItem sx={{ width: '100%' }}>
+                <Typography variant="nav">{title}</Typography>
+              </MenuItem>
             </Link>
           ))}
 
