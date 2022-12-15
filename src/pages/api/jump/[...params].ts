@@ -1,7 +1,6 @@
 import type { NextApiHandler } from 'next';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
-import { withSentry } from '@sentry/nextjs';
 import { processHeaders } from '@/helpers/processHeaders';
 import type { IServerApiRequest, IServerApiRequestWithBody } from '@/api/client/apiClient.server';
 
@@ -77,4 +76,4 @@ export const config = {
   },
 };
 
-export default withSentry(jumpApiProxy);
+export default jumpApiProxy;

@@ -3,7 +3,6 @@ import { getAccessExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
 import { getUserCookie, removeUserCookie, updateUserCookie } from '@/helpers/auth/userCookie';
 import type { IJwt } from '@/types/jwt';
 import type { NextServerResponse } from '@/types/next';
-import { withSentry } from '@sentry/nextjs';
 import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -47,7 +46,7 @@ export const config = {
     externalResolver: true,
   },
 };
-export default withSentry(refreshToken);
+export default refreshToken;
 
 async function refreshJwt(token: IJwt, req: NextApiRequest, res: NextServerResponse) {
   try {
