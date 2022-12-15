@@ -347,7 +347,7 @@ export const PaymentService = ({
                     }}
                   >
                     <Image
-                      layout="fill"
+                      fill
                       src={`/images/PaymentProvidersIcons/${creditCardType(values.cardNumber)}`}
                       alt="card provider"
                     />

@@ -43,11 +43,7 @@ export const TrendingMarketCard = ({
       <Card variant="outlined" active={activated === brand.brand}>
         <ImgWrapper>
           {/* TODO: Update this when data is available */}
-          <Image
-            src={'/images/No_image_available_500_x_500.svg'}
-            alt={'No Image Available'}
-            layout="fill"
-          />
+          <Image src={'/images/No_image_available_500_x_500.svg'} alt={'No Image Available'} fill />
         </ImgWrapper>
 
         <TextContainer>

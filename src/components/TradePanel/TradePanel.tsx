@@ -24,8 +24,8 @@ import {
   AssetHeaderContainer,
   FlexTextWrapper,
   TradePanelButton,
+  TradePanelLink,
 } from './TradePanel.styles';
-import Link from 'next/link';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useCart } from '@/helpers/auth/CartContext';
@@ -341,11 +341,11 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               </div>
 
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Link href={`/asset/${asset.id}`}>
+                <TradePanelLink href={`/asset/${asset.id}`}>
                   <Button variant="text" endIcon={<ArrowRightAltRounded />}>
                     Card Details
                   </Button>
-                </Link>
+                </TradePanelLink>
               </Box>
             </AssetContainer>
           </Box>

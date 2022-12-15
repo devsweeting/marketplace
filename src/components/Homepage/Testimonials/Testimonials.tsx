@@ -68,12 +68,7 @@ export const Testimonials = () => {
                     marginRight: '20px',
                   }}
                 >
-                  <Image
-                    src={testimony.image}
-                    layout={'fill'}
-                    alt={'in quia occaecati nihil'}
-                    objectFit={'contain'}
-                  />
+                  <Image src={testimony.image} fill alt={'in quia occaecati nihil'} objectFit />
                 </Box>
                 <Box>
                   <Typography variant="lg" component="h2">
