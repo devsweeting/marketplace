@@ -108,4 +108,8 @@ The UI portion of the front end talks to the Backend through endpoints located i
 
 Tests written for the UI portion of the code should mock their endpoints instead of calling the endpoints directly.
 
+##### **Important** node-fetch in client test
+
+node fetch needs to be imported in the client test because, jest is using its own version of Headers which cannot be redefined rather than just using fetch's headers.
+
 ## Suggested changes to tests

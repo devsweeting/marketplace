@@ -11,12 +11,10 @@ export const NavLink = ({ href, children }: NavLinksProps) => {
   const router = useRouter();
 
   return (
-    <Link href={href}>
-      <a style={{ textDecoration: 'none' }}>
-        <NavText variant="nav" active={href === router.asPath}>
-          {children}
-        </NavText>
-      </a>
+    <Link href={href} style={{ textDecoration: 'none' }}>
+      <NavText variant="nav" active={href === router.asPath}>
+        {children}
+      </NavText>
     </Link>
   );
 };

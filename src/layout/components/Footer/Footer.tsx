@@ -10,9 +10,9 @@ import {
   Img,
   SocialLinks,
   PageLinks,
+  FooterNavLink,
 } from './Footer.styles';
 import { Button } from '@/components/Button';
-import Link from 'next/link';
 
 export const Footer = () => {
   return (
@@ -34,21 +34,21 @@ export const Footer = () => {
       <BottomContainer>
         <Typography variant="body1">2022 JUMP. All rights reserved.</Typography>
         <PageLinks>
-          <Link href="/site-policy/refunds-returns">
+          <FooterNavLink href="/site-policy/refunds-returns">
             <Button variant="text" color="secondary">
               Refunds & Returns
             </Button>
-          </Link>
-          <Link href="/site-policy/privacy-policy">
+          </FooterNavLink>
+          <FooterNavLink href="/site-policy/privacy-policy">
             <Button variant="text" color="secondary">
               Privacy Policy
             </Button>
-          </Link>
-          <Link href="/site-policy/terms-of-service">
+          </FooterNavLink>
+          <FooterNavLink href="/site-policy/terms-of-service">
             <Button variant="text" color="secondary">
               Terms of Service
             </Button>
-          </Link>
+          </FooterNavLink>
         </PageLinks>
       </BottomContainer>
     </Container>

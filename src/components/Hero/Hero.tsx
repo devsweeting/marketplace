@@ -28,7 +28,7 @@ export const Hero: React.FC<HeroProps> = ({ imgSrc, imgFit, imgHeight, imgAlt })
         margin: '0',
       }}
     >
-      {imgSrc && <Image src={imgSrc} alt={imgAlt} layout="fill" objectFit={imgFit} />}
+      {imgSrc && <Image src={imgSrc} alt={imgAlt} fill style={{ objectFit: imgFit }} />}
     </Grid>
   );
 };

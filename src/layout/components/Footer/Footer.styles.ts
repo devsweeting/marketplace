@@ -1,4 +1,5 @@
 import { styled } from '@mui/material';
+import Link from 'next/link';
 
 export const Container = styled('div')(({ theme }) => ({
   width: '100%',
@@ -39,4 +40,9 @@ export const PageLinks = styled('div')({
   display: 'flex',
   flexWrap: 'wrap',
   gap: '1rem 1.5rem',
+});
+
+export const FooterNavLink = styled(Link)({
+  textDecoration: 'none',
+  cursor: 'pointer',
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
 import Image from 'next/image';
 import { Button } from '@/components/Button';
+import { HeroBox } from './HowItWorks.styles';
 
 export const HowItWorks = () => {
   const theme = useTheme();
@@ -63,13 +64,7 @@ export const HowItWorks = () => {
       justifyContent: 'center',
       height: '100%',
     },
-    heroBox: {
-      margin: '0 100px',
-      [theme.breakpoints.down('sm')]: {
-        margin: '0 20px',
-        padding: '30px 0',
-      },
-    },
+
     heroTitle: {
       fontWeight: 800,
       marginBottom: '.25rem',
@@ -211,7 +206,7 @@ export const HowItWorks = () => {
               height: '100%',
             }}
           >
-            <div style={classes.heroBox}>
+            <HeroBox>
               <Typography variant="xl5" sx={classes.heroTitle}>
                 1. Digitize
               </Typography>
@@ -223,7 +218,7 @@ export const HowItWorks = () => {
               <Button variant="contained" rounded>
                 Learn More
               </Button>
-            </div>
+            </HeroBox>
           </Box>
         </Grid>
         <Grid item sx={classes.rightHeroWrapper}>
@@ -238,9 +233,9 @@ export const HowItWorks = () => {
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
                 }
-                layout={'fill'}
+                fill
                 alt={'in quia occaecati nihil'}
-                objectFit={'contain'}
+                style={{ objectFit: 'contain' }}
               />
             </Box>
           </Box>
@@ -252,9 +247,9 @@ export const HowItWorks = () => {
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
                 }
-                layout={'fill'}
+                fill
                 alt={'in quia occaecati nihil'}
-                objectFit={'contain'}
+                style={{ objectFit: 'contain' }}
               />
             </Box>
           </Box>
@@ -271,7 +266,7 @@ export const HowItWorks = () => {
               backgroundColor: 'whitesmoke',
             }}
           >
-            <div style={classes.heroBox}>
+            <HeroBox>
               <Typography variant="xl5" sx={classes.heroTitle}>
                 2. Collect
               </Typography>
@@ -280,7 +275,7 @@ export const HowItWorks = () => {
                 We procure, store, and insure iconic collectibles in third-party custodial vaults at
                 no added costs.
               </Typography>
-              <div
+              <Box
                 style={{
                   justifyContent: 'flex-start',
                 }}
@@ -288,8 +283,8 @@ export const HowItWorks = () => {
                 <Button variant="contained" rounded>
                   Learn More
                 </Button>
-              </div>
-            </div>
+              </Box>
+            </HeroBox>
           </Box>
         </Grid>
         <Grid item sx={classes.rightHeroWrapper}>
@@ -302,7 +297,7 @@ export const HowItWorks = () => {
               height: '100%',
             }}
           >
-            <div style={classes.heroBox}>
+            <HeroBox>
               <Typography variant="xl5" sx={classes.heroTitle} style={{ color: 'white' }}>
                 3. Sell
               </Typography>
@@ -311,7 +306,7 @@ export const HowItWorks = () => {
                 We procure, store, and insure iconic collectibles in third-party custodial vaults at
                 no added costs.
               </Typography>
-              <div
+              <Box
                 style={{
                   justifyContent: 'flex-start',
                 }}
@@ -319,8 +314,8 @@ export const HowItWorks = () => {
                 <Button variant="contained" color="secondary" rounded>
                   Learn More
                 </Button>
-              </div>
-            </div>
+              </Box>
+            </HeroBox>
           </Box>
         </Grid>
         <Grid item sx={classes.rightHeroWrapper}>
@@ -330,9 +325,9 @@ export const HowItWorks = () => {
                 src={
                   'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
                 }
-                layout={'fill'}
+                fill
                 alt={'in quia occaecati nihil'}
-                objectFit={'contain'}
+                style={{ objectFit: 'contain' }}
               />
             </Box>
           </Box>

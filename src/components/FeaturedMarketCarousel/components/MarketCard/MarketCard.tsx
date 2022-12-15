@@ -36,7 +36,7 @@ export const MarketCard = ({
                 src={asset.media[0].absoluteUrl}
                 alt={asset.media[0].title}
                 style={{ borderRadius: '5px' }}
-                layout="fill"
+                fill
               />
             )}
           </ImgWrapper>

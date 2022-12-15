@@ -61,7 +61,7 @@ export function ImgGallery({ images }: ImgGalleryProps) {
                 placeholder="blur"
                 blurDataURL={`/_next/image?url=${img.absoluteUrl}&w=16&q=1`}
                 src={img.absoluteUrl}
-                layout="fill"
+                fill
                 alt={img.title}
               />
             </ImgWrapper>

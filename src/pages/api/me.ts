@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -17,4 +16,4 @@ export const config = {
     externalResolver: true,
   },
 };
-export default withSentry(me);
+export default me;

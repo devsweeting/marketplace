@@ -14,7 +14,7 @@ describe('useLocalStorage', () => {
 
     expect(result.current[0]).toEqual(['item3', 'item4']);
 
-    act(() => {
+    void act(() => {
       result.current[1]([...result.current[0], 'item5']);
     });
 

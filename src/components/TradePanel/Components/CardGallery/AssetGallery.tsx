@@ -27,10 +27,9 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
           blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}
           priority={true}
           src={currentImage.absoluteUrl}
-          layout={'fill'}
-          objectFit={'contain'}
+          fill
           alt={currentImage.title}
-          style={{ textAlign: 'center', lineHeight: '325px' }}
+          style={{ textAlign: 'center', lineHeight: '325px', objectFit: 'contain' }}
         />
       </Box>
       {images.length > 1 && (

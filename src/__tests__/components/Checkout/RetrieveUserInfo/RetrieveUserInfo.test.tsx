@@ -215,5 +215,5 @@ describe('Retrieve and send user info', () => {
     await user.click(button);
 
     expect(setPage).toHaveBeenCalledTimes(1);
-  });
+  }, 7000);
 });

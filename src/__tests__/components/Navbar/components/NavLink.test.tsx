@@ -27,9 +27,6 @@ const MockNavLink = () => {
 describe('NavLink', () => {
   it('should render link with properties from props', () => {
     render(<MockNavLink />);
-    expect(screen.getByRole('link', { name: mockChildren })).toHaveAttribute(
-      'href',
-      `/${mockHref}`,
-    );
+    expect(screen.getByRole('link', { name: mockChildren })).toHaveAttribute('href', `${mockHref}`);
   });
 });

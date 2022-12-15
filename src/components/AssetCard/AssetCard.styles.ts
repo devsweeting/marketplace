@@ -31,20 +31,32 @@ export const CardContainer = styled(Card, {
   }),
 }));
 
-export const ImageWrapper = styled('div')(({ theme }) => ({
-  maxWidth: '120px',
-  height: 'auto',
+export const ImageContainer = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.grey[100],
-  padding: theme.spacing(3),
+  padding: '40px',
+  overflow: 'hidden',
   [theme.breakpoints.down('md')]: {
     maxWidth: '100%',
     margin: '0 auto',
   },
 }));
 
+export const ImageWrapper = styled('div')(({ theme }) => ({
+  backgroundColor: theme.palette.grey[100],
+  position: 'relative',
+  width: '72px',
+  height: '120.5px',
+  overflow: 'hidden',
+  [theme.breakpoints.down('md')]: {
+    width: '168px',
+    height: '281.16px',
+    margin: '0 auto',
+  },
+}));
+
 export const Img = styled(Image)({
   textAlign: 'center',
-  maxWidth: '100px',
+  objectFit: 'contain',
 });
 
 export const CardDetails = styled('div')({

@@ -1,4 +1,5 @@
 import { Button, Drawer as MuiDrawer, IconButton, styled } from '@mui/material';
+import Link from 'next/link';
 
 export const Drawer = styled(MuiDrawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
@@ -56,3 +57,6 @@ export const TradePanelButton = styled(Button)(({ theme }) => ({
   border: `1px solid ${theme.palette.grey[300]}`,
   margin: '8px 0',
 }));
+export const TradePanelLink = styled(Link)({
+  textDecoration: 'none',
+});

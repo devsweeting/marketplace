@@ -21,6 +21,7 @@ import {
   SoldOutContainer,
   SoldOutText,
   Watched,
+  ImageContainer,
 } from './AssetCard.styles';
 
 export const AssetCard = ({
@@ -46,18 +47,19 @@ export const AssetCard = ({
       active={activeCardId === assetData.id}
       onClick={onClick}
     >
-      <ImageWrapper>
-        {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
-          <Img
-            placeholder="blur"
-            blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
-            src={assetData.media[0].absoluteUrl}
-            alt={assetData.media[0].title}
-            width={200}
-            height={340}
-          />
-        )}
-      </ImageWrapper>
+      <ImageContainer>
+        <ImageWrapper>
+          {assetData.media && assetData.media[0] && assetData.media[0].absoluteUrl && (
+            <Img
+              placeholder="blur"
+              blurDataURL={`/_next/image?url=${assetData.media[0].absoluteUrl}&w=16&q=1`}
+              src={assetData.media[0].absoluteUrl}
+              alt={assetData.media[0].title}
+              fill
+            />
+          )}
+        </ImageWrapper>
+      </ImageContainer>
       <CardDetails>
         <Box>
           <Title fontWeight={700}>{assetData.name}</Title>

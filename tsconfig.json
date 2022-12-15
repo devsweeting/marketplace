@@ -60,7 +60,8 @@
     "**/*.ts",
     "**/*.tsx",
     "jest.config.ts",
-    "**/*.js"
+    "**/*.js",
+    "src/__tests__/api/client.test.cts"
   ],
   "exclude": [
     "node_modules"
