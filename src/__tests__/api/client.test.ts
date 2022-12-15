@@ -10,6 +10,7 @@ import {
   MissingNextRequestError,
   ServerApiClient,
 } from '@/api/client/apiClient.server';
+import { Headers } from 'node-fetch';
 
 jest.mock('@/helpers/auth/userCookie');
 jest.mock('@/helpers/logger');
