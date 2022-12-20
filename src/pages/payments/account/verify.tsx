@@ -2,10 +2,8 @@ import { getTerms, verifyAddress } from '@/api/endpoints/payments';
 import { Button } from '@/components/Button';
 import { Form } from '@/components/Form/Form';
 import { verificationFields } from '@/components/Payments/VerificationForm/verification.fields';
-import {
-  verificationSchema,
-  VerificationValues,
-} from '@/components/Payments/VerificationForm/verification.schema';
+import { verificationSchema } from '@/components/Payments/VerificationForm/verification.schema';
+import type { VerificationValues } from '@/components/Payments/VerificationForm/verification.schema';
 import { formatErrorResponse } from '@/helpers/formatErrorResponse';
 import { Box, styled } from '@mui/material';
 import type { FormikHelpers } from 'formik';
@@ -101,8 +99,6 @@ export async function getServerSideProps() {
   // };
 
   const terms = await getTerms();
-
-  console.log('terms', terms);
 
   if (!terms)
     return {
