@@ -3,7 +3,7 @@
  */
 import { StatusCodes } from 'http-status-codes';
 import { getUserCookie } from '@/helpers/auth/userCookie';
-import type { NextServerRequest } from '@/types/next';
+import type { NextServerRequest } from '@/types';
 import { logger } from '@/helpers/logger';
 import {
   AuthenticatedServerRequestError,

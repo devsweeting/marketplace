@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
 import { purchaseSellOrder } from '@/api/endpoints/sellorders';
 import { StatusCodes } from 'http-status-codes';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { useRouter } from 'next/router';

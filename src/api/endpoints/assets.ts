@@ -1,4 +1,4 @@
-import type { IAsset, IMeta, IMarket } from 'src/types';
+import type { IAsset, IMarket, PaginatedAsset } from '@/types';
 import { apiClient } from '@/api/client';
 
 export const loadListAssetByPage = async ({

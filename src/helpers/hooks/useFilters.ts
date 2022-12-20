@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
-import type { IFilter, RangeFilters } from 'src/types';
+import type { IFilter, RangeFilters } from '@/types';
 
 const getAttrFromKey = (key: string): string | undefined => {
   return key.split('[')?.[1]?.replace(']', '');

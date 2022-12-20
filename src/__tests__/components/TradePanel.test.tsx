@@ -8,9 +8,7 @@ import {
   mockAssetResponse,
   mockAssetSoldOut,
 } from '@/__mocks__/mockAssetResponse';
-import type { IAsset } from '@/types/assetTypes';
-import type { IUser } from '@/types/user';
-import user from '@testing-library/user-event';
+import type { IAsset, IUser } from '@/types';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';

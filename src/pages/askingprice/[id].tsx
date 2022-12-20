@@ -1,6 +1,6 @@
 import { getAssetById } from '@/api/endpoints/assets';
 import { AskingPriceComponent } from '@/components/AskingPriceComponent/AskingPriceComponent';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 
 const AskingPage = ({ initialAsset, id }: { initialAsset: IAsset; id: string }) => {

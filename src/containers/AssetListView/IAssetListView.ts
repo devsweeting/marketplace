@@ -1,4 +1,4 @@
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 
 export interface IAssetListView {
   assets: IAsset[];

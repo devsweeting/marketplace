@@ -3,7 +3,7 @@ import { unwrapString } from '@/helpers/unwrapString';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
 import { apiClient } from '@/api/client';
-import type { IJwt } from '@/types/jwt';
+import type { IJwt } from '@/types';
 
 export const loginConfirm = async ({
   req,

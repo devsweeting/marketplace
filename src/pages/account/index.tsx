@@ -1,9 +1,9 @@
 import { OpenGraph } from '@/components/OpenGraph';
 import { Loader } from '@/components/Loader';
 import type { NextPage } from 'next/types';
-import { getPortfolioAssets, getPortfolioWatchlistAssets } from '@/api/endpoints/portfolio';
+import { getPortfolioAssets } from '@/api/endpoints/portfolio';
 import React, { useEffect, useState } from 'react';
-import type { IAsset, IPortfolioData } from '@/types/assetTypes';
+import type { IAsset, IPortfolioData } from '@/types';
 import { PortfolioAssetList } from '@/components/PortfolioPage/PortfolioAssetList';
 import { Box, Button, Grid, Typography, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';

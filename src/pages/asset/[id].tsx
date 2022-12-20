@@ -1,4 +1,4 @@
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import type { ParsedUrlQuery } from 'querystring';
 import { useUser } from '@/helpers/hooks/useUser';
 import { calcTimeDifference } from '@/helpers/time';

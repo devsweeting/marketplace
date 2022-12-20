@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material';
 import type { IAssetGallery } from './IAssetGallery';
 import Image from 'next/image';
-import type { IMedia } from '@/types/assetTypes';
+import type { IMedia } from '@/types';
 import { useEffect, useState } from 'react';
 
 export const AssetGallery = ({ images }: IAssetGallery) => {

@@ -1,4 +1,4 @@
-import type { IMedia } from '@/types/assetTypes';
+import type { IMedia } from '@/types';
 import { KeyboardArrowLeftRounded, KeyboardArrowRightRounded } from '@mui/icons-material';
 import { useState } from 'react';
 import type { CSSProperties } from 'react';

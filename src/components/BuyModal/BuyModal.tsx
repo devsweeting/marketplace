@@ -2,7 +2,7 @@ import { purchaseSellOrder } from '@/api/endpoints/sellorders';
 import { Button } from '@/components/Button';
 import { TabPanel } from '@/components/TabPanel';
 import { useUser } from '@/helpers/hooks/useUser';
-import type { ISellOrder } from '@/types/assetTypes';
+import type { ISellOrder } from '@/types';
 import { Box, Typography } from '@mui/material';
 import { StatusCodes } from 'http-status-codes';
 import React, { useEffect, useState } from 'react';

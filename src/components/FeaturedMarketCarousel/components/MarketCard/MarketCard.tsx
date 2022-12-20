@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { Attributes } from '@/components/Attributes';
 import { Card, ImgContainer, ImgWrapper, TextContainer } from './MarketCard.styles';
 

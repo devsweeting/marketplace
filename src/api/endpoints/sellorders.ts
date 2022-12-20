@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/client';
-import type { IPurchaseInfo, IUserBuyLimit } from '@/types/assetTypes';
+import type { PurchaseInfo, UserBuyLimit } from '@/types';
 
 export const purchaseSellOrder = async (
   id: string,

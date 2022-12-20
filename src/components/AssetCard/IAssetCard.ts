@@ -1,4 +1,4 @@
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import type { MouseEvent } from 'react';
 
 export interface IAssetCard {

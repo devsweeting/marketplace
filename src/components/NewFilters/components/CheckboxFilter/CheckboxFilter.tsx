@@ -1,5 +1,5 @@
 import { Box, Checkbox, FormControl, FormControlLabel, FormGroup, Typography } from '@mui/material';
-import type { IFilter } from '@/types/assetTypes';
+import type { IFilter } from '@/types';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Popover from '@mui/material/Popover';

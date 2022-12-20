@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/client';
-import type { IMeta, WatchlistAsset } from '@/types/assetTypes';
+import type { PaginatedWatchlist, WatchlistResponse } from '@/types';
 import { StatusCodes } from 'http-status-codes';
 
 type PaginatedResponse<T> = {

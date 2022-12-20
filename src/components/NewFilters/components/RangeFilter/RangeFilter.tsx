@@ -2,7 +2,7 @@ import { TextField, Typography } from '@mui/material';
 import Popover from '@mui/material/Popover';
 import { Button } from '@/components/Button';
 import React, { useState, useEffect } from 'react';
-import type { DisabledRanges, DisabledRangesKey, RangeFilters } from '@/types/assetTypes';
+import type { DisabledRanges, DisabledRangesKey, RangeFilters } from '@/types';
 import { useRouter } from 'next/router';
 import { FilterButton, FilterContainer } from './RangeFilter.styles';
 

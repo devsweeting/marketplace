@@ -2,7 +2,7 @@ import { apiClient } from '@/api/client';
 import { setUserCookie } from '@/helpers/auth/userCookie';
 import { getIpAddress } from '@/helpers/getIpAddress';
 import { parseLocale } from '@/helpers/parseLocale';
-import type { IJwt } from '@/types/jwt';
+import type { IJwt } from '@/types';
 import { withSentry } from '@sentry/nextjs';
 import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';

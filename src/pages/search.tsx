@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import type { IMeta, IAsset } from 'src/types';
+import type { IAsset } from '@/types';
 import { Box, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';

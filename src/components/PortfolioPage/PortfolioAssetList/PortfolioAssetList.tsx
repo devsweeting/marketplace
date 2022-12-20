@@ -1,7 +1,7 @@
 import { Grid, Skeleton } from '@mui/material';
 import React from 'react';
 import { PortfolioAssetCard } from '../PortfolioAssetCard';
-import type { IAsset, IPortfolioAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { Container } from './PortfolioAssetList.styles';
 
 export const PortfolioAssetList = ({
@@ -9,7 +9,7 @@ export const PortfolioAssetList = ({
   handleDrawer,
   closeDrawer,
 }: {
-  portfolioAssetsList: (IPortfolioAsset | undefined)[];
+  portfolioAssetsList: (IAsset | undefined)[];
   handleDrawer: (asset: IAsset) => void;
   closeDrawer: () => void;
 }) => {

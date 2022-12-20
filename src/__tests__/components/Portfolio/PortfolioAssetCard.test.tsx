@@ -6,11 +6,10 @@ import { themeJump } from '@/styles/themeJump';
 import { StatusCodes } from 'http-status-codes';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
-import type { IUser } from '@/types/user';
+import type { IAsset, IUser } from '@/types';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
 import { TestRouter } from '../../utils/TestRouter';
 import user from '@testing-library/user-event';
-import type { IPortfolioAsset } from '@/types/assetTypes';
 
 jest.mock('@/api/client');
 const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;

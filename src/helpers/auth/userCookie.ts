@@ -1,8 +1,7 @@
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { USER_TOKEN_COOKIE } from '@/helpers/constants';
 import { decrypt, encrypt } from '@/helpers/crypto';
-import type { NextServerRequest, NextServerResponse } from '@/types/next';
-import type { IJwt } from '@/types/jwt';
+import type { IJwt, NextServerRequest, NextServerResponse } from '@/types';
 import type { NextApiRequest } from 'next';
 import { getExpFromRefreshToken } from './getExpFrom';
 

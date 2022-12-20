@@ -1,4 +1,4 @@
-import type { DisabledRanges, DisabledRangesKey, IFilter, RangeFilters } from '@/types/assetTypes';
+import type { DisabledRanges, DisabledRangesKey, IFilter, RangeFilters } from '@/types';
 import React from 'react';
 import { CheckboxFilter } from './components/CheckboxFilter';
 import { RangeFilter } from './components/RangeFilter';

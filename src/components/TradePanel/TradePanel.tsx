@@ -1,6 +1,6 @@
 import { Box, DialogContent, Divider, LinearProgress, Slider, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import type { ISellOrder } from '@/types/assetTypes';
+import type { ISellOrder } from '@/types';
 import type { ITradePanel } from './ITradePanel';
 import { useEffect, useState } from 'react';
 import { BuyModal } from '../BuyModal/BuyModal';

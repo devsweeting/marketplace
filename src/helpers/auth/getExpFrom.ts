@@ -1,7 +1,6 @@
 import jwtDecode from 'jwt-decode';
-import type { NextServerRequest } from '@/types/next';
+import type { IJwt, NextServerRequest } from '@/types';
 import { getUserCookie } from '@/helpers/auth/userCookie';
-import type { IJwt } from '@/types/jwt';
 import { safeParseInt } from '../safeParseInt';
 
 /**

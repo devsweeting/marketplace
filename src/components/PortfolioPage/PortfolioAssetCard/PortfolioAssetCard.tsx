@@ -1,7 +1,7 @@
 import { formatNumber } from '@/helpers/formatNumber';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { removeFromWatchlist } from '@/api/endpoints/watchlist';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { CardActionArea, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Star as MuiStar } from '@mui/icons-material';

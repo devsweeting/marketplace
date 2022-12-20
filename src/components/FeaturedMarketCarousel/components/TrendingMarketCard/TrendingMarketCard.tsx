@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
-import type { IMarket } from '@/types/assetTypes';
+import type { IMarket } from '@/types';
 import { formatNumber } from '@/helpers/formatNumber';
 import { useRouter } from 'next/router';
 import { Card, ImgWrapper, TextContainer } from './TrendingMarketCard.styles';

@@ -4,7 +4,7 @@ import { themeJump } from '@/styles/themeJump';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';
 import user from '@testing-library/user-event';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { setLocalStorage } from '@/helpers/mockLocalStorage';
 import { Cart } from '@/components/Checkout/Cart';
 

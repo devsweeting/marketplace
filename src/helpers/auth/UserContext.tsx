@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState, useMemo } from 'react';
 import type { Dispatch, SetStateAction, ReactNode } from 'react';
-import type { IUser } from '@/types/user';
+import type { IUser } from '@/types';
 import AwaitLock from 'await-lock';
 
 export interface IUserContext {
