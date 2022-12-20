@@ -2,7 +2,6 @@ import { ServerApiClient } from '@/api/client/apiClient.server';
 import { getAccessExpFromJwtAsDate } from '@/helpers/auth/getExpFrom';
 import { getUserCookie, removeUserCookie, updateUserCookie } from '@/helpers/auth/userCookie';
 import type { IJwt, NextServerResponse } from '@/types';
-import { withSentry } from '@sentry/nextjs';
 import { StatusCodes } from 'http-status-codes';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
