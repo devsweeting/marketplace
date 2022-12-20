@@ -8,9 +8,7 @@ import {
   mockAssetResponse,
   mockAssetSoldOut,
 } from '@/__mocks__/mockAssetResponse';
-import type { IAsset } from '@/types/assetTypes';
-import type { IUser } from '@/types/user';
-import user from '@testing-library/user-event';
+import type { IAsset, IUser } from '@/types';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';
@@ -226,31 +224,6 @@ describe('TradePanel', () => {
     expect(buyBtn).not.toContain(`+ 0 units`);
   });
 
-  test('should allow user to buy share', async () => {
-    render(<MockTradePanelWithUser asset={data} user={mockUser} />);
-    const slider = await screen.findByRole('slider');
-    const buyBtn = await screen.findByRole('button', { name: /buy/i });
-    expect(buyBtn).toBeDisabled;
-    // mock the getBoundingClientRect
-    slider.getBoundingClientRect = jest.fn(() => {
-      return {
-        bottom: 286.22918701171875,
-        height: 28,
-        left: 19.572917938232422,
-        right: 583.0937919616699,
-        top: 258.22918701171875,
-        width: 563.5208740234375,
-        x: 19.572917938232422,
-        y: 258.22918701171875,
-      };
-    }) as unknown as () => DOMRect;
-    await fireEvent.mouseDown(slider, { clientX: 162, clientY: 302 });
-    expect(buyBtn).not.toBeDisabled();
-    await user.click(buyBtn);
-
-    const closeBtn = await screen.findByRole('button', { name: /close/i });
-    await user.click(closeBtn);
-  });
   test('should reset if the card data changes', async () => {
     const { rerender } = render(<MockTradePanel asset={data} />);
     const slider = await screen.findByRole('slider');

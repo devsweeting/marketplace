@@ -1,31 +1,23 @@
 import { apiClient } from '@/api/client';
-import type { IMeta, WatchlistAsset } from '@/types/assetTypes';
+import type { PaginatedWatchlist, WatchlistResponse } from '@/types';
 import { StatusCodes } from 'http-status-codes';
-
-type PaginatedResponse<T> = {
-  meta: IMeta;
-  items: T[];
-};
+import { paginatedWatchlist } from '@/schemas/watchlist.schemas';
 
 export const getWatchlist = async (
   signal?: AbortSignal,
-): Promise<PaginatedResponse<WatchlistAsset> | undefined> => {
+): Promise<PaginatedWatchlist | undefined> => {
   try {
     const res = await apiClient.get(`/watchlist/`, { signal });
 
     if (!res.ok || !res.isJson) return;
 
-    return res.data as PaginatedResponse<WatchlistAsset>;
+    return paginatedWatchlist.parse(res.data);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e);
     return;
   }
 };
-export interface IWatchList {
-  name: string;
-  id: string;
-}
 
 export const inWatchlist = async (id: string, signal?: AbortSignal): Promise<boolean> => {
   try {
@@ -36,32 +28,23 @@ export const inWatchlist = async (id: string, signal?: AbortSignal): Promise<boo
   }
 };
 
-interface IWatchlistResponse {
-  isSuccessful: boolean;
-}
-
 export const addToWatchlist = async (
   id: string,
   signal?: AbortSignal,
-): Promise<IWatchlistResponse> => {
+): Promise<WatchlistResponse> => {
   const { status } = await apiClient.post(`/watchlist/`, {
     body: { assetId: id },
     signal,
   });
 
-  const isAdded = hasBeenAddedWatchlist(status);
-  return { isSuccessful: isAdded };
+  return { isSuccessful: status === StatusCodes.CREATED || status === StatusCodes.CONFLICT };
 };
 
-const hasBeenAddedWatchlist = (status: StatusCodes): boolean => {
-  return status == StatusCodes.CREATED || status == StatusCodes.CONFLICT;
-};
-
-export const removeFromWatchlist = async (id: string): Promise<IWatchlistResponse> => {
+export const removeFromWatchlist = async (id: string): Promise<WatchlistResponse> => {
   try {
     const { status } = await apiClient.delete(`/watchlist/${id}`);
 
-    return status === StatusCodes.OK ? { isSuccessful: true } : { isSuccessful: false };
+    return { isSuccessful: status === StatusCodes.OK };
   } catch (error) {
     return { isSuccessful: false };
   }

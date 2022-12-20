@@ -29,6 +29,7 @@ const config: Config.InitialOptions = {
     '^@/api/(.*)$': '<rootDir>/src/api/$1',
     '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
     '^@/containers/(.*)$': '<rootDir>/src/containers/$1',
+    '^@/schemas/(.*)$': '<rootDir>/src/schemas/$1',
 
     // Handle CSS imports (with CSS modules)
     // https://jestjs.io/docs/webpack#mocking-css-modules

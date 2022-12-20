@@ -43,7 +43,8 @@
     "swr": "^2.0.0",
     "ts-node": "^10.9.1",
     "uuidv4": "^6.2.13",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@sentry/webpack-plugin": "^1.19.0",

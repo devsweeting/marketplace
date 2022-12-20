@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { userPanelLinks } from '@/domain/userPaneLink';
-import type { IUser } from '@/types/user';
+import type { IUser } from '@/types';
 
 export const UserPane = ({ user }: { user: IUser }) => {
   const theme = useTheme();

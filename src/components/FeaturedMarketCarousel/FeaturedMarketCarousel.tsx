@@ -4,7 +4,7 @@ import { Loader } from '../Loader';
 import { MarketCard } from './components/MarketCard';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import type { IAsset, IMarket } from '@/types/assetTypes';
+import type { IAsset, IMarket } from '@/types';
 import { TrendingMarketCard } from './components/TrendingMarketCard';
 
 import { Container, Slider, TopContainer, ButtonContainer } from './FeaturedMarketCarousel.styles';

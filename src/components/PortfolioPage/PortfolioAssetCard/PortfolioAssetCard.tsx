@@ -1,7 +1,7 @@
 import { formatNumber } from '@/helpers/formatNumber';
 import { parseAssetAttributes } from '@/helpers/parseAssetAttributes';
 import { removeFromWatchlist } from '@/api/endpoints/watchlist';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { CardActionArea, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Star as MuiStar } from '@mui/icons-material';
@@ -36,9 +36,7 @@ export const PortfolioAssetCard = ({
 }) => {
   const router = useRouter();
   const details = parseAssetAttributes(assetData.attributes);
-  const fractionPriceCents = assetData?.sellOrders
-    ? assetData.sellOrders[0].fractionPriceCents ?? 0
-    : 0;
+  const fractionPriceCents = assetData?.sellOrders[0]?.fractionPriceCents ?? 0;
   const quantityOwned = assetData?.userAsset?.quantityOwned ?? 0;
 
   const handleKeyDownOnCard = (event: React.KeyboardEvent<HTMLDivElement>) => {

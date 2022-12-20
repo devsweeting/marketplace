@@ -1,4 +1,4 @@
-import type { NextServerRequest } from '@/types/next';
+import type { NextServerRequest } from '@/types';
 import { StatusCodes } from 'http-status-codes';
 import * as Sentry from '@sentry/nextjs';
 import { processHeaders } from '@/helpers/processHeaders';

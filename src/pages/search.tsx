@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import type { IMeta, IAsset } from 'src/types';
+import type { IAsset } from '@/types';
 import { Box, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useCallback, useEffect, useState } from 'react';
@@ -26,10 +26,8 @@ const SearchPage: NextPage = () => {
   const user = useUser();
   const { openCart } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  // const [assets, setAssets] = useState<IAsset[]>([]);
   const searchQuery = query.q;
   const search = searchQuery ? searchQuery.toString().replace(/ /g, '+') : '';
-  // const [currentMeta, setCurrentMeta] = useState<IMeta>();
   const [isOpen, setIsOpen] = useState(false);
   const [tradePanelData, setTradePanelData] = useState<IAsset | undefined>();
   const { checkedFilters, rangeFilters, sortByOrder } = useFilters();
@@ -57,7 +55,7 @@ const SearchPage: NextPage = () => {
         });
 
         if (queryString) {
-          const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+          const { meta, items } = await loadListAssetByPage({
             queryString,
             signal,
           });

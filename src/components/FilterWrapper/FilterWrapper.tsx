@@ -11,7 +11,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@mui/material';
-import type { DisabledRanges, DisabledRangesKey, IFilter } from '@/types/assetTypes';
+import type { DisabledRanges, DisabledRangesKey, IFilter } from '@/types';
 import { NewFilters } from '@/components/NewFilters/NewFilters';
 import { ClearAllFilter } from '@/components/NewFilters/components/ClearAllFilter';
 import { SortMenu } from '@/components/NewFilters/components/SortMenu';

@@ -6,7 +6,7 @@ import { ThemeProvider } from '@mui/styles';
 import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { StatusCodes } from 'http-status-codes';
-import type { IUser } from '@/types/user';
+import type { IUser } from '@/types';
 import { apiClient } from '@/api/client';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';

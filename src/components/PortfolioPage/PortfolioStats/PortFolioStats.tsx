@@ -1,7 +1,7 @@
 import { formatNumber } from '@/helpers/formatNumber';
 import { Box, useTheme, Skeleton } from '@mui/material';
 import React from 'react';
-import type { IPortfolioData } from '@/types/assetTypes';
+import type { IPortfolioData } from '@/types';
 import { GridContainer, StatTitle, StatValue } from './PortfolioStats.styles';
 
 export const PortfolioStats = ({ portfolio }: { portfolio?: IPortfolioData }) => {

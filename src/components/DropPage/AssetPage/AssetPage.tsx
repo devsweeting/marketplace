@@ -23,7 +23,7 @@ const CountdownTimer = dynamic<CountdownProps>(
 );
 import { BuyModal } from '@/components/BuyModal';
 
-import type { IAsset, ISellOrder } from '@/types/assetTypes';
+import type { IAsset, ISellOrder } from '@/types';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, LinearProgress, Slider, Typography } from '@mui/material';
 import Link from 'next/link';

@@ -4,7 +4,7 @@ import { themeJump } from '@/styles/themeJump';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';
 import user from '@testing-library/user-event';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { setLocalStorage } from '@/helpers/mockLocalStorage';
 import { Cart } from '@/components/Checkout/Cart';
 
@@ -109,7 +109,7 @@ const MockCart = ({ orderSummary, setPage }: { orderSummary: IAsset; setPage: ()
   <ThemeProvider theme={themeJump}>
     <UserContext.Provider value={{ user: mockUser, refreshUser: jest.fn(), logout: jest.fn() }}>
       <CartProvider>
-        <Cart orderSummary={orderSummary} page={0} setPage={setPage} />
+        <Cart orderSummary={orderSummary} setPage={setPage} />
       </CartProvider>
     </UserContext.Provider>
   </ThemeProvider>

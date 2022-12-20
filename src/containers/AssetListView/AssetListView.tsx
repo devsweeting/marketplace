@@ -2,7 +2,7 @@ import { AssetCard } from '@/components/AssetCard';
 import type { IAssetListView } from './IAssetListView';
 import { Container } from './AssetListView.styles';
 import type { MouseEvent } from 'react';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { addToWatchlist, getWatchlist, removeFromWatchlist } from '@/api/endpoints/watchlist';
 import { useUser } from '@/helpers/hooks/useUser';
 import { useLocalWatchlist } from '@/helpers/hooks/useLocalWatchlist';

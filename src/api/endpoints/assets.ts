@@ -1,4 +1,10 @@
-import type { IAsset, IMeta, IMarket } from 'src/types';
+import {
+  assetResponse,
+  assetSchema,
+  paginatedAssetSchema,
+  trendingMarketsSchema,
+} from '@/schemas/asset.schemas';
+import type { IAsset, IMarket, PaginatedAsset } from '@/types';
 import { apiClient } from '@/api/client';
 
 export const loadListAssetByPage = async ({
@@ -7,16 +13,18 @@ export const loadListAssetByPage = async ({
 }: {
   queryString: string;
   signal?: AbortSignal;
-}): Promise<{ items: IAsset[]; meta: IMeta }> => {
+}): Promise<PaginatedAsset> => {
   try {
     const res = await apiClient.get(`/assets?${queryString}`, { requireAuth: false, signal });
+
     if (res.status !== 200 || !res.data) {
       return {
         meta: { currentPage: 1, itemCount: 0, itemsPerPage: 0, totalItems: 0, totalPages: 1 },
         items: [],
       };
     }
-    return res.data as unknown as Promise<{ items: IAsset[]; meta: IMeta }>;
+
+    return paginatedAssetSchema.parse(res.data);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -33,6 +41,7 @@ interface LatestDropParams {
   limit?: number;
   signal?: AbortSignal;
 }
+
 export const latestDropAssets = async ({
   page,
   limit = 12,
@@ -42,12 +51,14 @@ export const latestDropAssets = async ({
 
   try {
     const res = await apiClient.get(`/assets?${query}`, { requireAuth: false, signal });
+
     if (res.status !== 200 || !res.data) {
       return {
         items: [],
       };
     }
-    return res.data as unknown as Promise<{ items: IAsset[] }>;
+
+    return assetResponse.parse(res.data);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -67,7 +78,8 @@ export const trendingMarkets = async (signal?: AbortSignal): Promise<{ markets: 
         markets: [],
       };
     }
-    return res.data as unknown as Promise<{ markets: IMarket[] }>;
+
+    return trendingMarketsSchema.parse(res.data);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
@@ -78,15 +90,20 @@ export const trendingMarkets = async (signal?: AbortSignal): Promise<{ markets: 
   }
 };
 
-export const getAssetById = async (id: string, signal?: AbortSignal): Promise<IAsset> => {
+export const getAssetById = async (
+  id: string,
+  signal?: AbortSignal,
+): Promise<IAsset | undefined> => {
   try {
     const res = await apiClient.get(`/assets/${id}`, { requireAuth: false, signal });
 
-    return res.data as unknown as IAsset;
+    if (!res || !res.ok) return;
+
+    return assetSchema.parse(res.data);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
 
-    throw err;
+    return;
   }
 };

@@ -1,6 +1,6 @@
 import { Box, DialogContent, Divider, LinearProgress, Slider, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
-import type { ISellOrder } from '@/types/assetTypes';
+import type { ISellOrder } from '@/types';
 import type { ITradePanel } from './ITradePanel';
 import { useEffect, useState } from 'react';
 import { BuyModal } from '../BuyModal/BuyModal';
@@ -151,16 +151,11 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
       return userBuyLimit;
     }
 
-    const { fractionsAvailableToPurchase } = await getNumSellordersUserCanBuy(
-      sellOrderData.id,
-      signal,
-    );
+    const units = await getNumSellordersUserCanBuy(sellOrderData.id, signal);
 
-    if (fractionsAvailableToPurchase) {
-      userBuyLimit = fractionsAvailableToPurchase || 0;
-    }
+    if (!units) return;
 
-    return userBuyLimit;
+    return units.fractionsAvailableToPurchase ?? 0;
   };
 
   const [buyLimit = 1] = useEndpoint(

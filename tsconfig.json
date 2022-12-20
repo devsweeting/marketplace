@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,39 +16,19 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/styles/*": [
-        "styles/*"
-      ],
-      "@/__mocks__/*": [
-        "src/__mocks__/*"
-      ],
-      "@/__tests__/*": [
-        "src/__tests__/*"
-      ],
-      "@/domain/*": [
-        "src/domain/*"
-      ],
-      "@/helpers/*": [
-        "src/helpers/*"
-      ],
-      "@/layout/*": [
-        "src/layout/*"
-      ],
-      "@/api/*": [
-        "src/api/*"
-      ],
-      "@/pages/*": [
-        "src/pages/*"
-      ],
-      "@/containers/*": [
-        "src/containers/*"
-      ],
-      "@/types/*": [
-        "src/types/*"
-      ]
+      "@/components/*": ["src/components/*"],
+      "@/styles/*": ["styles/*"],
+      "@/__mocks__/*": ["src/__mocks__/*"],
+      "@/__tests__/*": ["src/__tests__/*"],
+      "@/domain/*": ["src/domain/*"],
+      "@/helpers/*": ["src/helpers/*"],
+      "@/layout/*": ["src/layout/*"],
+      "@/api/*": ["src/api/*"],
+      "@/pages/*": ["src/pages/*"],
+      "@/containers/*": ["src/containers/*"],
+      "@/schemas/*": ["src/schemas/*"],
+      "@/types/*": ["src/types/*"],
+      "@/types": ["src/types"]
     }
   },
   "include": [
@@ -63,7 +39,5 @@
     "**/*.js",
     "src/__tests__/api/client.test.cts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

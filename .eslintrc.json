@@ -10,13 +10,7 @@
     "project": "./tsconfig.json",
     "sourceType": "module"
   },
-  "plugins": [
-    "import",
-    "@typescript-eslint",
-    "react-hooks",
-    "prettier",
-    "testing-library"
-  ],
+  "plugins": ["import", "@typescript-eslint", "react-hooks", "prettier", "testing-library"],
   "extends": [
     "eslint:recommended",
     "plugin:import/errors",
@@ -67,10 +61,7 @@
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [
-        ".ts",
-        ".tsx"
-      ]
+      "@typescript-eslint/parser": [".*.ts", ".ts", ".tsx"]
     },
     "import/resolver": {
       "typescript": {

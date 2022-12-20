@@ -1,5 +1,6 @@
 import { apiClient } from '@/api/client';
-import type { IPurchaseInfo, IUserBuyLimit } from '@/types/assetTypes';
+import type { PurchaseInfo, UserBuyLimit } from '@/types';
+import { purchaseInfoSchema, userBuyLimitSchema } from '@/schemas/sellorder.schemas';
 
 export const purchaseSellOrder = async (
   id: string,
@@ -9,11 +10,7 @@ export const purchaseSellOrder = async (
   const response = await apiClient.post(`/sellorders/${id}/purchase`, {
     body: { fractionsToPurchase, fractionPriceCents },
   });
-  return response;
-};
 
-export const getSellOrderById = async (id: string) => {
-  const response = await apiClient.get(`/sellorders/${id}`, { requireAuth: false });
   return response;
 };
 
@@ -25,34 +22,38 @@ export const getSellOrderById = async (id: string) => {
 export const getNumSellordersUserCanBuy = async (
   id: string | undefined,
   signal?: AbortSignal,
-): Promise<IUserBuyLimit> => {
+): Promise<UserBuyLimit | undefined> => {
   try {
     const res = await apiClient.get(`/sellorders/${id}/check`, { signal });
 
-    return res.data as unknown as IUserBuyLimit;
+    if (!res) return;
+
+    return userBuyLimitSchema.parse(res.data);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e);
 
-    throw e;
+    return;
   }
 };
 
 export const getPurchaseById = async (
   id: string,
   signal?: AbortSignal,
-): Promise<IPurchaseInfo[]> => {
+): Promise<PurchaseInfo | undefined> => {
   try {
     const res = await apiClient.get(`/sellorders/purchase-history?assetId=${id}`, {
       requireAuth: true,
       signal,
     });
 
-    return res.data as unknown as IPurchaseInfo[];
+    if (!res) return;
+
+    return purchaseInfoSchema.parse(res.data);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.log(err);
 
-    throw err;
+    return;
   }
 };

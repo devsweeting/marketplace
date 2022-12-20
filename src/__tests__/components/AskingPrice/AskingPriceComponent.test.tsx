@@ -3,10 +3,9 @@ import { ThemeProvider } from '@mui/material';
 import { themeJump } from '@/styles/themeJump';
 import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';
-import type { IUser } from '@/types/user';
+import type { IAsset, IUser } from '@/types';
 import { TestRouter } from '../../utils/TestRouter';
 import user from '@testing-library/user-event';
-import type { IAsset } from '@/types/assetTypes';
 import { AskingPriceComponent } from '@/components/AskingPriceComponent/AskingPriceComponent';
 import { getPurchaseById } from '@/api/endpoints/sellorders';
 

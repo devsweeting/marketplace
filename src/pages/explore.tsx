@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { OpenGraph } from '@/components/OpenGraph';
 import type { NextPage } from 'next';
-import type { IAsset, IMeta, IMarket } from 'src/types';
+import type { IAsset, IMarket } from '@/types';
 import { Box, Grid, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useEffect, useState, useCallback } from 'react';
@@ -71,7 +71,7 @@ const ExplorePage: NextPage = () => {
         });
 
         if (queryString) {
-          const { meta, items }: { meta: IMeta; items: IAsset[] } = await loadListAssetByPage({
+          const { meta, items } = await loadListAssetByPage({
             queryString,
             signal,
           });

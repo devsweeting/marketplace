@@ -34,7 +34,7 @@ import {
   PriceOutlinedInput,
 } from './AskingPriceComponent.styles';
 import { getPurchaseById } from '@/api/endpoints/sellorders';
-import type { IAsset } from '@/types/assetTypes';
+import type { IAsset } from '@/types';
 import { formatNumber } from '@/helpers/formatNumber';
 import { Attributes } from '../Attributes';
 import { safeParseFloat } from '@/helpers/safeParseInt';

@@ -1,4 +1,4 @@
-import type { IAttribute } from '@/types/assetTypes';
+import type { IAttribute } from '@/types';
 import { Container, Attribute } from './Attributes.styles';
 
 interface AttributesProps {
