@@ -90,6 +90,9 @@ const theme = createTheme({
     success: {
       main: '#0BDA51',
     },
+    error: {
+      main: '#ff0000',
+    },
   },
   shape: {
     borderRadius: 8,

@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@mui/material';
 import { themeJump } from '@/styles/themeJump';
-import { VerificationForm } from '@/components/Verification/Form';
+import { UserForm } from '@/components/Payments/Account';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -11,7 +11,7 @@ const submit = jest.fn();
 const MockVerificationForm = () => {
   return (
     <ThemeProvider theme={themeJump}>
-      <VerificationForm submit={submit} />
+      <UserForm submit={submit} />
     </ThemeProvider>
   );
 };
@@ -28,10 +28,9 @@ describe('VerificationForm', () => {
     expect(getByLabelText(/Month/i)).toBeInTheDocument();
     expect(getByLabelText(/Year/i)).toBeInTheDocument();
     expect(getByLabelText(/Gender/i)).toBeInTheDocument();
-    expect(getByLabelText(/Street/i)).toBeInTheDocument();
-    expect(getByLabelText(/City/i)).toBeInTheDocument();
-    expect(getByLabelText(/Subdivision/i)).toBeInTheDocument();
-    expect(getByLabelText(/Postal Code/i)).toBeInTheDocument();
+    expect(
+      getByLabelText(/I agree to Jump's Terms of Service and Privacy Policy/),
+    ).toBeInTheDocument();
   });
 
   it('should contain submit button', () => {
@@ -58,11 +57,9 @@ describe('VerificationForm', () => {
     await user.type(screen.getByLabelText(/Year/i), '2022');
     await user.click(screen.getByLabelText(/Gender/i));
     await user.click(within(screen.getByRole('listbox')).getByText('Male'));
-    await user.type(screen.getByLabelText(/Street/i), '1 Market St.');
-    await user.type(screen.getByLabelText(/City/i), 'Santa Fe');
-    await user.click(screen.getByLabelText(/Subdivision/i));
-    await user.click(within(screen.getByRole('listbox')).getByText('California'));
-    await user.type(screen.getByLabelText(/Postal Code/i), '94105');
+    await user.click(
+      screen.getByLabelText(/I agree to Jump's Terms of Service and Privacy Policy/),
+    );
 
     await user.click(button);
 
@@ -79,13 +76,7 @@ describe('VerificationForm', () => {
             year: '2022',
           },
           gender: 'M',
-          mailing_address: {
-            address_street: '1 Market St.',
-            address_city: 'Santa Fe',
-            address_subdivision: 'CA',
-            address_postal_code: '94105',
-            address_country_code: 'US',
-          },
+          agreement: true,
         },
         expect.objectContaining({
           setErrors: expect.any(Function),
