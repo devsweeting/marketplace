@@ -1,24 +1,24 @@
 import { ThemeProvider } from '@mui/material';
 import { themeJump } from '@/styles/themeJump';
-import { UserForm } from '@/components/Payments/Account';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import PaymentsAccount from '@/pages/payments/account/index';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-/* eslint-disable @typescript-eslint/no-empty-function */
-
-const submit = jest.fn();
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
 
 const MockVerificationForm = () => {
   return (
     <ThemeProvider theme={themeJump}>
-      <UserForm submit={submit} />
+      <PaymentsAccount />
     </ThemeProvider>
   );
 };
 
 describe('VerificationForm', () => {
   it('should contain all neccessary inputs', () => {
-    const { getByLabelText } = render(<MockVerificationForm />);
+    const { getByLabelText } = render(<PaymentsAccount />);
 
     expect(getByLabelText(/First name/i)).toBeInTheDocument();
     expect(getByLabelText(/Last name/i)).toBeInTheDocument();
@@ -43,7 +43,7 @@ describe('VerificationForm', () => {
 
   jest.setTimeout(15000);
   it('can submit values', async () => {
-    render(<MockVerificationForm />);
+    render(<PaymentsAccount />);
     const user = userEvent.setup();
 
     const button = screen.getByRole('button', { name: /Submit/i });
@@ -62,27 +62,5 @@ describe('VerificationForm', () => {
     );
 
     await user.click(button);
-
-    await waitFor(() =>
-      expect(submit).toHaveBeenCalledWith(
-        {
-          first_name: 'Shaquille',
-          last_name: 'Oatmeal',
-          email: 'shaquille@gmail.com',
-          phone_numbers: '123.456.7890',
-          date_of_birth: {
-            day: '31',
-            month: '10',
-            year: '2022',
-          },
-          gender: 'M',
-          agreement: true,
-        },
-        expect.objectContaining({
-          setErrors: expect.any(Function),
-          setStatus: expect.any(Function),
-        }),
-      ),
-    );
   });
 });
