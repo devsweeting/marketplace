@@ -1,20 +1,15 @@
-import { TextField } from '@/components/TextField';
-import type { TextFieldProps } from '@mui/material';
-import { MenuItem } from '@mui/material';
+import { MenuItem, TextField as MuiTextField } from '@mui/material';
 import { useField } from 'formik';
+import type { SelectField as TSelectField } from '@/types';
 
-type Props = {
-  name: string;
-  label: string;
-  options?: { label: string; value: string }[];
-} & TextFieldProps;
+type Props = TSelectField['props'];
 
-export function FormTextField(props: Props) {
+export function SelectField(props: Props) {
   const { name, label, helperText, options } = props;
   const [field, meta] = useField(name);
 
   return (
-    <TextField
+    <MuiTextField
       {...props}
       label={label}
       name={field.name}
@@ -30,6 +25,6 @@ export function FormTextField(props: Props) {
           {option.label}
         </MenuItem>
       ))}
-    </TextField>
+    </MuiTextField>
   );
 }

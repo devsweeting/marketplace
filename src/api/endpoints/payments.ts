@@ -71,11 +71,12 @@ type PaymentsUserErrorResponse = {
   };
 };
 
-export const registerPaymentsUser = async (
+export const registerAccount = async (
   data: any,
 ): Promise<PaymentsUserResponse | PaymentsUserErrorResponse | undefined> => {
   try {
-    const res = await apiClient.post('/payments/kyc', {
+    const res = await apiClient.post('/payments/account', {
+      requireAuth: true,
       body: data,
     });
 
@@ -89,6 +90,21 @@ export const registerPaymentsUser = async (
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e);
+    return;
+  }
+};
+
+export const getTerms = async () => {
+  try {
+    const res = await apiClient.get('/payments/terms', { requireAuth: true });
+
+    if (!res) return;
+
+    return res.data;
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e);
+
     return;
   }
 };
