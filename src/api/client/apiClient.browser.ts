@@ -50,6 +50,7 @@ export class BrowserApiClient extends BaseApiClient {
       await this._lock.acquireAsync();
       try {
         const user = await getCurrentUser();
+        console.log("requireAuth user", user)
         if (!user) {
           throw new Error(
             'Attempting to fetch an endpoint that requires auth with no current user. ' +

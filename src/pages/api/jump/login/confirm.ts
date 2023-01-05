@@ -32,6 +32,7 @@ const confirm = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(undefined);
   }
   const jwt = response.data as unknown as IJwt;
+
   setUserCookie(jwt, req, res);
 
   return res.status(StatusCodes.OK).send({ data: 'test' });

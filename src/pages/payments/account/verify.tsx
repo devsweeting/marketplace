@@ -8,6 +8,7 @@ import { formatErrorResponse } from '@/helpers/formatErrorResponse';
 import { Box, styled } from '@mui/material';
 import type { FormikHelpers } from 'formik';
 import { useState } from 'react';
+import PaymentsAccount from '@/pages/payments/account/index';
 
 const Container = styled('div')({
   paddingTop: '80px',
@@ -59,6 +60,7 @@ const submit = async (
 };
 
 export default function PaymentsVerify({ terms }: Props) {
+  console.log("terms", terms)
   const [step, setStep] = useState<'terms' | 'form'>('terms');
 
   const next = () => {
@@ -68,6 +70,7 @@ export default function PaymentsVerify({ terms }: Props) {
   const steps = {
     terms: (
       <Box sx={{ maxWidth: 900 }}>
+        {/* <PaymentsAccount />  */}
         {terms}
         <Button onClick={next} variant="contained">
           Accept
@@ -99,6 +102,7 @@ export async function getServerSideProps() {
   // };
 
   const terms = await getTerms();
+  console.log("serversideprops", terms)
 
   if (!terms)
     return {

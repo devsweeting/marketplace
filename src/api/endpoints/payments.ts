@@ -96,7 +96,8 @@ export const registerAccount = async (
 
 export const getTerms = async () => {
   try {
-    const res = await apiClient.get('/payments/terms', { requireAuth: true });
+    const res = await apiClient.get('/payments/terms', { requireAuth: false});
+    console.log("getTerms", res)
 
     if (!res) return;
 

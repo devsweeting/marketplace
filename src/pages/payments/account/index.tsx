@@ -87,7 +87,7 @@ export default function PaymentsAccount() {
         submit={submit}
         title="Account"
       />
-      <TosContainer>
+      <TosContainer> 
         <Typography>
           Synapse is our backend software provider, and partners with financial institutions to
           provide FDIC insurance. Synapse’s API, and their relationship with financial institutions,

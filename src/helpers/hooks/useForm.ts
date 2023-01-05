@@ -34,6 +34,7 @@ export function useForm(
   };
   const submitHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    // DEV NOTE --- This doesn't do anything
     void onSubmit();
   };
   return { values, changeHandler, isValid, errors, touched, submitHandler };
