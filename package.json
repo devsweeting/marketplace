@@ -23,6 +23,7 @@
     "@mui/styles": "^5.9.3",
     "@sentry/nextjs": "^7.9.0",
     "@sentry/tracing": "^7.9.0",
+    "@types/next": "^9.0.0",
     "@types/uuid": "^9.0.0",
     "accept-language-parser": "^1.5.0",
     "await-lock": "^2.2.2",
