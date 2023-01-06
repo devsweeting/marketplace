@@ -1,10 +1,6 @@
 import { useState } from 'react';
 
-export function useForm(
-  initialState = {},
-  validations = [] as any[],
-  onSubmit: () => Promise<void>,
-) {
+export function useForm(initialState = {}, validations = [] as any[]) {
   function validate(validations: any[], values: Record<string, unknown>) {
     const errors = validations
       .map((validation) => validation(values))
@@ -32,10 +28,6 @@ export function useForm(
     setValues(newValues);
     setTouched(newlyTouched);
   };
-  const submitHandler = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    // DEV NOTE --- This doesn't do anything
-    void onSubmit();
-  };
-  return { values, changeHandler, isValid, errors, touched, submitHandler };
+
+  return { values, changeHandler, isValid, errors, touched };
 }

@@ -30,7 +30,6 @@ export class ServerApiClient extends BaseApiClient {
   disallowHeader = ['host'];
 
   get(url: IApiUrl, request: IServerApiRequest = {}) {
-    console.log("get url", url)
     return this.send(url, 'GET', request);
   }
 

@@ -1,6 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import LockIcon from '@mui/icons-material/Lock';
 import { useCart } from '@/helpers/auth/CartContext';
 import {
   Alert,
@@ -10,18 +9,11 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  Typography,
-  useTheme,
 } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
-import { formatNumber } from '@/helpers/formatNumber';
-import { purchaseSellOrder } from '@/api/endpoints/sellorders';
-import { StatusCodes } from 'http-status-codes';
 import type { IAsset } from '@/types';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { useForm } from '@/helpers/hooks/useForm';
 import {
@@ -29,15 +21,11 @@ import {
   Container,
   HeaderContainer,
   HeaderTitle,
-  OrderSummaryContainer,
-  OrderSummaryHeader,
   OutlinedLabel,
   PaymentContainer,
   StyledInput,
-  Text,
-  Title,
 } from '../PaymentMethods/PaymentMethods.styles';
-import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
+import { OrderSummary } from '../OrderSummary';
 
 const AcceptedCardProviders: { [x: string]: RegExp } = {
   amex: new RegExp('^3[47][0-9]{13}$'),
@@ -178,17 +166,20 @@ function creditCardType(cardNumber: string) {
 export const PaymentService = ({
   setPage,
   orderSummary,
+  alertMessage,
+  setAlertMessage,
+  open,
+  setOpen,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
+  alertMessage: string;
+  setAlertMessage: Dispatch<SetStateAction<string>>;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const router = useRouter();
-  const [alertMessage, setAlertMessage] = useState('');
-  const [open, setOpen] = useState(false);
   const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  const item = cartItems[0];
-  const theme = useTheme();
   const initialState = {
     cardNumber: '',
     cardName: '',
@@ -211,17 +202,6 @@ export const PaymentService = ({
       },
   ];
 
-  async function onSubmit(): Promise<void> {
-    if (isValid) {
-      void handleBuyFractions();
-
-      closeModal();
-      void router.push({
-        pathname: `/askingprice/${orderSummary.id}`,
-      });
-    }
-  }
-
   function formatCard(cardNumber: string) {
     let newval = '';
     cardNumber = cardNumber.replace(/\s/g, '');
@@ -234,11 +214,8 @@ export const PaymentService = ({
     return newval;
   }
 
-  const { values, isValid, errors, changeHandler, touched, submitHandler } = useForm(
-    initialState,
-    validations,
-    onSubmit,
-  );
+  const { values, isValid, errors, changeHandler, touched } = useForm(initialState, validations);
+
   const cardNumberHandler = (e: { target: { name: string; value: string } }) => {
     e.target.value = formatCard(e.target.value);
     changeHandler(e);
@@ -249,39 +226,6 @@ export const PaymentService = ({
     changeHandler(e);
   };
 
-  const handleBuyFractions = async (): Promise<void> => {
-    const response: any = await purchaseSellOrder(
-      orderSummary.sellOrders[0].id,
-      item.quantity,
-      item.fractionPriceCents,
-    );
-    if (response) {
-      switch (response.status) {
-        case StatusCodes.CREATED: {
-          setPage((prev) => prev + 1);
-          break;
-        }
-        case StatusCodes.BAD_REQUEST: {
-          setOpen(true);
-          setAlertMessage('You cannot purchase any more of this item at this time.');
-          if (response.data.message === 'USER_CANNOT_PURCHASE_OWN_ORDER') {
-            setAlertMessage('You cannot purchase your own order.');
-          }
-          break;
-        }
-        case StatusCodes.UNAUTHORIZED: {
-          setOpen(true);
-          setAlertMessage('Please login to buy assets');
-          break;
-        }
-        default: {
-          setOpen(true);
-          setAlertMessage('Something went wrong.');
-          break;
-        }
-      }
-    }
-  };
   if (orderSummary === undefined || !(cartItems.length > 0)) {
     return null;
   }
@@ -409,83 +353,13 @@ export const PaymentService = ({
           </Box>
         </PaymentContainer>
       </Box>
-      <OrderSummaryContainer>
-        <OrderSummaryHeader>
-          <Title variant="xl">Order Summary</Title>
-        </OrderSummaryHeader>
-        <Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            margin="20px 24px 10px 24px"
-            sx={{ borderBottom: `1px solid ${theme.palette.grey[200]}` }}
-          >
-            <Text variant="lg">
-              {Object.keys(item).length > 0 && item.quantity}
-              {Object.keys(item).length > 0 && item.quantity > 1 ? ' Units' : ' Unit'}
-            </Text>
-            <Text variant="lg">
-              {Object.keys(item).length > 0 && '$' + formatNumber(item.totalPrice)}
-            </Text>
-          </Box>
-          <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
-            <Text variant="lg">Royalty fees</Text>
-            <Text variant="lg">10%</Text>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            margin="10px 24px 10px 24px"
-            sx={{ borderBottom: `1px solid ${theme.palette.grey[200]}` }}
-          >
-            <Text variant="lg">Processing fees</Text>
-            <Text variant="lg">-5% + 0.25</Text>
-          </Box>
-          <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
-            <Text variant="lg">Total</Text>
-            <Text variant="lg">
-              {Object.keys(item).length > 0 &&
-                '$' + formatNumber((item.totalPrice * 1.15 + 0.25).toFixed(2) as unknown as number)}
-            </Text>
-          </Box>
-        </Box>
-        <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
-          <ConfirmInfoButton disabled={!isValid} onClick={submitHandler}>
-            Confirm Order
-          </ConfirmInfoButton>
-        </Box>
-        <Typography
-          id="modal-modal-title"
-          variant="xl"
-          component="p"
-          style={{
-            fontSize: '14px',
-            lineHeight: '20px',
-            fontWeight: '500',
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '20px',
-          }}
-        >
-          <LockIcon
-            sx={{
-              stroke: theme.palette.grey[900],
-              strokeWidth: '2px',
-              fill: theme.palette.grey[50],
-              width: '16px',
-              height: '18px',
-              margin: '0 6px',
-              padding: '0',
-            }}
-          />
-          {'Secured by'}
-          <Box component="span" style={{ fontWeight: '600', margin: '0 4px' }}>
-            {'Jump'}
-          </Box>
-        </Typography>
-      </OrderSummaryContainer>
+      <OrderSummary
+        setPage={setPage}
+        isValid={isValid}
+        orderSummary={orderSummary}
+        setAlertMessage={setAlertMessage}
+        setOpen={setOpen}
+      />
     </Container>
   );
 };

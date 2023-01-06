@@ -13,6 +13,8 @@ import { OrderSummary } from '../OrderSummary';
 export const Conditional = () => {
   const [page, setPage] = useState(0);
   const [jumpBalance, setJumpBalance] = useState<number>(0);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [open, setOpen] = useState(false);
 
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const id = cartItems[0]?.id ?? undefined;
@@ -50,13 +52,27 @@ export const Conditional = () => {
         return <RetrieveUserInfo setPage={setPage} />;
       }
       case 3: {
-        return <PaymentService setPage={setPage} orderSummary={orderSummary} />;
+        return (
+          <PaymentService
+            setPage={setPage}
+            orderSummary={orderSummary}
+            alertMessage={alertMessage}
+            setAlertMessage={setAlertMessage}
+            open={open}
+            setOpen={setOpen}
+          />
+        );
       }
 
-      //TODO create new case for order summary
       case 4: {
         return (
-          <OrderSummary setPage={setPage} jumpBalance={jumpBalance} orderSummary={orderSummary} />
+          <OrderSummary
+            setPage={setPage}
+            isValid={true}
+            orderSummary={orderSummary}
+            setAlertMessage={setAlertMessage}
+            setOpen={setOpen}
+          />
         );
       }
 

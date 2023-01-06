@@ -36,7 +36,12 @@ export const PortfolioAssetCard = ({
 }) => {
   const router = useRouter();
   const details = parseAssetAttributes(assetData.attributes);
-  const fractionPriceCents = assetData?.sellOrders[0]?.fractionPriceCents ?? 0;
+
+  // TODO - assetData is expecting sellOrders to be present. This is a backend issue.
+  // const fractionPriceCents = assetData?.sellOrders[0]?.fractionPriceCents ?? 0;
+  // For temp fix, set fractionPriceCents to zero
+  const fractionPriceCents = 0;
+
   const quantityOwned = assetData?.userAsset?.quantityOwned ?? 0;
 
   const handleKeyDownOnCard = (event: React.KeyboardEvent<HTMLDivElement>) => {
