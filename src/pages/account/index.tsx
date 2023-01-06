@@ -91,14 +91,6 @@ const PortfolioPage: NextPage = () => {
     return null;
   }
 
-  // ORIGINAL - DELETE
-  // if (Object.keys(portfolio).includes('meta')) {
-  //   portfolio.items.flatMap((item: { category: string }) => {
-  //     item.category = activePortfolioCategory;
-  //   });
-  //   portfolioAssetsList.push(...portfolio.items);
-  // }
-
   if (portfolio.items) {
     portfolio.items.flatMap((item: { category: string }) => {
       if (Object.keys(item).includes('meta')) {
@@ -107,8 +99,6 @@ const PortfolioPage: NextPage = () => {
     });
     portfolioAssetsList.push(...portfolio.items);
   }
-
-  console.log('portfolioAssetsList', portfolioAssetsList);
 
   const updateAsset = (assetId: string): void => {
     getAssetById(assetId)

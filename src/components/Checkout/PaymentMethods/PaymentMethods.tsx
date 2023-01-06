@@ -33,23 +33,28 @@ import type { CartItem } from '@/helpers/auth/CartContext';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-export const PaymentMethods = ({ setPage, setJumpBalance, jumpBalance }: { setPage: Dispatch<SetStateAction<number>>, setJumpBalance: Dispatch<SetStateAction<number>>, jumpBalance: number }) => {
+export const PaymentMethods = ({
+  setPage,
+  setJumpBalance,
+  jumpBalance,
+}: {
+  setPage: Dispatch<SetStateAction<number>>;
+  setJumpBalance: Dispatch<SetStateAction<number>>;
+  jumpBalance: number;
+}) => {
   const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [isDismissed, setIsDismissed] = useState(false);
   const [selectedValue, setSelectedValue] = useState('card');
 
-  // State to handle deposit amount
-  //TODO - there's probably a way to send the value of this input directly to the handleAddJumpFunds function.
-  const [depositAmount, setDepositAmount] = useState<number>(0)
+  const [depositAmount, setDepositAmount] = useState<number>(0);
   const handleDepositChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDepositAmount(Number(event.target.value))
-  }
+    setDepositAmount(Number(event.target.value));
+  };
 
-  // Update the jump balance
   const handleAddJumpFunds = () => {
-    setJumpBalance(jumpBalance + depositAmount)
-  }
+    setJumpBalance(jumpBalance + depositAmount);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -125,7 +130,7 @@ export const PaymentMethods = ({ setPage, setJumpBalance, jumpBalance }: { setPa
           <CardTextContainer>
             <Title variant="xl">Jump balance</Title>
             <Text>
-              {`$${formatNumber(jumpBalance.toFixed(2) as unknown as number)} USD ${
+              {`$${formatNumber(Number(jumpBalance.toFixed(2)))} USD ${
                 jumpBalance < item.totalPrice ? '(Insufficient funds)' : ''
               }`}
             </Text>
@@ -162,7 +167,10 @@ export const PaymentMethods = ({ setPage, setJumpBalance, jumpBalance }: { setPa
               disabled={selectedValue === 'card' ? true : false}
               onChange={handleDepositChange}
             />
-            <AddFundsButton onClick={handleAddJumpFunds} disabled={selectedValue === 'card' ? true : false}>
+            <AddFundsButton
+              onClick={handleAddJumpFunds}
+              disabled={selectedValue === 'card' ? true : false}
+            >
               Add funds
             </AddFundsButton>
           </Box>
@@ -218,7 +226,7 @@ export const PaymentMethods = ({ setPage, setJumpBalance, jumpBalance }: { setPa
           {selectedValue === 'jump_account' && (
             <AddPaymentButton
               onClick={() => {
-                // Update to set page to checkout screen
+                //Sends user to order summary
                 setPage((prev) => prev + 3);
               }}
             >

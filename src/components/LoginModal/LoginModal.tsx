@@ -208,7 +208,7 @@ export const LoginModal = ({ noDismiss }: { noDismiss?: boolean }) => {
   };
 
   useEffect(() => {
-    // TODO - delete this, why is this here
+    // TODO - delete this, why is an empty effect here
   }, [loginInputValue, tokenInputValue, buttonState, alertMessage]);
 
   const handleLoginSubmit = (value: string) => {
