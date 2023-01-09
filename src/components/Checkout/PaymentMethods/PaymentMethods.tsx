@@ -39,8 +39,8 @@ export const PaymentMethods = ({
   jumpBalance,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
-  setJumpBalance: Dispatch<SetStateAction<number>>;
-  jumpBalance: number;
+  setJumpBalance?: Dispatch<SetStateAction<number>>;
+  jumpBalance?: number;
 }) => {
   const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
@@ -53,7 +53,7 @@ export const PaymentMethods = ({
   };
 
   const handleAddJumpFunds = () => {
-    setJumpBalance(jumpBalance + depositAmount);
+    jumpBalance && setJumpBalance && setJumpBalance(jumpBalance + depositAmount);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,8 +130,8 @@ export const PaymentMethods = ({
           <CardTextContainer>
             <Title variant="xl">Jump balance</Title>
             <Text>
-              {`$${formatNumber(Number(jumpBalance.toFixed(2)))} USD ${
-                jumpBalance < item.totalPrice ? '(Insufficient funds)' : ''
+              {`$${formatNumber(Number(jumpBalance && jumpBalance.toFixed(2)))} USD ${
+                jumpBalance && jumpBalance < item.totalPrice ? '(Insufficient funds)' : ''
               }`}
             </Text>
           </CardTextContainer>

@@ -121,6 +121,11 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
 
   const { values, isValid, errors, changeHandler, touched } = useForm(initialState, validations);
 
+  const submitHandler = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    void onSignup();
+  };
+
   const [alertText, setAlertText] = useState('');
 
   return (
@@ -268,7 +273,7 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
           </Box>
         </PaymentContainer>
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
-          <ConfirmInfoButton disabled={!isValid} onClick={void onSignup}>
+          <ConfirmInfoButton disabled={!isValid} onClick={submitHandler}>
             Confirm Info
           </ConfirmInfoButton>
         </Box>

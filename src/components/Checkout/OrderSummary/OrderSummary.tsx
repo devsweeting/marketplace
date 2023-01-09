@@ -140,7 +140,9 @@ export const OrderSummary = ({
           </Box>
         </Box>
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
-          <ConfirmInfoButton onClick={submitHandler}>Confirm Order</ConfirmInfoButton>
+          <ConfirmInfoButton disabled={!isValid} onClick={submitHandler}>
+            Confirm Order
+          </ConfirmInfoButton>
         </Box>
         <Typography
           id="modal-modal-title"
