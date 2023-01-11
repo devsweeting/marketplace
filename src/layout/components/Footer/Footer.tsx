@@ -32,7 +32,7 @@ export const Footer = () => {
       </TopContainer>
       <Divider />
       <BottomContainer>
-        <Typography variant="body1">2022 JUMP. All rights reserved.</Typography>
+        <Typography variant="body1">2023 JUMP. All rights reserved.</Typography>
         <PageLinks>
           <FooterNavLink href="/site-policy/refunds-returns">
             <Button variant="text" color="secondary">

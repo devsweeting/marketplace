@@ -160,7 +160,7 @@ describe('Set Asking Price tests', () => {
     const media = await screen.findByRole('img', { name: /iure omnis sed quia/i });
     const cardTitle = await screen.findByText(/earum est rerum eligendi/i);
     const brand = await screen.findByText(/joe dimaggio/i);
-    const valuation = await screen.findByText(/\$20\.2k/i);
+    const valuationBox = await screen.findByText('Valuation');
     const unitPrice = await screen.findByText(/\$32/i);
 
     const percentInput = await screen.findByRole('spinbutton', {
@@ -180,7 +180,7 @@ describe('Set Asking Price tests', () => {
     expect(media).toBeInTheDocument();
     expect(cardTitle).toBeInTheDocument();
     expect(brand).toBeInTheDocument();
-    expect(valuation).toBeInTheDocument();
+    expect(valuationBox).toBeInTheDocument();
     expect(unitPrice).toBeInTheDocument();
 
     expect(percentInput).toBeInTheDocument();

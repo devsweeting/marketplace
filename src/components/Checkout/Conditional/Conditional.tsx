@@ -8,10 +8,14 @@ import type { CartItem } from '@/helpers/auth/CartContext';
 import { RetrieveUserInfo } from '../RetrieveUserInfo';
 import { Box } from '@mui/material';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
+import { OrderSummary } from '../OrderSummary';
 
 export const Conditional = () => {
   const [page, setPage] = useState(0);
-  // const [orderSummary, setOrderSummary] = useState<IAsset>();
+  const [jumpBalance, setJumpBalance] = useState<number>(0);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [open, setOpen] = useState(false);
+
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const id = cartItems[0]?.id ?? undefined;
 
@@ -36,13 +40,40 @@ export const Conditional = () => {
         return <Cart setPage={setPage} orderSummary={orderSummary} />;
       }
       case 1: {
-        return <PaymentMethods setPage={setPage} />;
+        return (
+          <PaymentMethods
+            jumpBalance={jumpBalance}
+            setJumpBalance={setJumpBalance}
+            setPage={setPage}
+          />
+        );
       }
       case 2: {
         return <RetrieveUserInfo setPage={setPage} />;
       }
       case 3: {
-        return <PaymentService setPage={setPage} orderSummary={orderSummary} />;
+        return (
+          <PaymentService
+            setPage={setPage}
+            orderSummary={orderSummary}
+            alertMessage={alertMessage}
+            setAlertMessage={setAlertMessage}
+            open={open}
+            setOpen={setOpen}
+          />
+        );
+      }
+
+      case 4: {
+        return (
+          <OrderSummary
+            setPage={setPage}
+            isValid={true}
+            orderSummary={orderSummary}
+            setAlertMessage={setAlertMessage}
+            setOpen={setOpen}
+          />
+        );
       }
 
       default: {

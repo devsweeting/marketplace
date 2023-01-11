@@ -47,13 +47,16 @@ const calculatePercentFromInput = (input: number, originalValue: number) => {
   return (percent - 100).toFixed(3) as unknown as number;
 };
 
-const calculateValueFromPercent = (percent: number | undefined, originalValue: number) => {
+const calculateValueFromPercent = (
+  percent: number | undefined,
+  originalValue: number,
+): number | undefined => {
   if (!percent) {
     return undefined;
   }
   const truePercent = percent + 100;
   const decimal = truePercent / 100;
-  return ((originalValue * decimal) / 100).toFixed(2) as unknown as number;
+  return Number(((originalValue * decimal) / 100).toFixed(2));
 };
 
 const calculateTotalFromPercentAndPrice = (price: number, numOfUnits: number) => {
@@ -265,7 +268,7 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
                     src={asset.media[0].absoluteUrl}
                     alt={asset.media[0].title}
                     width={200}
-                    height={340}
+                    height={80}
                   />
                 )}
               </AssetImageWrapper>
@@ -277,7 +280,6 @@ export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string 
                 <ValuationContainer>
                   <Typography>Valuation</Typography>
                   <LargeDetailText variant="lg">
-                    $
                     {assetPurchase[0]
                       ? totalPrice < 1000
                         ? Intl.NumberFormat('en-US', {

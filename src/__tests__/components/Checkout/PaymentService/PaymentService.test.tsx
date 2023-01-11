@@ -9,6 +9,7 @@ import { PaymentService } from '@/components/Checkout/PaymentService';
 import { TestRouter } from '@/__tests__/utils/TestRouter';
 import { apiClient } from '@/api/client';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
+import type { IAsset } from '@/types/asset.types';
 
 jest.mock('@/api/client');
 const mockedClient = apiClient as jest.Mocked<typeof apiClient>;
@@ -111,19 +112,45 @@ const mockUser = {
 
 const push = jest.fn();
 
-const MockPaymentService = ({ setPage }: { setPage: () => void }) => {
+const MockPaymentService = ({
+  setPage,
+  orderSummary,
+  alertMessage,
+  setAlertMessage,
+  open,
+  setOpen,
+}: {
+  setPage: () => void;
+  orderSummary: IAsset;
+  alertMessage: string;
+  setAlertMessage: () => void;
+  open: boolean;
+  setOpen: () => boolean;
+}) => {
   return (
     <TestRouter router={{ push, asPath: '/askingprice' }}>
       <ThemeProvider theme={themeJump}>
         <UserContext.Provider value={{ user: mockUser, refreshUser: jest.fn(), logout: jest.fn() }}>
           <CartProvider>
-            <PaymentService setPage={setPage} orderSummary={mockData} />
+            <PaymentService
+              setPage={setPage}
+              orderSummary={orderSummary}
+              alertMessage={alertMessage}
+              setAlertMessage={setAlertMessage}
+              open={open}
+              setOpen={setOpen}
+            />
           </CartProvider>
         </UserContext.Provider>
       </ThemeProvider>
     </TestRouter>
   );
 };
+
+const alertMessage = 'this is an alert message';
+const setAlertMessage = jest.fn();
+const open = true;
+const setOpen = () => !open;
 
 describe('Payment service', () => {
   jest.mock('@/api/endpoints/sellorders');
@@ -141,7 +168,17 @@ describe('Payment service', () => {
   });
   test('Should render out all of the content', async () => {
     const setPage = jest.fn();
-    render(<MockPaymentService setPage={setPage} />);
+
+    render(
+      <MockPaymentService
+        setPage={setPage}
+        orderSummary={mockData}
+        alertMessage={alertMessage}
+        setAlertMessage={setAlertMessage}
+        open={open}
+        setOpen={setOpen}
+      />,
+    );
     const cardNumberInput = await screen.findByRole('textbox', {
       name: /card number/i,
     });
@@ -182,7 +219,16 @@ describe('Payment service', () => {
   test('Should reveal hidden validation helper text', async () => {
     const setPage = jest.fn();
 
-    render(<MockPaymentService setPage={setPage} />);
+    render(
+      <MockPaymentService
+        setPage={setPage}
+        orderSummary={mockData}
+        alertMessage={alertMessage}
+        setAlertMessage={setAlertMessage}
+        open={open}
+        setOpen={setOpen}
+      />,
+    );
     const cardNumberInput = await screen.findByRole('textbox', {
       name: /card number/i,
     });
@@ -219,7 +265,16 @@ describe('Payment service', () => {
   test('Should allow purchase if fields are valid', async () => {
     const setPage = jest.fn();
 
-    render(<MockPaymentService setPage={setPage} />);
+    render(
+      <MockPaymentService
+        setPage={setPage}
+        orderSummary={mockData}
+        alertMessage={alertMessage}
+        setAlertMessage={setAlertMessage}
+        open={open}
+        setOpen={setOpen}
+      />,
+    );
     const cardNumberInput = await screen.findByRole('textbox', {
       name: /card number/i,
     });
