@@ -23,12 +23,17 @@ export const Hero = () => {
       },
     },
     searchBox: {
-      border: '1px solid black',
+      outline: '2px solid rgb(0, 0, 0, .25)',
+      borderRadius: '99px',
       width: '50%',
       m: '10px',
+      transition: 'all 250ms ease-in-out',
       [theme.breakpoints.down('sm')]: {
         width: '70%',
         margin: '40px',
+      },
+      '&:hover': {
+        outline: '2px solid rgb(0, 0, 0)',
       },
     },
   };
