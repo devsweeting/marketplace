@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next build && next start",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
     "test": "jest --watch",
@@ -37,6 +37,7 @@
     "next": "^13.0.6",
     "nookies": "^2.5.2",
     "react": "^18.2.0",
+    "react-animated-3d-card": "^1.0.2",
     "react-dom": "^18.2.0",
     "react-share": "^4.4.0",
     "request-ip": "^3.3.0",

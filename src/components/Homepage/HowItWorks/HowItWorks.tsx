@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
-import Image from 'next/image';
 import { Button } from '@/components/Button';
 import { HeroBox } from './HowItWorks.styles';
+import { TradingCard } from '../3DCard/3DCard';
 
 export const HowItWorks = () => {
   const theme = useTheme();
@@ -229,28 +229,14 @@ export const HowItWorks = () => {
             sx={classes.imageWrapper}
           >
             <Box sx={classes.nextImageHolder}>
-              <Image
-                src={
-                  'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
-                }
-                fill
-                alt={'in quia occaecati nihil'}
-                style={{ objectFit: 'contain' }}
-              />
+              <TradingCard src={'/tradingCards/jordan_hardcat_heroics_card.png'} />
             </Box>
           </Box>
         </Grid>
         <Grid item sx={classes.rightHeroWrapper}>
           <Box style={{}} sx={classes.imageWrapper}>
             <Box sx={classes.nextImageHolder}>
-              <Image
-                src={
-                  'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
-                }
-                fill
-                alt={'in quia occaecati nihil'}
-                style={{ objectFit: 'contain' }}
-              />
+              <TradingCard src={'/tradingCards/charizard.png'} />
             </Box>
           </Box>
         </Grid>
@@ -321,14 +307,7 @@ export const HowItWorks = () => {
         <Grid item sx={classes.rightHeroWrapper}>
           <Box style={{}} sx={classes.imageWrapper}>
             <Box sx={classes.nextImageHolder}>
-              <Image
-                src={
-                  'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
-                }
-                fill
-                alt={'in quia occaecati nihil'}
-                style={{ objectFit: 'contain' }}
-              />
+              <TradingCard src={'/tradingCards/national_treasure_giannis.png'} />
             </Box>
           </Box>
         </Grid>

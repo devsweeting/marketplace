@@ -18,6 +18,7 @@ import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 const Homepage = () => {
   const router = useRouter();
   const { isReady } = router;
+
   const loadLatestDropAssets = useCallback(
     async (page = 1, signal?: AbortSignal | undefined) => {
       if (isReady) {
@@ -30,10 +31,12 @@ const Homepage = () => {
     },
     [isReady],
   );
+
   const [dropAssets = [], dropAssetsLoadingState] = useEndpoint(
     (signal) => loadLatestDropAssets(1, signal),
     [loadLatestDropAssets],
   );
+
   const handleDrawer = () => {
     return null;
   };

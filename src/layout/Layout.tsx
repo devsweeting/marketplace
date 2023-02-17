@@ -8,9 +8,10 @@ import { Modals } from '@/components/Modals';
 const MainContainer = styled('div')({
   minHeight: '100vh',
   width: '100vw',
-  maxWidth: '100%',
+  maxWidth: '1920px',
   display: 'flex',
   flexDirection: 'column',
+  margin: 'auto',
 });
 
 export const Layout = ({
