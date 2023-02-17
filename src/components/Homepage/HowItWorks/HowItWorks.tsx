@@ -35,6 +35,7 @@ export const HowItWorks = () => {
       justifyContent: 'center',
       alignItems: 'center',
       textAlign: 'center',
+      color: '#6B7280',
       [theme.breakpoints.down('sm')]: {
         fontSize: '1.2rem',
         width: '90%',
@@ -64,10 +65,9 @@ export const HowItWorks = () => {
       justifyContent: 'center',
       height: '100%',
     },
-
     heroTitle: {
-      fontWeight: 800,
-      marginBottom: '.25rem',
+      fontWeight: 700,
+      marginBottom: '1.25rem',
       [theme.breakpoints.down('sm')]: {
         display: 'flex',
         align: 'center',
@@ -79,6 +79,8 @@ export const HowItWorks = () => {
     heroBody: {
       maxWidth: '80ch',
       marginBottom: '1.5rem',
+      color: '#6B7280',
+      fontSize: '16px',
     },
     imageWrapper: {
       display: 'flex',
@@ -112,11 +114,25 @@ export const HowItWorks = () => {
         margin: '25px auto 5px auto',
       },
     },
+    subheader: {
+      fontSize: '2rem',
+      marginBottom: '1rem',
+    },
+    textTiny: {
+      fontSize: '.8rem',
+      alignItems: 'center',
+      textAlign: 'center',
+      color: '#6B7280',
+      lineHeight: '150%',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '.6rem',
+      },
+    },
   };
   return (
     <Box sx={classes.wrapper}>
       <Box sx={classes.howItWorksHeader}>
-        <Typography variant="xl5" component="h2">
+        <Typography variant="xl5" component="h2" sx={classes.subheader}>
           How it works
         </Typography>
         <Typography variant="body1" component="p" sx={classes.text}>
@@ -144,10 +160,10 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" sx={classes.subheader}>
             Digitize
           </Typography>
-          <Typography variant="body1" component="p">
+          <Typography variant="body1" component="p" sx={classes.textTiny}>
             From the physical world to the blockchain
           </Typography>
         </Grid>
@@ -161,10 +177,10 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" sx={classes.subheader}>
             Collect
           </Typography>
-          <Typography variant="body1" component="p">
+          <Typography variant="body1" component="p" sx={classes.textTiny}>
             Grow your collection and own fractions...
           </Typography>
         </Grid>
@@ -178,10 +194,10 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
+          <Typography variant="lg" component="h3" sx={classes.subheader}>
             Sell
           </Typography>
-          <Typography variant="body1" component="p">
+          <Typography variant="body1" component="p" sx={classes.textTiny}>
             Your cards will shine in our marketplace
           </Typography>
         </Grid>

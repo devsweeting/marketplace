@@ -42,6 +42,8 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
+          <link href="https://fonts.cdnfonts.com/css/mona-sans" rel="stylesheet" />
+
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {(this.props as any).emotionStyleTags}
         </Head>
