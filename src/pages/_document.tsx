@@ -12,7 +12,7 @@ export default class MyDocument extends Document {
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content={themePWCC.palette.primary.main} />
-          <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+          <link rel="shortcut icon" type="image/x-icon" href="/images/jump_favicon.ico" />
           <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
           <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
           <link
