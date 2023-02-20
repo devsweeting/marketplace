@@ -44,7 +44,10 @@ const Homepage = () => {
   return (
     <>
       <ClientOnly>
-        <OpenGraph title={'Home page'} description={'Home page description'} />
+        <OpenGraph
+          title={'Jump Marketplace'}
+          description={'Exclusive Marketplace for Collectibles'}
+        />
 
         <Box
           sx={{
@@ -56,7 +59,7 @@ const Homepage = () => {
             direction="row"
             justifyContent="center"
             alignItems="stretch"
-            sx={{ marginTop: { xs: 10, md: 15 } }}
+            sx={{ marginTop: { xs: 10, md: 15 } }} //TODO - Creating the weird gap at the top of the Hero
           >
             <Grid item xs={12}>
               <Hero />
