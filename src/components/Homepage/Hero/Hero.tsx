@@ -40,7 +40,7 @@ export const Hero = () => {
       backdropFilter: 'blur(10px)',
       borderRadius: '99px',
       width: '50%',
-      m: '60px 10px 10px 10px',
+      m: '60px 0 0 10px',
       transition: 'all 250ms ease-in-out',
       [theme.breakpoints.down('sm')]: {
         width: '70%',
@@ -78,32 +78,24 @@ const BackgroundBanner = () => {
   const classes = {
     imageContainer: {
       position: 'relative',
-      top: '-550px',
+      bottom: '600px',
+      right: '50px',
       display: 'grid',
       gridTemplateColumns: 'repeat(8, 1fr)',
-      transform: 'rotate(-20deg)',
+      transform: 'rotate(-10deg)',
     },
     background: {
       boxShadow: 'inset 0 0 0 2000px rgb(17, 24, 39, 0.7)',
-      backgroundSize: '220px 350px', //size of image
-      width: '220px', //size of container
-      height: '350px',
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: '200px 320px', //size of image
+      width: '200px', //size of container
+      height: '320px',
       zIndex: '1',
     },
   };
   const rows = [];
   for (let i = 0; i < TOTAL_IN_GRID; i++) {
     rows.push(
-      // Option A
-      // <Image
-      //   src={`/tradingCards/hero_cards/card_${i + 1}.png`}
-      //   key={i}
-      //   height={350}
-      //   width={200}
-      //   alt={'hero_card_1'}
-      // />,
-
-      // Option B
       <Box
         sx={{
           ...classes.background,

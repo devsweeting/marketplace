@@ -3,6 +3,7 @@ import { Box, Grid, Typography, useTheme } from '@mui/material';
 import { Button } from '@/components/Button';
 import { HeroBox } from './HowItWorks.styles';
 import { TradingCard } from '../3DCard/3DCard';
+import Image from 'next/image';
 
 export const HowItWorks = () => {
   const theme = useTheme();
@@ -128,6 +129,11 @@ export const HowItWorks = () => {
         fontSize: '.6rem',
       },
     },
+    icon: {
+      height: '48px',
+      width: '48px',
+      marginBottom: '24px',
+    },
   };
   return (
     <Box sx={classes.wrapper}>
@@ -160,6 +166,14 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
+          <Box sx={classes.icon}>
+            <Image
+              src={`/images/nftDetail/icons/Rectangle.png`}
+              height={48}
+              width={48}
+              alt={'rectangle'}
+            />
+          </Box>
           <Typography variant="lg" component="h3" sx={classes.subheader}>
             Digitize
           </Typography>
@@ -177,6 +191,14 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
+          <Box sx={classes.icon}>
+            <Image
+              src={`/images/nftDetail/icons/Star.png`}
+              height={48}
+              width={48}
+              alt={'rectangle'}
+            />
+          </Box>
           <Typography variant="lg" component="h3" sx={classes.subheader}>
             Collect
           </Typography>
@@ -194,6 +216,14 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
+          <Box sx={classes.icon}>
+            <Image
+              src={`/images/nftDetail/icons/Polygon.png`}
+              height={48}
+              width={48}
+              alt={'rectangle'}
+            />
+          </Box>
           <Typography variant="lg" component="h3" sx={classes.subheader}>
             Sell
           </Typography>
