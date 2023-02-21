@@ -22,7 +22,6 @@ export const Hero = () => {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      border: '1px solid red',
       marginTop: '100px',
     },
     title: {
