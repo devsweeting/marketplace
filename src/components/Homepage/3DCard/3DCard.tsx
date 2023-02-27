@@ -42,7 +42,7 @@ export const TradingCard3D = ({ src, color, isWhiteBackground }: TradingCardProp
     <Box
       style={{
         objectFit: 'contain',
-        width: '100%',
+        width: '120%',
         height: '100%',
         background: `radial-gradient(50% 50% at 50% 50%, ${radientColors[color]} 0%, ${
           isWhiteBackground ? radientColors['white'] : radientColors['black']
@@ -59,7 +59,6 @@ export const TradingCard3D = ({ src, color, isWhiteBackground }: TradingCardProp
           cursor: 'pointer',
           ...cardSize,
         }}
-        // onClick={() => console.log('Card clicked')}
       >
         <Image src={src} fill alt={'in quia occaecati nihil'} style={{ objectFit: 'contain' }} />
       </Card>

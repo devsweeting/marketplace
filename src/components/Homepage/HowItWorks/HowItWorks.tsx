@@ -37,7 +37,8 @@ export const HowItWorks = () => {
       alignItems: 'center',
       textAlign: 'center',
       color: theme.palette.grey[500],
-      maxWidth: '80rem',
+      maxWidth: '68rem',
+      lineHeight: '1.75rem',
       [theme.breakpoints.down('sm')]: {
         fontSize: '1.2rem',
         width: '90%',
@@ -120,7 +121,7 @@ export const HowItWorks = () => {
       fontSize: '2rem',
       marginBottom: '1rem',
     },
-    textTiny: {
+    paragraph: {
       fontSize: '.8rem',
       alignItems: 'center',
       textAlign: 'center',
@@ -178,7 +179,7 @@ export const HowItWorks = () => {
           <Typography variant="lg" component="h3" sx={classes.subheader}>
             Digitize
           </Typography>
-          <Typography variant="body1" component="p" sx={classes.textTiny}>
+          <Typography variant="body1" component="p" sx={classes.paragraph}>
             From the physical world to the blockchain
           </Typography>
         </Grid>
@@ -198,7 +199,7 @@ export const HowItWorks = () => {
           <Typography variant="lg" component="h3" sx={classes.subheader}>
             Collect
           </Typography>
-          <Typography variant="body1" component="p" sx={classes.textTiny}>
+          <Typography variant="body1" component="p" sx={classes.paragraph}>
             Grow your collection and own fractions...
           </Typography>
         </Grid>
@@ -223,7 +224,7 @@ export const HowItWorks = () => {
           <Typography variant="lg" component="h3" sx={classes.subheader}>
             Sell
           </Typography>
-          <Typography variant="body1" component="p" sx={classes.textTiny}>
+          <Typography variant="body1" component="p" sx={classes.paragraph}>
             Your cards will shine in our marketplace
           </Typography>
         </Grid>

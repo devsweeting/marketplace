@@ -42,7 +42,7 @@ export const Hero = () => {
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: '80px', //height of navbar
+      marginTop: '40px', //height of navbar
     },
     title: {
       [theme.breakpoints.down('sm')]: {
