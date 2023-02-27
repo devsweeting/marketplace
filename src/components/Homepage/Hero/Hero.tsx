@@ -1,43 +1,40 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { SearchBox } from '@/components/SearchBox';
-import Image from 'next/image';
+
+export const BannerWrapper = styled(Box)(({ theme }) => ({
+  overflow: 'hidden',
+  width: '100%',
+  height: '550px',
+  zIndex: '0',
+  position: 'relative',
+  backgroundColor: 'rgba(17, 24, 39, 1)',
+  display: 'inline-block',
+  [theme.breakpoints.down('sm')]: {
+    minHeight: '50vh',
+  },
+  '&:before': {
+    content: '""',
+    position: 'absolute',
+    zIndex: '-1',
+    /*sqrt(2)x100% to make sure to cover all the area after the rotation */
+    width: '120%',
+    height: '150%',
+    /* to center */
+    left: '50%',
+    top: '50%',
+    background: 'url(/tradingCards/card_banner.png)',
+    backgroundSize: 'cover' /* size of the image*/,
+    transform: 'translate(-50%,-50%) rotate(-8deg)' /* center the element then rotate */,
+    boxShadow: 'inset 0 0 0 2000px rgba(17, 24, 39, 0.8)' /* alternative to using an css overlay */,
+  },
+}));
 
 export const Hero = () => {
   const theme = useTheme();
 
   const classes = {
-    wrapper: {
-      overflow: 'hidden',
-      width: '100%',
-      height: '550px',
-      zIndex: '0',
-      position: 'relative',
-      backgroundColor: 'rgba(17, 24, 39, 1)',
-
-      display: 'inline-block',
-      [theme.breakpoints.down('sm')]: {
-        minHeight: '50vh',
-      },
-      '&:before': {
-        content: '""',
-        position: 'absolute',
-        zIndex: '-1',
-        /*sqrt(2)x100% to make sure to cover all the area after the rotation */
-        width: '120%',
-        height: '150%',
-        /**/
-        /* to center*/
-        left: '50%',
-        top: '50%',
-        /* */
-        background: 'url(/tradingCards/card_banner.png)',
-        backgroundSize: 'cover' /* size of the image*/,
-        transform: 'translate(-50%,-50%) rotate(-8deg)' /* center the element then rotate */,
-        boxShadow: 'inset 0 0 0 2000px rgba(17, 24, 39, 0.8)',
-      },
-    },
     content: {
       position: 'relative',
       height: '100%',
@@ -77,7 +74,7 @@ export const Hero = () => {
     },
   };
   return (
-    <Box sx={classes.wrapper}>
+    <BannerWrapper>
       <Box sx={classes.content}>
         <Typography variant="xl5" component="h2" sx={classes.title}>
           Physical trading cards
@@ -89,6 +86,6 @@ export const Hero = () => {
           <SearchBox placeholder="Rookie..." />
         </Box>
       </Box>
-    </Box>
+    </BannerWrapper>
   );
 };
