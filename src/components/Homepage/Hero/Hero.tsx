@@ -2,8 +2,8 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { SearchBox } from '@/components/SearchBox';
+import Image from 'next/image';
 
-const TOTAL_IN_GRID = 24;
 export const Hero = () => {
   const theme = useTheme();
 
@@ -11,18 +11,41 @@ export const Hero = () => {
     wrapper: {
       overflow: 'hidden',
       width: '100%',
-      height: '450px',
-      backgroundColor: 'rgba(0,0,0,0.8)',
+      height: '550px',
+      zIndex: '0',
+      position: 'relative',
+      backgroundColor: 'rgba(17, 24, 39, 1)',
+
+      display: 'inline-block',
       [theme.breakpoints.down('sm')]: {
         minHeight: '50vh',
       },
+      '&:before': {
+        content: '""',
+        position: 'absolute',
+        zIndex: '-1',
+        /*sqrt(2)x100% to make sure to cover all the area after the rotation */
+        width: '120%',
+        height: '150%',
+        /**/
+        /* to center*/
+        left: '50%',
+        top: '50%',
+        /* */
+        background: 'url(/tradingCards/card_banner.png)',
+        backgroundSize: 'cover' /* size of the image*/,
+        transform: 'translate(-50%,-50%) rotate(-8deg)' /* center the element then rotate */,
+        boxShadow: 'inset 0 0 0 2000px rgba(17, 24, 39, 0.8)',
+      },
     },
     content: {
+      position: 'relative',
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: '100px',
+      marginTop: '80px', //height of navbar
     },
     title: {
       [theme.breakpoints.down('sm')]: {
@@ -39,7 +62,7 @@ export const Hero = () => {
       backdropFilter: 'blur(10px)',
       borderRadius: '99px',
       width: '50%',
-      m: '60px 0 0 10px',
+      m: '50px 0 0 10px',
       transition: 'all 250ms ease-in-out',
       [theme.breakpoints.down('sm')]: {
         width: '70%',
@@ -66,42 +89,6 @@ export const Hero = () => {
           <SearchBox placeholder="Rookie..." />
         </Box>
       </Box>
-      <Box>
-        <BackgroundBanner />
-      </Box>
     </Box>
   );
-};
-
-const BackgroundBanner = () => {
-  const classes = {
-    imageContainer: {
-      position: 'relative',
-      bottom: '600px',
-      right: '50px',
-      display: 'grid',
-      gridTemplateColumns: 'repeat(8, 1fr)',
-      transform: 'rotate(-10deg)',
-    },
-    background: {
-      boxShadow: 'inset 0 0 0 2000px rgb(17, 24, 39, 0.7)',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: '200px 320px', //size of image
-      width: '200px', //size of container
-      height: '320px',
-      zIndex: '1',
-    },
-  };
-  const rows = [];
-  for (let i = 0; i < TOTAL_IN_GRID; i++) {
-    rows.push(
-      <Box
-        sx={{
-          ...classes.background,
-          backgroundImage: `url(/tradingCards/hero_cards/card_${i + 1}.png)`,
-        }}
-      ></Box>,
-    );
-  }
-  return <Box sx={classes.imageContainer}>{rows}</Box>;
 };

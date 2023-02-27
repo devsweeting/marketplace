@@ -61,12 +61,11 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
           <Container>
             <Link href="/">
               <LogoWrapper>
-                <Image src="/images/logoJump.svg" alt="Header Logo" height="52" width="113" />
+                <Image src="/images/logoJump.svg" alt="Header Logo" height="32" width="113" />
               </LogoWrapper>
             </Link>
             {matchesDesktop ? (
               <>
-                <Divider orientation="vertical" />
                 {showSearchBar ? (
                   <SearchContainer>
                     <SearchBox
@@ -76,8 +75,6 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
                     />
                   </SearchContainer>
                 ) : null}
-                <Divider orientation="vertical" />
-
                 <Navbar navLinks={Routes} />
               </>
             ) : (

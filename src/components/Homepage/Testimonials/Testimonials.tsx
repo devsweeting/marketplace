@@ -69,7 +69,7 @@ export const Testimonials = () => {
                     src={testimony.image}
                     fill
                     alt={'in quia occaecati nihil'}
-                    style={{ objectFit: 'contain' }}
+                    style={{ objectFit: 'cover' }}
                   />
                 </Box>
                 <Box>

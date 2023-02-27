@@ -54,13 +54,7 @@ const Homepage = () => {
             margin: '0 auto',
           }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            sx={{ marginTop: { xs: 10, md: 15 } }} //TODO - Creating the weird gap at the top of the Hero
-          >
+          <Grid container direction="row" justifyContent="center" alignItems="stretch">
             <Grid item xs={12}>
               <Hero />
             </Grid>

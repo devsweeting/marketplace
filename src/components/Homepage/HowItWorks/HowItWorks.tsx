@@ -36,7 +36,8 @@ export const HowItWorks = () => {
       justifyContent: 'center',
       alignItems: 'center',
       textAlign: 'center',
-      color: '#6B7280',
+      color: theme.palette.grey[500],
+      maxWidth: '80rem',
       [theme.breakpoints.down('sm')]: {
         fontSize: '1.2rem',
         width: '90%',
@@ -80,7 +81,7 @@ export const HowItWorks = () => {
     heroBody: {
       maxWidth: '80ch',
       marginBottom: '1.5rem',
-      color: '#6B7280',
+      color: theme.palette.grey[500],
       fontSize: '16px',
     },
     imageWrapper: {
@@ -123,7 +124,7 @@ export const HowItWorks = () => {
       fontSize: '.8rem',
       alignItems: 'center',
       textAlign: 'center',
-      color: '#6B7280',
+      color: theme.palette.grey[500],
       lineHeight: '150%',
       [theme.breakpoints.down('sm')]: {
         fontSize: '.6rem',
@@ -168,7 +169,7 @@ export const HowItWorks = () => {
         >
           <Box sx={classes.icon}>
             <Image
-              src={`/images/nftDetail/icons/Rectangle.png`}
+              src={`/images/nftDetail/icons/Rectangle.svg`}
               height={48}
               width={48}
               alt={'rectangle'}
@@ -192,12 +193,7 @@ export const HowItWorks = () => {
           }}
         >
           <Box sx={classes.icon}>
-            <Image
-              src={`/images/nftDetail/icons/Star.png`}
-              height={48}
-              width={48}
-              alt={'rectangle'}
-            />
+            <Image src={`/images/nftDetail/icons/Star.svg`} height={48} width={48} alt={'star'} />
           </Box>
           <Typography variant="lg" component="h3" sx={classes.subheader}>
             Collect
@@ -218,10 +214,10 @@ export const HowItWorks = () => {
         >
           <Box sx={classes.icon}>
             <Image
-              src={`/images/nftDetail/icons/Polygon.png`}
+              src={`/images/nftDetail/icons/Polygon.svg`}
               height={48}
               width={48}
-              alt={'rectangle'}
+              alt={'polygon'}
             />
           </Box>
           <Typography variant="lg" component="h3" sx={classes.subheader}>
@@ -275,14 +271,18 @@ export const HowItWorks = () => {
             sx={classes.imageWrapper}
           >
             <Box sx={classes.nextImageHolder}>
-              <TradingCard src={'/tradingCards/jordan_hardcat_heroics_card.png'} />
+              <TradingCard
+                color={'pink'}
+                src={'/tradingCards/jordan_hardcat_heroics_card.png'}
+                isWhiteBackground={false}
+              />
             </Box>
           </Box>
         </Grid>
         <Grid item sx={classes.rightHeroWrapper}>
           <Box style={{}} sx={classes.imageWrapper}>
             <Box sx={classes.nextImageHolder}>
-              <TradingCard src={'/tradingCards/charizard.png'} />
+              <TradingCard color={'blue'} src={'/tradingCards/charizard.png'} />
             </Box>
           </Box>
         </Grid>
@@ -353,7 +353,7 @@ export const HowItWorks = () => {
         <Grid item sx={classes.rightHeroWrapper}>
           <Box style={{}} sx={classes.imageWrapper}>
             <Box sx={classes.nextImageHolder}>
-              <TradingCard src={'/tradingCards/national_treasure_giannis.png'} />
+              <TradingCard color={'red'} src={'/tradingCards/national_treasure_giannis.png'} />
             </Box>
           </Box>
         </Grid>
