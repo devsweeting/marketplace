@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
-import { Container, TextContainer, Slider, CardContainer, Card } from './Testimomials.styles';
+import { Container, TextContainer, Slider, CardContainer, Card, Line } from './Testimomials.styles';
 
 export const Testimonials = () => {
   const mockTestimonies = [
@@ -34,6 +34,7 @@ export const Testimonials = () => {
         <Typography variant="xl5" fontWeight={800}>
           What our collectors say
         </Typography>
+        <Line />
       </TextContainer>
       <Slider container>
         <CardContainer>

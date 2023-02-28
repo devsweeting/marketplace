@@ -6,8 +6,7 @@ export const Container = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   marginTop: '120px',
-  marginBottom: '100px',
-  maxWidth: '100vw',
+  maxWidth: '100%',
   [theme.breakpoints.down('sm')]: {
     marginTop: '20px',
     marginBottom: '10px',
@@ -17,10 +16,9 @@ export const Container = styled('div')(({ theme }) => ({
 export const TextContainer = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  marginBottom: '30px',
   justifyContent: 'center',
   alignItems: 'center',
-  gap: '1rem',
+  // gap: '1rem',
 });
 
 export const Slider = styled(Grid)(({ theme }) => ({
@@ -45,6 +43,15 @@ export const CardContainer = styled('div')(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     flexWrap: 'nowrap',
   },
+}));
+
+export const Line = styled('div')(() => ({
+  padding: '0px',
+  width: '3px',
+  height: '96px',
+  background: 'linear-gradient(180deg, #FF6C9E 0%, #0028E9 100%)',
+  borderRadius: '8px',
+  transform: 'rotate(-90deg)',
 }));
 
 export const Card = styled('div')(({ theme }) => ({
