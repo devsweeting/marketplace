@@ -58,7 +58,8 @@ export const Hero = () => {
       backgroundColor: 'rgba(0,0,0,0.5)',
       backdropFilter: 'blur(10px)',
       borderRadius: '99px',
-      width: '50%',
+      width: '100%',
+      maxWidth: '32rem',
       m: '50px 0 0 10px',
       transition: 'all 250ms ease-in-out',
       [theme.breakpoints.down('sm')]: {

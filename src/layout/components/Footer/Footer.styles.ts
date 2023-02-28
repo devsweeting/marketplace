@@ -17,7 +17,7 @@ export const TopContainer = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   gap: '1rem',
-  margin: '1rem 0',
+  margin: '.5rem 0',
 });
 
 export const Img = styled('img')({});
