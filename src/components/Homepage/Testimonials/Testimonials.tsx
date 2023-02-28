@@ -34,9 +34,6 @@ export const Testimonials = () => {
         <Typography variant="xl5" fontWeight={800}>
           What our collectors say
         </Typography>
-        <Typography variant="body1">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        </Typography>
       </TextContainer>
       <Slider container>
         <CardContainer>
