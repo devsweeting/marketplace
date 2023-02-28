@@ -6,6 +6,7 @@ export const Container = styled('div')(({ theme }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   marginTop: '120px',
+  marginBottom: '120px',
   maxWidth: '100%',
   [theme.breakpoints.down('sm')]: {
     marginTop: '20px',
