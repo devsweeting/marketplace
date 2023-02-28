@@ -9,6 +9,7 @@ import {
   SocialLinks,
   PageLinks,
   FooterNavLink,
+  ButtonStyles,
 } from './Footer.styles';
 import { Button } from '@/components/Button';
 
@@ -32,20 +33,20 @@ export const Footer = () => {
       </TopContainer>
       <Divider />
       <BottomContainer>
-        <Typography variant="body1">© 2023 Jump. All rights reserved.</Typography>
+        <Typography variant="sm">© 2023 Jump. All rights reserved.</Typography>
         <PageLinks>
           <FooterNavLink href="/faq">
-            <Button variant="text" color="secondary">
+            <Button variant="text" color="secondary" style={ButtonStyles}>
               Refunds & Returns
             </Button>
           </FooterNavLink>
           <FooterNavLink href="https://www.jump.co/privacy">
-            <Button variant="text" color="secondary">
+            <Button variant="text" color="secondary" style={ButtonStyles}>
               Privacy Policy
             </Button>
           </FooterNavLink>
           <FooterNavLink href="https://www.jump.co/terms-of-service">
-            <Button variant="text" color="secondary">
+            <Button variant="text" color="secondary" style={ButtonStyles}>
               Terms of Service
             </Button>
           </FooterNavLink>

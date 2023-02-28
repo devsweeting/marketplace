@@ -46,3 +46,7 @@ export const FooterNavLink = styled(Link)({
   textDecoration: 'none',
   cursor: 'pointer',
 });
+
+export const ButtonStyles = {
+  fontSize: '.875rem',
+};

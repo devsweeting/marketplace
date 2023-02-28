@@ -12,7 +12,6 @@ export const Container = styled('div')(({ theme }) => ({
   position: 'relative',
   overflow: 'hidden',
   color: 'white',
-  paddingTop: '40px',
   [theme.breakpoints.down('sm')]: {
     height: '125vw',
   },
@@ -25,6 +24,7 @@ export const ImgWrapper = styled('div')({
   position: 'absolute',
   left: '0',
   right: '0',
+  top: '0',
   maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 50%, transparent 100%)',
   borderRadius: '10px',
 });

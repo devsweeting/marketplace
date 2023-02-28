@@ -13,6 +13,7 @@ declare module '@mui/material/styles/createPalette' {
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
+    sm: CSSProperties;
     lg: CSSProperties;
     xl: CSSProperties;
     xl2: CSSProperties;
@@ -27,6 +28,7 @@ declare module '@mui/material/styles' {
   }
 
   interface TypographyVariantsOptions {
+    sm?: CSSProperties;
     lg?: CSSProperties;
     xl?: CSSProperties;
     xl2?: CSSProperties;
@@ -43,6 +45,7 @@ declare module '@mui/material/styles' {
 
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    sm: true;
     lg: true;
     xl: true;
     xl2: true;
@@ -114,6 +117,11 @@ typography is mapped to values in the figmas to make implementations a bit simpl
 export const themeJump = createTheme(theme, {
   typography: {
     fontFamily: 'mona-sans',
+    sm: {
+      display: 'block',
+      fontSize: 'clamp(.875rem, 0.42735042735042733vw + 0.8397435897435898rem, 1rem)',
+      lineHeight: '1.75rem',
+    },
     lg: {
       display: 'block',
       fontSize: 'clamp(1rem, 0.42735042735042733vw + 0.8397435897435898rem, 1.25rem)',
