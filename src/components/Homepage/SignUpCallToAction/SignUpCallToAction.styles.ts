@@ -17,6 +17,20 @@ export const Container = styled('div')(({ theme }) => ({
   },
 }));
 
+export const GradientBorder = styled('div')({
+  marginTop: '50px',
+  width: '70%',
+  height: '420px',
+  position: 'relative',
+  '&:before': {
+    content: '""',
+    height: '1px',
+    background:
+      'linear-gradient(to right,  rgba(0,0,0,0) 0%,rgba(147,147,147,1) 50%,rgba(0,0,0,0) 100%)',
+    display: 'block',
+  },
+});
+
 export const ImgWrapper = styled('div')({
   width: '15rem',
   height: '25rem',
@@ -25,7 +39,7 @@ export const ImgWrapper = styled('div')({
   left: '0',
   right: '0',
   top: '0',
-  maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 50%, transparent 100%)',
+  maskImage: 'linear-gradient(to bottom, rgba(0, 0, 0, 1.0) 45%, transparent 91%)',
   borderRadius: '10px',
 });
 

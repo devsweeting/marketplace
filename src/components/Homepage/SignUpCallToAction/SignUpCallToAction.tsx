@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useModalContext } from '@/helpers/auth/ModalContext';
-import { Container, ImgWrapper } from './SignUpCallToAction.styles';
+import { Container, GradientBorder, ImgWrapper } from './SignUpCallToAction.styles';
 import Image from 'next/image';
 
 export const SignUpCallToAction = () => {
@@ -11,17 +11,19 @@ export const SignUpCallToAction = () => {
   };
   return (
     <Container>
-      <ImgWrapper>
-        <Image
-          src={`/images/reflectedCard.png`}
-          alt={'reflected Ja Morant'}
-          style={{
-            borderRadius: '5px',
-            opacity: '50%',
-          }}
-          fill
-        />
-      </ImgWrapper>
+      <GradientBorder>
+        <ImgWrapper>
+          <Image
+            src={`/images/reflectedCard.png`}
+            alt={'reflected Ja Morant'}
+            style={{
+              borderRadius: '5px',
+              opacity: '50%',
+            }}
+            fill
+          />
+        </ImgWrapper>
+      </GradientBorder>
       <Box
         style={{
           display: 'flex',
@@ -30,6 +32,7 @@ export const SignUpCallToAction = () => {
           alignItems: 'center',
           zIndex: 6,
           gap: '1rem',
+          marginBottom: '80px',
         }}
       >
         <Typography variant="xl7" fontWeight={700}>
