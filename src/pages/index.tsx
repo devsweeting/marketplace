@@ -4,8 +4,6 @@ import { Hero } from '@/components/Homepage/Hero';
 import { HowItWorks } from '@/components/Homepage/HowItWorks';
 import { Testimonials } from '@/components/Homepage/Testimonials';
 import { SignUpCallToAction } from '@/components/Homepage/SignUpCallToAction';
-import { SubscribeCallToAction } from '@/components/Homepage/SubscribeCallToAction';
-import { FAQ } from '@/components/Homepage/FAQ';
 import { FeaturedMarketCarousel } from '@/components/FeaturedMarketCarousel';
 import { useRouter } from 'next/router';
 
@@ -18,6 +16,7 @@ import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 const Homepage = () => {
   const router = useRouter();
   const { isReady } = router;
+
   const loadLatestDropAssets = useCallback(
     async (page = 1, signal?: AbortSignal | undefined) => {
       if (isReady) {
@@ -30,10 +29,12 @@ const Homepage = () => {
     },
     [isReady],
   );
+
   const [dropAssets = [], dropAssetsLoadingState] = useEndpoint(
     (signal) => loadLatestDropAssets(1, signal),
     [loadLatestDropAssets],
   );
+
   const handleDrawer = () => {
     return null;
   };
@@ -41,20 +42,17 @@ const Homepage = () => {
   return (
     <>
       <ClientOnly>
-        <OpenGraph title={'Home page'} description={'Home page description'} />
+        <OpenGraph
+          title={'Jump Marketplace'}
+          description={'Exclusive Marketplace for Collectibles'}
+        />
 
         <Box
           sx={{
             margin: '0 auto',
           }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            sx={{ marginTop: { xs: 10, md: 15 } }}
-          >
+          <Grid container direction="row" justifyContent="center" alignItems="stretch">
             <Grid item xs={12}>
               <Hero />
             </Grid>
@@ -76,12 +74,6 @@ const Homepage = () => {
             </Grid>
             <Grid item xs={12}>
               <SignUpCallToAction />
-            </Grid>
-            <Grid item xs={12}>
-              <FAQ />
-            </Grid>
-            <Grid item xs={12}>
-              <SubscribeCallToAction />
             </Grid>
           </Grid>
         </Box>

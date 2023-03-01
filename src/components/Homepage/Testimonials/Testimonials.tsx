@@ -1,33 +1,30 @@
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import React from 'react';
-import { Container, TextContainer, Slider, CardContainer, Card } from './Testimomials.styles';
+import { Container, TextContainer, Slider, CardContainer, Card, Line } from './Testimomials.styles';
 
 export const Testimonials = () => {
   const mockTestimonies = [
     {
-      name: 'Jane Cooper',
-      image:
-        'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07',
-      company: 'The Walt Disney Company',
+      name: 'The Real Scott Kveton',
+      image: '/images/testimonials/scott_k.png',
+      company: 'Jump',
       testimonial:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        "I've been collecting NFTs for years, but this physical-based NFT collector marketplace takes it to the next level. The quality of the products is amazing, and the attention to detail is unparalleled. I love being able to display my NFTs in a physical form, and the marketplace makes it easy to do so. I highly recommend this marketplace to any serious NFT collector out there.",
     },
     {
-      name: 'Cameron Williamson',
-      image:
-        'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07',
-      company: 'Nintendo',
+      name: 'Skeletor Keldor',
+      image: '/images/testimonials/skeletor.png',
+      company: 'Overlord of Evil',
       testimonial:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'This physical-based NFT collector marketplace is a game-changer for the NFT industry. The ability to own a physical representation of my favorite digital assets is truly unique, and the products are of the highest quality. I also appreciate the level of transparency in the production process, which gives me even more confidence in my purchases. I highly recommend this marketplace to anyone looking to take their NFT collection to the next level.',
     },
     {
-      name: 'Jenny Wilson',
-      image:
-        'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07',
-      company: 'Sony',
+      name: 'Kylian Mbappe',
+      image: '/images/testimonials/avatar.png',
+      company: 'Paris Saint-Germain ',
       testimonial:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. ',
+        "This online trading card marketplace is a game-changer! I was able to find rare cards that I've been searching for for years. The platform is reliable and secure, and the customer service is top-notch. I highly recommend this marketplace to anyone looking for high-quality trading cards.",
     },
   ];
 
@@ -37,9 +34,7 @@ export const Testimonials = () => {
         <Typography variant="xl5" fontWeight={800}>
           What our collectors say
         </Typography>
-        <Typography variant="body1">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        </Typography>
+        <Line />
       </TextContainer>
       <Slider container>
         <CardContainer>
@@ -72,7 +67,7 @@ export const Testimonials = () => {
                     src={testimony.image}
                     fill
                     alt={'in quia occaecati nihil'}
-                    style={{ objectFit: 'contain' }}
+                    style={{ objectFit: 'cover' }}
                   />
                 </Box>
                 <Box>

@@ -13,6 +13,7 @@ declare module '@mui/material/styles/createPalette' {
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
+    sm: CSSProperties;
     lg: CSSProperties;
     xl: CSSProperties;
     xl2: CSSProperties;
@@ -27,6 +28,7 @@ declare module '@mui/material/styles' {
   }
 
   interface TypographyVariantsOptions {
+    sm?: CSSProperties;
     lg?: CSSProperties;
     xl?: CSSProperties;
     xl2?: CSSProperties;
@@ -43,6 +45,7 @@ declare module '@mui/material/styles' {
 
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    sm: true;
     lg: true;
     xl: true;
     xl2: true;
@@ -113,7 +116,12 @@ typography is mapped to values in the figmas to make implementations a bit simpl
 
 export const themeJump = createTheme(theme, {
   typography: {
-    fontFamily: 'Inter',
+    fontFamily: 'mona-sans',
+    sm: {
+      display: 'block',
+      fontSize: 'clamp(.875rem, 0.42735042735042733vw + 0.8397435897435898rem, 1rem)',
+      lineHeight: '1.75rem',
+    },
     lg: {
       display: 'block',
       fontSize: 'clamp(1rem, 0.42735042735042733vw + 0.8397435897435898rem, 1.25rem)',
@@ -165,7 +173,7 @@ export const themeJump = createTheme(theme, {
       lineHeight: '8rem',
     },
     body1: {
-      fontFamily: 'Inter',
+      fontFamily: 'mona-sans',
       fontSize: '0.875rem',
       lineHeight: '1.25rem',
       [theme.breakpoints.up('sm')]: {
@@ -175,7 +183,7 @@ export const themeJump = createTheme(theme, {
       fontWeight: 400,
     },
     body2: {
-      fontFamily: 'Inter',
+      fontFamily: 'mona-sans',
       fontSize: '0.75rem',
       lineHeight: '1.125rem',
       fontWeight: 400,
@@ -193,10 +201,10 @@ export const themeJump = createTheme(theme, {
       },
     },
     button: {
-      fontFamily: 'Inter',
+      fontFamily: 'mona-sans',
     },
     nav: {
-      fontFamily: 'Inter',
+      fontFamily: 'mona-sans',
       fontWeight: 500,
       fontSize: '1rem',
       lineHeight: '1.5rem',
@@ -243,7 +251,7 @@ export const themeJump = createTheme(theme, {
     MuiButton: {
       styleOverrides: {
         root: {
-          fontFamily: 'Inter',
+          fontFamily: 'mona-sans',
           fontSize: '1rem',
           fontWeight: 600,
           boxSizing: 'border-box',

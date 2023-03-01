@@ -1,7 +1,8 @@
 import { Box, Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useModalContext } from '@/helpers/auth/ModalContext';
-import { Container, Square } from './SignUpCallToAction.styles';
+import { Container, GradientBorder, ImgWrapper } from './SignUpCallToAction.styles';
+import Image from 'next/image';
 
 export const SignUpCallToAction = () => {
   const { dispatch } = useModalContext();
@@ -10,10 +11,19 @@ export const SignUpCallToAction = () => {
   };
   return (
     <Container>
-      <Square sx={{ right: '20%', top: 170 }} />
-      <Square sx={{ left: -70 }} />
-      <Square sx={{ right: -70, bottom: 130 }} />
-      <Square sx={{ left: '20%', bottom: 130 }} />
+      <GradientBorder>
+        <ImgWrapper>
+          <Image
+            src={`/images/reflectedCard.png`}
+            alt={'reflected Ja Morant'}
+            style={{
+              borderRadius: '5px',
+              opacity: '50%',
+            }}
+            fill
+          />
+        </ImgWrapper>
+      </GradientBorder>
       <Box
         style={{
           display: 'flex',
@@ -22,15 +32,22 @@ export const SignUpCallToAction = () => {
           alignItems: 'center',
           zIndex: 6,
           gap: '1rem',
+          marginBottom: '80px',
         }}
       >
         <Typography variant="xl7" fontWeight={700}>
           New Drops every week
         </Typography>
-        <Typography variant="xl">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </Typography>
-        <Button variant="contained" rounded onClick={handleClick}>
+        <Typography variant="xl">Join our community to start collecting.</Typography>
+        <Button
+          variant="contained"
+          rounded
+          onClick={handleClick}
+          style={{
+            border: '1px solid white',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}
+        >
           Sign up
         </Button>
       </Box>

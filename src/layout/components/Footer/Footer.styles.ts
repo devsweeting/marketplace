@@ -17,32 +17,57 @@ export const TopContainer = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   gap: '1rem',
-  margin: '1rem 0',
+  margin: '.5rem 0',
 });
 
 export const Img = styled('img')({});
 
-export const SocialLinks = styled('div')({
+export const SocialLinks = styled('div')(({ theme }) => ({
   display: 'flex',
+  alignItems: 'center',
   gap: '2rem',
-});
+  '> .icons': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '2rem',
+  },
+  [theme.breakpoints.down('md')]: {
+    flexDirection: 'column',
+  },
+}));
 
+// The 'Box' classNames makes keeps the Jump logo aligned on the center vertical axis
+// while the left and right items are allowed space to grow on different screensizes.
 export const BottomContainer = styled('div')({
   width: '100%',
   display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  flexWrap: 'wrap',
-  gap: '1rem',
+  '.box': {
+    flex: '1',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  '.box:first-child > .item': { marginRight: 'auto' },
+
+  '.box:last-child  > .item': { marginLeft: 'auto' },
 });
 
-export const PageLinks = styled('div')({
+export const PageLinks = styled('div')(({ theme }) => ({
   display: 'flex',
+  justifyContent: 'flex-end',
   flexWrap: 'wrap',
-  gap: '1rem 1.5rem',
-});
+  gap: '.5rem 0rem',
+  [theme.breakpoints.down('md')]: {
+    justifyContent: 'flex-end',
+  },
+}));
 
 export const FooterNavLink = styled(Link)({
   textDecoration: 'none',
   cursor: 'pointer',
 });
+
+export const ButtonStyles = {
+  fontSize: '.875rem',
+};
