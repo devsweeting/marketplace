@@ -31,6 +31,20 @@ export const GradientBorder = styled('div')({
   },
 });
 
+export const FooterBanner = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 6,
+  gap: '1rem',
+  marginBottom: '80px',
+  [theme.breakpoints.down('sm')]: {
+    marginBottom: '0',
+    textAlign: 'center',
+  },
+}));
+
 export const ImgWrapper = styled('div')({
   width: '15rem',
   height: '25rem',
