@@ -25,18 +25,6 @@ const radientColors = {
 export const TradingCard = ({ src, color, isWhiteBackground = true }: TradingCardProps) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down('md'));
-  return matchesMobile ? (
-    <Image src={src} fill alt={'trading card'} style={{ objectFit: 'contain' }} />
-  ) : (
-    <TradingCard3D src={src} color={color} isWhiteBackground={isWhiteBackground} />
-  );
-};
-
-export const TradingCard3D = ({ src, color, isWhiteBackground }: TradingCardProps) => {
-  const cardSize = {
-    width: '17.5rem',
-    height: '29.5rem',
-  };
 
   return (
     <Box
@@ -52,16 +40,31 @@ export const TradingCard3D = ({ src, color, isWhiteBackground }: TradingCardProp
         alignItems: 'center',
       }}
     >
-      <Card
-        style={{
-          backgroundColor: 'linear-gradient(to bottom, transparent 0%, black 100%)',
-
-          cursor: 'pointer',
-          ...cardSize,
-        }}
-      >
-        <Image src={src} fill alt={'in quia occaecati nihil'} style={{ objectFit: 'contain' }} />
-      </Card>
+      {matchesMobile ? (
+        <Image src={src} fill alt={'trading card'} style={{ objectFit: 'contain' }} />
+      ) : (
+        <TradingCard3D src={src} color={color} isWhiteBackground={isWhiteBackground} />
+      )}
     </Box>
+  );
+};
+
+export const TradingCard3D = ({ src }: TradingCardProps) => {
+  const cardSize = {
+    width: '17.5rem',
+    height: '29.5rem',
+  };
+
+  return (
+    <Card
+      style={{
+        backgroundColor: 'linear-gradient(to bottom, transparent 0%, black 100%)',
+
+        cursor: 'pointer',
+        ...cardSize,
+      }}
+    >
+      <Image src={src} fill alt={'in quia occaecati nihil'} style={{ objectFit: 'contain' }} />
+    </Card>
   );
 };

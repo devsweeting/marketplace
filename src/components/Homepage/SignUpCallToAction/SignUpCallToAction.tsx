@@ -1,7 +1,7 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { Button } from '@/components/Button';
 import { useModalContext } from '@/helpers/auth/ModalContext';
-import { Container, GradientBorder, ImgWrapper } from './SignUpCallToAction.styles';
+import { Container, GradientBorder, ImgWrapper, FooterBanner } from './SignUpCallToAction.styles';
 import Image from 'next/image';
 
 export const SignUpCallToAction = () => {
@@ -24,17 +24,7 @@ export const SignUpCallToAction = () => {
           />
         </ImgWrapper>
       </GradientBorder>
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 6,
-          gap: '1rem',
-          marginBottom: '80px',
-        }}
-      >
+      <FooterBanner>
         <Typography variant="xl7" fontWeight={700}>
           New Drops every week
         </Typography>
@@ -50,7 +40,7 @@ export const SignUpCallToAction = () => {
         >
           Sign up
         </Button>
-      </Box>
+      </FooterBanner>
     </Container>
   );
 };
