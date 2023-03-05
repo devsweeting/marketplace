@@ -63,3 +63,11 @@ lerna-debug.log
 
 # Sentry
 .sentryclirc
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# ebextensions files
+00*conf*
