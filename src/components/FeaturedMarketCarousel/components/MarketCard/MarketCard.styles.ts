@@ -10,10 +10,11 @@ export const Card = styled(MuiCard)(({ theme }) => ({
   flexWrap: 'nowrap',
   cursor: 'pointer',
   transition: 'all .2s ease-in-out',
-  whiteApace: 'nowrap',
+  whiteSpace: 'nowrap',
   [theme.breakpoints.down('sm')]: {
     width: '270px',
   },
+  '&:hover': { backgroundColor: theme.palette.grey[50] },
 }));
 
 export const ImgContainer = styled('div')({
