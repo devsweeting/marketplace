@@ -4,6 +4,7 @@ import Image from 'next/image';
 import type { IAsset } from '@/types';
 import { Attributes } from '@/components/Attributes';
 import { Card, ImgContainer, ImgWrapper, TextContainer } from './MarketCard.styles';
+import { useRouter } from 'next/router';
 
 export const MarketCard = ({
   asset,
@@ -14,6 +15,8 @@ export const MarketCard = ({
   handleDrawer?: (asset: IAsset) => void;
   tabIndex?: number;
 }) => {
+  const router = useRouter();
+
   if (!handleDrawer) {
     return null;
   }
@@ -26,7 +29,7 @@ export const MarketCard = ({
       tabIndex={tabIndex}
       sx={{ scrollSnapAlign: 'start' }}
     >
-      <Card variant="outlined">
+      <Card onClick={() => void router.push(`/asset/${asset.id}`)} variant="outlined">
         <ImgContainer>
           <ImgWrapper>
             {asset?.media && asset?.media.length > 0 && (
