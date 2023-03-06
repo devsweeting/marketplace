@@ -11,9 +11,9 @@ const generateYears = (min: number, max = getCurrentYear + 1) => {
 export const mockFilterResponse = {
   range: [
     {
-      categoryName: 'Grade',
+      categoryName: 'grade',
       filterType: 'slider',
-      categoryId: 'Grade',
+      categoryId: 'grade',
       range: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
     },
     { categoryName: 'Year', filterType: 'slider', categoryId: 'Year', range: generateYears(1800) },
@@ -26,9 +26,9 @@ export const mockFilterResponse = {
       filters: ['Baseball', 'Basketball'],
     },
     {
-      categoryName: 'Grading Service',
+      categoryName: 'grading service',
       filterType: 'checkbox',
-      categoryId: 'Grading Service',
+      categoryId: 'grading service',
       filters: ['PSA', 'BGS'],
     },
   ],

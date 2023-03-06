@@ -1200,25 +1200,25 @@ export const mockCategoryFilters = [
   {
     categoryName: 'Category',
     filterType: 'checkbox',
-    categoryId: 'Category',
+    categoryId: 'category',
     filters: ['Baseball', 'Basketball'],
   },
   {
     categoryName: 'Grade',
     filterType: 'slider',
-    categoryId: 'Grade',
+    categoryId: 'grade',
     range: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
   },
   {
     categoryName: 'Grading Service',
     filterType: 'checkbox',
-    categoryId: 'Grading Service',
+    categoryId: 'grading service',
     filters: ['PSA', 'BGS'],
   },
   {
     categoryName: 'Year',
     filterType: 'slider',
-    categoryId: 'Year',
+    categoryId: 'year',
     range: generateYears(1800),
   },
 ];
