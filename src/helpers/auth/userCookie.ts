@@ -41,7 +41,6 @@ export const getUserCookie = (req: NextServerRequest): IJwt | undefined => {
   }
 
   const decryptedToken = decrypt(encryptedTokens.accessToken);
-  console.log('decryptedtokens', decryptedToken);
   const decryptedRefreshToken = decrypt(encryptedTokens.refreshToken);
 
   return {
