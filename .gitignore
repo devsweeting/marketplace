@@ -70,4 +70,4 @@ lerna-debug.log
 !.elasticbeanstalk/*.global.yml
 
 # ebextensions files
-00*conf*
+00-http_basic_auth.config
