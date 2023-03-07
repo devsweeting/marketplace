@@ -75,6 +75,8 @@ export function AssetPage(props: AssetPageProps) {
     handleRemoveWatch,
   } = props;
 
+  console.log('AssetPage', sellOrder);
+
   const [url, setUrl] = useState('');
   const [modalState, setModalState] = useState<boolean>(false);
   const [unitsToPurchase, setUnitsToPurchase] = useState<number>(1);
