@@ -42,7 +42,7 @@ import { CopyButton } from '@/components/CopyButton';
 
 export interface AssetPageProps {
   asset: IAsset;
-  sellOrder: ISellOrder;
+  sellOrder: ISellOrder | undefined;
   info: InfoRow[];
   watched: boolean;
   unitQty: number;
@@ -201,7 +201,12 @@ export function AssetPage(props: AssetPageProps) {
               <Typography variant="body1">1% = {unitQty} units</Typography>
               <Typography variant="body1">${unitDollarPrice}</Typography>
             </Box>
-            <Button variant="contained" disabled={!purchasable} fullWidth onClick={toggleBuyModal}>
+            <Button
+              variant="contained"
+              disabled={!purchasable || sellOrder === undefined}
+              fullWidth
+              onClick={toggleBuyModal}
+            >
               {purchasable ? (
                 'Buy units'
               ) : (
@@ -228,14 +233,16 @@ export function AssetPage(props: AssetPageProps) {
             </Link>
           </ActionContainer>
         </InfoContainer>
-        <BuyModal
-          isOpen={modalState}
-          onClose={toggleBuyModal}
-          sellOrder={sellOrder}
-          totalFractions={unitsToPurchase}
-          totalPrice={totalPrice}
-          updateAsset={updateAsset}
-        />
+        {sellOrder !== undefined ? (
+          <BuyModal
+            isOpen={modalState}
+            onClose={toggleBuyModal}
+            sellOrder={sellOrder}
+            totalFractions={unitsToPurchase}
+            totalPrice={totalPrice}
+            updateAsset={updateAsset}
+          />
+        ) : null}
       </PageContainer>
     </>
   );

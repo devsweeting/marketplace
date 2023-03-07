@@ -35,7 +35,6 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   const user = useUser();
   const sellOrder = useMemo(() => {
     if (asset?.sellOrders && asset?.sellOrders.length > 0) return asset.sellOrders[0];
-
     return undefined;
   }, [asset?.sellOrders]);
 
@@ -157,7 +156,6 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
 
     return <AssetPage {...assetProps} />;
   }
-
   return <AssetErrorPage />;
 };
 
