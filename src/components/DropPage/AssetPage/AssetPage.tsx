@@ -82,6 +82,8 @@ export function AssetPage(props: AssetPageProps) {
 
   const purchasable = timeToPurchasable === 0;
 
+  const hasActiveSellOrder = sellOrder !== undefined && sellOrder.expireTime > Date.now();
+
   const toggleBuyModal = () => setModalState((prev) => !prev);
 
   const handleSliderChange = (event: Event, newValue: number | number[], activeThumb: number) => {
@@ -203,11 +205,13 @@ export function AssetPage(props: AssetPageProps) {
             </Box>
             <Button
               variant="contained"
-              disabled={!purchasable || sellOrder === undefined}
+              disabled={!purchasable || !hasActiveSellOrder}
               fullWidth
               onClick={toggleBuyModal}
             >
-              {purchasable ? (
+              {!hasActiveSellOrder ? (
+                'Unavailable for purchase'
+              ) : purchasable ? (
                 'Buy units'
               ) : (
                 <>
@@ -233,7 +237,7 @@ export function AssetPage(props: AssetPageProps) {
             </Link>
           </ActionContainer>
         </InfoContainer>
-        {sellOrder !== undefined ? (
+        {hasActiveSellOrder ? (
           <BuyModal
             isOpen={modalState}
             onClose={toggleBuyModal}
