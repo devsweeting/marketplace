@@ -69,7 +69,7 @@ export const CheckboxFilter = ({
         endIcon={open ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
       >
         <Typography variant="body1" fontWeight={500}>
-          {filter.categoryId}
+          {filter.categoryName}
         </Typography>
       </FilterButton>
 
