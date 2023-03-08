@@ -39,6 +39,7 @@ import {
   EmailIcon,
 } from 'react-share';
 import { CopyButton } from '@/components/CopyButton';
+import { NO_IMAGE_AVAILABLE } from '@/helpers/noImageFound';
 
 export interface AssetPageProps {
   asset: IAsset;
@@ -113,9 +114,9 @@ export function AssetPage(props: AssetPageProps) {
         title={asset.name}
         description={asset.description}
         image={
-          asset?.media
+          asset?.media && asset?.media[0].absoluteUrl
             ? asset?.media[0].absoluteUrl
-            : 'https://upload.wikimedia.org/wikipedia/commons/5/5a/No_image_available_500_x_500.svg'
+            : NO_IMAGE_AVAILABLE
         }
         image_alt={asset?.media && (asset?.media[0].description ?? 'No image available')}
       />
