@@ -3,6 +3,7 @@ import type { IAssetGallery } from './IAssetGallery';
 import Image from 'next/image';
 import type { IMedia } from '@/types';
 import { useEffect, useState } from 'react';
+import { NO_IMAGE_AVAILABLE } from '@/helpers/noImageFound';
 
 export const AssetGallery = ({ images }: IAssetGallery) => {
   const [currentImage, setCurrentImage] = useState<IMedia>(images[0]);
@@ -26,7 +27,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
           placeholder="blur"
           blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}
           priority={true}
-          src={currentImage.absoluteUrl}
+          src={currentImage.absoluteUrl ? currentImage.absoluteUrl : NO_IMAGE_AVAILABLE}
           fill
           alt={currentImage.title}
           style={{ textAlign: 'center', lineHeight: '325px', objectFit: 'contain' }}
@@ -45,7 +46,7 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
                   placeholder="blur"
                   blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}
                   priority={true}
-                  src={image.absoluteUrl}
+                  src={currentImage.absoluteUrl ? currentImage.absoluteUrl : NO_IMAGE_AVAILABLE}
                   width={45}
                   height={70}
                   alt={image.title}

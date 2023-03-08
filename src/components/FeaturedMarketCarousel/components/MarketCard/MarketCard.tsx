@@ -5,6 +5,7 @@ import type { IAsset } from '@/types';
 import { Attributes } from '@/components/Attributes';
 import { Card, ImgContainer, ImgWrapper, TextContainer } from './MarketCard.styles';
 import { useRouter } from 'next/router';
+import { NO_IMAGE_AVAILABLE } from '@/helpers/noImageFound';
 
 export const MarketCard = ({
   asset,
@@ -36,7 +37,7 @@ export const MarketCard = ({
               <Image
                 placeholder="blur"
                 blurDataURL={`/_next/image?url=${asset.media[0].absoluteUrl}&w=16&q=1`}
-                src={asset.media[0].absoluteUrl}
+                src={asset.media[0].absoluteUrl ? asset.media[0].absoluteUrl : NO_IMAGE_AVAILABLE}
                 alt={asset.media[0].title}
                 style={{ borderRadius: '5px' }}
                 fill
