@@ -26,6 +26,7 @@ export function DropDetails(props: DropDetailsProps) {
   return (
     <Accordion
       square
+      expanded={true}
       disableGutters
       elevation={0}
       sx={{
