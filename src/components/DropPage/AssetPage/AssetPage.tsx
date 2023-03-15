@@ -38,7 +38,6 @@ import {
   EmailShareButton,
   EmailIcon,
 } from 'react-share';
-import { CopyButton } from '@/components/CopyButton';
 import { NO_IMAGE_AVAILABLE } from '@/helpers/noImageFound';
 
 export interface AssetPageProps {
@@ -128,7 +127,6 @@ export function AssetPage(props: AssetPageProps) {
             ) : (
               <StarBorderRounded onClick={() => void handleWatch(asset)} fontSize="large" />
             )}
-            <CopyButton />
             <FacebookShareButton url={url}>
               <FacebookIcon size={32} round />
             </FacebookShareButton>
