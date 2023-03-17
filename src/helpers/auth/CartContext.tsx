@@ -1,7 +1,14 @@
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useState, useContext, createContext, useCallback } from 'react';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { Checkout } from '@/components/Checkout';
+import { getPaymentIntentStripe } from '@/api/endpoints/paymentIntent';
+import { Elements } from '@stripe/react-stripe-js';
+
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
 
 type CartProviderProps = {
   children: ReactNode;
@@ -24,6 +31,7 @@ type CartContext = {
   removeFromCart: (id: string) => void;
   cartQuantity: number;
   isDisabled: boolean;
+  stripeClientSecret: string | undefined;
 };
 
 const CartContext = createContext({} as CartContext);
@@ -35,6 +43,7 @@ export const useCart = () => {
 export const CartProvider = ({ children }: CartProviderProps) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const initialState = { isOpen: false, isDisabled: false };
+
   const [cartModalState, setCartModalState] = useState(initialState);
   const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
 
@@ -135,6 +144,28 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     [setCartItems],
   );
 
+  // ---------STRIPE INTEGRATION---------
+
+  //returns the client secret from the Stripe Payment Intent
+  const [clientSecret, setClientSecret] = useState<string>();
+
+  useEffect(() => {
+    const fetchIntent = async () => {
+      const clientSecret = await getPaymentIntentStripe();
+      console.log('in effect', clientSecret);
+      setClientSecret(clientSecret);
+    };
+    fetchIntent();
+
+    return () => {
+      setClientSecret(undefined);
+    };
+  }, []);
+
+  console.log('CLIENT SECRET!', clientSecret);
+
+  // ------------------
+
   return (
     <CartContext.Provider
       value={{
@@ -147,10 +178,13 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         reOpenCart,
         closeModal,
         isDisabled: cartModalState.isDisabled,
+        stripeClientSecret: clientSecret && clientSecret,
       }}
     >
       {children}
-      <Checkout isOpen={shouldBeOpen()} />
+      <Elements stripe={stripePromise} options={{ clientSecret: clientSecret }} key={clientSecret}>
+        <Checkout isOpen={shouldBeOpen()} />
+      </Elements>
     </CartContext.Provider>
   );
 };

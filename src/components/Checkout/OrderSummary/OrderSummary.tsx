@@ -10,7 +10,6 @@ import {
 } from './../PaymentMethods/PaymentMethods.styles';
 import { Box, Typography, useTheme } from '@mui/material';
 import { formatNumber } from '@/helpers/formatNumber';
-import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { useCart } from '@/helpers/auth/CartContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
@@ -18,6 +17,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import { useRouter } from 'next/router';
 import { purchaseSellOrder } from '@/api/endpoints/sellorders';
 import { StatusCodes } from 'http-status-codes';
+import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 
 export const OrderSummary = ({
   setPage,
@@ -140,7 +140,8 @@ export const OrderSummary = ({
           </Box>
         </Box>
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
-          <ConfirmInfoButton disabled={!isValid} onClick={submitHandler}>
+          {/* DEV NOTE -- HIDE FOR NOW */}
+          <ConfirmInfoButton disabled={isValid} onClick={submitHandler}>
             Confirm Order
           </ConfirmInfoButton>
         </Box>

@@ -5,10 +5,12 @@ import { PaymentMethods } from '../PaymentMethods';
 import { PaymentService } from '../PaymentService';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
-import { RetrieveUserInfo } from '../RetrieveUserInfo';
 import { Box } from '@mui/material';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 import { OrderSummary } from '../OrderSummary';
+import { RetrieveUserInfo } from '../RetrieveUserInfo';
+import { CardWrapper } from '../Stripe/CardForm.styles';
+import { SplitForm } from '../Stripe/CardForm.component';
 
 export const Conditional = () => {
   const [page, setPage] = useState(0);
@@ -53,14 +55,19 @@ export const Conditional = () => {
       }
       case 3: {
         return (
-          <PaymentService
-            setPage={setPage}
-            orderSummary={orderSummary}
-            alertMessage={alertMessage}
-            setAlertMessage={setAlertMessage}
-            open={open}
-            setOpen={setOpen}
-          />
+          <span>
+            <PaymentService
+              setPage={setPage}
+              orderSummary={orderSummary}
+              alertMessage={alertMessage}
+              setAlertMessage={setAlertMessage}
+              open={open}
+              setOpen={setOpen}
+            />
+            <CardWrapper>
+              <SplitForm />
+            </CardWrapper>
+          </span>
         );
       }
 
