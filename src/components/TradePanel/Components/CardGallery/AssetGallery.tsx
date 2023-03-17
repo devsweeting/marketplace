@@ -44,9 +44,9 @@ export const AssetGallery = ({ images }: IAssetGallery) => {
               >
                 <Image
                   placeholder="blur"
-                  blurDataURL={`/_next/image?url=${currentImage.absoluteUrl}&w=16&q=1`}
+                  blurDataURL={`/_next/image?url=${image.absoluteUrl}&w=16&q=1`}
                   priority={true}
-                  src={currentImage.absoluteUrl ? currentImage.absoluteUrl : NO_IMAGE_AVAILABLE}
+                  src={image.absoluteUrl ? image.absoluteUrl : NO_IMAGE_AVAILABLE}
                   width={45}
                   height={70}
                   alt={image.title}
