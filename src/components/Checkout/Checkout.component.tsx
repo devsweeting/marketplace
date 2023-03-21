@@ -47,14 +47,16 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
   const [clientSecret, setClientSecret] = useState<string | undefined>();
 
   useEffect(() => {
+    //Wrap in UseEffect so function only runs after the page renders
     const fetchIntent = async () => {
+      //declaring then calling this function allows it to be called at the top level of a non-async component
       const clientSecret = await usePaymentIntentStripe(item);
       setClientSecret(clientSecret);
     };
     void fetchIntent();
 
     return () => {
-      setClientSecret(undefined);
+      setClientSecret(undefined); //clean up function that runs when component is unmounted. TODO reassess, maybe clear cookie here.
     };
   }, []);
 
@@ -63,7 +65,8 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
   if (!(Object.keys(ref).length > 0) || clientSecret === undefined) {
     return null;
   }
-  console.log('CLIENT SECRET mounted!', clientSecret);
+
+  console.log('client secret on mount:', clientSecret);
 
   return (
     <Modal
@@ -79,7 +82,7 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
         <Elements
           stripe={stripePromise}
           options={{ clientSecret: clientSecret }}
-          key={clientSecret}
+          key={clientSecret} //avoid unneccesarry rerenders if key doesn't change.
         >
           <Conditional clientSecret={clientSecret} />
         </Elements>
