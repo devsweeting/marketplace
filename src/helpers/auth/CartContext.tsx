@@ -1,14 +1,8 @@
-import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { useState, useContext, createContext, useCallback } from 'react';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { Checkout } from '@/components/Checkout';
-import { getPaymentIntentStripe } from '@/api/endpoints/paymentIntent';
-import { Elements } from '@stripe/react-stripe-js';
-
-import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+import { destroyPaymentIntentCookie } from './paymentCookie';
 
 type CartProviderProps = {
   children: ReactNode;
@@ -31,7 +25,6 @@ type CartContext = {
   removeFromCart: (id: string) => void;
   cartQuantity: number;
   isDisabled: boolean;
-  stripeClientSecret: string | undefined;
 };
 
 const CartContext = createContext({} as CartContext);
@@ -60,14 +53,18 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const reOpenCart = () => {
     setCartModalState({ ...cartModalState, isDisabled: false, isOpen: true });
   };
+
   const closeCart = useCallback(() => {
     const newState = { ...cartModalState, isDisabled: true, isOpen: false };
     setCartModalState(newState);
     setCartItems([]);
+    destroyPaymentIntentCookie();
   }, [cartModalState, setCartItems]);
+
   const closeModal = () => {
     const newState = { isDisabled: true, isOpen: false };
     setCartModalState(newState);
+    destroyPaymentIntentCookie();
   };
 
   const increaseCartQuantity = useCallback(
@@ -111,6 +108,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
     return false;
   };
+
   const decreaseCartQuantity = useCallback(
     (id: string) => {
       setCartItems((currItems) => {
@@ -144,28 +142,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     [setCartItems],
   );
 
-  // ---------STRIPE INTEGRATION---------
-
-  //returns the client secret from the Stripe Payment Intent
-  const [clientSecret, setClientSecret] = useState<string>();
-
-  useEffect(() => {
-    const fetchIntent = async () => {
-      const clientSecret = await getPaymentIntentStripe();
-      console.log('in effect', clientSecret);
-      setClientSecret(clientSecret);
-    };
-    fetchIntent();
-
-    return () => {
-      setClientSecret(undefined);
-    };
-  }, []);
-
-  console.log('CLIENT SECRET!', clientSecret);
-
-  // ------------------
-
   return (
     <CartContext.Provider
       value={{
@@ -178,13 +154,10 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         reOpenCart,
         closeModal,
         isDisabled: cartModalState.isDisabled,
-        stripeClientSecret: clientSecret && clientSecret,
       }}
     >
       {children}
-      <Elements stripe={stripePromise} options={{ clientSecret: clientSecret }} key={clientSecret}>
-        <Checkout isOpen={shouldBeOpen()} />
-      </Elements>
+      <Checkout isOpen={shouldBeOpen()} />
     </CartContext.Provider>
   );
 };

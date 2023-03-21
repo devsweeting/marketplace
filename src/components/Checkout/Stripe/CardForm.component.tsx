@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useStripe, useElements, PaymentElement, CardElement } from '@stripe/react-stripe-js';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { ConfirmPaymentButton } from './CardForm.styles';
 import { useCart } from '@/helpers/auth/CartContext';
+import { destroyPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
 
 // const useOptions = () => {
 //   const options = useMemo(
@@ -25,62 +26,60 @@ import { useCart } from '@/helpers/auth/CartContext';
 //   return options;
 // };
 
-export const SplitForm = () => {
+export const SplitForm = ({ clientSecret }: { clientSecret: string }) => {
   const stripe = useStripe();
   const elements = useElements();
-  const { stripeClientSecret } = useCart();
-  console.log('from cart', stripeClientSecret);
-  console.log('stripe', stripe);
-
   console.log('elements', elements);
+  console.log('stripe', stripe);
   //   const options = useOptions();
   const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
   const [isProcessing, setIsProcessing] = useState(false); // TODO lift state to show "... processing" placeholder on payment button
 
-  console.log(errorMessage, isProcessing);
-  const handleSubmit = async (event: any) => {
-    event.preventDefault();
+  console.log('silencing logs', errorMessage, isProcessing);
+
+  const card = elements?.getElement(CardElement);
+  console.log('card', card);
+  console.log('clientSecret', clientSecret);
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault(); // Stops the page from reloading!
 
     //disable the payment button to avoid duplicate user clicks
     setIsProcessing(true);
 
-    if (stripe && elements && stripeClientSecret) {
-      // NOTE - used with <PaymentElement />
-      // const { error, paymentIntent } = await stripe.confirmPayment({
-      //   elements,
-      //   confirmParams: {
-      //     return_url: `${window.location.origin}`, //where to return to
-      //   },
-      //   redirect: 'if_required',
-      // });
-      const card = elements.getElement(CardElement);
-      console.log('CARD', card);
+    if (stripe && elements && clientSecret) {
+      if (!card) {
+        return;
+      }
 
-      const { error, paymentIntent } = await stripe.confirmCardPayment(stripeClientSecret, {
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: elements.getElement(CardElement),
+          card: card,
         },
       });
 
-      if (error) {
-        console.error(error);
-        setErrorMessage(error.message);
-      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+      if (error) throw new Error(error.message);
+
+      if (paymentIntent?.status === 'succeeded') {
+        destroyPaymentIntentCookie();
         setErrorMessage(`Payment status:, ${paymentIntent.status}`);
-      } else {
-        setErrorMessage('expected message');
       }
+
+      // if (error) {
+      //   console.error('ERROR', error);
+      //   setErrorMessage(`Payment status:, ${error.message}`);
+      // }
     }
 
     setIsProcessing(false);
   };
 
   return (
-    <form onSubmit={void handleSubmit}>
+    <form onSubmit={handleSubmit}>
       ** STRIPE DEVELOPMENT ***
       {/* <PaymentElement id="payment-element" options={{ layout: 'tabs' }} /> */}
       <CardElement />
-      <ConfirmPaymentButton type="submit" disabled={false}>
+      <ConfirmPaymentButton type="submit" disabled={isProcessing}>
         Confirm Order
       </ConfirmPaymentButton>
     </form>

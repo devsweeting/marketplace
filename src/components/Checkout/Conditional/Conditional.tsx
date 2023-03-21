@@ -12,7 +12,7 @@ import { RetrieveUserInfo } from '../RetrieveUserInfo';
 import { CardWrapper } from '../Stripe/CardForm.styles';
 import { SplitForm } from '../Stripe/CardForm.component';
 
-export const Conditional = () => {
+export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
   const [page, setPage] = useState(0);
   const [jumpBalance, setJumpBalance] = useState<number>(0);
   const [alertMessage, setAlertMessage] = useState('');
@@ -65,7 +65,7 @@ export const Conditional = () => {
               setOpen={setOpen}
             />
             <CardWrapper>
-              <SplitForm />
+              <SplitForm clientSecret={clientSecret} />
             </CardWrapper>
           </span>
         );
