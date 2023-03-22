@@ -16,7 +16,14 @@ const usePaymentIntentStripe = async (item: CartItem): Promise<any> => {
   if (paymentIntentId != null) {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
     console.log('retrieved intent', paymentIntent);
-    return paymentIntent.client_secret;
+
+    // TODO If a paymentIntent is retrieved update its amount
+    if (paymentIntent) {
+      const updated_intent = await stripe.paymentIntents.update(paymentIntentId, {
+        amount: item.totalPrice,
+      });
+      return paymentIntent.client_secret;
+    }
   }
 
   //If no payment intent id is found, create a paymentIntent.

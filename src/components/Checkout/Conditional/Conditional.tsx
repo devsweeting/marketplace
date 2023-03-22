@@ -2,15 +2,13 @@ import { getAssetById } from '@/api/endpoints/assets';
 import { useState } from 'react';
 import { Cart } from '../Cart';
 import { PaymentMethods } from '../PaymentMethods';
-import { PaymentService } from '../PaymentService';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { Box } from '@mui/material';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 import { OrderSummary } from '../OrderSummary';
 import { RetrieveUserInfo } from '../RetrieveUserInfo';
-import { CardWrapper } from '../Stripe/CardForm.styles';
-import { SplitForm } from '../Stripe/CardForm.component';
+import { StripePaymentService } from '../Stripe/StripePaymentService';
 
 export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
   const [page, setPage] = useState(0);
@@ -56,7 +54,16 @@ export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
       case 3: {
         return (
           <span>
-            <PaymentService
+            {/* <PaymentService
+              setPage={setPage}
+              orderSummary={orderSummary}
+              alertMessage={alertMessage}
+              setAlertMessage={setAlertMessage}
+              open={open}
+              setOpen={setOpen}
+            /> */}
+            <StripePaymentService
+              clientSecret={clientSecret}
               setPage={setPage}
               orderSummary={orderSummary}
               alertMessage={alertMessage}
@@ -64,13 +71,11 @@ export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
               open={open}
               setOpen={setOpen}
             />
-            <CardWrapper>
-              <SplitForm clientSecret={clientSecret} />
-            </CardWrapper>
           </span>
         );
       }
 
+      // TODO remove this step, it's combined into the last
       case 4: {
         return (
           <OrderSummary

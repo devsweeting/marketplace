@@ -17,7 +17,6 @@ import LockIcon from '@mui/icons-material/Lock';
 import { useRouter } from 'next/router';
 import { purchaseSellOrder } from '@/api/endpoints/sellorders';
 import { StatusCodes } from 'http-status-codes';
-import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 
 export const OrderSummary = ({
   setPage,
@@ -76,6 +75,7 @@ export const OrderSummary = ({
     }
   };
 
+  // TODO Refactor this into the successful payment flow
   async function onSubmit(
     setPage: Dispatch<SetStateAction<number>>,
     orderSummary: IAsset,
@@ -92,13 +92,8 @@ export const OrderSummary = ({
     }
   }
 
-  const submitHandler = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    void onSubmit(setPage, orderSummary, item, isValid);
-  };
-
   return (
-    <Container role="presentation">
+    <Container role="presentation" style={{ width: '576px' }}>
       <OrderSummaryContainer>
         <OrderSummaryHeader>
           <Title variant="xl">Order Summary</Title>
@@ -138,12 +133,6 @@ export const OrderSummary = ({
                 '$' + formatNumber((item.totalPrice * 1.15 + 0.25).toFixed(2) as unknown as number)}
             </Text>
           </Box>
-        </Box>
-        <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
-          {/* DEV NOTE -- HIDE FOR NOW */}
-          <ConfirmInfoButton disabled={isValid} onClick={submitHandler}>
-            Confirm Order
-          </ConfirmInfoButton>
         </Box>
         <Typography
           id="modal-modal-title"
