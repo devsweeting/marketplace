@@ -22,6 +22,7 @@ const usePaymentIntentStripe = async (item: CartItem): Promise<any> => {
       const updated_intent = await stripe.paymentIntents.update(paymentIntentId, {
         amount: item.totalPrice,
       });
+      console.log('updated intent:', updated_intent);
       return paymentIntent.client_secret;
     }
   }
