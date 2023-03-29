@@ -47,7 +47,7 @@ export const getPurchaseById = async (
       signal,
     });
 
-    if (!res) return;
+    if (!res || res.ok === false) return;
 
     return purchaseInfoSchema.parse(res.data);
   } catch (err) {
