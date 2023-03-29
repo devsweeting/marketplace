@@ -15,6 +15,23 @@ export const purchaseSellOrder = async (
 };
 
 /**
+ * Runs the purchase validations without running the actual purchase.
+ * @param id Id of the sell order
+ * @returns object
+ */
+export const validateSellOrder = async (
+  id: string,
+  fractionsToPurchase: number,
+  fractionPriceCents: number,
+) => {
+  const response = await apiClient.post(`/sellorders/${id}/validate`, {
+    body: { fractionsToPurchase, fractionPriceCents },
+  });
+
+  return response;
+};
+
+/**
  * Gets the number of sell orders a user can buy and the number a user already bought.
  * @param id Id of the sell order
  * @returns object

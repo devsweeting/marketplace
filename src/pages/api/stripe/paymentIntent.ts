@@ -20,8 +20,9 @@ type StripeMetaData = {
   sellOrderId: string;
 };
 
-const usePaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> => {
+const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> => {
   const user = await getCurrentUser();
+  console.log('inside get payment intent', user);
   if (!user) {
     throw new Error('No user found');
   }
@@ -49,7 +50,7 @@ const usePaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
   return intent;
 };
 
-export default usePaymentIntentStripe;
+export default getPaymentIntentStripe;
 
 const createPaymentIntent = async (
   item: CartItem,

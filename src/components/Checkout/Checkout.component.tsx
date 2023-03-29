@@ -4,7 +4,7 @@ import { Conditional } from './Conditional';
 import { useEffect, useRef, useState } from 'react';
 import { CartItem, useCart } from '@/helpers/auth/CartContext';
 import { Elements } from '@stripe/react-stripe-js';
-import usePaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
+import getPaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
 import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -42,23 +42,29 @@ export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: Cart
 
   useEffect(() => {
     //a useEffect ensures this function only runs after the component mounts, or an item changes.
-    const fetchIntent = async () => {
-      if (isOpen && cartItem) {
+    if (isOpen && cartItem) {
+      console.log('pass condition');
+      const fetchIntent = async () => {
+        console.log('inside intent');
         //declaring fetchIntent() then calling it allows async functions to be called at the top level of a non-async components.
-        const intent = await usePaymentIntentStripe(cartItem);
+        const intent = await getPaymentIntentStripe(cartItem);
         console.log('intent effect:', intent);
         setClientSecret(intent.client_secret);
-      }
-      void fetchIntent();
-    };
+      };
+      fetchIntent();
+    }
 
     return () => {
       setClientSecret(undefined); //TODO - reasses cleanup functon: maybe clear cookie here?
     };
-  }, [isOpen && cartItem]);
+  }, [isOpen]);
   // ------------------------------------
 
-  if (!(Object.keys(ref).length > 0) || cartItem == null || clientSecret == null) {
+  console.log('cartOpen:', isOpen);
+  console.log('cartItem', cartItem);
+  console.log('clientSecret', clientSecret);
+
+  if (!(Object.keys(ref).length > 0) || cartItem == null || !clientSecret) {
     return null;
   }
 

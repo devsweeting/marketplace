@@ -6,11 +6,16 @@ import { Box } from '@mui/material';
 import { OrderSummary } from '../OrderSummary';
 import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
-import { CartItem } from '@/helpers/auth/CartContext';
+import { CartItem, useCart } from '@/helpers/auth/CartContext';
 import { StripePaymentElement } from '@stripe/stripe-js';
-import { confirmStripePayment, handleAssetTransaction } from './PaymentHelpers';
+import {
+  validateAssetPurchase,
+  confirmStripePayment,
+  handleAssetTransaction,
+} from './PaymentHelpers';
 import { destroyPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
-import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
+import { StatusCodes } from 'http-status-codes';
+import { useRouter } from 'next/router';
 
 export const StripePaymentService = ({
   setPage,
@@ -32,6 +37,8 @@ export const StripePaymentService = ({
   const stripe = useStripe();
   const elements = useElements();
   const card = elements?.getElement(PaymentElement) as StripePaymentElement;
+  const { closeModal } = useCart();
+  const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState<string>('');
   const [isPaymentElementMounted, setIsPaymentElementMounted] = useState<boolean>(false);
@@ -56,29 +63,34 @@ export const StripePaymentService = ({
     const user = await getCurrentUser(); //TODO build a better non-async user hook
 
     if (elements && stripe && user && isStripePaymentReady()) {
-      setIsProcessing(true); //Disable button during processing to avoid duplicate clicks
+      // setIsProcessing(true); //Disable button during processing to avoid duplicate clicks
 
       //TODO - run an initial check on the SellOrder table validating a user is able to purchase units
-      const sellOrderCheck = await getNumSellordersUserCanBuy(cartItem.sellOrderId);
-      console.log('SellOrderCheck: ', sellOrderCheck);
+      const canPurchaseAsset = await validateAssetPurchase(orderSummary, setMessage, cartItem);
 
-      const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
+      if (canPurchaseAsset.statusCode === StatusCodes.OK) {
+        const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
 
-      switch (paymentIntent?.status) {
-        case 'succeeded':
-          handleAssetTransaction(orderSummary, setMessage, cartItem);
-          destroyPaymentIntentCookie();
-          setMessage('Payment succeeded!');
-          break;
-        case 'processing':
-          setMessage('Your payment is processing.');
-          break;
-        case 'requires_payment_method':
-          setMessage('Your payment was not successful, please try again.');
-          break;
-        default:
-          setMessage('Something went wrong.');
-          break;
+        switch (paymentIntent?.status) {
+          case 'succeeded':
+            handleAssetTransaction(orderSummary, setMessage, cartItem, closeModal, router);
+            destroyPaymentIntentCookie();
+            setMessage('Payment succeeded!');
+            break;
+          case 'processing':
+            setMessage('Your payment is processing.');
+            break;
+          case 'requires_payment_method':
+            setMessage('Your payment was not successful, please try again.');
+            break;
+          default:
+            setMessage('Something went wrong.');
+            break;
+        }
+      } else {
+        throw new Error(
+          `ERROR: CANNOT PURCHASE ASSET ${canPurchaseAsset.error} ${canPurchaseAsset.message}`,
+        );
       }
     }
     setIsProcessing(false);

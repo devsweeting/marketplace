@@ -1,10 +1,10 @@
-import { purchaseSellOrder } from '@/api/endpoints/sellorders';
+import { purchaseSellOrder, validateSellOrder } from '@/api/endpoints/sellorders';
 import { CartItem, useCart } from '@/helpers/auth/CartContext';
 import { IAsset } from '@/types/asset.types';
 import { IUser } from '@/types/auth.types';
 import { PaymentIntent, Stripe, StripeElements } from '@stripe/stripe-js';
 import { StatusCodes } from 'http-status-codes';
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 
 type makePaymentProps = {
@@ -50,30 +50,42 @@ export async function handleAssetTransaction(
   orderSummary: IAsset,
   setMessage: Dispatch<SetStateAction<string>>,
   item: CartItem,
-  isValid = true,
+  closeModal: Dispatch<SetStateAction<void>>,
+  router: NextRouter,
 ): Promise<void> {
-  const { closeModal } = useCart();
-  const router = useRouter();
-  if (isValid) {
-    void buyFractions(orderSummary, setMessage, item);
-
-    closeModal();
-    void router.push({
-      pathname: `/askingprice/${orderSummary.id}`,
-    });
-  }
-}
-
-const buyFractions = async (
-  orderSummary: IAsset,
-  setMessage: Dispatch<SetStateAction<string>>,
-  item: CartItem,
-): Promise<void> => {
   const response: any = await purchaseSellOrder(
     orderSummary.sellOrders[0].id,
     item.quantity,
     item.fractionPriceCents,
   );
+
+  if (response.status === StatusCodes.CREATED) {
+    closeModal();
+    void router.push({
+      pathname: `/askingprice/${orderSummary.id}`,
+    });
+  } else {
+    throw new Error('Error occured while transfering units');
+  }
+}
+
+type validatePurchaseResponse = {
+  statusCode: StatusCodes;
+  message?: string;
+  error?: string;
+};
+
+export const validateAssetPurchase = async (
+  orderSummary: IAsset,
+  setMessage: Dispatch<SetStateAction<string>>,
+  item: CartItem,
+): Promise<validatePurchaseResponse> => {
+  const response: any = await validateSellOrder(
+    orderSummary.sellOrders[0].id,
+    item.quantity,
+    item.fractionPriceCents,
+  );
+  console.log('response', response);
   if (response) {
     switch (response.status) {
       case StatusCodes.CREATED: {
@@ -96,4 +108,5 @@ const buyFractions = async (
       }
     }
   }
+  return response.data;
 };
