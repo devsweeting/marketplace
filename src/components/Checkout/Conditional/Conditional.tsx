@@ -2,7 +2,6 @@ import { getAssetById } from '@/api/endpoints/assets';
 import { useState } from 'react';
 import { Cart } from '../Cart';
 import { PaymentMethods } from '../PaymentMethods';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { Box } from '@mui/material';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
@@ -10,14 +9,12 @@ import { OrderSummary } from '../OrderSummary';
 import { RetrieveUserInfo } from '../RetrieveUserInfo';
 import { StripePaymentService } from '../Stripe/StripePaymentService';
 
-export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
+export const Conditional = ({ cartItem }: { cartItem: CartItem }) => {
   const [page, setPage] = useState(0);
   const [jumpBalance, setJumpBalance] = useState<number>(0);
   const [alertMessage, setAlertMessage] = useState('');
   const [open, setOpen] = useState(false);
-
-  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  const id = cartItems[0]?.id ?? undefined;
+  const assetId = cartItem.assetId;
 
   const getOrderSummary = async (id: string, signal?: AbortSignal | undefined) => {
     if (!id) {
@@ -27,8 +24,8 @@ export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
     return orderSummary;
   };
   const [orderSummary, orderSummaryLoadingState] = useEndpoint(
-    (signal) => getOrderSummary(id, signal),
-    [id],
+    (signal) => getOrderSummary(assetId, signal),
+    [assetId],
   );
 
   const conditionalComponent = () => {
@@ -37,7 +34,7 @@ export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
     }
     switch (page) {
       case 0: {
-        return <Cart setPage={setPage} orderSummary={orderSummary} />;
+        return <Cart cartItem={cartItem} setPage={setPage} orderSummary={orderSummary} />;
       }
       case 1: {
         return (
@@ -45,6 +42,7 @@ export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
             jumpBalance={jumpBalance}
             setJumpBalance={setJumpBalance}
             setPage={setPage}
+            cartItem={cartItem}
           />
         );
       }
@@ -53,43 +51,26 @@ export const Conditional = ({ clientSecret }: { clientSecret: string }) => {
       }
       case 3: {
         return (
-          <span>
-            {/* <PaymentService
-              setPage={setPage}
-              orderSummary={orderSummary}
-              alertMessage={alertMessage}
-              setAlertMessage={setAlertMessage}
-              open={open}
-              setOpen={setOpen}
-            /> */}
-            <StripePaymentService
-              clientSecret={clientSecret}
-              setPage={setPage}
-              orderSummary={orderSummary}
-              alertMessage={alertMessage}
-              setAlertMessage={setAlertMessage}
-              open={open}
-              setOpen={setOpen}
-            />
-          </span>
-        );
-      }
-
-      // TODO remove this step, it's combined into the last
-      case 4: {
-        return (
-          <OrderSummary
+          <StripePaymentService
             setPage={setPage}
-            isValid={true}
             orderSummary={orderSummary}
+            alertMessage={alertMessage}
             setAlertMessage={setAlertMessage}
+            open={open}
             setOpen={setOpen}
+            cartItem={cartItem}
           />
         );
       }
 
+      // TODO remove this step, it's combined into the last
+      // note -- still hit on the pay with "jump balance option"
+      case 4: {
+        return <OrderSummary cartItem={cartItem} />;
+      }
+
       default: {
-        return <Cart setPage={setPage} orderSummary={orderSummary} />;
+        return <Cart setPage={setPage} cartItem={cartItem} orderSummary={orderSummary} />;
       }
     }
   };

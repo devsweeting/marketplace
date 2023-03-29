@@ -37,10 +37,12 @@ export const PaymentMethods = ({
   setPage,
   setJumpBalance,
   jumpBalance,
+  cartItem,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
   setJumpBalance?: Dispatch<SetStateAction<number>>;
   jumpBalance?: number;
+  cartItem: CartItem;
 }) => {
   const { closeModal } = useCart();
   const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
@@ -59,10 +61,7 @@ export const PaymentMethods = ({
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
   };
-  const item = cartItems[0];
-  if (!(cartItems.length > 0) || !(Object.keys(item).length > 0)) {
-    return null;
-  }
+
   return (
     <Container role="presentation">
       <HeaderContainer>
@@ -131,7 +130,7 @@ export const PaymentMethods = ({
             <Title variant="xl">Jump balance</Title>
             <Text>
               {`$${formatNumber(Number(jumpBalance && jumpBalance.toFixed(2)))} USD ${
-                jumpBalance && jumpBalance < item.totalPrice ? '(Insufficient funds)' : ''
+                jumpBalance && jumpBalance < cartItem.totalPrice ? '(Insufficient funds)' : ''
               }`}
             </Text>
           </CardTextContainer>
@@ -205,10 +204,10 @@ export const PaymentMethods = ({
         <Box>
           <OrderSummaryDetails>
             <Text variant="lg">
-              {item.quantity && item.quantity}
-              {item.quantity && item.quantity > 1 ? ' Units' : ' Unit'}
+              {cartItem.quantity && cartItem.quantity}
+              {cartItem.quantity && cartItem.quantity > 1 ? ' Units' : ' Unit'}
             </Text>
-            <Text variant="lg">{item.quantity && '$' + formatNumber(item.totalPrice)}</Text>
+            <Text variant="lg">{cartItem.quantity && '$' + formatNumber(cartItem.totalPrice)}</Text>
           </OrderSummaryDetails>
           <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
             <Text variant="lg">Royalty fees</Text>

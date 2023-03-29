@@ -30,13 +30,13 @@ import {
 export const Cart = ({
   setPage,
   orderSummary,
+  cartItem,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
+  cartItem: CartItem;
 }) => {
   const { removeFromCart, closeModal } = useCart();
-  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  const item = cartItems[0];
   return (
     <div role="presentation">
       <HeaderContainer>
@@ -55,7 +55,7 @@ export const Cart = ({
           <IconButton
             aria-label="remove from cart"
             onClick={() => {
-              removeFromCart(item.id);
+              removeFromCart(cartItem.assetId);
               closeModal();
             }}
           >
@@ -106,7 +106,7 @@ export const Cart = ({
               <IconButton
                 aria-label="remove item from cart"
                 onClick={() => {
-                  removeFromCart(item.id);
+                  removeFromCart(cartItem.assetId);
                 }}
               >
                 <CloseIcon />
@@ -122,10 +122,12 @@ export const Cart = ({
           <Box display="flex" flexDirection="column">
             <ValuationContainer>
               <Text variant="lg">
-                {item.quantity && item.quantity}
-                {item.quantity && item.quantity > 1 ? ' Units' : ' Unit'}
+                {cartItem.quantity && cartItem.quantity}
+                {cartItem.quantity && cartItem.quantity > 1 ? ' Units' : ' Unit'}
               </Text>
-              <Text variant="lg">{item.totalPrice && '$' + formatNumber(item.totalPrice)}</Text>
+              <Text variant="lg">
+                {cartItem.totalPrice && '$' + formatNumber(cartItem.totalPrice)}
+              </Text>
             </ValuationContainer>
             <CTACard>
               <Text variant="lg">Added to cart</Text>

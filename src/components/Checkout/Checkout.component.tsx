@@ -6,18 +6,14 @@ import { CartItem, useCart } from '@/helpers/auth/CartContext';
 import { Elements } from '@stripe/react-stripe-js';
 import usePaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
 import { loadStripe } from '@stripe/stripe-js';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
-export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
+export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: CartItem | null }) => {
   const { closeModal } = useCart();
   const ref = useRef(null as null | HTMLDivElement);
   const [height, setHeight] = useState(0);
   const [scrollHeight, setScrollHeight] = useState(0);
-
-  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  const item = cartItems[0];
 
   const style = {
     position: 'absolute' as const,
@@ -41,32 +37,30 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
     }
   }, []);
 
-  // ---------STRIPE INTEGRATION---------
-
-  //returns the client secret from the Stripe Payment Intent
-  const [clientSecret, setClientSecret] = useState<string | undefined>();
+  // --------- STRIPE INTEGRATION ---------
+  const [clientSecret, setClientSecret] = useState<string | null>();
 
   useEffect(() => {
-    //Wrap in UseEffect so function only runs after the page renders
+    //a useEffect ensures this function only runs after the component mounts, or an item changes.
     const fetchIntent = async () => {
-      //declaring then calling this function allows it to be called at the top level of a non-async component
-      const clientSecret = await usePaymentIntentStripe(item);
-      setClientSecret(clientSecret);
+      if (isOpen && cartItem) {
+        //declaring fetchIntent() then calling it allows async functions to be called at the top level of a non-async components.
+        const intent = await usePaymentIntentStripe(cartItem);
+        console.log('intent effect:', intent);
+        setClientSecret(intent.client_secret);
+      }
+      void fetchIntent();
     };
-    void fetchIntent();
 
     return () => {
-      setClientSecret(undefined); //clean up function that runs when component is unmounted. TODO reassess, maybe clear cookie here.
+      setClientSecret(undefined); //TODO - reasses cleanup functon: maybe clear cookie here?
     };
-  }, []);
+  }, [isOpen && cartItem]);
+  // ------------------------------------
 
-  // ------------------
-
-  if (!(Object.keys(ref).length > 0) || clientSecret === undefined) {
+  if (!(Object.keys(ref).length > 0) || cartItem == null || clientSecret == null) {
     return null;
   }
-
-  console.log('client secret on mount:', clientSecret);
 
   return (
     <Modal
@@ -82,9 +76,9 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
         <Elements
           stripe={stripePromise}
           options={{ clientSecret: clientSecret }}
-          key={clientSecret} //avoid unneccesarry rerenders if key doesn't change.
+          key={clientSecret}
         >
-          <Conditional clientSecret={clientSecret} />
+          <Conditional cartItem={cartItem} />
         </Elements>
       </Box>
     </Modal>

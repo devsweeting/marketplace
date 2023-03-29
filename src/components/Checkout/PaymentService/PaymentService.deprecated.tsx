@@ -353,13 +353,13 @@ export const PaymentService = ({
           </Box>
         </PaymentContainer>
       </Box>
-      <OrderSummary
+      {/* <OrderSummary
         setPage={setPage}
         isValid={isValid}
         orderSummary={orderSummary}
         setAlertMessage={setAlertMessage}
         setOpen={setOpen}
-      />
+      /> */}
     </Container>
   );
 };

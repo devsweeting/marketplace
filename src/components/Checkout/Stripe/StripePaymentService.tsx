@@ -1,135 +1,73 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useStripe, useElements, CardElement, PaymentElement } from '@stripe/react-stripe-js';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { IAsset } from '@/types/asset.types';
 import { CheckoutContainer } from '../CheckoutContainer.component';
 import { Box } from '@mui/material';
 import { OrderSummary } from '../OrderSummary';
 import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { CartItem } from '@/helpers/auth/CartContext';
-
-// const useOptions = () => {
-//   const options = useMemo(
-//     () => ({
-//       style: {
-//         base: {
-//           color: '#424770',
-//           letterSpacing: '0.025em',
-//           '::placeholder': {
-//             color: '#aab7c4',
-//           },
-//         },
-//         invalid: {
-//           color: '#9e2146',
-//         },
-//       },
-//     }),
-//     [],
-//   );
-
-//   return options;
-// };
+import { StripePaymentElement } from '@stripe/stripe-js';
+import { confirmStripePayment, handleAssetTransaction } from './PaymentHelpers';
+import { destroyPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
+import { getNumSellordersUserCanBuy } from '@/api/endpoints/sellorders';
 
 export const StripePaymentService = ({
-  clientSecret,
   setPage,
   orderSummary,
   alertMessage,
   setAlertMessage,
   open,
   setOpen,
+  cartItem,
 }: {
-  clientSecret: string;
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
   alertMessage: string;
   setAlertMessage: Dispatch<SetStateAction<string>>;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  cartItem: CartItem;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const card = elements?.getElement(PaymentElement) as StripePaymentElement;
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [message, setMessage] = useState<string>('');
+  const [isPaymentElementMounted, setIsPaymentElementMounted] = useState<boolean>(false);
+  const [isPaymentElementComplete, setIsPaymentElementComplete] = useState<boolean>(false);
 
-  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
-  const item = cartItems[0];
-  //   const options = useOptions(); TODO - add custom styles?
-  const [message, setMessage] = useState<string | undefined>(undefined);
-  const [isProcessing, setIsProcessing] = useState(false); // TODO lift state to show "... processing" placeholder on payment button
-
-  const card = elements?.getElement(PaymentElement);
-  console.log('x:', message, isProcessing);
-  console.log('card', card);
-  console.log('elements', elements);
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault(); // Stop page from reloading
-    //disable the payment button to avoid duplicate user clicks
-    setIsProcessing(true);
-    if (stripe && elements && clientSecret) {
-      if (!card) {
-        return;
-      }
-      const user = await getCurrentUser(); //TODO build a better async user hook
-      console.log('user', user);
-
-      //used with <CardElement/>
-      // const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-      //   payment_method: {
-      //     card: card,
-      //   },
-      // });
-
-      //used with <PaymentElement/>
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `http://localhost:3000/askingprice/${item.id}`,
-          receipt_email: user?.email,
-          // TODO add billing info from previous page here
-          // shipping: {
-          //   address: { city: 'NY' },
-          //   name: 'Shipping user',
-          // },
-          payment_method_data: {
-            billing_details: {
-              name: 'Billing user',
-            },
-          },
-        },
-      });
-
-      if (error) {
-        setMessage(`Payment status:, ${error.message}`);
-        throw new Error(error.message);
-      }
-      //returned with <CardElement>
-      // if (paymentIntent?.status === 'succeeded') {
-      //   destroyPaymentIntentCookie();
-      //   setMessage(`Payment status:, ${paymentIntent.status}`);
-      // }
+  const isStripePaymentReady = (): boolean => {
+    let isReady = true;
+    // Confirm the Stripe PaymentElement has loaded and the card is accessible to the Stripe API.
+    if (isPaymentElementMounted == false && card == null) {
+      isReady = false;
+    }
+    // Confirm the forms are completed without input errors.
+    if (isPaymentElementComplete == false) {
+      isReady = false;
     }
 
-    setIsProcessing(false);
+    return isReady;
   };
 
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
+  const handlePayment = async (e: any) => {
+    e.preventDefault();
+    const user = await getCurrentUser(); //TODO build a better non-async user hook
 
-    //Grab the client secret from url params
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret',
-    );
+    if (elements && stripe && user && isStripePaymentReady()) {
+      setIsProcessing(true); //Disable button during processing to avoid duplicate clicks
 
-    if (!clientSecret) {
-      return;
-    }
+      //TODO - run an initial check on the SellOrder table validating a user is able to purchase units
+      const sellOrderCheck = await getNumSellordersUserCanBuy(cartItem.sellOrderId);
+      console.log('SellOrderCheck: ', sellOrderCheck);
 
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
+
       switch (paymentIntent?.status) {
         case 'succeeded':
+          handleAssetTransaction(orderSummary, setMessage, cartItem);
+          destroyPaymentIntentCookie();
           setMessage('Payment succeeded!');
           break;
         case 'processing':
@@ -142,8 +80,9 @@ export const StripePaymentService = ({
           setMessage('Something went wrong.');
           break;
       }
-    });
-  }, [stripe]);
+    }
+    setIsProcessing(false);
+  };
 
   return (
     <CheckoutContainer
@@ -154,22 +93,27 @@ export const StripePaymentService = ({
       open={open}
       setOpen={setOpen}
     >
-      {message}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handlePayment}>
         <Box sx={{ width: '100%', margin: '0', padding: '16px 24px' }}>
-          <PaymentElement id="payment-element" options={{ layout: 'tabs' }} />
+          <PaymentElement
+            onLoaderStart={() => setIsPaymentElementMounted(true)}
+            onChange={(props) => {
+              setIsPaymentElementComplete(props.complete);
+            }}
+            id="payment-element"
+            options={{ layout: 'tabs' }}
+          />
         </Box>
-        <OrderSummary
-          setPage={setPage}
-          isValid={true} //TODO what does this do
-          orderSummary={orderSummary}
-          setAlertMessage={setAlertMessage}
-          setOpen={setOpen}
-        />
+        <OrderSummary cartItem={cartItem} />
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
-          <ConfirmInfoButton disabled={false} onSubmit={handleSubmit} type="submit">
+          <ConfirmInfoButton
+            disabled={!isStripePaymentReady() || isProcessing}
+            onSubmit={handlePayment}
+            type="submit"
+          >
             {isProcessing ? 'Order Processing' : 'Confirm Order'}
           </ConfirmInfoButton>
+          {message}
         </Box>
       </form>
     </CheckoutContainer>
