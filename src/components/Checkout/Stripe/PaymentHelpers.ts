@@ -14,19 +14,6 @@ type makePaymentProps = {
   cartItem: CartItem;
 };
 
-export type IPaymentIntent = {
-  client_secret: string | null;
-  error: string | null;
-};
-
-export type StripeMetaData = {
-  name: string;
-  description: string;
-  userId: string;
-  assetId: string;
-  sellOrderId: string;
-};
-
 export const confirmStripePayment = async ({
   stripe,
   elements,

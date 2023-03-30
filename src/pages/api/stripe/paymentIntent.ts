@@ -3,12 +3,23 @@ import Stripe from 'stripe';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
-// import { uuid } from 'uuidv4';
-import { IPaymentIntent, StripeMetaData } from '@/components/Checkout/Stripe/PaymentHelpers';
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 });
+
+export type IPaymentIntent = {
+  client_secret: string | null;
+  error: string | null;
+};
+
+export type StripeMetaData = {
+  name: string;
+  description: string;
+  userId: string;
+  assetId: string;
+  sellOrderId: string;
+};
 
 const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> => {
   const user = await getCurrentUser();
