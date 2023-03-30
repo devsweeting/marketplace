@@ -40,7 +40,7 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
         amount: amount,
         metadata: metaData,
       });
-      return { client_secret: paymentIntent.client_secret, error: null };
+      return { client_secret: updated_intent.client_secret, error: null };
     }
     return { client_secret: paymentIntent.client_secret, error: null };
   }
@@ -88,3 +88,13 @@ const createStripeMetaData = (item: CartItem, user: IUser): StripeMetaData => {
     sellOrderId: item.sellOrderId,
   };
 };
+
+// const updatePaymentIntent = (intent) => {};
+
+// if (
+//     paymentIntent.amount_capturable === paymentIntent.amount_received ||
+//     paymentIntent.status === 'succeeded'
+//   ) {
+//     destroyPaymentIntentCookie();
+//     return { client_secret: null, error: 'purchase already succeeded' };
+//   }

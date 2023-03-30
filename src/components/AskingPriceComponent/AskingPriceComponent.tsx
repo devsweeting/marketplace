@@ -70,8 +70,6 @@ const calculateTotalFromPercentAndPrice = (price: number, numOfUnits: number) =>
 };
 
 export const AskingPriceComponent = ({ asset, id }: { asset: IAsset; id: string }) => {
-  console.log('AskingPrice redirect params', asset, id);
-
   const { closeCart, closeModal } = useCart();
   const [assetPurchase] = useEndpoint((signal) => getPurchaseById(id, signal), [id]);
   const [inputValues, setInputValues] = useState<{

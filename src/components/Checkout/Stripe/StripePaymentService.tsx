@@ -105,7 +105,7 @@ export const StripePaymentService = ({
 
   return (
     <CheckoutContainer setPage={setPage} alertMessage={alertMessage} open={open} setOpen={setOpen}>
-      <form onSubmit={handlePayment}>
+      <form onSubmit={void handlePayment}>
         <Box sx={{ width: '100%', margin: '0', padding: '16px 24px' }}>
           <PaymentElement
             onLoaderStart={() => setIsPaymentElementMounted(true)}
@@ -120,7 +120,7 @@ export const StripePaymentService = ({
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
           <ConfirmInfoButton
             disabled={!isStripePaymentReady() || isProcessing}
-            onSubmit={handlePayment}
+            onSubmit={void handlePayment}
             type="submit"
           >
             {isProcessing ? 'Order Processing' : 'Confirm Order'}
