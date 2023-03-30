@@ -3,24 +3,12 @@ import Stripe from 'stripe';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
-import { uuid } from 'uuidv4';
+// import { uuid } from 'uuidv4';
+import { IPaymentIntent, StripeMetaData } from '@/components/Checkout/Stripe/PaymentHelpers';
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2022-11-15',
 });
-
-type IPaymentIntent = {
-  client_secret: string | null;
-  error: string | null;
-};
-
-type StripeMetaData = {
-  name: string;
-  description: string;
-  userId: string;
-  assetId: string;
-  sellOrderId: string;
-};
 
 const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> => {
   const user = await getCurrentUser();
@@ -45,7 +33,7 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
     return { client_secret: paymentIntent.client_secret, error: null };
   }
   //If no intent is found, create a new one
-  const intent = await createPaymentIntent(item, metaData);
+  const intent = await createPaymentIntent(item, metaData, stripe);
   return intent;
 };
 
@@ -54,18 +42,16 @@ export default getPaymentIntentStripe;
 const createPaymentIntent = async (
   item: CartItem,
   metaData: StripeMetaData,
+  stripe: Stripe,
 ): Promise<IPaymentIntent> => {
   try {
     // Find our user to tie them to the payment through passing a idempotency_key and meta_data
-    const paymentIntent = await stripe.paymentIntents.create(
-      {
-        currency: 'USD',
-        amount: item.totalPrice,
-        automatic_payment_methods: { enabled: true },
-        metadata: metaData,
-      },
-      { idempotencyKey: uuid() },
-    );
+    const paymentIntent = await stripe.paymentIntents.create({
+      currency: 'USD',
+      amount: item.totalPrice,
+      automatic_payment_methods: { enabled: true },
+      metadata: metaData,
+    });
 
     setPaymentIntentCookie(paymentIntent.id);
 
@@ -88,13 +74,3 @@ const createStripeMetaData = (item: CartItem, user: IUser): StripeMetaData => {
     sellOrderId: item.sellOrderId,
   };
 };
-
-// const updatePaymentIntent = (intent) => {};
-
-// if (
-//     paymentIntent.amount_capturable === paymentIntent.amount_received ||
-//     paymentIntent.status === 'succeeded'
-//   ) {
-//     destroyPaymentIntentCookie();
-//     return { client_secret: null, error: 'purchase already succeeded' };
-//   }
