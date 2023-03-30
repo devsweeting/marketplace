@@ -1,12 +1,14 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import { IAsset } from '@/types/asset.types';
+import type { IAsset } from '@/types/asset.types';
 import { CheckoutContainer } from '../CheckoutContainer.component';
 import { Box } from '@mui/material';
 import { OrderSummary } from '../OrderSummary';
 import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
-import { CartItem, useCart } from '@/helpers/auth/CartContext';
+import { useCart } from '@/helpers/auth/CartContext';
+import type { CartItem } from '@/helpers/auth/CartContext';
 import { StripePaymentElement } from '@stripe/stripe-js';
 import {
   validateAssetPurchase,
@@ -73,7 +75,7 @@ export const StripePaymentService = ({
 
         switch (paymentIntent?.status) {
           case 'succeeded':
-            handleAssetTransaction(orderSummary, setMessage, cartItem, closeModal, router);
+            await handleAssetTransaction(orderSummary, setMessage, cartItem, closeModal, router);
             destroyPaymentIntentCookie();
             setMessage('Payment succeeded!');
             break;
@@ -97,14 +99,7 @@ export const StripePaymentService = ({
   };
 
   return (
-    <CheckoutContainer
-      setPage={setPage}
-      orderSummary={orderSummary}
-      alertMessage={alertMessage}
-      setAlertMessage={setAlertMessage}
-      open={open}
-      setOpen={setOpen}
-    >
+    <CheckoutContainer setPage={setPage} alertMessage={alertMessage} open={open} setOpen={setOpen}>
       <form onSubmit={handlePayment}>
         <Box sx={{ width: '100%', margin: '0', padding: '16px 24px' }}>
           <PaymentElement

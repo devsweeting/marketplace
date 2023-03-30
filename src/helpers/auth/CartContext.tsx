@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useState, useContext, createContext, useCallback } from 'react';
 import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import { Checkout } from '@/components/Checkout';

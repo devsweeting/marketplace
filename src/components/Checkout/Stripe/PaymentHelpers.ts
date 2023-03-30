@@ -1,10 +1,10 @@
 import { purchaseSellOrder, validateSellOrder } from '@/api/endpoints/sellorders';
-import { CartItem, useCart } from '@/helpers/auth/CartContext';
-import { IAsset } from '@/types/asset.types';
-import { IUser } from '@/types/auth.types';
-import { PaymentIntent, Stripe, StripeElements } from '@stripe/stripe-js';
+import type { CartItem } from '@/helpers/auth/CartContext';
+import type { IAsset } from '@/types/asset.types';
+import type { IUser } from '@/types/auth.types';
+import type { PaymentIntent, Stripe, StripeElements } from '@stripe/stripe-js';
 import { StatusCodes } from 'http-status-codes';
-import { NextRouter, useRouter } from 'next/router';
+import type { NextRouter } from 'next/router';
 import { Dispatch, SetStateAction } from 'react';
 
 type makePaymentProps = {
@@ -85,7 +85,6 @@ export const validateAssetPurchase = async (
     item.quantity,
     item.fractionPriceCents,
   );
-  console.log('response', response);
   if (response) {
     switch (response.status) {
       case StatusCodes.CREATED: {

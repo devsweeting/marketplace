@@ -25,7 +25,6 @@ import {
   PaymentContainer,
   StyledInput,
 } from '../PaymentMethods/PaymentMethods.styles';
-import { OrderSummary } from '../OrderSummary';
 
 const AcceptedCardProviders: { [x: string]: RegExp } = {
   amex: new RegExp('^3[47][0-9]{13}$'),
@@ -167,14 +166,12 @@ export const PaymentService = ({
   setPage,
   orderSummary,
   alertMessage,
-  setAlertMessage,
   open,
   setOpen,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
   alertMessage: string;
-  setAlertMessage: Dispatch<SetStateAction<string>>;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -214,7 +211,7 @@ export const PaymentService = ({
     return newval;
   }
 
-  const { values, isValid, errors, changeHandler, touched } = useForm(initialState, validations);
+  const { values, errors, changeHandler, touched } = useForm(initialState, validations);
 
   const cardNumberHandler = (e: { target: { name: string; value: string } }) => {
     e.target.value = formatCard(e.target.value);

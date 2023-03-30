@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useMemo, useContext } from 'react';
+import { createContext, useEffect, useState, useMemo } from 'react';
 import type { Dispatch, SetStateAction, ReactNode } from 'react';
 import type { IUser } from '@/types';
 import AwaitLock from 'await-lock';

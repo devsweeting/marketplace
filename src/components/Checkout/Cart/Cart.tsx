@@ -7,7 +7,6 @@ import Image from 'next/image';
 import type { Dispatch, SetStateAction } from 'react';
 import type { IAsset } from '@/types';
 import { useCart } from '@/helpers/auth/CartContext';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import {
   HeaderContainer,

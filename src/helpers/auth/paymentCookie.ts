@@ -5,7 +5,7 @@ const STRIPE_PAYMENT_INTENT_ID = 'PAYMENT_INTENT_ID';
 export const getPaymentIntentCookie = (): string | null => {
   const cookies = parseCookies(null, {});
 
-  if (cookies.hasOwnProperty(STRIPE_PAYMENT_INTENT_ID)) {
+  if (Object.prototype.hasOwnProperty.call(cookies, STRIPE_PAYMENT_INTENT_ID)) {
     const paymentIntentId = cookies[STRIPE_PAYMENT_INTENT_ID];
 
     return paymentIntentId;

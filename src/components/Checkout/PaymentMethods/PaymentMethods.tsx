@@ -30,7 +30,6 @@ import {
   StyledInput,
 } from './PaymentMethods.styles';
 import type { CartItem } from '@/helpers/auth/CartContext';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 export const PaymentMethods = ({
@@ -45,7 +44,6 @@ export const PaymentMethods = ({
   cartItem: CartItem;
 }) => {
   const { closeModal } = useCart();
-  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [isDismissed, setIsDismissed] = useState(false);
   const [selectedValue, setSelectedValue] = useState('card');
 
