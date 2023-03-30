@@ -42,7 +42,6 @@ export const StripePaymentService = ({
   const { closeModal } = useCart();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [message, setMessage] = useState<string>('');
   const [isPaymentElementMounted, setIsPaymentElementMounted] = useState<boolean>(false);
   const [isPaymentElementComplete, setIsPaymentElementComplete] = useState<boolean>(false);
 
@@ -68,25 +67,31 @@ export const StripePaymentService = ({
       // setIsProcessing(true); //Disable button during processing to avoid duplicate clicks
 
       //TODO - run an initial check on the SellOrder table validating a user is able to purchase units
-      const canPurchaseAsset = await validateAssetPurchase(orderSummary, setMessage, cartItem);
+      const canPurchaseAsset = await validateAssetPurchase(orderSummary, setAlertMessage, cartItem);
 
       if (canPurchaseAsset.statusCode === StatusCodes.OK) {
         const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
 
         switch (paymentIntent?.status) {
           case 'succeeded':
-            await handleAssetTransaction(orderSummary, setMessage, cartItem, closeModal, router);
+            await handleAssetTransaction(
+              orderSummary,
+              setAlertMessage,
+              cartItem,
+              closeModal,
+              router,
+            );
             destroyPaymentIntentCookie();
-            setMessage('Payment succeeded!');
+            setAlertMessage('Payment succeeded!');
             break;
           case 'processing':
-            setMessage('Your payment is processing.');
+            setAlertMessage('Your payment is processing.');
             break;
           case 'requires_payment_method':
-            setMessage('Your payment was not successful, please try again.');
+            setAlertMessage('Your payment was not successful, please try again.');
             break;
           default:
-            setMessage('Something went wrong.');
+            setAlertMessage('Something went wrong.');
             break;
         }
       } else {
@@ -120,7 +125,7 @@ export const StripePaymentService = ({
           >
             {isProcessing ? 'Order Processing' : 'Confirm Order'}
           </ConfirmInfoButton>
-          {message}
+          {alertMessage}
         </Box>
       </form>
     </CheckoutContainer>

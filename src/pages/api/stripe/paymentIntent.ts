@@ -1,11 +1,13 @@
 import { getPaymentIntentCookie, setPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
 import Stripe from 'stripe';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
-import { CartItem } from '@/helpers/auth/CartContext';
-import { IUser } from '@/types/auth.types';
+import type { CartItem } from '@/helpers/auth/CartContext';
+import type { IUser } from '@/types/auth.types';
 import { uuid } from 'uuidv4';
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY!, { apiVersion: '2022-11-15' });
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? '', {
+  apiVersion: '2022-11-15',
+});
 
 type IPaymentIntent = {
   client_secret: string | null;
@@ -22,7 +24,6 @@ type StripeMetaData = {
 
 const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> => {
   const user = await getCurrentUser();
-  console.log('inside get payment intent', user);
   if (!user) {
     throw new Error('No user found');
   }
@@ -33,14 +34,12 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
 
   if (paymentIntentId) {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    console.log('retrieved intent', paymentIntent);
 
     if (paymentIntent.amount !== amount) {
       const updated_intent = await stripe.paymentIntents.update(paymentIntentId, {
         amount: amount,
         metadata: metaData,
       });
-      console.log('updated intent:', updated_intent);
       return { client_secret: paymentIntent.client_secret, error: null };
     }
     return { client_secret: paymentIntent.client_secret, error: null };
@@ -67,7 +66,6 @@ const createPaymentIntent = async (
       },
       { idempotencyKey: uuid() },
     );
-    console.log('created intent', paymentIntent);
 
     setPaymentIntentCookie(paymentIntent.id);
 
@@ -90,13 +88,3 @@ const createStripeMetaData = (item: CartItem, user: IUser): StripeMetaData => {
     sellOrderId: item.sellOrderId,
   };
 };
-
-// const updatePaymentIntent = (intent) => {};
-
-// if (
-//     paymentIntent.amount_capturable === paymentIntent.amount_received ||
-//     paymentIntent.status === 'succeeded'
-//   ) {
-//     destroyPaymentIntentCookie();
-//     return { client_secret: null, error: 'purchase already succeeded' };
-//   }

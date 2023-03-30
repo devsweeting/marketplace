@@ -5,7 +5,7 @@ import type { IUser } from '@/types/auth.types';
 import type { PaymentIntent, Stripe, StripeElements } from '@stripe/stripe-js';
 import { StatusCodes } from 'http-status-codes';
 import type { NextRouter } from 'next/router';
-import { Dispatch, SetStateAction } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 
 type makePaymentProps = {
   stripe: Stripe;
