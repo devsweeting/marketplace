@@ -9,7 +9,7 @@ import { ConfirmInfoButton } from '../RetrieveUserInfo/RetrieveUserInfo.styles';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
 import { useCart } from '@/helpers/auth/CartContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
-import { StripePaymentElement } from '@stripe/stripe-js';
+import type { StripePaymentElement } from '@stripe/stripe-js';
 import {
   validateAssetPurchase,
   confirmStripePayment,
