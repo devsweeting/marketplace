@@ -26,15 +26,12 @@ import {
   TradePanelButton,
   TradePanelLink,
 } from './TradePanel.styles';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
-import type { CartItem } from '@/helpers/auth/CartContext';
 import { useCart } from '@/helpers/auth/CartContext';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
-  const { reOpenCart } = useCart();
-  const [, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
+  const { reOpenCart, addSingleItemToCart } = useCart();
   const { dispatch } = useModalContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
@@ -42,7 +39,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
-  // const [buyLimit, setBuyLimit] = useState<number>(1);
 
   const getPercentClaimed = (sellOrderData: ISellOrder | undefined): number => {
     const percentClaimed = sellOrderData
@@ -59,62 +55,23 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   };
 
   const handleOpenBuyModal = () => {
+    if (!sellOrderData) {
+      throw new Error('No associated sell order for asset');
+    }
+    addSingleItemToCart(
+      asset.name,
+      asset.description,
+      assetId,
+      sellOrderData?.id,
+      sliderValue,
+      sellOrderData?.fractionPriceCents as number,
+      totalPrice,
+    );
+    // if no user is logged in, prompt the login modal
     if (!user) {
-      setCartItems((currItems: CartItem[]) => {
-        if (currItems.find((item) => item.id === asset.id) == null) {
-          return [
-            ...currItems,
-            {
-              id: asset.id,
-              quantity: sliderValue,
-              fractionPriceCents: sellOrderData?.fractionPriceCents as number,
-              totalPrice: totalPrice,
-            },
-          ];
-        } else {
-          return currItems.map((item) => {
-            if (item.id === asset.id) {
-              return {
-                ...item,
-                quantity: sliderValue,
-                fractionPriceCents: sellOrderData?.fractionPriceCents as number,
-                totalPrice: totalPrice,
-              };
-            } else {
-              return item;
-            }
-          });
-        }
-      });
       dispatch({ type: 'login', visible: true });
       return;
     }
-    setCartItems((currItems: CartItem[]) => {
-      if (currItems.find((item) => item.id === asset.id) == null) {
-        return [
-          ...currItems,
-          {
-            id: asset.id,
-            quantity: sliderValue,
-            fractionPriceCents: sellOrderData?.fractionPriceCents as number,
-            totalPrice: totalPrice,
-          },
-        ];
-      } else {
-        return currItems.map((item) => {
-          if (item.id === asset.id) {
-            return {
-              ...item,
-              quantity: sliderValue,
-              fractionPriceCents: sellOrderData?.fractionPriceCents as number,
-              totalPrice: totalPrice,
-            };
-          } else {
-            return item;
-          }
-        });
-      }
-    });
 
     reOpenCart();
   };

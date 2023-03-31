@@ -1,1 +1,1 @@
-export { PaymentService } from './PaymentService';
+export { PaymentService } from './PaymentService.deprecated';

@@ -23,7 +23,7 @@ const CountdownTimer = dynamic<CountdownProps>(
 );
 import { BuyModal } from '@/components/BuyModal';
 
-import type { IAsset, ISellOrder } from '@/types';
+import type { IAsset, ISellOrder, IUser } from '@/types';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, LinearProgress, Slider, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -39,10 +39,14 @@ import {
   EmailIcon,
 } from 'react-share';
 import { NO_IMAGE_AVAILABLE } from '@/helpers/noImageFound';
+import { getMainSellOrder } from '@/helpers/getMainSellOrder';
+import { useCart } from '@/helpers/auth/CartContext';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 
 export interface AssetPageProps {
   asset: IAsset;
   sellOrder: ISellOrder | undefined;
+  user: IUser | undefined;
   info: InfoRow[];
   watched: boolean;
   unitQty: number;
@@ -61,6 +65,7 @@ export function AssetPage(props: AssetPageProps) {
   const {
     asset,
     sellOrder,
+    user,
     info,
     watched,
     unitQty,
@@ -79,8 +84,11 @@ export function AssetPage(props: AssetPageProps) {
   const [modalState, setModalState] = useState<boolean>(false);
   const [unitsToPurchase, setUnitsToPurchase] = useState<number>(1);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const sellOrderData = getMainSellOrder(asset);
+  const { reOpenCart, addSingleItemToCart } = useCart();
+  const { dispatch } = useModalContext();
 
-  const purchasable = timeToPurchasable === 0;
+  const purchasable = timeToPurchasable <= 0;
 
   const hasActiveSellOrder = sellOrder !== undefined && sellOrder.expireTime > Date.now();
 
@@ -106,6 +114,28 @@ export function AssetPage(props: AssetPageProps) {
   ];
 
   useEffect(() => setUrl(window.location.href), []);
+
+  const handleOpenBuyModal = () => {
+    if (!sellOrderData) {
+      throw new Error('No associated sell order for asset');
+    }
+    addSingleItemToCart(
+      asset.name,
+      asset.description,
+      asset.id,
+      sellOrderData?.id,
+      unitsToPurchase,
+      sellOrderData?.fractionPriceCents as number,
+      totalPrice,
+    );
+    // if no user is logged in, prompt the login modal
+    if (!user) {
+      dispatch({ type: 'login', visible: true });
+      return;
+    }
+
+    reOpenCart();
+  };
 
   return (
     <>
@@ -206,7 +236,7 @@ export function AssetPage(props: AssetPageProps) {
               variant="contained"
               disabled={!purchasable || !hasActiveSellOrder}
               fullWidth
-              onClick={toggleBuyModal}
+              onClick={handleOpenBuyModal}
             >
               {!hasActiveSellOrder ? (
                 'Unavailable for purchase'
