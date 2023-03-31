@@ -106,18 +106,21 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
 
   useEffect(() => {
     const fetchBuyLimit = async (id: string) => {
-      const units = await getNumSellordersUserCanBuy(id);
-
-      if (!units) return;
-
-      setPurchaseLimit(units.fractionsAvailableToPurchase ?? 0);
+      if (user) {
+        const units = await getNumSellordersUserCanBuy(id);
+        console.log('units', units);
+        if (!units) {
+          return;
+        }
+        setPurchaseLimit(units.fractionsAvailableToPurchase);
+      }
     };
 
     if (sellOrder) {
       // eslint-disable-next-line no-console
       fetchBuyLimit(sellOrder.id).catch((e) => console.error(e));
     }
-  }, [asset, sellOrder]);
+  }, [asset, sellOrder, user]);
 
   // const onWatchlistCheck = await inWatchlist(asset.id, signal);
 
@@ -148,6 +151,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     const assetProps: AssetPageProps = {
       asset,
       sellOrder,
+      user,
       info: mockInfo,
       watched,
       ...sellOrderCalculations,
@@ -157,6 +161,7 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
       handleRemoveWatch,
     };
 
+    console.log('asset props', assetProps);
     return <AssetPage {...assetProps} />;
   }
   return <AssetErrorPage />;

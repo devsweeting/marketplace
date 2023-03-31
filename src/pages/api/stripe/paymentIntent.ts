@@ -39,6 +39,7 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
         amount: amount,
         metadata: metaData,
       });
+      console.log('updated intent:', paymentIntent);
       return { client_secret: updated_intent.client_secret, error: null };
     }
     return { client_secret: paymentIntent.client_secret, error: null };

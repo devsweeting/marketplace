@@ -72,6 +72,8 @@ export const StripePaymentService = ({
       if (canPurchaseAsset.statusCode === StatusCodes.OK) {
         const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
 
+        console.log('confirm payment intent:', paymentIntent);
+
         switch (paymentIntent?.status) {
           case 'succeeded':
             await handleAssetTransaction(
