@@ -1,4 +1,8 @@
-import { getPaymentIntentCookie, setPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
+import {
+  destroyPaymentIntentCookie,
+  getPaymentIntentCookie,
+  setPaymentIntentCookie,
+} from '@/helpers/auth/paymentCookie';
 import Stripe from 'stripe';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
@@ -34,12 +38,16 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
   if (paymentIntentId) {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
+    if (paymentIntent.status === 'succeeded') {
+      destroyPaymentIntentCookie();
+      return await createPaymentIntent(item, metaData, stripe);
+    }
+
     if (paymentIntent.amount !== amount) {
       const updated_intent = await stripe.paymentIntents.update(paymentIntentId, {
         amount: amount,
         metadata: metaData,
       });
-      console.log('updated intent:', paymentIntent);
       return { client_secret: updated_intent.client_secret, error: null };
     }
     return { client_secret: paymentIntent.client_secret, error: null };

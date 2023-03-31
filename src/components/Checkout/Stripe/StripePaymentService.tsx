@@ -14,6 +14,7 @@ import {
   validateAssetPurchase,
   confirmStripePayment,
   handleAssetTransaction,
+  StripePurchaseTracking,
 } from './PaymentHelpers';
 import { destroyPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
 import { StatusCodes } from 'http-status-codes';
@@ -72,18 +73,23 @@ export const StripePaymentService = ({
       if (canPurchaseAsset.statusCode === StatusCodes.OK) {
         const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
 
-        console.log('confirm payment intent:', paymentIntent);
+        const trackingDetails: StripePurchaseTracking = {
+          intentId: paymentIntent.id,
+          purchaseStatus: paymentIntent.status,
+          amount: paymentIntent.amount,
+        };
 
         switch (paymentIntent?.status) {
           case 'succeeded':
+            destroyPaymentIntentCookie();
             await handleAssetTransaction(
               orderSummary,
               setAlertMessage,
               cartItem,
               closeModal,
               router,
+              trackingDetails,
             );
-            destroyPaymentIntentCookie();
             setAlertMessage('Payment succeeded!');
             break;
           case 'processing':
@@ -107,7 +113,7 @@ export const StripePaymentService = ({
 
   return (
     <CheckoutContainer setPage={setPage} alertMessage={alertMessage} open={open} setOpen={setOpen}>
-      <form onSubmit={void handlePayment}>
+      <form onSubmit={handlePayment}>
         <Box sx={{ width: '100%', margin: '0', padding: '16px 24px' }}>
           <PaymentElement
             onLoaderStart={() => setIsPaymentElementMounted(true)}
@@ -122,7 +128,7 @@ export const StripePaymentService = ({
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
           <ConfirmInfoButton
             disabled={!isStripePaymentReady() || isProcessing}
-            onSubmit={void handlePayment}
+            // onSubmit={v handlePayment}
             type="submit"
           >
             {isProcessing ? 'Order Processing' : 'Confirm Order'}

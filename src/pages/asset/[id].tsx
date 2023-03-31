@@ -108,7 +108,6 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     const fetchBuyLimit = async (id: string) => {
       if (user) {
         const units = await getNumSellordersUserCanBuy(id);
-        console.log('units', units);
         if (!units) {
           return;
         }
@@ -161,7 +160,6 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
       handleRemoveWatch,
     };
 
-    console.log('asset props', assetProps);
     return <AssetPage {...assetProps} />;
   }
   return <AssetErrorPage />;

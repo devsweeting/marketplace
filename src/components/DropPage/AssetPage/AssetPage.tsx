@@ -90,8 +90,6 @@ export function AssetPage(props: AssetPageProps) {
 
   const purchasable = timeToPurchasable <= 0;
 
-  console.log('purchaseLimit', purchaseLimit);
-
   const hasActiveSellOrder = sellOrder !== undefined && sellOrder.expireTime > Date.now();
 
   const toggleBuyModal = () => setModalState((prev) => !prev);

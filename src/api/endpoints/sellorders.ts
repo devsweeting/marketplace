@@ -1,14 +1,20 @@
 import { apiClient } from '@/api/client';
 import type { PurchaseInfo, UserBuyLimit } from '@/types';
 import { purchaseInfoSchema, userBuyLimitSchema } from '@/schemas/sellorder.schemas';
+import { StripePurchaseTracking } from '@/components/Checkout/Stripe/PaymentHelpers';
 
 export const purchaseSellOrder = async (
   id: string,
   fractionsToPurchase: number,
   fractionPriceCents: number,
+  stripeTrackingDetails?: StripePurchaseTracking,
 ) => {
   const response = await apiClient.post(`/sellorders/${id}/purchase`, {
-    body: { fractionsToPurchase, fractionPriceCents },
+    body: {
+      fractionsToPurchase,
+      fractionPriceCents,
+      stripeTrackingDetails,
+    },
   });
 
   return response;

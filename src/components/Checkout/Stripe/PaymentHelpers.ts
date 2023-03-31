@@ -14,6 +14,12 @@ type makePaymentProps = {
   cartItem: CartItem;
 };
 
+export type StripePurchaseTracking = {
+  intentId: string;
+  purchaseStatus: string;
+  amount: number;
+};
+
 export const confirmStripePayment = async ({
   stripe,
   elements,
@@ -40,6 +46,7 @@ export const confirmStripePayment = async ({
   });
 
   if (error) {
+    console.log('In Error', error);
     throw new Error(error.message);
   }
 
@@ -52,20 +59,24 @@ export async function handleAssetTransaction(
   item: CartItem,
   closeModal: Dispatch<SetStateAction<void>>,
   router: NextRouter,
+  stripeTrackingDetails: StripePurchaseTracking,
 ): Promise<void> {
   const response: any = await purchaseSellOrder(
     orderSummary.sellOrders[0].id,
     item.quantity,
     item.fractionPriceCents,
+    stripeTrackingDetails,
   );
 
-  if (response.status === StatusCodes.CREATED) {
-    closeModal();
-    void router.push({
-      pathname: `/askingprice/${orderSummary.id}`,
-    });
-  } else {
-    throw new Error('Error occured while transfering units');
+  try {
+    if (response.status === StatusCodes.CREATED) {
+      closeModal();
+      void router.push({
+        pathname: `/askingprice/${orderSummary.id}`,
+      });
+    }
+  } catch (e) {
+    throw new Error('Error occured while transfering units', e);
   }
 }
 
