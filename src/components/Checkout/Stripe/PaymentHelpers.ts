@@ -75,8 +75,8 @@ export async function handleAssetTransaction(
         pathname: `/askingprice/${orderSummary.id}`,
       });
     }
-  } catch (e) {
-    throw new Error('Error occured while transfering units', e);
+  } catch {
+    throw new Error('Error occured while transfering units');
   }
 }
 
