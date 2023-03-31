@@ -14,8 +14,8 @@ import {
   validateAssetPurchase,
   confirmStripePayment,
   handleAssetTransaction,
-  StripePurchaseTracking,
 } from './PaymentHelpers';
+import type { StripePurchaseTracking } from './PaymentHelpers';
 import { destroyPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/router';

@@ -1,7 +1,7 @@
 import { apiClient } from '@/api/client';
 import type { PurchaseInfo, UserBuyLimit } from '@/types';
 import { purchaseInfoSchema, userBuyLimitSchema } from '@/schemas/sellorder.schemas';
-import { StripePurchaseTracking } from '@/components/Checkout/Stripe/PaymentHelpers';
+import type { StripePurchaseTracking } from '@/components/Checkout/Stripe/PaymentHelpers';
 
 export const purchaseSellOrder = async (
   id: string,
