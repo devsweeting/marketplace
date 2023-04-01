@@ -16,7 +16,7 @@ interface SearchBoxProps {
 
 export const SearchBox: React.FC<SearchBoxProps> = ({
   placeholder = 'Search',
-  iconColor = 'rgba(255, 255, 255, 0.6)',
+  iconColor = 'rgba(255, 255, 255, 0.9)',
   borderRadius = true,
   reverseTextColor = false,
   className,
@@ -65,7 +65,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
           startAdornment={
             <InputAdornment position="end">
               <IconButton type="submit" role={'button'} aria-label="search">
-                <SearchIcon aria-label="search icon" sx={{ iconColor }} />
+                <SearchIcon aria-label="search icon" sx={{ color: iconColor }} />
               </IconButton>
             </InputAdornment>
           }

@@ -34,9 +34,11 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
   const [asset, setAsset] = useState<IAsset>(initialAsset);
   const user = useUser();
   const sellOrder = useMemo(() => {
-    if (asset?.sellOrders && asset?.sellOrders.length > 0) return asset.sellOrders[0];
-
-    return undefined;
+    if (asset?.sellOrders && asset?.sellOrders.length > 0) {
+      return asset.sellOrders[0];
+    } else {
+      return undefined;
+    }
   }, [asset?.sellOrders]);
 
   const sellOrderCalculations = useMemo(() => {
@@ -104,18 +106,20 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
 
   useEffect(() => {
     const fetchBuyLimit = async (id: string) => {
-      const units = await getNumSellordersUserCanBuy(id);
-
-      if (!units) return;
-
-      setPurchaseLimit(units.fractionsAvailableToPurchase ?? 0);
+      if (user) {
+        const units = await getNumSellordersUserCanBuy(id);
+        if (!units) {
+          return;
+        }
+        setPurchaseLimit(units.fractionsAvailableToPurchase);
+      }
     };
 
     if (sellOrder) {
       // eslint-disable-next-line no-console
       fetchBuyLimit(sellOrder.id).catch((e) => console.error(e));
     }
-  }, [asset, sellOrder]);
+  }, [asset, sellOrder, user]);
 
   // const onWatchlistCheck = await inWatchlist(asset.id, signal);
 
@@ -142,10 +146,11 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asset, onWatchlistCheck]);
 
-  if (asset && sellOrder) {
+  if (asset) {
     const assetProps: AssetPageProps = {
       asset,
       sellOrder,
+      user,
       info: mockInfo,
       watched,
       ...sellOrderCalculations,
@@ -157,7 +162,6 @@ const AssetPageContainer = ({ initialAsset }: { initialAsset: IAsset }) => {
 
     return <AssetPage {...assetProps} />;
   }
-
   return <AssetErrorPage />;
 };
 

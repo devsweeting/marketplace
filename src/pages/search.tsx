@@ -35,7 +35,7 @@ const SearchPage: NextPage = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (user && cartItems.length > 0) {
-        if (cartItems[0].id) {
+        if (cartItems[0].assetId) {
           openCart();
         }
       }

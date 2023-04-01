@@ -119,11 +119,12 @@ export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction
     }
   }
 
-  const { values, isValid, errors, changeHandler, touched, submitHandler } = useForm(
-    initialState,
-    validations,
-    onSignup,
-  );
+  const { values, isValid, errors, changeHandler, touched } = useForm(initialState, validations);
+
+  const submitHandler = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    void onSignup();
+  };
 
   const [alertText, setAlertText] = useState('');
 

@@ -5,7 +5,7 @@ export const mediaSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string().nullable(),
-  absoluteUrl: z.string(),
+  absoluteUrl: z.string().nullable(),
   assetId: z.string(),
   fileId: z.string(),
   file: z.string(),

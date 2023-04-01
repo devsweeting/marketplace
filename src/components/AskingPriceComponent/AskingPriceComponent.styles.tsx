@@ -384,5 +384,5 @@ export const LargeDetailText = styled(Typography)(({ theme }) => ({
 
 export const Img = styled(Image)({
   textAlign: 'center',
-  maxWidth: '40px',
+  maxWidth: '50px',
 });

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Box, Grid, Typography, useTheme } from '@mui/material';
-import Image from 'next/image';
 import { Button } from '@/components/Button';
 import { HeroBox } from './HowItWorks.styles';
+import { TradingCard } from '../3DCard/3DCard';
+import Image from 'next/image';
 
 export const HowItWorks = () => {
   const theme = useTheme();
@@ -35,6 +36,9 @@ export const HowItWorks = () => {
       justifyContent: 'center',
       alignItems: 'center',
       textAlign: 'center',
+      color: theme.palette.grey[500],
+      maxWidth: '68rem',
+      lineHeight: '1.75rem',
       [theme.breakpoints.down('sm')]: {
         fontSize: '1.2rem',
         width: '90%',
@@ -64,10 +68,9 @@ export const HowItWorks = () => {
       justifyContent: 'center',
       height: '100%',
     },
-
     heroTitle: {
-      fontWeight: 800,
-      marginBottom: '.25rem',
+      fontWeight: 700,
+      marginBottom: '1.25rem',
       [theme.breakpoints.down('sm')]: {
         display: 'flex',
         align: 'center',
@@ -79,6 +82,8 @@ export const HowItWorks = () => {
     heroBody: {
       maxWidth: '80ch',
       marginBottom: '1.5rem',
+      color: theme.palette.grey[500],
+      fontSize: '16px',
     },
     imageWrapper: {
       display: 'flex',
@@ -112,11 +117,30 @@ export const HowItWorks = () => {
         margin: '25px auto 5px auto',
       },
     },
+    subheader: {
+      fontSize: '2rem',
+      marginBottom: '1rem',
+    },
+    paragraph: {
+      fontSize: '.8rem',
+      alignItems: 'center',
+      textAlign: 'center',
+      color: theme.palette.grey[500],
+      lineHeight: '150%',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '.6rem',
+      },
+    },
+    icon: {
+      height: '48px',
+      width: '48px',
+      marginBottom: '24px',
+    },
   };
   return (
     <Box sx={classes.wrapper}>
       <Box sx={classes.howItWorksHeader}>
-        <Typography variant="xl5" component="h2">
+        <Typography variant="xl5" component="h2" sx={classes.subheader}>
           How it works
         </Typography>
         <Typography variant="body1" component="p" sx={classes.text}>
@@ -144,10 +168,18 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
+          <Box sx={classes.icon}>
+            <Image
+              src={`/images/nftDetail/icons/Rectangle.svg`}
+              height={48}
+              width={48}
+              alt={'rectangle'}
+            />
+          </Box>
+          <Typography variant="lg" component="h3" sx={classes.subheader}>
             Digitize
           </Typography>
-          <Typography variant="body1" component="p">
+          <Typography variant="body1" component="p" sx={classes.paragraph}>
             From the physical world to the blockchain
           </Typography>
         </Grid>
@@ -161,10 +193,13 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
+          <Box sx={classes.icon}>
+            <Image src={`/images/nftDetail/icons/Star.svg`} height={48} width={48} alt={'star'} />
+          </Box>
+          <Typography variant="lg" component="h3" sx={classes.subheader}>
             Collect
           </Typography>
-          <Typography variant="body1" component="p">
+          <Typography variant="body1" component="p" sx={classes.paragraph}>
             Grow your collection and own fractions...
           </Typography>
         </Grid>
@@ -178,10 +213,18 @@ export const HowItWorks = () => {
             margin: '25px',
           }}
         >
-          <Typography variant="lg" component="h3" style={{ fontSize: '2rem' }}>
+          <Box sx={classes.icon}>
+            <Image
+              src={`/images/nftDetail/icons/Polygon.svg`}
+              height={48}
+              width={48}
+              alt={'polygon'}
+            />
+          </Box>
+          <Typography variant="lg" component="h3" sx={classes.subheader}>
             Sell
           </Typography>
-          <Typography variant="body1" component="p">
+          <Typography variant="body1" component="p" sx={classes.paragraph}>
             Your cards will shine in our marketplace
           </Typography>
         </Grid>
@@ -229,13 +272,10 @@ export const HowItWorks = () => {
             sx={classes.imageWrapper}
           >
             <Box sx={classes.nextImageHolder}>
-              <Image
-                src={
-                  'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
-                }
-                fill
-                alt={'in quia occaecati nihil'}
-                style={{ objectFit: 'contain' }}
+              <TradingCard
+                color={'pink'}
+                src={'/tradingCards/jordan_hardcat_heroics_card.png'}
+                isWhiteBackground={false}
               />
             </Box>
           </Box>
@@ -243,14 +283,7 @@ export const HowItWorks = () => {
         <Grid item sx={classes.rightHeroWrapper}>
           <Box style={{}} sx={classes.imageWrapper}>
             <Box sx={classes.nextImageHolder}>
-              <Image
-                src={
-                  'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
-                }
-                fill
-                alt={'in quia occaecati nihil'}
-                style={{ objectFit: 'contain' }}
-              />
+              <TradingCard color={'blue'} src={'/tradingCards/charizard.png'} />
             </Box>
           </Box>
         </Grid>
@@ -321,14 +354,7 @@ export const HowItWorks = () => {
         <Grid item sx={classes.rightHeroWrapper}>
           <Box style={{}} sx={classes.imageWrapper}>
             <Box sx={classes.nextImageHolder}>
-              <Image
-                src={
-                  'http://localhost:4566/test-bucket/assets/2886b7da-58f4-4576-b782-245f549b198b/c8bd95f1-8d6d-4086-a74e-a2908cd56b07'
-                }
-                fill
-                alt={'in quia occaecati nihil'}
-                style={{ objectFit: 'contain' }}
-              />
+              <TradingCard color={'red'} src={'/tradingCards/national_treasure_giannis.png'} />
             </Box>
           </Box>
         </Grid>

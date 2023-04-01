@@ -23,7 +23,7 @@ const CountdownTimer = dynamic<CountdownProps>(
 );
 import { BuyModal } from '@/components/BuyModal';
 
-import type { IAsset, ISellOrder } from '@/types';
+import type { IAsset, ISellOrder, IUser } from '@/types';
 import { OpenGraph } from '@/components/OpenGraph';
 import { Box, LinearProgress, Slider, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -38,11 +38,15 @@ import {
   EmailShareButton,
   EmailIcon,
 } from 'react-share';
-import { CopyButton } from '@/components/CopyButton';
+import { NO_IMAGE_AVAILABLE } from '@/helpers/noImageFound';
+import { getMainSellOrder } from '@/helpers/getMainSellOrder';
+import { useCart } from '@/helpers/auth/CartContext';
+import { useModalContext } from '@/helpers/auth/ModalContext';
 
 export interface AssetPageProps {
   asset: IAsset;
-  sellOrder: ISellOrder;
+  sellOrder: ISellOrder | undefined;
+  user: IUser | undefined;
   info: InfoRow[];
   watched: boolean;
   unitQty: number;
@@ -61,6 +65,7 @@ export function AssetPage(props: AssetPageProps) {
   const {
     asset,
     sellOrder,
+    user,
     info,
     watched,
     unitQty,
@@ -79,8 +84,13 @@ export function AssetPage(props: AssetPageProps) {
   const [modalState, setModalState] = useState<boolean>(false);
   const [unitsToPurchase, setUnitsToPurchase] = useState<number>(1);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const sellOrderData = getMainSellOrder(asset);
+  const { reOpenCart, addSingleItemToCart } = useCart();
+  const { dispatch } = useModalContext();
 
-  const purchasable = timeToPurchasable === 0;
+  const purchasable = timeToPurchasable <= 0;
+
+  const hasActiveSellOrder = sellOrder !== undefined && sellOrder.expireTime > Date.now();
 
   const toggleBuyModal = () => setModalState((prev) => !prev);
 
@@ -105,15 +115,37 @@ export function AssetPage(props: AssetPageProps) {
 
   useEffect(() => setUrl(window.location.href), []);
 
+  const handleOpenBuyModal = () => {
+    if (!sellOrderData) {
+      throw new Error('No associated sell order for asset');
+    }
+    addSingleItemToCart(
+      asset.name,
+      asset.description,
+      asset.id,
+      sellOrderData?.id,
+      unitsToPurchase,
+      sellOrderData?.fractionPriceCents as number,
+      totalPrice,
+    );
+    // if no user is logged in, prompt the login modal
+    if (!user) {
+      dispatch({ type: 'login', visible: true });
+      return;
+    }
+
+    reOpenCart();
+  };
+
   return (
     <>
       <OpenGraph
         title={asset.name}
         description={asset.description}
         image={
-          asset?.media
+          asset?.media && asset?.media[0].absoluteUrl
             ? asset?.media[0].absoluteUrl
-            : 'https://upload.wikimedia.org/wikipedia/commons/5/5a/No_image_available_500_x_500.svg'
+            : NO_IMAGE_AVAILABLE
         }
         image_alt={asset?.media && (asset?.media[0].description ?? 'No image available')}
       />
@@ -125,7 +157,6 @@ export function AssetPage(props: AssetPageProps) {
             ) : (
               <StarBorderRounded onClick={() => void handleWatch(asset)} fontSize="large" />
             )}
-            <CopyButton />
             <FacebookShareButton url={url}>
               <FacebookIcon size={32} round />
             </FacebookShareButton>
@@ -201,8 +232,15 @@ export function AssetPage(props: AssetPageProps) {
               <Typography variant="body1">1% = {unitQty} units</Typography>
               <Typography variant="body1">${unitDollarPrice}</Typography>
             </Box>
-            <Button variant="contained" disabled={!purchasable} fullWidth onClick={toggleBuyModal}>
-              {purchasable ? (
+            <Button
+              variant="contained"
+              disabled={!purchasable || !hasActiveSellOrder}
+              fullWidth
+              onClick={handleOpenBuyModal}
+            >
+              {!hasActiveSellOrder ? (
+                'Unavailable for purchase'
+              ) : purchasable ? (
                 'Buy units'
               ) : (
                 <>
@@ -228,14 +266,16 @@ export function AssetPage(props: AssetPageProps) {
             </Link>
           </ActionContainer>
         </InfoContainer>
-        <BuyModal
-          isOpen={modalState}
-          onClose={toggleBuyModal}
-          sellOrder={sellOrder}
-          totalFractions={unitsToPurchase}
-          totalPrice={totalPrice}
-          updateAsset={updateAsset}
-        />
+        {hasActiveSellOrder ? (
+          <BuyModal
+            isOpen={modalState}
+            onClose={toggleBuyModal}
+            sellOrder={sellOrder}
+            totalFractions={unitsToPurchase}
+            totalPrice={totalPrice}
+            updateAsset={updateAsset}
+          />
+        ) : null}
       </PageContainer>
     </>
   );

@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#
+.env
+
 # USE YARN
 package-lock.json
 
@@ -60,3 +63,11 @@ lerna-debug.log
 
 # Sentry
 .sentryclirc
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+# ebextensions files
+00-http_basic_auth.config

@@ -3,8 +3,14 @@ import { alpha, Modal } from '@mui/material';
 import { Conditional } from './Conditional';
 import { useEffect, useRef, useState } from 'react';
 import { useCart } from '@/helpers/auth/CartContext';
+import type { CartItem } from '@/helpers/auth/CartContext';
+import { Elements } from '@stripe/react-stripe-js';
+import getPaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
+import { loadStripe } from '@stripe/stripe-js';
 
-export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '');
+
+export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: CartItem | null }) => {
   const { closeModal } = useCart();
   const ref = useRef(null as null | HTMLDivElement);
   const [height, setHeight] = useState(0);
@@ -32,9 +38,30 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
     }
   }, []);
 
-  if (!(Object.keys(ref).length > 0)) {
+  // --------- STRIPE INTEGRATION ---------
+  const [clientSecret, setClientSecret] = useState<string | null>();
+
+  useEffect(() => {
+    //a useEffect ensures this function only runs after the component mounts, or an item changes.
+    if (isOpen && cartItem) {
+      const fetchIntent = async () => {
+        //declaring fetchIntent() then calling it allows async functions to be called at the top level of a non-async components.
+        const intent = await getPaymentIntentStripe(cartItem);
+        setClientSecret(intent.client_secret);
+      };
+      void fetchIntent();
+    }
+
+    return () => {
+      setClientSecret(undefined); //TODO - reasses cleanup functon: maybe clear cookie here?
+    };
+  }, [isOpen, cartItem]);
+  // ------------------------------------
+
+  if (!(Object.keys(ref).length > 0) || cartItem == null || !clientSecret) {
     return null;
   }
+
   return (
     <Modal
       open={isOpen}
@@ -46,7 +73,13 @@ export const Checkout = ({ isOpen }: { isOpen: boolean }) => {
       }}
     >
       <Box ref={ref} sx={style}>
-        <Conditional />
+        <Elements
+          stripe={stripePromise}
+          options={{ clientSecret: clientSecret }}
+          key={clientSecret}
+        >
+          <Conditional cartItem={cartItem} />
+        </Elements>
       </Box>
     </Modal>
   );

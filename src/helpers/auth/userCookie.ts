@@ -1,9 +1,10 @@
 import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 import { USER_TOKEN_COOKIE } from '@/helpers/constants';
 import { decrypt, encrypt } from '@/helpers/crypto';
-import type { IJwt, NextServerRequest, NextServerResponse } from '@/types';
 import type { NextApiRequest } from 'next';
 import { getExpFromRefreshToken } from './getExpFrom';
+import type { IJwt } from '@/types/auth.types';
+import type { NextServerRequest, NextServerResponse } from '@/types/next.types';
 
 export const setUserCookie = (
   token: IJwt,

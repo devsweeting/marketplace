@@ -23,6 +23,7 @@ import {
   NavContainer,
 } from './Header.styles';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export type HeaderPosition = 'fixed' | 'absolute' | 'relative' | 'static' | 'sticky' | undefined;
 
@@ -30,6 +31,8 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
   const [clientWindowHeight, setClientWindowHeight] = useState(0);
   const theme = useTheme();
   const matchesDesktop = useMediaQuery(theme.breakpoints.up('sm'));
+  const showSearchBar = useRouter().route !== '/';
+
   const [openState, setOpenState] = useState(false);
 
   const toggleDrawer = (open: boolean | ((prevState: boolean) => boolean)) => () => {
@@ -58,21 +61,20 @@ export const Header = ({ headerPosition }: { headerPosition: HeaderPosition }) =
           <Container>
             <Link href="/">
               <LogoWrapper>
-                <Image src="/images/logoJump.svg" alt="Header Logo" height="52" width="113" />
+                <Image src="/images/logoJump.svg" alt="Header Logo" height="32" width="113" />
               </LogoWrapper>
             </Link>
             {matchesDesktop ? (
               <>
-                <Divider orientation="vertical" />
-                <SearchContainer>
-                  <SearchBox
-                    borderRadius={false}
-                    placeholder={'Sport, player, set...'}
-                    reverseTextColor={false}
-                  />
-                </SearchContainer>
-                <Divider orientation="vertical" />
-
+                {showSearchBar ? (
+                  <SearchContainer>
+                    <SearchBox
+                      borderRadius={false}
+                      placeholder={'Sport, player, set...'}
+                      reverseTextColor={false}
+                    />
+                  </SearchContainer>
+                ) : null}
                 <Navbar navLinks={Routes} />
               </>
             ) : (

@@ -3,7 +3,7 @@ import { useCart } from '@/helpers/auth/CartContext';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { formatNumber } from '@/helpers/formatNumber';
 import {
   AddFundsButton,
@@ -30,24 +30,36 @@ import {
   StyledInput,
 } from './PaymentMethods.styles';
 import type { CartItem } from '@/helpers/auth/CartContext';
-import { useLocalStorage } from '@/helpers/hooks/useLocalStorage';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-export const PaymentMethods = ({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) => {
+export const PaymentMethods = ({
+  setPage,
+  setJumpBalance,
+  jumpBalance,
+  cartItem,
+}: {
+  setPage: Dispatch<SetStateAction<number>>;
+  setJumpBalance?: Dispatch<SetStateAction<number>>;
+  jumpBalance?: number;
+  cartItem: CartItem;
+}) => {
   const { closeModal } = useCart();
-  const [cartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
   const [isDismissed, setIsDismissed] = useState(false);
   const [selectedValue, setSelectedValue] = useState('card');
 
-  const funds = 0;
+  const [depositAmount, setDepositAmount] = useState<number>(0);
+  const handleDepositChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDepositAmount(Number(event.target.value));
+  };
+
+  const handleAddJumpFunds = () => {
+    jumpBalance && setJumpBalance && setJumpBalance(jumpBalance + depositAmount);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
   };
-  const item = cartItems[0];
-  if (!(cartItems.length > 0) || !(Object.keys(item).length > 0)) {
-    return null;
-  }
+
   return (
     <Container role="presentation">
       <HeaderContainer>
@@ -115,8 +127,8 @@ export const PaymentMethods = ({ setPage }: { setPage: Dispatch<SetStateAction<n
           <CardTextContainer>
             <Title variant="xl">Jump balance</Title>
             <Text>
-              {`$${formatNumber(funds.toFixed(2) as unknown as number)} USD ${
-                funds < item.totalPrice ? '(Insufficient funds)' : ''
+              {`$${formatNumber(Number(jumpBalance && jumpBalance.toFixed(2)))} USD ${
+                jumpBalance && jumpBalance < cartItem.totalPrice ? '(Insufficient funds)' : ''
               }`}
             </Text>
           </CardTextContainer>
@@ -150,8 +162,12 @@ export const PaymentMethods = ({ setPage }: { setPage: Dispatch<SetStateAction<n
               type="number"
               endAdornment={<StyledInputAdornments position="end">$</StyledInputAdornments>}
               disabled={selectedValue === 'card' ? true : false}
+              onChange={handleDepositChange}
             />
-            <AddFundsButton disabled={selectedValue === 'card' ? true : false}>
+            <AddFundsButton
+              onClick={handleAddJumpFunds}
+              disabled={selectedValue === 'card' ? true : false}
+            >
               Add funds
             </AddFundsButton>
           </Box>
@@ -186,10 +202,10 @@ export const PaymentMethods = ({ setPage }: { setPage: Dispatch<SetStateAction<n
         <Box>
           <OrderSummaryDetails>
             <Text variant="lg">
-              {item.quantity && item.quantity}
-              {item.quantity && item.quantity > 1 ? ' Units' : ' Unit'}
+              {cartItem.quantity && cartItem.quantity}
+              {cartItem.quantity && cartItem.quantity > 1 ? ' Units' : ' Unit'}
             </Text>
-            <Text variant="lg">{item.quantity && '$' + formatNumber(item.totalPrice)}</Text>
+            <Text variant="lg">{cartItem.quantity && '$' + formatNumber(cartItem.totalPrice)}</Text>
           </OrderSummaryDetails>
           <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
             <Text variant="lg">Royalty fees</Text>
@@ -207,7 +223,8 @@ export const PaymentMethods = ({ setPage }: { setPage: Dispatch<SetStateAction<n
           {selectedValue === 'jump_account' && (
             <AddPaymentButton
               onClick={() => {
-                setPage((prev) => prev + 1);
+                //Sends user to order summary
+                setPage((prev) => prev + 3);
               }}
             >
               Pay with Jump balance
@@ -216,7 +233,7 @@ export const PaymentMethods = ({ setPage }: { setPage: Dispatch<SetStateAction<n
           {selectedValue === 'card' && (
             <AddPaymentButton
               onClick={() => {
-                setPage((prev) => prev + 1);
+                setPage((prev) => prev + 2);
               }}
             >
               Add Credit Card

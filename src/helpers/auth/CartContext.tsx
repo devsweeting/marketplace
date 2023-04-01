@@ -8,7 +8,10 @@ type CartProviderProps = {
 };
 
 export type CartItem = {
-  id: string;
+  name: string;
+  description: string;
+  assetId: string;
+  sellOrderId: string;
   quantity: number;
   fractionPriceCents: number;
   totalPrice: number;
@@ -19,11 +22,34 @@ type CartContext = {
   openCart: () => void;
   closeCart: () => void;
   closeModal: () => void;
-  increaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
-  decreaseCartQuantity: (id: string, quantity: number, fractionPriceCents: number) => void;
-  removeFromCart: (id: string) => void;
+  increaseCartQuantity: (
+    name: string,
+    descrition: string,
+    assetId: string,
+    sellOrderId: string,
+    quantity: number,
+    fractionPriceCents: number,
+  ) => void;
+  decreaseCartQuantity: (
+    name: string,
+    descrition: string,
+    assetId: string,
+    sellOrderId: string,
+    quantity: number,
+    fractionPriceCents: number,
+  ) => void;
+  removeFromCart: (assetId: string) => void;
   cartQuantity: number;
   isDisabled: boolean;
+  addSingleItemToCart: (
+    name: string,
+    descrition: string,
+    assetId: string,
+    sellOrderId: string,
+    quantity: number,
+    fractionPriceCents: number,
+    totalPrice: number,
+  ) => void;
 };
 
 const CartContext = createContext({} as CartContext);
@@ -33,16 +59,41 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }: CartProviderProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const initialState = { isOpen: false, isDisabled: false };
+
   const [cartModalState, setCartModalState] = useState(initialState);
   const [cartItems, setCartItems] = useLocalStorage<CartItem[]>('@local-cart', []);
+
+  const initialCartItem = cartItems.length > 0 ? cartItems[cartItems.length - 1] : cartItems[0];
+
+  const [cartItem, setCartItem] = useState<CartItem | null>(initialCartItem);
 
   const cartQuantity = cartItems.reduce(
     (quantity: number, item: { quantity: number; fractionPriceCents: number }) =>
       item.quantity + quantity,
     0,
   );
+
+  //Declare the function to update the cart at the top of the component tree to force the CartContext to update the UI immediately.
+  const addSingleItemToCart = (
+    name: string,
+    description: string,
+    assetId: string,
+    sellOrderId: string,
+    quantity: number,
+    fractionPriceCents: number,
+    totalPrice: number,
+  ) => {
+    setCartItem({
+      name: name,
+      description: description,
+      assetId: assetId,
+      sellOrderId: sellOrderId,
+      quantity: quantity,
+      fractionPriceCents: fractionPriceCents,
+      totalPrice: totalPrice,
+    });
+  };
 
   const openCart = () => {
     setCartModalState({ ...cartModalState, isOpen: true });
@@ -51,24 +102,36 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const reOpenCart = () => {
     setCartModalState({ ...cartModalState, isDisabled: false, isOpen: true });
   };
+
   const closeCart = useCallback(() => {
     const newState = { ...cartModalState, isDisabled: true, isOpen: false };
     setCartModalState(newState);
     setCartItems([]);
   }, [cartModalState, setCartItems]);
+
   const closeModal = () => {
     const newState = { isDisabled: true, isOpen: false };
     setCartModalState(newState);
   };
 
   const increaseCartQuantity = useCallback(
-    (id: string, quantity: number, fractionPriceCents: number) => {
+    (
+      name: string,
+      description: string,
+      assetId: string,
+      sellOrderId: string,
+      quantity: number,
+      fractionPriceCents: number,
+    ) => {
       setCartItems((currItems) => {
-        if (currItems.find((item) => item.id === id) == null) {
+        if (currItems.find((item) => item.assetId === assetId) == null) {
           return [
             ...currItems,
             {
-              id,
+              name,
+              description,
+              assetId,
+              sellOrderId,
               quantity: quantity,
               fractionPriceCents: fractionPriceCents,
               totalPrice: Math.ceil(quantity * (fractionPriceCents ?? 0)) / 100,
@@ -76,7 +139,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
           ];
         } else {
           return currItems.map((item) => {
-            if (item.id === id) {
+            if (item.assetId === assetId) {
               return {
                 ...item,
                 quantity: item.quantity + 1,
@@ -94,22 +157,20 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   );
 
   const shouldBeOpen = () => {
-    const cartItem = cartItems[0];
-
-    if (cartModalState.isDisabled === false || cartItem?.id !== undefined) {
+    if (cartModalState.isDisabled === false || cartItem?.assetId !== undefined) {
       return cartModalState.isOpen;
     }
-
     return false;
   };
+
   const decreaseCartQuantity = useCallback(
     (id: string) => {
       setCartItems((currItems) => {
-        if (currItems.find((item) => item.id === id)?.quantity === 1) {
-          return currItems.filter((item) => item.id !== id);
+        if (currItems.find((item) => item.assetId === id)?.quantity === 1) {
+          return currItems.filter((item) => item.assetId !== id);
         } else {
           return currItems.map((item) => {
-            if (item.id === id) {
+            if (item.assetId === id) {
               return {
                 ...item,
                 quantity: item.quantity - 1,
@@ -127,9 +188,9 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   );
 
   const removeFromCart = useCallback(
-    (id: string) => {
+    (assetId: string) => {
       setCartItems((currItems) => {
-        return currItems.filter((item) => item.id !== id);
+        return currItems.filter((item) => item.assetId !== assetId);
       });
     },
     [setCartItems],
@@ -147,10 +208,42 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         reOpenCart,
         closeModal,
         isDisabled: cartModalState.isDisabled,
+        addSingleItemToCart,
       }}
     >
       {children}
-      <Checkout isOpen={shouldBeOpen()} />
+      <Checkout isOpen={shouldBeOpen()} cartItem={cartItem} />
     </CartContext.Provider>
   );
 };
+
+// NOTE -- this is the working function to update the entire cart, versus a single item.
+//
+// const updateCartItems = (currItems: CartItem[]) => {
+//   // If an asset doesn't already exist in the cart, add it.
+//   if (currItems.find((item) => item.id === asset.id) == null) {
+//     return [
+//       ...currItems,
+//       {
+//         id: asset.id,
+//         quantity: sliderValue,
+//         fractionPriceCents: sellOrderData?.fractionPriceCents as number,
+//         totalPrice: totalPrice,
+//       },
+//     ];
+//   } else {
+//     //If the asset aready exists in cart, update its details
+//     return currItems.map((item) => {
+//       if (item.id === asset.id) {
+//         return {
+//           ...item,
+//           quantity: sliderValue,
+//           fractionPriceCents: sellOrderData?.fractionPriceCents as number,
+//           totalPrice: totalPrice,
+//         };
+//       } else {
+//         return item;
+//       }
+//     });
+//   }
+// };

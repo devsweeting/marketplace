@@ -3,6 +3,7 @@ import { KeyboardArrowLeftRounded, KeyboardArrowRightRounded } from '@mui/icons-
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import { Container, ControlButton, Carousel, ImgWrapper, Img, ImgCount } from './ImgGallery.styles';
+import { NO_IMAGE_AVAILABLE } from '@/helpers/noImageFound';
 
 interface ImgGalleryProps {
   images: IMedia[];
@@ -60,7 +61,7 @@ export function ImgGallery({ images }: ImgGalleryProps) {
                 priority
                 placeholder="blur"
                 blurDataURL={`/_next/image?url=${img.absoluteUrl}&w=16&q=1`}
-                src={img.absoluteUrl}
+                src={img.absoluteUrl ? img.absoluteUrl : NO_IMAGE_AVAILABLE}
                 fill
                 alt={img.title}
               />

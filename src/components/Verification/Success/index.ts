@@ -1,1 +1,0 @@
-export { VerificationSuccess } from './VerificationSuccess';

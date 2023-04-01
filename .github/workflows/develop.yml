@@ -42,12 +42,18 @@ jobs:
       # Uncomment this when tests work :)
       - name: 'Run Tests'
         run: yarn test:cov
+
       ######################################
       # Deploy to Elastic Beanstalk
       ######################################
       - name: 'Generate Deployment Package'
         if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
-        run: zip -r deploy.zip . -x '*.git*' --symlinks
+        run: |
+          mkdir -p ./.ebextensions
+          echo ${{ secrets.HTTP_BASIC_AUTH_CONFIG }} > ./00-http_basic_auth.config.tmp
+          base64 -d ./00-http_basic_auth.config.tmp > ./.ebextensions/00-http_basic_auth.config
+          rm ./00-http_basic_auth.config.tmp
+          zip -r deploy.zip . -x '*.git*' --symlinks
 
       - name: 'Generate Version Label'
         if: github.ref == 'refs/heads/develop' && github.event_name == 'push'

@@ -91,12 +91,15 @@ const PortfolioPage: NextPage = () => {
     return null;
   }
 
-  if (Object.keys(portfolio).includes('meta')) {
+  if (portfolio.items) {
     portfolio.items.flatMap((item: { category: string }) => {
-      item.category = activePortfolioCategory;
+      if (Object.keys(item).includes('meta')) {
+        item.category = activePortfolioCategory;
+      }
     });
     portfolioAssetsList.push(...portfolio.items);
   }
+
   const updateAsset = (assetId: string): void => {
     getAssetById(assetId)
       .then((asset) => {
