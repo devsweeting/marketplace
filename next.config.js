@@ -8,7 +8,7 @@ const nextConfig = {
   images: {
     domains: [
       // This list is required at compile time, so we can't configure this properly.
-      'jumpco-assets-test.s3.us-west-2.amazonaws.com', // Test environment
+      'jumpco-assets-staging.s3.us-west-2.amazonaws.com', // Staging2 environment
       'fractionalist-nfts.s3.us-west-2.amazonaws.com', // Staging environment
       // None for production yet
     ],
