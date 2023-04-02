@@ -46,7 +46,6 @@ export const confirmStripePayment = async ({
   });
 
   if (error) {
-    console.log('In Error', error);
     throw new Error(error.message);
   }
 
