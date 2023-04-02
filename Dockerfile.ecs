@@ -2,6 +2,6 @@ FROM node:14.19.1-stretch-slim
 WORKDIR /srv/app
 COPY . .
 COPY docker/entrypoint.sh /srv/app
-RUN yarn install --frozen-lockfile && yarn build
+RUN yarn install --frozen-lockfile --network-timeout 100000 && yarn build
 EXPOSE 3000
 ENTRYPOINT ["/srv/app/entrypoint.sh"]
