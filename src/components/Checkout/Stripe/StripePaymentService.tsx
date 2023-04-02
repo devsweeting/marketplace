@@ -60,60 +60,66 @@ export const StripePaymentService = ({
     return isReady;
   };
 
-  const handlePayment = async (e: any) => {
-    e.preventDefault();
-    const user = await getCurrentUser(); //TODO build a better non-async user hook
+  const handlePayment = (e: any) => {
+    void (async () => {
+      e.preventDefault();
+      setIsProcessing(true); //Disable button during processing to avoid duplicate clicks
 
-    if (elements && stripe && user && isStripePaymentReady()) {
-      // setIsProcessing(true); //Disable button during processing to avoid duplicate clicks
+      const user = await getCurrentUser(); //TODO build a better non-async user hook
 
-      //TODO - run an initial check on the SellOrder table validating a user is able to purchase units
-      const canPurchaseAsset = await validateAssetPurchase(orderSummary, setAlertMessage, cartItem);
-
-      if (canPurchaseAsset.statusCode === StatusCodes.OK) {
-        const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
-
-        const trackingDetails: StripePurchaseTracking = {
-          intentId: paymentIntent.id,
-          purchaseStatus: paymentIntent.status,
-          amount: paymentIntent.amount,
-        };
-
-        switch (paymentIntent?.status) {
-          case 'succeeded':
-            destroyPaymentIntentCookie();
-            await handleAssetTransaction(
-              orderSummary,
-              setAlertMessage,
-              cartItem,
-              closeModal,
-              router,
-              trackingDetails,
-            );
-            setAlertMessage('Payment succeeded!');
-            break;
-          case 'processing':
-            setAlertMessage('Your payment is processing.');
-            break;
-          case 'requires_payment_method':
-            setAlertMessage('Your payment was not successful, please try again.');
-            break;
-          default:
-            setAlertMessage('Something went wrong.');
-            break;
-        }
-      } else {
-        throw new Error(
-          `ERROR: CANNOT PURCHASE ASSET ${canPurchaseAsset.error} ${canPurchaseAsset.message}`,
+      if (elements && stripe && user && isStripePaymentReady()) {
+        //TODO - run an initial check on the SellOrder table validating a user is able to purchase units
+        const canPurchaseAsset = await validateAssetPurchase(
+          orderSummary,
+          setAlertMessage,
+          cartItem,
         );
+
+        if (canPurchaseAsset.statusCode === StatusCodes.OK) {
+          const paymentIntent = await confirmStripePayment({ stripe, elements, user, cartItem });
+
+          const trackingDetails: StripePurchaseTracking = {
+            intentId: paymentIntent.id,
+            purchaseStatus: paymentIntent.status,
+            amount: paymentIntent.amount,
+          };
+
+          switch (paymentIntent?.status) {
+            case 'succeeded':
+              destroyPaymentIntentCookie();
+              await handleAssetTransaction(
+                orderSummary,
+                setAlertMessage,
+                cartItem,
+                closeModal,
+                router,
+                trackingDetails,
+              );
+              setAlertMessage('Payment succeeded!');
+              break;
+            case 'processing':
+              setAlertMessage('Your payment is processing.');
+              break;
+            case 'requires_payment_method':
+              setAlertMessage('Your payment was not successful, please try again.');
+              break;
+            default:
+              setAlertMessage('Something went wrong.');
+              break;
+          }
+        } else {
+          throw new Error(
+            `ERROR: CANNOT PURCHASE ASSET ${canPurchaseAsset.error} ${canPurchaseAsset.message}`,
+          );
+        }
       }
-    }
-    setIsProcessing(false);
+      setIsProcessing(false);
+    })();
   };
 
   return (
     <CheckoutContainer setPage={setPage} alertMessage={alertMessage} open={open} setOpen={setOpen}>
-      <form onSubmit={void handlePayment}>
+      <form onSubmit={handlePayment}>
         <Box sx={{ width: '100%', margin: '0', padding: '16px 24px' }}>
           <PaymentElement
             onLoaderStart={() => setIsPaymentElementMounted(true)}
