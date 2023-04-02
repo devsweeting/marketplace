@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next build && next start",
+    "start": "next start",
+    "local": "next build && next start",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "yarn lint --fix",
     "test": "jest --watch",
