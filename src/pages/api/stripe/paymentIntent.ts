@@ -26,6 +26,12 @@ export type StripeMetaData = {
 };
 
 const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> => {
+  console.log(
+    'Stripe secret key is empty?:',
+    process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.length == 0,
+  );
+  console.log('Stripe secret last char?:', process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.at(-1));
+
   const user = await getCurrentUser();
   if (!user) {
     throw new Error('No user found');
