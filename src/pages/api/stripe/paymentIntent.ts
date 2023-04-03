@@ -8,7 +8,7 @@ import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? '', {
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
 
