@@ -8,8 +8,15 @@ import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
 
-console.log('Stripe secret key is empty?:', process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.length == 0);
-console.log('Stripe secret last char?:', process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.at(-1));
+if (process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY) {
+  console.log(
+    'Stripe secret key is empty?:',
+    process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.length == 0,
+  );
+  console.log('Stripe secret last char?:', process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.at(-1));
+} else {
+  console.log("Stripe secret key doesn't exist");
+}
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
