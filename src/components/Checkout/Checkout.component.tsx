@@ -45,6 +45,16 @@ export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: Cart
 
   useEffect(() => {
     //a useEffect ensures this function only runs after the component mounts, or an item changes.
+    console.log('isOpen: ', isOpen);
+    console.log('cartItem: ', cartItem);
+    const secretKey = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY;
+    if (secretKey) {
+      console.log('Stripe secret key is empty?:', secretKey.length == 0);
+      console.log('Stripe secret type:', typeof secretKey);
+      console.log('Stripe secret last char:', secretKey.charAt(secretKey.length - 1));
+    } else {
+      console.log("Stripe secret key doesn't exist");
+    }
     if (isOpen && cartItem) {
       const fetchIntent = async () => {
         //declaring fetchIntent() then calling it allows async functions to be called at the top level of a non-async components.
