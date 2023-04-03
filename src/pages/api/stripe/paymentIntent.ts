@@ -8,18 +8,11 @@ import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
 
-if (process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY) {
-  console.log(
-    'Stripe secret key is empty?:',
-    process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.length == 0,
-  );
-  console.log('Stripe secret type:', typeof process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
-  console.log(
-    'Stripe secret last char:',
-    process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.charAt(
-      process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY.length - 1,
-    ),
-  );
+const secretKey = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY;
+if (secretKey) {
+  console.log('Stripe secret key is empty?:', secretKey.length == 0);
+  console.log('Stripe secret type:', typeof secretKey);
+  console.log('Stripe secret last char:', secretKey.charAt(secretKey.length - 1));
 } else {
   console.log("Stripe secret key doesn't exist");
 }
