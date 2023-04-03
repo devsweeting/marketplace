@@ -44,6 +44,8 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
 
   const paymentIntentId = getPaymentIntentCookie();
 
+  console.log('paymentIntentId', paymentIntentId);
+
   if (paymentIntentId) {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
@@ -62,6 +64,7 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
     return { client_secret: paymentIntent.client_secret, error: null };
   }
   //If no intent is found, create a new one
+
   const intent = await createPaymentIntent(item, metaData, stripe);
   return intent;
 };
@@ -73,6 +76,7 @@ const createPaymentIntent = async (
   metaData: StripeMetaData,
   stripe: Stripe,
 ): Promise<IPaymentIntent> => {
+  console.log('Create payment Intent');
   try {
     // Find our user to tie them to the payment through passing a idempotency_key and meta_data
     const paymentIntent = await stripe.paymentIntents.create({
