@@ -8,7 +8,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import getPaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
 import { loadStripe } from '@stripe/stripe-js';
 
-console.log('Stripe public key:', process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: CartItem | null }) => {
@@ -16,6 +15,8 @@ export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: Cart
   const ref = useRef(null as null | HTMLDivElement);
   const [height, setHeight] = useState(0);
   const [scrollHeight, setScrollHeight] = useState(0);
+
+  console.log('Stripe public key:', process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
   const style = {
     position: 'absolute' as const,
