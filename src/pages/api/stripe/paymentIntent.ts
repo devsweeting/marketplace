@@ -8,7 +8,7 @@ import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
 
-const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY ?? '', {
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
 
@@ -32,19 +32,7 @@ const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> =
   }
   const amount = calcStripeAmount(item.totalPrice);
   const metaData = createStripeMetaData(item, user);
-
-  const secretKey = process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY;
-  if (secretKey) {
-    console.log('Inside Intent: Stripe secret key is empty?:', secretKey.length == 0);
-    console.log('Inside Intent: Stripe secret type:', typeof secretKey);
-    console.log('Inside Intent: Stripe secret last char:', secretKey.charAt(secretKey.length - 1));
-  } else {
-    console.log("Inside Intent: Stripe secret key doesn't exist");
-  }
-
   const paymentIntentId = getPaymentIntentCookie();
-
-  console.log('paymentIntentId', paymentIntentId);
 
   if (paymentIntentId) {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
@@ -76,7 +64,6 @@ const createPaymentIntent = async (
   metaData: StripeMetaData,
   stripe: Stripe,
 ): Promise<IPaymentIntent> => {
-  console.log('Create payment Intent');
   try {
     // Find our user to tie them to the payment through passing a idempotency_key and meta_data
     const paymentIntent = await stripe.paymentIntents.create({

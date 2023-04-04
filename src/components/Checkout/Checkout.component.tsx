@@ -8,15 +8,13 @@ import { Elements } from '@stripe/react-stripe-js';
 import getPaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: CartItem | null }) => {
   const { closeModal } = useCart();
   const ref = useRef(null as null | HTMLDivElement);
   const [height, setHeight] = useState(0);
   const [scrollHeight, setScrollHeight] = useState(0);
-
-  console.log('Stripe public key:', process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
   const style = {
     position: 'absolute' as const,
@@ -45,22 +43,10 @@ export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: Cart
 
   useEffect(() => {
     //a useEffect ensures this function only runs after the component mounts, or an item changes.
-    console.log('isOpen: ', isOpen);
-    console.log('cartItem: ', cartItem);
     if (isOpen && cartItem) {
       const fetchIntent = async () => {
         //declaring fetchIntent() then calling it allows async functions to be called at the top level of a non-async components.
         const intent = await getPaymentIntentStripe(cartItem);
-        if (intent.client_secret) {
-          console.log('Stripe secret key is empty?:', intent.client_secret.length == 0);
-          console.log('Stripe secret type:', typeof intent.client_secret);
-          console.log(
-            'Stripe secret last char:',
-            intent.client_secret.charAt(intent.client_secret.length - 1),
-          );
-        } else {
-          console.log("Stripe secret key doesn't exist");
-        }
         setClientSecret(intent.client_secret);
       };
       void fetchIntent();
