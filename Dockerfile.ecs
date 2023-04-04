@@ -2,6 +2,12 @@ FROM node:14.19.1-stretch-slim
 WORKDIR /srv/app
 COPY . .
 COPY docker/entrypoint.sh /srv/app
+ARG NEXT_PUBLIC_BACKEND_URL
+ARG NEXT_PUBLIC_FRONTEND_URL
+ARG NEXT_PUBLIC_SENTRY_DSN
+ARG NEXT_PUBLIC_SENTRY_ENV
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_STRIPE_SECRET_KEY
 RUN yarn install --frozen-lockfile --network-timeout 100000 && yarn build
 EXPOSE 3000
 ENTRYPOINT ["/srv/app/entrypoint.sh"]
