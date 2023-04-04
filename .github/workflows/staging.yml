@@ -32,6 +32,10 @@ jobs:
           ECR_REPOSITORY: web-staging
           IMAGE_TAG: latest
           DOCKER_FILE: Dockerfile.ecs
+          NEXT_PUBLIC_BACKEND_URL: https://api.staging.pwcc.jump.co/v1
+          NEXT_PUBLIC_FRONTEND_URL: https://staging.pwcc.jump.co/v1
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+          NEXT_PUBLIC_SENTRY_ENV: staging
         run: |
           docker build --platform=linux/amd64 -f $DOCKER_FILE -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
