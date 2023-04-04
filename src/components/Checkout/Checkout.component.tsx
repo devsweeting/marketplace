@@ -8,7 +8,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import getPaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '');
 
 export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: CartItem | null }) => {
   const { closeModal } = useCart();
