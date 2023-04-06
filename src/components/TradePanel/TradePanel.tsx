@@ -24,10 +24,10 @@ import {
   AssetHeaderContainer,
   FlexTextWrapper,
   TradePanelButton,
-  TradePanelLink,
 } from './TradePanel.styles';
 import { useCart } from '@/helpers/auth/CartContext';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
+import { useRouter } from 'next/router';
 
 export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
   const user = useUser();
@@ -39,6 +39,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
+  const router = useRouter();
 
   const getPercentClaimed = (sellOrderData: ISellOrder | undefined): number => {
     const percentClaimed = sellOrderData
@@ -293,11 +294,14 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               </div>
 
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TradePanelLink href={`/asset/${asset.id}`}>
-                  <Button variant="text" endIcon={<ArrowRightAltRounded />}>
-                    Card Details
-                  </Button>
-                </TradePanelLink>
+                <Button
+                  sx={{ textDecoration: 'none' }}
+                  onClick={() => router.push(`/asset/${asset.id}`, `/asset/${asset.slug}`)}
+                  variant="text"
+                  endIcon={<ArrowRightAltRounded />}
+                >
+                  Card Details
+                </Button>
               </Box>
             </AssetContainer>
           </Box>

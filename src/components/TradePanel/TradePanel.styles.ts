@@ -57,6 +57,3 @@ export const TradePanelButton = styled(Button)(({ theme }) => ({
   border: `1px solid ${theme.palette.grey[300]}`,
   margin: '8px 0',
 }));
-export const TradePanelLink = styled(Link)({
-  textDecoration: 'none',
-});
