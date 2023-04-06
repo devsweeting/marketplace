@@ -296,7 +296,7 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Button
                   sx={{ textDecoration: 'none' }}
-                  onClick={() => router.push(`/asset/${asset.id}`, `/asset/${asset.slug}`)}
+                  onClick={() => void router.push(`/asset/${asset.id}`, `/asset/${asset.slug}`)}
                   variant="text"
                   endIcon={<ArrowRightAltRounded />}
                 >

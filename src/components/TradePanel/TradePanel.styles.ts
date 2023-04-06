@@ -1,5 +1,4 @@
 import { Button, Drawer as MuiDrawer, IconButton, styled } from '@mui/material';
-import Link from 'next/link';
 
 export const Drawer = styled(MuiDrawer)(({ theme }) => ({
   '& .MuiDrawer-paper': {
