@@ -176,6 +176,7 @@ const SearchPage: NextPage = () => {
             handleClose={() => {
               setIsOpen(!isOpen);
             }}
+            router={router}
           />
         )}
       </Grid>

@@ -24,12 +24,11 @@ import {
   AssetHeaderContainer,
   FlexTextWrapper,
   TradePanelButton,
-  TradePanelLink,
 } from './TradePanel.styles';
 import { useCart } from '@/helpers/auth/CartContext';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
 
-export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
+export const TradePanel = ({ asset, open, handleClose, updateAsset, router }: ITradePanel) => {
   const user = useUser();
   const { reOpenCart, addSingleItemToCart } = useCart();
   const { dispatch } = useModalContext();
@@ -293,11 +292,14 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
               </div>
 
               <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <TradePanelLink href={`/asset/${asset.id}`}>
-                  <Button variant="text" endIcon={<ArrowRightAltRounded />}>
-                    Card Details
-                  </Button>
-                </TradePanelLink>
+                <Button
+                  sx={{ textDecoration: 'none' }}
+                  onClick={() => void router.push(`/asset/${asset.id}`, `/asset/${asset.slug}`)}
+                  variant="text"
+                  endIcon={<ArrowRightAltRounded />}
+                >
+                  Card Details
+                </Button>
               </Box>
             </AssetContainer>
           </Box>

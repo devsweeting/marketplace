@@ -14,12 +14,14 @@ import { UserContext } from '@/helpers/auth/UserContext';
 import { CartProvider } from '@/helpers/auth/CartContext';
 import { mockJsonResponse } from '@/__mocks__/mockApiResponse';
 import { ModalContextProvider } from '@/helpers/auth/ModalContext';
+import mockRouter from 'next-router-mock';
 
 const mockHandleClose = jest.fn();
 const mockUpdateAsset = jest.fn();
 
 jest.mock('@/api/client');
 const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
+jest.mock('next/router', () => require('next-router-mock'));
 
 const data: IAsset = mockAssetResponse.items[0];
 const mockUser = {
@@ -124,6 +126,7 @@ const MockTradePanel = ({ asset }: { asset: IAsset }) => {
             open={true}
             handleClose={mockHandleClose}
             updateAsset={mockUpdateAsset}
+            router={mockRouter}
           />
         </CartProvider>
       </ModalContextProvider>
