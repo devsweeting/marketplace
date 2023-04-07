@@ -251,6 +251,7 @@ const PortfolioPage: NextPage = () => {
           handleClose={() => {
             setIsOpen(!isOpen);
           }}
+          router={router}
         />
       )}
       {Object.keys(portfolio).includes('statusCode') &&

@@ -257,6 +257,7 @@ const ExplorePage: NextPage = () => {
             handleClose={() => {
               setIsOpen(!isOpen);
             }}
+            router={router}
           />
         )}
       </Grid>

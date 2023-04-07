@@ -27,9 +27,8 @@ import {
 } from './TradePanel.styles';
 import { useCart } from '@/helpers/auth/CartContext';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
-import { useRouter } from 'next/router';
 
-export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePanel) => {
+export const TradePanel = ({ asset, open, handleClose, updateAsset, router }: ITradePanel) => {
   const user = useUser();
   const { reOpenCart, addSingleItemToCart } = useCart();
   const { dispatch } = useModalContext();
@@ -39,7 +38,6 @@ export const TradePanel = ({ asset, open, handleClose, updateAsset }: ITradePane
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [assetId, setAssetId] = useState(asset.id);
   const sellOrderData = getMainSellOrder(asset);
-  const router = useRouter();
 
   const getPercentClaimed = (sellOrderData: ISellOrder | undefined): number => {
     const percentClaimed = sellOrderData
