@@ -1,5 +1,5 @@
 import type { IAsset } from '@/types';
-import { NextRouter } from 'next/router';
+import type { NextRouter } from 'next/router';
 
 export interface ITradePanel {
   asset: IAsset;
