@@ -20,6 +20,7 @@ const mockUpdateAsset = jest.fn();
 
 jest.mock('@/api/client');
 const mockApiClient = apiClient as jest.Mocked<typeof apiClient>;
+jest.mock('next/router', () => require('next-router-mock'));
 
 const data: IAsset = mockAssetResponse.items[0];
 const mockUser = {

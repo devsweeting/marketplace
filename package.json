@@ -38,6 +38,7 @@
     "http-status-codes": "^2.2.0",
     "jwt-decode": "^3.1.2",
     "next": "^13.0.6",
+    "next-router-mock": "^0.9.3",
     "nookies": "^2.5.2",
     "react": "^18.2.0",
     "react-animated-3d-card": "^1.0.2",
