@@ -30,7 +30,10 @@ export const MarketCard = ({
       tabIndex={tabIndex}
       sx={{ scrollSnapAlign: 'start' }}
     >
-      <Card onClick={() => void router.push(`/asset/${asset.id}`)} variant="outlined">
+      <Card
+        onClick={() => void router.push(`/asset/${asset.id}`, `/asset/${asset.slug}`)}
+        variant="outlined"
+      >
         <ImgContainer>
           <ImgWrapper>
             {asset?.media && asset?.media.length > 0 && (
