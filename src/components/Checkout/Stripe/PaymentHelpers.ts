@@ -67,10 +67,6 @@ export async function handleAssetTransaction(
     stripeTrackingDetails,
   );
 
-  console.log('Resposne purchase sell order', response);
-
-  console.log('Order Sumamry to redirect', orderSummary);
-
   try {
     if (response.status === StatusCodes.CREATED) {
       closeModal();

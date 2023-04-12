@@ -8,6 +8,7 @@ import Stripe from 'stripe';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
+import { uuid } from 'uuidv4';
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
@@ -31,7 +32,6 @@ export type StripeMetaData = {
 const usePaymentIntentStripe = (isOpen: boolean, item: CartItem | null): IStripeHook => {
   const paymentIntentIdCookie = getPaymentIntentCookie();
   const [paymentIntent, setPaymentIntent] = useState<Stripe.PaymentIntent | null>(null);
-  console.log('paymentIntentIdCookie', paymentIntentIdCookie);
 
   useEffect(() => {
     if (isOpen === true && item !== null) {
@@ -50,26 +50,22 @@ const usePaymentIntentStripe = (isOpen: boolean, item: CartItem | null): IStripe
           const retrievedIntent = await stripe.paymentIntents.retrieve(paymentIntentIdCookie);
           setPaymentIntent(retrievedIntent);
 
-          console.log('retrieved status:', retrievedIntent.status);
-
           //Catch a bug that the original cookie from a previously successful purchase wasn't detroyed.
           if (retrievedIntent.status === 'succeeded') {
-            console.log('intent status outdated');
-
             destroyPaymentIntentCookie();
             const createdIntent = await createPaymentIntent(amount, metaData, stripe);
             setPaymentIntent(createdIntent);
           }
-        }
 
-        if (paymentIntent != null && paymentIntent.amount != amount) {
-          const updatedIntent = await updatePaymentIntent({
-            stripe,
-            paymentIntentId: paymentIntent.id,
-            amount,
-            metaData,
-          });
-          setPaymentIntent(updatedIntent);
+          if (retrievedIntent.amount != amount) {
+            const updatedIntent = await updatePaymentIntent({
+              stripe,
+              paymentIntentId: retrievedIntent.id,
+              amount,
+              metaData,
+            });
+            setPaymentIntent(updatedIntent);
+          }
         }
       };
       fetchIntent();
@@ -79,8 +75,6 @@ const usePaymentIntentStripe = (isOpen: boolean, item: CartItem | null): IStripe
     };
   }, [isOpen, item]);
 
-  console.log('paymentIntent', paymentIntent);
-
   //Declare a callback fn to pass down to child components update the intent
   const useUpdateIntent: UpdateIntentFunc = useCallback(
     async (amount: number) => {
@@ -89,8 +83,6 @@ const usePaymentIntentStripe = (isOpen: boolean, item: CartItem | null): IStripe
         paymentIntentId: paymentIntent!.id,
         amount,
       });
-      console.log('Intent Updated', updated_intent);
-
       return updated_intent;
     },
     [paymentIntent],
@@ -117,12 +109,15 @@ const createPaymentIntent = async (
   stripe: Stripe,
 ): Promise<Stripe.PaymentIntent> => {
   try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      currency: 'USD',
-      amount: amount,
-      automatic_payment_methods: { enabled: true },
-      metadata: metaData,
-    });
+    const paymentIntent = await stripe.paymentIntents.create(
+      {
+        currency: 'USD',
+        amount: amount,
+        automatic_payment_methods: { enabled: true },
+        metadata: metaData,
+      },
+      { idempotencyKey: uuid() },
+    );
 
     setPaymentIntentCookie(paymentIntent.id);
 
@@ -155,8 +150,9 @@ const updatePaymentIntent = async ({
     updated_details = { ...updated_details, metadata: metaData };
   }
 
-  const updated_intent = await stripe.paymentIntents.update(paymentIntentId, updated_details);
-
+  const updated_intent = await stripe.paymentIntents.update(paymentIntentId, updated_details, {
+    idempotencyKey: uuid(),
+  });
   return updated_intent;
 };
 
@@ -164,7 +160,7 @@ const updatePaymentIntent = async ({
 Conversion of cents(API) to dollars(stripe)
 */
 export const calcStripeAmount = (totalPriceInCents: number) => {
-  return totalPriceInCents * 100;
+  return Number((totalPriceInCents * 100).toFixed(2));
 };
 
 const createStripeMetaData = (item: CartItem, user: IUser): StripeMetaData => {

@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import {
   Container,
   OrderSummaryContainer,
@@ -21,9 +21,15 @@ export const OrderSummary = ({
 }) => {
   const theme = useTheme();
 
-  const totalAmount = Number((cartItem.totalPrice * 1.15 + 0.25).toFixed(2));
+  const totalAmount = useMemo(() => {
+    return Number((cartItem.totalPrice * 1.15 + 0.25).toFixed(2));
+  }, [cartItem.totalPrice]);
 
-  updatePaymentIntent(calcStripeAmount(totalAmount));
+  console.log('totalAMount', totalAmount);
+
+  useEffect(() => {
+    updatePaymentIntent(calcStripeAmount(totalAmount));
+  }, [totalAmount]);
 
   return (
     <Container role="presentation" style={{ width: '576px' }}>
