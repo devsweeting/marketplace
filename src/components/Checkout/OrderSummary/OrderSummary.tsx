@@ -25,8 +25,6 @@ export const OrderSummary = ({
     return Number((cartItem.totalPrice * 1.15 + 0.25).toFixed(2));
   }, [cartItem.totalPrice]);
 
-  console.log('totalAMount', totalAmount);
-
   useEffect(() => {
     updatePaymentIntent(calcStripeAmount(totalAmount));
   }, [totalAmount]);

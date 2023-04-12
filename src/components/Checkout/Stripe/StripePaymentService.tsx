@@ -87,8 +87,6 @@ export const StripePaymentService = ({
             amount: paymentIntent.amount,
           };
 
-          console.log('trackign details', trackingDetails);
-
           switch (paymentIntent?.status) {
             case 'succeeded':
               destroyPaymentIntentCookie();

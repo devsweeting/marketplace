@@ -22,6 +22,5 @@ export const setPaymentIntentCookie = (id: string) => {
 };
 
 export const destroyPaymentIntentCookie = () => {
-  console.log('payment intent cookie destroyed');
   destroyCookie(null, STRIPE_PAYMENT_INTENT_ID);
 };
