@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react';
 import {
   destroyPaymentIntentCookie,
   getPaymentIntentCookie,
@@ -12,9 +13,11 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
 
-export type IPaymentIntent = {
-  client_secret: string | null;
-  error: string | null;
+export type UpdateIntentFunc = (amount: number) => Promise<Stripe.PaymentIntent>;
+
+export type IStripeHook = {
+  clientSecret: string | null;
+  updatePaymentIntent?: UpdateIntentFunc;
 };
 
 export type StripeMetaData = {
@@ -25,63 +28,142 @@ export type StripeMetaData = {
   sellOrderId: string;
 };
 
-const getPaymentIntentStripe = async (item: CartItem): Promise<IPaymentIntent> => {
-  const user = await getCurrentUser();
-  if (!user) {
-    throw new Error('No user found');
-  }
-  const amount = calcStripeAmount(item.totalPrice);
-  const metaData = createStripeMetaData(item, user);
-  const paymentIntentId = getPaymentIntentCookie();
+const usePaymentIntentStripe = (isOpen: boolean, item: CartItem | null): IStripeHook => {
+  const paymentIntentIdCookie = getPaymentIntentCookie();
+  const [paymentIntent, setPaymentIntent] = useState<Stripe.PaymentIntent | null>(null);
+  console.log('paymentIntentIdCookie', paymentIntentIdCookie);
 
-  if (paymentIntentId) {
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  useEffect(() => {
+    if (isOpen === true && item !== null) {
+      const fetchIntent = async () => {
+        const user = await getCurrentUser();
+        if (!user) {
+          throw new Error('No user found');
+        }
+        const amount = calcStripeAmount(item.totalPrice);
+        const metaData = createStripeMetaData(item, user);
 
-    if (paymentIntent.status === 'succeeded') {
-      destroyPaymentIntentCookie();
-      return await createPaymentIntent(item, metaData, stripe);
+        if (paymentIntentIdCookie == null) {
+          const createdIntent = await createPaymentIntent(amount, metaData, stripe);
+          setPaymentIntent(createdIntent);
+        } else {
+          const retrievedIntent = await stripe.paymentIntents.retrieve(paymentIntentIdCookie);
+          setPaymentIntent(retrievedIntent);
+
+          console.log('retrieved status:', retrievedIntent.status);
+
+          //Catch a bug that the original cookie from a previously successful purchase wasn't detroyed.
+          if (retrievedIntent.status === 'succeeded') {
+            console.log('intent status outdated');
+
+            destroyPaymentIntentCookie();
+            const createdIntent = await createPaymentIntent(amount, metaData, stripe);
+            setPaymentIntent(createdIntent);
+          }
+        }
+
+        if (paymentIntent != null && paymentIntent.amount != amount) {
+          const updatedIntent = await updatePaymentIntent({
+            stripe,
+            paymentIntentId: paymentIntent.id,
+            amount,
+            metaData,
+          });
+          setPaymentIntent(updatedIntent);
+        }
+      };
+      fetchIntent();
     }
+    return () => {
+      setPaymentIntent(null);
+    };
+  }, [isOpen, item]);
 
-    if (paymentIntent.amount !== amount) {
-      const updated_intent = await stripe.paymentIntents.update(paymentIntentId, {
-        amount: amount,
-        metadata: metaData,
+  console.log('paymentIntent', paymentIntent);
+
+  //Declare a callback fn to pass down to child components update the intent
+  const useUpdateIntent: UpdateIntentFunc = useCallback(
+    async (amount: number) => {
+      const updated_intent = await updatePaymentIntent({
+        stripe,
+        paymentIntentId: paymentIntent!.id,
+        amount,
       });
-      return { client_secret: updated_intent.client_secret, error: null };
-    }
-    return { client_secret: paymentIntent.client_secret, error: null };
-  }
-  //If no intent is found, create a new one
+      console.log('Intent Updated', updated_intent);
 
-  const intent = await createPaymentIntent(item, metaData, stripe);
-  return intent;
+      return updated_intent;
+    },
+    [paymentIntent],
+  );
+
+  if (paymentIntentIdCookie != null && paymentIntent != null) {
+    return {
+      clientSecret: paymentIntent.client_secret,
+      updatePaymentIntent: useUpdateIntent,
+    };
+  } else {
+    return {
+      clientSecret: null,
+      updatePaymentIntent: undefined,
+    };
+  }
 };
 
-export default getPaymentIntentStripe;
+export default usePaymentIntentStripe;
 
 const createPaymentIntent = async (
-  item: CartItem,
+  amount: number,
   metaData: StripeMetaData,
   stripe: Stripe,
-): Promise<IPaymentIntent> => {
+): Promise<Stripe.PaymentIntent> => {
   try {
-    // Find our user to tie them to the payment through passing a idempotency_key and meta_data
     const paymentIntent = await stripe.paymentIntents.create({
       currency: 'USD',
-      amount: item.totalPrice,
+      amount: amount,
       automatic_payment_methods: { enabled: true },
       metadata: metaData,
     });
 
     setPaymentIntentCookie(paymentIntent.id);
 
-    return { client_secret: paymentIntent.client_secret, error: null };
+    return paymentIntent;
   } catch (error: any) {
     throw new Error(error);
   }
 };
 
-const calcStripeAmount = (totalPriceInCents: number) => {
+type UpdatePaymentIntent = {
+  stripe: Stripe;
+  paymentIntentId: string;
+  amount?: number;
+  metaData?: StripeMetaData;
+};
+
+const updatePaymentIntent = async ({
+  stripe,
+  paymentIntentId,
+  amount,
+  metaData,
+}: UpdatePaymentIntent): Promise<Stripe.PaymentIntent> => {
+  let updated_details = {};
+
+  if (amount) {
+    updated_details = { ...updated_details, amount: amount };
+  }
+
+  if (metaData) {
+    updated_details = { ...updated_details, metadata: metaData };
+  }
+
+  const updated_intent = await stripe.paymentIntents.update(paymentIntentId, updated_details);
+
+  return updated_intent;
+};
+
+/*
+Conversion of cents(API) to dollars(stripe)
+*/
+export const calcStripeAmount = (totalPriceInCents: number) => {
   return totalPriceInCents * 100;
 };
 

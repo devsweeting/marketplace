@@ -17,6 +17,9 @@ import {
   PaymentContainer,
   StyledInput,
 } from '../PaymentMethods/PaymentMethods.styles';
+import { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
+import { BillingDetails, ExpressCheckoutPartialAddress } from '@stripe/stripe-js';
+import { getCurrentUser } from '@/helpers/auth/UserContext';
 
 export interface IUserBillingInfo {
   address_street?: string;
@@ -55,7 +58,13 @@ const validatePattern = (value: string) => {
   return !antiSymbolPattern.test(value);
 };
 
-export const RetrieveUserInfo = ({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) => {
+export const RetrieveUserInfo = ({
+  setPage,
+  updatePaymentIntent,
+}: {
+  setPage: Dispatch<SetStateAction<number>>;
+  updatePaymentIntent: UpdateIntentFunc;
+}) => {
   const { closeModal } = useCart();
   const initialState = {
     address_street: '',

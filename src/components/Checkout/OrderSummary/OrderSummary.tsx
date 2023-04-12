@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import {
   Container,
   OrderSummaryContainer,
@@ -10,9 +10,20 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { formatNumber } from '@/helpers/formatNumber';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import LockIcon from '@mui/icons-material/Lock';
+import { calcStripeAmount, UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
 
-export const OrderSummary = ({ cartItem }: { cartItem: CartItem }) => {
+export const OrderSummary = ({
+  cartItem,
+  updatePaymentIntent,
+}: {
+  cartItem: CartItem;
+  updatePaymentIntent: UpdateIntentFunc;
+}) => {
   const theme = useTheme();
+
+  const totalAmount = Number((cartItem.totalPrice * 1.15 + 0.25).toFixed(2));
+
+  updatePaymentIntent(calcStripeAmount(totalAmount));
 
   return (
     <Container role="presentation" style={{ width: '576px' }}>
@@ -49,8 +60,7 @@ export const OrderSummary = ({ cartItem }: { cartItem: CartItem }) => {
           <Box display="flex" justifyContent="space-between" margin="10px 24px 10px 24px">
             <Text variant="lg">Total</Text>
             <Text variant="lg">
-              {'$' +
-                formatNumber((cartItem.totalPrice * 1.15 + 0.25).toFixed(2) as unknown as number)}
+              {'$' + formatNumber(totalAmount.toFixed(2) as unknown as number)}
             </Text>
           </Box>
         </Box>

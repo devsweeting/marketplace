@@ -7,15 +7,19 @@ export const purchaseSellOrder = async (
   id: string,
   fractionsToPurchase: number,
   fractionPriceCents: number,
-  stripeTrackingDetails?: StripePurchaseTracking,
+  stripeTrackingDetails: StripePurchaseTracking,
 ) => {
+  console.log('stripeTracking', stripeTrackingDetails);
+
   const response = await apiClient.post(`/sellorders/${id}/purchase`, {
     body: {
       fractionsToPurchase,
       fractionPriceCents,
-      stripeTrackingDetails,
+      stripeTrackingDetails: stripeTrackingDetails,
     },
   });
+
+  console.log('response', response);
 
   return response;
 };

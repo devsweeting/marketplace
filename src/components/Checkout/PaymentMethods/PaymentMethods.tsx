@@ -233,7 +233,7 @@ export const PaymentMethods = ({
           {selectedValue === 'card' && (
             <AddPaymentButton
               onClick={() => {
-                setPage((prev) => prev + 2);
+                setPage((prev) => prev + 1);
               }}
             >
               Add Credit Card

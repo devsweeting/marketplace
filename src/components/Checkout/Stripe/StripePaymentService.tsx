@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
-import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import { useStripe, useElements, PaymentElement, AddressElement } from '@stripe/react-stripe-js';
 import type { IAsset } from '@/types/asset.types';
 import { CheckoutContainer } from '../CheckoutContainer.component';
 import { Box } from '@mui/material';
@@ -19,6 +19,7 @@ import type { StripePurchaseTracking } from './PaymentHelpers';
 import { destroyPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/router';
+import { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
 
 export const StripePaymentService = ({
   setPage,
@@ -28,6 +29,7 @@ export const StripePaymentService = ({
   open,
   setOpen,
   cartItem,
+  updatePaymentIntent,
 }: {
   setPage: Dispatch<SetStateAction<number>>;
   orderSummary: IAsset;
@@ -36,6 +38,7 @@ export const StripePaymentService = ({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   cartItem: CartItem;
+  updatePaymentIntent: UpdateIntentFunc;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -84,6 +87,8 @@ export const StripePaymentService = ({
             amount: paymentIntent.amount,
           };
 
+          console.log('trackign details', trackingDetails);
+
           switch (paymentIntent?.status) {
             case 'succeeded':
               destroyPaymentIntentCookie();
@@ -121,6 +126,7 @@ export const StripePaymentService = ({
     <CheckoutContainer setPage={setPage} alertMessage={alertMessage} open={open} setOpen={setOpen}>
       <form onSubmit={handlePayment}>
         <Box sx={{ width: '100%', margin: '0', padding: '16px 24px' }}>
+          <AddressElement options={{ mode: 'billing' }} />
           <PaymentElement
             onLoaderStart={() => setIsPaymentElementMounted(true)}
             onChange={(props) => {
@@ -130,7 +136,7 @@ export const StripePaymentService = ({
             options={{ layout: 'tabs' }}
           />
         </Box>
-        <OrderSummary cartItem={cartItem} />
+        <OrderSummary updatePaymentIntent={updatePaymentIntent} cartItem={cartItem} />
         <Box display="flex" width="100%" maxWidth="576px" padding="10px 0 20px 0">
           <ConfirmInfoButton disabled={!isStripePaymentReady() || isProcessing} type="submit">
             {isProcessing ? 'Order Processing' : 'Confirm Order'}

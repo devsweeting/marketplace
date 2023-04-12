@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useCart } from '@/helpers/auth/CartContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { Elements } from '@stripe/react-stripe-js';
-import getPaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
+import usePaymentIntentStripe from '@/pages/api/stripe/paymentIntent';
 import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -15,6 +15,8 @@ export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: Cart
   const ref = useRef(null as null | HTMLDivElement);
   const [height, setHeight] = useState(0);
   const [scrollHeight, setScrollHeight] = useState(0);
+
+  const { clientSecret, updatePaymentIntent } = usePaymentIntentStripe(isOpen, cartItem);
 
   const style = {
     position: 'absolute' as const,
@@ -38,27 +40,7 @@ export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: Cart
     }
   }, []);
 
-  // --------- STRIPE INTEGRATION ---------
-  const [clientSecret, setClientSecret] = useState<string | null>();
-
-  useEffect(() => {
-    //a useEffect ensures this function only runs after the component mounts, or an item changes.
-    if (isOpen && cartItem) {
-      const fetchIntent = async () => {
-        //declaring fetchIntent() then calling it allows async functions to be called at the top level of a non-async components.
-        const intent = await getPaymentIntentStripe(cartItem);
-        setClientSecret(intent.client_secret);
-      };
-      void fetchIntent();
-    }
-
-    return () => {
-      setClientSecret(undefined); //TODO - reasses cleanup functon: maybe clear cookie here?
-    };
-  }, [isOpen, cartItem]);
-  // ------------------------------------
-
-  if (!(Object.keys(ref).length > 0) || cartItem == null || !clientSecret) {
+  if (!(Object.keys(ref).length > 0) || cartItem == null || !clientSecret || !updatePaymentIntent) {
     return null;
   }
 
@@ -78,7 +60,7 @@ export const Checkout = ({ isOpen, cartItem }: { isOpen: boolean; cartItem: Cart
           options={{ clientSecret: clientSecret }}
           key={clientSecret}
         >
-          <Conditional cartItem={cartItem} />
+          <Conditional cartItem={cartItem} updatePaymentIntent={updatePaymentIntent} />
         </Elements>
       </Box>
     </Modal>
