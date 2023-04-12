@@ -5,10 +5,8 @@ import { PaymentMethods } from '../PaymentMethods';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { Box } from '@mui/material';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
-import { OrderSummary } from '../OrderSummary';
-import { RetrieveUserInfo } from '../RetrieveUserInfo';
 import { StripePaymentService } from '../Stripe/StripePaymentService';
-import { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
+import type { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
 
 export const Conditional = ({
   cartItem,

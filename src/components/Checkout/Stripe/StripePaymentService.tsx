@@ -19,7 +19,7 @@ import type { StripePurchaseTracking } from './PaymentHelpers';
 import { destroyPaymentIntentCookie } from '@/helpers/auth/paymentCookie';
 import { StatusCodes } from 'http-status-codes';
 import { useRouter } from 'next/router';
-import { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
+import type { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
 
 export const StripePaymentService = ({
   setPage,

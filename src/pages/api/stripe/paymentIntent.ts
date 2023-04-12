@@ -8,7 +8,7 @@ import Stripe from 'stripe';
 import { getCurrentUser } from '@/helpers/auth/UserContext';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import type { IUser } from '@/types/auth.types';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
@@ -68,12 +68,12 @@ const usePaymentIntentStripe = (isOpen: boolean, item: CartItem | null): IStripe
           }
         }
       };
-      fetchIntent();
+      void fetchIntent();
     }
     return () => {
       setPaymentIntent(null);
     };
-  }, [isOpen, item]);
+  }, [isOpen, item, paymentIntentIdCookie]);
 
   //Declare a callback fn to pass down to child components update the intent
   const useUpdateIntent: UpdateIntentFunc = useCallback(
@@ -116,7 +116,7 @@ const createPaymentIntent = async (
         automatic_payment_methods: { enabled: true },
         metadata: metaData,
       },
-      { idempotencyKey: uuid() },
+      { idempotencyKey: uuidv4() },
     );
 
     setPaymentIntentCookie(paymentIntent.id);
@@ -151,7 +151,7 @@ const updatePaymentIntent = async ({
   }
 
   const updated_intent = await stripe.paymentIntents.update(paymentIntentId, updated_details, {
-    idempotencyKey: uuid(),
+    idempotencyKey: uuidv4(),
   });
   return updated_intent;
 };

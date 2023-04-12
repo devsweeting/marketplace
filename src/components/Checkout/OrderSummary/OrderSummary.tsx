@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Container,
   OrderSummaryContainer,
@@ -10,7 +10,8 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { formatNumber } from '@/helpers/formatNumber';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import LockIcon from '@mui/icons-material/Lock';
-import { calcStripeAmount, UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
+import { calcStripeAmount } from '@/pages/api/stripe/paymentIntent';
+import type { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
 
 export const OrderSummary = ({
   cartItem,
@@ -26,8 +27,8 @@ export const OrderSummary = ({
   }, [cartItem.totalPrice]);
 
   useEffect(() => {
-    updatePaymentIntent(calcStripeAmount(totalAmount));
-  }, [totalAmount]);
+    void updatePaymentIntent(calcStripeAmount(totalAmount));
+  }, [totalAmount, updatePaymentIntent]);
 
   return (
     <Container role="presentation" style={{ width: '576px' }}>
