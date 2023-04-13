@@ -1,1 +1,1 @@
-export { RetrieveUserInfo } from './RetrieveUserInfo';
+export { RetrieveUserInfo } from './RetrieveUserInfo.deprecated';

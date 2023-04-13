@@ -5,11 +5,16 @@ import { PaymentMethods } from '../PaymentMethods';
 import type { CartItem } from '@/helpers/auth/CartContext';
 import { Box } from '@mui/material';
 import { useEndpoint } from '@/helpers/hooks/useEndpoints';
-import { OrderSummary } from '../OrderSummary';
-import { RetrieveUserInfo } from '../RetrieveUserInfo';
 import { StripePaymentService } from '../Stripe/StripePaymentService';
+import type { UpdateIntentFunc } from '@/pages/api/stripe/paymentIntent';
 
-export const Conditional = ({ cartItem }: { cartItem: CartItem }) => {
+export const Conditional = ({
+  cartItem,
+  updatePaymentIntent,
+}: {
+  cartItem: CartItem;
+  updatePaymentIntent: UpdateIntentFunc;
+}) => {
   const [page, setPage] = useState(0);
   const [jumpBalance, setJumpBalance] = useState<number>(0);
   const [alertMessage, setAlertMessage] = useState('');
@@ -47,9 +52,6 @@ export const Conditional = ({ cartItem }: { cartItem: CartItem }) => {
         );
       }
       case 2: {
-        return <RetrieveUserInfo setPage={setPage} />;
-      }
-      case 3: {
         return (
           <StripePaymentService
             setPage={setPage}
@@ -59,16 +61,10 @@ export const Conditional = ({ cartItem }: { cartItem: CartItem }) => {
             open={open}
             setOpen={setOpen}
             cartItem={cartItem}
+            updatePaymentIntent={updatePaymentIntent}
           />
         );
       }
-
-      // TODO remove this step, it's combined into the last
-      // note -- still hit on the pay with "jump balance option"
-      case 4: {
-        return <OrderSummary cartItem={cartItem} />;
-      }
-
       default: {
         return <Cart setPage={setPage} cartItem={cartItem} orderSummary={orderSummary} />;
       }

@@ -13,7 +13,7 @@ export const purchaseSellOrder = async (
     body: {
       fractionsToPurchase,
       fractionPriceCents,
-      stripeTrackingDetails,
+      stripeTrackingDetails: stripeTrackingDetails,
     },
   });
 
