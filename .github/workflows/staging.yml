@@ -9,6 +9,8 @@ jobs:
     name: 'Deploy'
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v3
       - name: 'Detect Changed Files'
         uses: dorny/paths-filter@v2
         id: changed-files
@@ -19,9 +21,6 @@ jobs:
               - .gitignore
               - README.md
               - MAKEFILE
-      - name: 'Checkout source code'
-        if: steps.changed-files.outputs.src == 'false'
-        uses: actions/checkout@v2
       - name: Configure AWS credentials
         if: steps.changed-files.outputs.src == 'false'
         id: aws-creds
