@@ -69,7 +69,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
       >
         <div onMouseLeave={handleClose}>
           <MenuItem sx={{ pointerEvents: 'none' }}>
-            <Typography variant="nav">{user.email ?? 'foo@bar.com'}</Typography>
+            <Typography variant="nav">{user.email ?? 'Not signed in'}</Typography>
           </MenuItem>
 
           <Divider />
