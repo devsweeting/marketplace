@@ -68,7 +68,7 @@ jobs:
         run: |
           aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
       - name: Slack Notification
-        if: steps.changed-files.outputs.src == 'false' && ${{ always() }}
+        if: steps.changed-files.outputs.src == 'false'
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: jump-dev
