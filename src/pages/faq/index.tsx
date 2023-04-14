@@ -1,6 +1,5 @@
-import { mockFaqs } from '@/__mocks__/mockApiData';
 import { PageContainer } from '@/styles/FaqPage.styles';
-import { Faq } from '@/components/Faq';
+import { PWCCFaq } from '@/components/Faq/PWCCFaq';
 
 export type FeatureQuestion = {
   question: string;
@@ -15,7 +14,7 @@ export interface Faq {
 const FaqPage = () => {
   return (
     <PageContainer>
-      <Faq faqs={mockFaqs} />
+      <PWCCFaq />
     </PageContainer>
   );
 };
