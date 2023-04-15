@@ -79,17 +79,17 @@ export const BuyingDrawer = () => {
             <Header>How do maximum bids work?</Header>
             <LineBreak />
             <div>
-              All bids are placed using the "maximum bid" model, which typically represents the
-              highest price the bidder is willing to pay for an item. When a bidder places a maximum
-              bid, the bid will automatically increase competitively, up to but never over, the
-              maximum bid amount. You will be notified if you are the highest bidder, if you've been
-              outbid, and if you've won the item. Maximum bids are private and are only viewable by
-              the client that submitted the bid. PWCC does not have access to this information and
-              cannot view bidders’ maximum bids. Maximum bid information is managed on dedicated IT
-              infrastructure and is contractually monitored by an external IT firm. Third-party
-              management of maximum bids ensures the privacy and confidentiality of maximum bid
-              amounts. The IT firm audits access to the data to confirm that no PWCC personnel ever
-              have access to this information.
+              All bids are placed using the &quot;maximum bid&quot; model, which typically
+              represents the highest price the bidder is willing to pay for an item. When a bidder
+              places a maximum bid, the bid will automatically increase competitively, up to but
+              never over, the maximum bid amount. You will be notified if you are the highest
+              bidder, if you've been outbid, and if you've won the item. Maximum bids are private
+              and are only viewable by the client that submitted the bid. PWCC does not have access
+              to this information and cannot view bidders&apos; maximum bids. Maximum bid
+              information is managed on dedicated IT infrastructure and is contractually monitored
+              by an external IT firm. Third-party management of maximum bids ensures the privacy and
+              confidentiality of maximum bid amounts. The IT firm audits access to the data to
+              confirm that no PWCC personnel ever have access to this information.
             </div>
           </Body>
         </Section>
@@ -187,13 +187,14 @@ export const BuyingDrawer = () => {
 
         <Section>
           <Body>
-            <Header>What is the buyer's premium?</Header>
+            <Header>What is the buyer&apos;s premium?</Header>
             <LineBreak />
             <div>
-              A buyer's premium equal to 20% of the winning bid amount will be added to the final
-              sale price. Therefore, the price you pay for an item will be equal to your winning bid
-              plus 20% of that winning bid, plus applicable taxes and shipping costs. The buyer's
-              premium is not reflected in the maximum bid in the auction bidding tool.
+              A buyer&apos;s premium equal to 20% of the winning bid amount will be added to the
+              final sale price. Therefore, the price you pay for an item will be equal to your
+              winning bid plus 20% of that winning bid, plus applicable taxes and shipping costs.
+              The buyer&apos;s premium is not reflected in the maximum bid in the auction bidding
+              tool.
             </div>
           </Body>
         </Section>

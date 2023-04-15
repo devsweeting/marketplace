@@ -27,9 +27,9 @@ export const VaultDrawer = () => {
             <LineBreak />
             <div>
               The Vault was constructed using the guidelines established by the Underwriters
-              Laboratory and we are proud that it received UL's highest classification of Class III.
-              It is 2000 square feet and surrounded by 11 inches of concrete on all six sides. There
-              are 140 security cameras, motion detection, security during business hours, and
+              Laboratory and we are proud that it received UL&apos;s highest classification of Class
+              III. It is 2000 square feet and surrounded by 11 inches of concrete on all six sides.
+              There are 140 security cameras, motion detection, security during business hours, and
               rigorous access control and security protocols.
             </div>
           </Body>
@@ -163,9 +163,9 @@ export const VaultDrawer = () => {
             </Header>
             <LineBreak />
             <div>
-              Yes. You can change the insured value when you log into My PWCC. Click on "Vault,"
-              check the box or boxes of the items you wish to edit, click the Actions button and
-              click "Edit Owner Value".
+              Yes. You can change the insured value when you log into My PWCC. Click on
+              &quot;Vault,&quot; check the box or boxes of the items you wish to edit, click the
+              Actions button and click &quot;Edit Owner Value&quot;.
             </div>
           </Body>
         </Section>

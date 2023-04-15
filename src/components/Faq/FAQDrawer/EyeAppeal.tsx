@@ -1,5 +1,5 @@
 import { ExpandMoreRounded } from '@mui/icons-material';
-import { AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { AccordionDetails, AccordionSummary } from '@mui/material';
 import { AccordionFaq } from '../Faq.styles';
 import { Body, Section, Title, Header, LineBreak } from '../PWCCFaq';
 
@@ -34,7 +34,7 @@ export const EyeAppealDrawer = () => {
               The technical grade assigned by the grading companies is determined by a number of
               factors including surface and corner wear, surface presentation, centering, and
               others. Within each factor there is a range of acceptable conditions to earn a
-              particular grade. For example, according to PSA’s stated standards, a NM-MT 8 can
+              particular grade. For example, according to PSA&apos;s stated standards, a NM-MT 8 can
               tolerate centering registration of 65/35 or better; as such, cards centered both 50/50
               and 65/35 are eligible to receive a technical grade of NM-MT 8.
             </div>
@@ -44,10 +44,10 @@ export const EyeAppealDrawer = () => {
               <a href="https://www.pwccmarketplace.com/about-the-marketplace#eyeAppeal">
                 Eye Appeal
               </a>{' '}
-              refers to a card’s visual presentation–or how attractive the card is to the eye. Using
-              the example described above, while a card with 65/35 centering and 50/50 centering are
-              both eligible to earn a grade of NM-MT 8, the card with 50/50 centering is more
-              visually attractive than the card with 65/35 centering.
+              refers to a card&apos;s visual presentation–or how attractive the card is to the eye.
+              Using the example described above, while a card with 65/35 centering and 50/50
+              centering are both eligible to earn a grade of NM-MT 8, the card with 50/50 centering
+              is more visually attractive than the card with 65/35 centering.
             </div>
           </Body>
           <div>
@@ -136,7 +136,7 @@ export const EyeAppealDrawer = () => {
             <div>
               No. Cards with above-average eye appeal will earn a PWCC-A designation, cards with
               exceptional eye appeal will earn an E designation, and cards with superior eye appeal
-              will earn a S designation. A card wouldn’t be issued all designations.
+              will earn a S designation. A card wouldn&apos;t be issued all designations.
             </div>
           </Body>
         </Section>
@@ -150,8 +150,8 @@ export const EyeAppealDrawer = () => {
             <div>
               Although these figures will always be estimates and there is an inherently qualitative
               nature to the analysis, the distribution of visual presentation was estimated based on
-              PWCC’s extensive knowledge of the market and exposure to more graded cards than any
-              other venue.
+              PWCC&apos;s extensive knowledge of the market and exposure to more graded cards than
+              any other venue.
             </div>
           </Body>
         </Section>

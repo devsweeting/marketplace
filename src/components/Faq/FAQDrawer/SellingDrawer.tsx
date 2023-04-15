@@ -58,7 +58,7 @@ export const SellersDrawer = () => {
             <LineBreak />
             <div>
               PWCC offers the largest auction venue specifically targeted to trading cards worldwide
-              with thousands of unique users participating in every auction. PWCC's strong
+              with thousands of unique users participating in every auction. PWCC&apos;s strong
               reputation in the market causes buyers to bid with confidence. Items sold on the PWCC
               Marketplace generally garner higher sale prices when compared with prices from other
               venues. Finally, PWCC’s fees are lower than many other venues and lower in many cases
@@ -181,7 +181,7 @@ export const SellersDrawer = () => {
               For all Marketplaces, you will net precisely the sale price and your seller’s
               commission. There are small additional fees for special items like wax and
               memorabilia. Offers and asking prices on the Fixed Price Marketplace include the
-              buyer's premium.
+              buyer&apos;s premium.
             </div>
           </Body>
         </Section>
@@ -272,9 +272,9 @@ export const SellersDrawer = () => {
             <div>
               Shipping is free for items purchased in the Premier and Weekly Auction or through our
               Fixed Price listings that are sent directly to the PWCC Vault. You also benefit from
-              Oregon's 0% sales tax. If you would like items shipped directly to you, please read
-              our <a href="https://www.pwccmarketplace.com/shipping-charges">shipping chart</a> for
-              more information.
+              Oregon&apos;s 0% sales tax. If you would like items shipped directly to you, please
+              read our <a href="https://www.pwccmarketplace.com/shipping-charges">shipping chart</a>{' '}
+              for more information.
             </div>
           </Body>
         </Section>
@@ -323,17 +323,18 @@ export const SellersDrawer = () => {
 
         <Section>
           <Body>
-            <Header>What are the Premier Auction seller's fees?</Header>
+            <Header>What are the Premier Auction seller&apos;s fees?</Header>
             <LineBreak />
             <div>
-              There is no seller’s fee for the Premier Auction for cards with an estimated value
-              over $25,000, but there is a buyer’s premium. Sellers also receive a seller’s
-              commission based on the value of the item at the end of the Auction. A minimum of
-              $2,000 of the price realized is always paid to PWCC on each Premier Auction lot.
+              There is no seller&apos;s fee for the Premier Auction for cards with an estimated
+              value over $25,000, but there is a buyer&apos;s premium. Sellers also receive a
+              seller&apos;s commission based on the value of the item at the end of the Auction. A
+              minimum of $2,000 of the price realized is always paid to PWCC on each Premier Auction
+              lot.
             </div>
             <ul>
               <li>
-                The hammer price refers to the maximum winning bid, excluding the 20% buyer's
+                The hammer price refers to the maximum winning bid, excluding the 20% buyer&apos;s
                 premium. If an item sells for $250,000 or lower, the seller receives 110% of the
                 hammer price.
               </li>
@@ -368,10 +369,11 @@ export const SellersDrawer = () => {
               <li>
                 <b>Weekly Sunday/Weekly Sunday Flash:</b> After the auction has closed, buyers have
                 two weeks to remit payment. PWCC processes accounting and pays sellers as quickly as
-                possible thereafter. PWCC issues payments on a Tuesday as a credit to sellers' PWCC
-                Marketplace Accounts. Sellers can use funds for PWCC invoices or elect to have funds
-                issued through a payout request made from their account. Please note client will
-                need to initiate this request. PWCC does not create an automatic payout for clients.
+                possible thereafter. PWCC issues payments on a Tuesday as a credit to sellers&apos;
+                PWCC Marketplace Accounts. Sellers can use funds for PWCC invoices or elect to have
+                funds issued through a payout request made from their account. Please note client
+                will need to initiate this request. PWCC does not create an automatic payout for
+                clients.
               </li>
               <LineBreak />
               <li>
@@ -379,7 +381,7 @@ export const SellersDrawer = () => {
                 remits payment. The proceeds minus fees will appear in your Marketplace Account.
                 After the sale has been made, we go through a collections process and buyers have 10
                 days to remit payment. PWCC processes accounting and sellers are paid roughly seven
-                to ten days later. Payments are issued as a credit to sellers' PWCC Marketplace
+                to ten days later. Payments are issued as a credit to sellers&apos; PWCC Marketplace
                 Accounts. Sellers can use funds for PWCC invoices or elect to have funds issued
                 through a payout request made from their account. Please note client will need to
                 initiate this request. PWCC does not create an automatic payout for clients.
@@ -388,7 +390,7 @@ export const SellersDrawer = () => {
               <li>
                 <b>Premier Auction:</b> After the auction has closed, buyers have two weeks to remit
                 payment. PWCC processes accounting and pays sellers about 4-5 weeks after the
-                Premier Auction closes. PWCC issues payments as a credit to sellers' PWCC
+                Premier Auction closes. PWCC issues payments as a credit to sellers&apos; PWCC
                 Marketplace Accounts. Sellers can use funds for PWCC invoices or elect to have funds
                 issued through a payout request made from their account. Clients need to initiate
                 this request. PWCC does not create an automatic payout for clients.

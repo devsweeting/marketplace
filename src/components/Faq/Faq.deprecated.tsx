@@ -1,4 +1,3 @@
-import { FaqData } from '@/pages/faq/faq-data';
 import { ExpandMoreRounded } from '@mui/icons-material';
 import { Accordion, AccordionDetails, AccordionSummary, Divider, Typography } from '@mui/material';
 import { Container, TextContainer, FaqContainer, FaqSection } from './Faq.styles';
@@ -15,10 +14,10 @@ type Topic = {
 
 type FaqProps = {
   topics?: Topic[];
+  faqs?: Faq[];
 };
 
-export function Faq({ topics }: FaqProps) {
-  const faqs = FaqData;
+export function Faq({ topics, faqs }: FaqProps) {
   return (
     <Container>
       <TextContainer>
