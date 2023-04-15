@@ -83,9 +83,9 @@ export const BuyingDrawer = () => {
               represents the highest price the bidder is willing to pay for an item. When a bidder
               places a maximum bid, the bid will automatically increase competitively, up to but
               never over, the maximum bid amount. You will be notified if you are the highest
-              bidder, if you've been outbid, and if you've won the item. Maximum bids are private
-              and are only viewable by the client that submitted the bid. PWCC does not have access
-              to this information and cannot view bidders&apos; maximum bids. Maximum bid
+              bidder, if you&apos;ve been outbid, and if you&apos;ve won the item. Maximum bids are
+              private and are only viewable by the client that submitted the bid. PWCC does not have
+              access to this information and cannot view bidders&apos; maximum bids. Maximum bid
               information is managed on dedicated IT infrastructure and is contractually monitored
               by an external IT firm. Third-party management of maximum bids ensures the privacy and
               confidentiality of maximum bid amounts. The IT firm audits access to the data to
