@@ -1,4 +1,3 @@
-import { mockFaqs } from '@/__mocks__/mockApiData';
 import { PageContainer } from '@/styles/FaqPage.styles';
 import { Faq } from '@/components/Faq';
 import { PWCCFaq } from '@/components/Faq/PWCCFaq';
