@@ -42,7 +42,7 @@ export const Footer = () => {
         </Box>
         <Box className="box">
           <PageLinks className="item">
-            <FooterNavLink href="/faq">
+            <FooterNavLink href="/learn">
               <Button variant="text" color="secondary" style={ButtonStyles}>
                 Refunds & Returns
               </Button>
