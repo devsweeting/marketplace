@@ -6,6 +6,6 @@ export const Routes = [
   },
   {
     title: 'Learn',
-    path: '/faq',
+    path: '/learn',
   },
 ];

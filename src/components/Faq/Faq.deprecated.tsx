@@ -13,11 +13,11 @@ type Topic = {
 };
 
 type FaqProps = {
-  faqs?: Faq[];
   topics?: Topic[];
+  faqs?: Faq[];
 };
 
-export function Faq({ faqs, topics }: FaqProps) {
+export function Faq({ topics, faqs }: FaqProps) {
   return (
     <Container>
       <TextContainer>
