@@ -5,8 +5,8 @@ import { OpenGraph } from '@/components/OpenGraph';
 import { Preference } from '../../components/Settings/Settings.components';
 import { PageContainer } from '../../components/Settings/Settings.styles';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
-import PersonalInformation from '@/components/Settings/Preferences/PersonalInformation';
-import PaymentDetails from '@/components/Settings/Preferences/PaymentDetails';
+import { PersonalInformation } from '@/components/Settings/Preferences/PersonalInformation';
+import { PaymentDetails } from '@/components/Settings/Preferences/PaymentDetails';
 
 const SettingsPage: NextPage = () => {
   return (

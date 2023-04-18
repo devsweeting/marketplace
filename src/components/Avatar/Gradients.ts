@@ -1,10 +1,8 @@
 import { Box, styled } from '@mui/material';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
-import { useEffect, useState } from 'react';
 
 type BLUES = 'lightgreen' | 'green' | 'blue';
 type REDS = 'orange' | 'pink' | 'purple';
-type COLORS = BLUES | REDS;
 
 export const BLUES: Record<BLUES | string, string> = {
   lightgreen: 'linear-gradient(180deg, #a8ff78 0%, #78ffd6 100%)',
@@ -49,6 +47,6 @@ export const setProfileGradientCookie = (color: string) => {
   });
 };
 
-export const destroyProfileGradientCookie = () => {
-  destroyCookie(null, PROFILE_GRADIENT);
-};
+// export const destroyProfileGradientCookie = () => {
+//   destroyCookie(null, PROFILE_GRADIENT);
+// };

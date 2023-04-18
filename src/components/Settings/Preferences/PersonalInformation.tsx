@@ -13,7 +13,7 @@ import {
 } from '@/components/Avatar/Gradients';
 import { useProfileGradient } from '@/helpers/hooks/useProfileGradient';
 
-const PersonalInformation = () => {
+export const PersonalInformation = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const anchor = useRef<HTMLButtonElement>(null);
 
@@ -122,8 +122,6 @@ const PersonalInformation = () => {
     </Box>
   );
 };
-
-export default PersonalInformation;
 
 const ColorPicker = ({ handleSetColor }: { handleSetColor: (color: string) => void }) => {
   return (

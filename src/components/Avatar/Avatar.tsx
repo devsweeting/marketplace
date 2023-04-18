@@ -3,7 +3,7 @@ import { useUser } from '@/helpers/hooks/useUser';
 import Avatar from '@mui/material/Avatar';
 import { ColorCircle, GRADIENT_COLORS } from './Gradients';
 
-const ProfileAvatar = () => {
+export const ProfileAvatar = () => {
   const user = useUser();
   const gradient = useProfileGradient();
 
@@ -25,5 +25,3 @@ const ProfileAvatar = () => {
     </div>
   );
 };
-
-export default ProfileAvatar;
