@@ -1,8 +1,4 @@
-import {
-  destroyProfileGradientCookie,
-  getProfileGradientCookie,
-  setProfileGradientCookie,
-} from '@/components/Avatar/Gradients';
+import { getProfileGradientCookie, setProfileGradientCookie } from '@/components/Avatar/Gradients';
 import { useEffect, useState } from 'react';
 
 export function useProfileGradient(color?: string): string {
