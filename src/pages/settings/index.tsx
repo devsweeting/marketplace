@@ -1,30 +1,44 @@
 import React from 'react';
-import { Box, Grid, Typography } from '@mui/material';
-import { NextPage } from 'next';
+import { Typography } from '@mui/material';
+import type { NextPage, NextApiRequest } from 'next';
 import { OpenGraph } from '@/components/OpenGraph';
-import { BlockContainer, Header } from './SettingsPage.styles';
+import { Preference } from '../../components/Settings/Settings.components';
+import { PageContainer } from '../../components/Settings/Settings.styles';
+import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
+import PersonalInformation from '@/components/Settings/Preferences/PersonalInformation';
+import PaymentDetails from '@/components/Settings/Preferences/PaymentDetails';
 
 const SettingsPage: NextPage = () => {
   return (
-    <Grid sx={{ height: '100vh', marginTop: '100px' }}>
+    <PageContainer>
       <OpenGraph title={'Settings'} description={'User profile settings and preferences'} />
-      <Typography sx={{ padding: '50px 0' }} variant="xl5" fontWeight={700}>
+      <Typography sx={{ padding: '50px 0' }} variant="xl2" fontWeight={700}>
         Account
       </Typography>
-      <Block header={'Profile'}>
-        <Box>This is a form</Box>
-      </Block>
-    </Grid>
+      <Preference title={'Personal Information'} component={<PersonalInformation />} />
+      <Preference
+        title={'Payment Details'}
+        subtitle={'Update your billing information'}
+        component={<PaymentDetails />}
+      />
+    </PageContainer>
   );
 };
 
 export default SettingsPage;
 
-const Block = ({ header, children }: { header: string; children: React.ReactNode }) => {
-  return (
-    <BlockContainer>
-      <Header>{header}</Header>
-      <Box>{children}</Box>
-    </BlockContainer>
-  );
+export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
+  const user = await getUserFromRequest(req);
+  if (!user) {
+    return {
+      redirect: {
+        statusCode: 302,
+        destination: '/',
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
