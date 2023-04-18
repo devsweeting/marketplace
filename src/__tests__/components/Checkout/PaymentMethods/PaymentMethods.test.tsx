@@ -38,7 +38,13 @@ const mockCartItem: CartItem = {
 
 const MockPaymentMethods = ({ setPage }: { setPage: () => void }) => (
   <ThemeProvider theme={themeJump}>
-    <UserContext.Provider value={{ user: mockUser, refreshUser: jest.fn(), logout: jest.fn() }}>
+    <UserContext.Provider
+      value={{
+        user: mockUser,
+        refreshUser: jest.fn(),
+        logout: jest.fn(),
+      }}
+    >
       <CartProvider>
         <PaymentMethods cartItem={mockCartItem} setPage={setPage} />
       </CartProvider>

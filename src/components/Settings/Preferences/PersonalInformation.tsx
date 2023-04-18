@@ -1,23 +1,27 @@
 import { Box, Grid, IconButton, Typography } from '@mui/material';
 import { useCallback, useRef, useState } from 'react';
-import { Button, StyledInput, OutlinedLabel, ColorCircle } from '../Settings.styles';
+import { StyledInput, OutlinedLabel } from '../Settings.styles';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useOutsideClick } from '@/helpers/hooks/useOutsideClick';
+import {
+  BLUES,
+  ColorCircle,
+  getProfileGradientCookie,
+  GRADIENT_COLORS,
+  REDS,
+} from '@/components/Avatar/Gradients';
+import { useProfileGradient } from '@/helpers/hooks/useProfileGradient';
 
 const PersonalInformation = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const anchor = useRef<HTMLButtonElement>(null);
-  const [color, setColor] = useState<string>('');
 
-  const setTheColor = (color: string) => setColor(color);
-  //   console.log('COLOR PICKED', color);
+  const [color, setColor] = useState(getProfileGradientCookie());
+  const gradient = useProfileGradient(color);
 
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
-
-  //   console.log('Name:', firstName, ' ', lastName);
 
   const handleOpen = useCallback(() => {
     setIsOpen(true);
@@ -26,8 +30,6 @@ const PersonalInformation = () => {
   const handleClose = useCallback(() => {
     setIsOpen(false);
   }, []);
-
-  useOutsideClick(anchor);
 
   return (
     <Box
@@ -57,10 +59,10 @@ const PersonalInformation = () => {
           aria-haspopup="true"
           // aria-expanded={isOpen ? 'true' : undefined}
         >
-          {color ? (
+          {gradient ? (
             <ColorCircle
               sx={{
-                background: GRADIENT_COLORS[color],
+                background: GRADIENT_COLORS[gradient],
                 width: 48,
                 height: 48,
                 margin: 0,
@@ -86,14 +88,14 @@ const PersonalInformation = () => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             <div>
-              <ColorPicker handleSetColor={setTheColor} />
+              <ColorPicker handleSetColor={(color) => setColor(color)} />
             </div>
           </Menu>
         </IconButton>
 
-        <Button size={'small'} variant="outlined" disabled={!color}>
+        {/* <Button size={'small'} variant="outlined">
           Save
-        </Button>
+        </Button> */}
       </Box>
 
       <Grid container spacing={2} sx={{ marginTop: '16px', display: 'flex' }}>
@@ -123,24 +125,6 @@ const PersonalInformation = () => {
 
 export default PersonalInformation;
 
-type BLUES = 'lightgreen' | 'green' | 'blue';
-type REDS = 'orange' | 'pink' | 'purple';
-type COLORS = BLUES | REDS;
-
-const BLUES: Record<BLUES | string, string> = {
-  lightgreen: 'linear-gradient(180deg, #a8ff78 0%, #78ffd6 100%)',
-  green: 'linear-gradient(180deg, #00F260 0%, #0575E6 100%)',
-  blue: 'linear-gradient(180deg, #7F7FD5 0%, #91EAE4 100%)',
-};
-
-const REDS: Record<REDS | string, string> = {
-  orange: 'linear-gradient(180deg, #f12711 0%, #f5af19 100%)',
-  pink: 'linear-gradient(180deg, #FC5C7D 0%, #cc5333 100%)',
-  purple: 'linear-gradient(180deg, #7C3AED 0%, #DB2777 100%)',
-};
-
-const GRADIENT_COLORS = { ...BLUES, ...REDS };
-
 const ColorPicker = ({ handleSetColor }: { handleSetColor: (color: string) => void }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -148,6 +132,7 @@ const ColorPicker = ({ handleSetColor }: { handleSetColor: (color: string) => vo
         {Object.keys(REDS).map((color, i) => {
           return (
             <MenuItem
+              key={i}
               onClick={() => handleSetColor(color)}
               sx={{ display: 'flex', height: '48px' }}
             >
@@ -161,6 +146,7 @@ const ColorPicker = ({ handleSetColor }: { handleSetColor: (color: string) => vo
         {Object.keys(BLUES).map((color, i) => {
           return (
             <MenuItem
+              key={i}
               onClick={() => handleSetColor(color)}
               sx={{ display: 'flex', height: '48px' }}
             >
