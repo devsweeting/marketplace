@@ -1,5 +1,7 @@
 repo:
   - .github/**/*
+  - .giignore
+  - Dockerfile
+  - Dockerfile.ecs
   - README.md
   - Makefile
-  - .giignore
