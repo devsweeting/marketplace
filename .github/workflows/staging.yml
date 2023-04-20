@@ -4,6 +4,11 @@ on:
     branches:
       - "develop"
   workflow_dispatch:
+    inputs:
+        force:
+          description: 'Force deploy'
+          required: true
+          default: 'true'
 jobs:
   on-success:
     name: 'Deploy'
@@ -22,7 +27,7 @@ jobs:
               - README.md
               - MAKEFILE
       - name: Configure AWS credentials
-        if: steps.changed-files.outputs.src == 'false'
+        if: steps.changed-files.outputs.src == 'false' || github.event.inputs.force == 'true'
         id: aws-creds
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -33,11 +38,17 @@ jobs:
           aws-region: us-west-2
       - name: Login to Amazon ECR
         id: ecr-login
-        if: steps.changed-files.outputs.src == 'false' && steps.aws-creds.outcome == 'success'
+        if: |
+          (steps.changed-files.outputs.src == 'false' ||
+          github.event.inputs.force == 'true') &&
+          steps.aws-creds.outcome == 'success'
         uses: aws-actions/amazon-ecr-login@v1
       - name: Build, tag, and push image to Amazon ECR
         id: ecr
-        if: steps.changed-files.outputs.src == 'false' && steps.ecr-login.outcome == 'success'
+        if: |
+          (steps.changed-files.outputs.src == 'false' ||
+          github.event.inputs.force == 'true') &&
+          steps.ecr-login.outcome == 'success'
         env:
           ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
           ECR_REPOSITORY: web-staging
@@ -62,14 +73,17 @@ jobs:
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       - name: Restart WEB ECS services to enfore pulling latest/newest ECR image
-        if: steps.changed-files.outputs.src == 'false' && steps.ecr.outcome == 'success'
+        if: |
+          (steps.changed-files.outputs.src == 'false' ||
+          github.event.inputs.force == 'true') &&
+          steps.ecr.outcome == 'success'
         env:
           CLUSTER_NAME: jumpco-cluster-staging
           SERVICE_NAME: web-staging
         run: |
           aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
       - name: Slack Notification
-        if: steps.changed-files.outputs.src == 'false'
+        if: steps.changed-files.outputs.src == 'false' || github.event.inputs.force == 'true'
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_CHANNEL: jump-dev
@@ -84,7 +98,7 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOYMENTS_WEBHOOK_URL }}
           SLACK_FOOTER: "Powered by our GitHub automated deploys"
       - name: Sentry Release
-        if: steps.changed-files.outputs.src == 'false'
+        if: steps.changed-files.outputs.src == 'false' || github.event.inputs.force == 'true'
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
