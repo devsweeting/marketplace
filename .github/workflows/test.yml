@@ -19,12 +19,13 @@ jobs:
         with:
           filters: |
             src:
+              - .dockerignore
               - .github/**
               - .gitignore
               - Dockerfile
               - Dockerfile.ecs
-              - README.md
               - MAKEFILE
+              - README.md
       - name: 'Setup NodeJS 14'
         if: steps.changed-files.outputs.src == 'false'
         uses: actions/setup-node@v3
