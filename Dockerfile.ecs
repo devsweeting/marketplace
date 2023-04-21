@@ -18,6 +18,7 @@ ENV SENTRY_PROJECT jump-frontend
 RUN apt-get update && \
   apt-get install -y ca-certificates && \
   yarn install --frozen-lockfile --network-timeout 100000 && \
-  yarn build
+  yarn build && \
+  yarn cache clean
 EXPOSE 3000
 ENTRYPOINT ["/srv/app/entrypoint.sh"]
