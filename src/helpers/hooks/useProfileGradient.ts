@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 export function useProfileGradient(color?: string): string {
   const [gradient, setGradient] = useState<string>('');
+
   useEffect(() => {
     if (color) {
       setProfileGradientCookie(color);
@@ -18,7 +19,7 @@ export function useProfileGradient(color?: string): string {
     }
   }, [gradient, color]);
 
-  // Update token with every render when its value has changed.
+  // Update value with every render when its value has changed.
   const cookie = getProfileGradientCookie();
   if (cookie !== undefined && gradient !== cookie) {
     setGradient(cookie);

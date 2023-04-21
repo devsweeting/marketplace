@@ -12,15 +12,15 @@ export const Preference = ({
 }) => {
   return (
     <PreferenceContainer>
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
+      <Grid container spacing={4}>
+        <Grid item xs={5}>
           <Title variant="lg" fontWeight={600}>
             {title}
           </Title>
           {subtitle && <Subtitle>{subtitle}</Subtitle>}
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <Box>{component}</Box>
         </Grid>
       </Grid>

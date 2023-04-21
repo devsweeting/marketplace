@@ -5,6 +5,7 @@ import {
   Typography,
   OutlinedInput,
   InputLabel,
+  FormHelperText,
 } from '@mui/material';
 
 export const PageContainer = styled('div')(({ theme }) => ({
@@ -68,3 +69,11 @@ export const ColorCircle = styled(Box)({
     transform: 'scale(1.2)',
   },
 });
+
+export const HelperText = styled(FormHelperText)(({ theme }) => ({
+  color: theme.palette.grey[600],
+  // marginLeft: '32px',
+  [theme.breakpoints.down('sm')]: {
+    border: '1px solid red',
+  },
+}));
