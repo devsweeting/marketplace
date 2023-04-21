@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material';
-import { PreferenceContainer, Title, Subtitle } from './Settings.styles';
+import { PreferenceContainer, Title, Subtitle, HelperText } from './Settings.styles';
 
 export const Preference = ({
   title,
@@ -25,5 +25,14 @@ export const Preference = ({
         </Grid>
       </Grid>
     </PreferenceContainer>
+  );
+};
+
+export const CheckboxLabel = ({ title, helperText }: { title: string; helperText: string }) => {
+  return (
+    <Box sx={{ marginTop: '20px' }}>
+      {title}
+      <HelperText>{helperText}</HelperText>
+    </Box>
   );
 };

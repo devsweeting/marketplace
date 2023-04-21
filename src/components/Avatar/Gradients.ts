@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { destroyCookie, parseCookies, setCookie } from 'nookies';
+import { parseCookies, setCookie } from 'nookies';
 
 type BLUES = 'lightgreen' | 'green' | 'blue';
 type REDS = 'orange' | 'pink' | 'purple';

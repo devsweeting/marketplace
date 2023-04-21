@@ -9,6 +9,7 @@ import {
   RadioGroup,
 } from '@mui/material';
 import { useState } from 'react';
+import { CheckboxLabel } from '../Settings.components';
 import { HelperText } from '../Settings.styles';
 
 type PushTypes = 'all' | 'email' | 'none';
@@ -33,9 +34,6 @@ export const Notifications = () => {
     setPushNotifications((event.target as HTMLInputElement).value as PushTypes);
   };
 
-  console.log('notifications', emailNotifications);
-  console.log('push', pushNotifications);
-
   const { activity, offers, interests } = emailNotifications;
 
   return (
@@ -48,27 +46,33 @@ export const Notifications = () => {
           <FormControlLabel
             control={<Checkbox checked={activity} onChange={handleCheckboxGroup} name="activity" />}
             label={
-              <Box sx={{ marginTop: '20px' }}>
-                Activity
-                <HelperText>
-                  Get notified when your asset purchase is complete or incomplete.
-                </HelperText>
-              </Box>
+              <CheckboxLabel
+                title={'Activity'}
+                helperText={'Get notified when your asset purchase is complete or incomplete.'}
+              />
             }
           />
 
           <FormControlLabel
             control={<Checkbox checked={offers} onChange={handleCheckboxGroup} name="offers" />}
-            label="Offers"
+            label={
+              <CheckboxLabel
+                title={'Offers'}
+                helperText={'Get notified when a user accepts or rejects an offer.'}
+              />
+            }
           />
-          <HelperText>Get notified when a user accepts or rejects an offer.</HelperText>
           <FormControlLabel
             control={
               <Checkbox checked={interests} onChange={handleCheckboxGroup} name="interests" />
             }
-            label="Interests"
+            label={
+              <CheckboxLabel
+                title={'Interests'}
+                helperText={'Get notified when a user favourites your asset.'}
+              />
+            }
           />
-          <HelperText>Get notified when a user favourites your asset.</HelperText>
         </FormGroup>
       </FormControl>
 

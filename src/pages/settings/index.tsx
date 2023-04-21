@@ -6,7 +6,6 @@ import { Preference } from '../../components/Settings/Settings.components';
 import { PageContainer } from '../../components/Settings/Settings.styles';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import { PersonalInformation } from '@/components/Settings/Preferences/PersonalInformation';
-import { PaymentDetails } from '@/components/Settings/Preferences/PaymentDetails';
 import { Notifications } from '@/components/Settings/Preferences/Notifications';
 
 const SettingsPage: NextPage = () => {
@@ -17,6 +16,7 @@ const SettingsPage: NextPage = () => {
         Account
       </Typography>
       <Preference title={'Personal Information'} component={<PersonalInformation />} />
+      {/* TODO - Set up Stripe Connect */}
       {/* <Preference
         title={'Payment Details'}
         subtitle={'Update your billing information'}
@@ -46,6 +46,7 @@ export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
     };
   }
 
+  //TODO - return user here when BE is ready
   return {
     props: {},
   };
