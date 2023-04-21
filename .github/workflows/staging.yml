@@ -70,7 +70,7 @@ jobs:
             --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY \
             --build-arg NEXT_PUBLIC_STRIPE_SECRET_KEY=$NEXT_PUBLIC_STRIPE_SECRET_KEY \
             --build-arg SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN \
-            --build-arg VERSION=$GITHUB_SHA \
+            --build-arg SENTRY_RELEASE=$GITHUB_SHA \
             -f $DOCKER_FILE \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
