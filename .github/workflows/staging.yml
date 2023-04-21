@@ -24,8 +24,8 @@ jobs:
             src:
               - .github/**
               - .gitignore
-              - README.md
               - MAKEFILE
+              - README.md
       - name: Configure AWS credentials
         if: steps.changed-files.outputs.src == 'false' || github.event.inputs.force == 'true'
         id: aws-creds
@@ -70,6 +70,7 @@ jobs:
             --build-arg NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY \
             --build-arg NEXT_PUBLIC_STRIPE_SECRET_KEY=$NEXT_PUBLIC_STRIPE_SECRET_KEY \
             --build-arg SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN \
+            --build-arg VERSION=$GITHUB_SHA \
             -f $DOCKER_FILE \
             -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG  .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
@@ -98,12 +99,3 @@ jobs:
           SLACK_TITLE: "Web Deployment: Staging Environment"
           SLACK_WEBHOOK: ${{ secrets.SLACK_DEPLOYMENTS_WEBHOOK_URL }}
           SLACK_FOOTER: "Powered by our GitHub automated deploys"
-      - name: Sentry Release
-        if: steps.changed-files.outputs.src == 'false' || github.event.inputs.force == 'true'
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: jumpco
-          SENTRY_PROJECT: jump-frontend
-        with:
-          environment: staging
