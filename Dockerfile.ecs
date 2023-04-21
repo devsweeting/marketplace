@@ -15,6 +15,9 @@ ENV SENTRY_URL https://sentry.io
 ENV SENTRY_ORG jumpco
 ENV SENTRY_PROJECT jump-frontend
 ENV SENTRY_LOG_LEVEL debug
-RUN yarn install --frozen-lockfile --network-timeout 100000 && yarn build
+RUN apt-get update && \
+  apt-get install ca-certificates && \
+  yarn install --frozen-lockfile --network-timeout 100000 && \
+  yarn build
 EXPOSE 3000
 ENTRYPOINT ["/srv/app/entrypoint.sh"]
