@@ -13,7 +13,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 ENV SENTRY_CREATE_RELEASE true
 ENV SENTRY_URL https://sentry.io
 ENV SENTRY_ORG jumpco
-ENV SENTRY_PROJECT jumpco-frontend
+ENV SENTRY_PROJECT jump-frontend
 ENV SENTRY_LOG_LEVEL debug
 RUN yarn install --frozen-lockfile --network-timeout 100000 && yarn build
 EXPOSE 3000
