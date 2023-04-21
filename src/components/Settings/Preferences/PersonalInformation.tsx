@@ -55,9 +55,7 @@ export const PersonalInformation = () => {
           onMouseDown={handleOpen}
           ref={anchor}
           size="small"
-          // aria-controls={isOpen ? 'account-menu' : undefined}
           aria-haspopup="true"
-          // aria-expanded={isOpen ? 'true' : undefined}
         >
           {gradient ? (
             <ColorCircle
@@ -76,7 +74,6 @@ export const PersonalInformation = () => {
             open={isOpen}
             anchorEl={anchor.current}
             onClose={handleClose}
-            // style={{ marginTop: matchesMobile ? 6 : 1 }}
             PaperProps={{
               elevation: 0,
               sx: {
@@ -92,10 +89,6 @@ export const PersonalInformation = () => {
             </div>
           </Menu>
         </IconButton>
-
-        {/* <Button size={'small'} variant="outlined">
-          Save
-        </Button> */}
       </Box>
 
       <Grid container spacing={2} sx={{ marginTop: '16px', display: 'flex' }}>

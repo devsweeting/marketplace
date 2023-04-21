@@ -72,7 +72,6 @@ export const ColorCircle = styled(Box)({
 
 export const HelperText = styled(FormHelperText)(({ theme }) => ({
   color: theme.palette.grey[600],
-  // marginLeft: '32px',
   [theme.breakpoints.down('sm')]: {
     border: '1px solid red',
   },
