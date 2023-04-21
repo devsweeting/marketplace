@@ -2,7 +2,6 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-import Avatar from '@mui/material/Avatar';
 import { useRef, useState } from 'react';
 import { Logout as LogoutButton } from '../Logout';
 import Link from 'next/link';
@@ -10,6 +9,7 @@ import Link from 'next/link';
 import { Divider, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { userPanelLinks } from '@/domain/userPaneLink';
 import type { IUser } from '@/types';
+import { ProfileAvatar } from '@/components/Avatar/Avatar';
 
 export const UserPane = ({ user }: { user: IUser }) => {
   const theme = useTheme();
@@ -49,7 +49,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
           aria-haspopup="true"
           aria-expanded={isOpen ? 'true' : undefined}
         >
-          <Avatar sx={{ width: 32, height: 32 }} />
+          <ProfileAvatar />
         </IconButton>
       )}
       <Menu
@@ -69,7 +69,7 @@ export const UserPane = ({ user }: { user: IUser }) => {
       >
         <div onMouseLeave={handleClose}>
           <MenuItem sx={{ pointerEvents: 'none' }}>
-            <Typography variant="nav">{user.email ?? 'foo@bar.com'}</Typography>
+            <Typography variant="nav">{user.email ?? 'Not signed in'}</Typography>
           </MenuItem>
 
           <Divider />
