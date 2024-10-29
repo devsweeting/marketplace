@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Typography } from '@mui/material';
 import type { NextPage, NextApiRequest } from 'next';
 import { OpenGraph } from '@/components/OpenGraph';
@@ -7,8 +7,12 @@ import { PageContainer } from '../../components/Settings/Settings.styles';
 import { getUserFromRequest } from '@/helpers/auth/getUserFrom';
 import { PersonalInformation } from '@/components/Settings/Preferences/PersonalInformation';
 import { Notifications } from '@/components/Settings/Preferences/Notifications';
+import { UserContext } from '@/helpers/auth/UserContext';
 
 const SettingsPage: NextPage = () => {
+  const user = useContext(UserContext).user;
+
+  // Create a function to get user details to fill in initial default state for the forms
   return (
     <PageContainer sx={{ height: 'auto' }}>
       <OpenGraph title={'Settings'} description={'User profile settings and preferences'} />
