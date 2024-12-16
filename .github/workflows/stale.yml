@@ -12,7 +12,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@03af7c36d33f4905e618fac0a1bb7e6d05f0d41b # (latest, untagged)
+      - uses: actions/stale@5c715b0513651880806e14d529f014b12fdd50eb # (latest, untagged)
         with:
           operations-per-run: 200
           ascending: true
